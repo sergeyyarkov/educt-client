@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
-import AuthService from '../services/AuthService';
 import RootStore from './RootStore';
 
 export default class AuthStore {
@@ -10,11 +9,8 @@ export default class AuthStore {
 
   public isLoggedIn: boolean = !!Cookies.get('logged_in');
 
-  public authService: AuthService;
-
   constructor(root: RootStore) {
     this.root = root;
-    this.authService = new AuthService();
     makeAutoObservable(this);
   }
 
@@ -23,6 +19,7 @@ export default class AuthStore {
   }
 
   public setIsLoggedIn(value: boolean) {
+    Cookies.remove('logged_in');
     this.isLoggedIn = value;
   }
 
@@ -32,7 +29,7 @@ export default class AuthStore {
   }
 
   public async login(login: string, password: string) {
-    const result = await this.authService.requestLogin(login, password);
+    const result = await this.root.authService.requestLogin(login, password);
 
     this.setIsLoggedIn(true);
     this.setToken(result.data.token);

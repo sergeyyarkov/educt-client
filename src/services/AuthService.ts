@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../constants';
+import ApiService from './ApiService';
 import { IDataResult } from '../interfaces';
 
 interface ILoginResult extends IDataResult {
@@ -10,17 +9,18 @@ interface ILoginResult extends IDataResult {
   };
 }
 
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  responseType: 'json',
-});
-
 export default class AuthService {
+  public apiService: ApiService;
+
+  constructor(apiService: ApiService) {
+    this.apiService = apiService;
+  }
+
   public async requestLogin(
     login: string,
     password: string
   ): Promise<ILoginResult> {
-    const result = await api.post('v1/auth/login', {
+    const result = await this.apiService.api.post('v1/auth/login', {
       login,
       password,
     });

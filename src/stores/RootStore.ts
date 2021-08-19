@@ -1,24 +1,29 @@
-// import axios, { AxiosInstance } from 'axios';
-// import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from '../constants';
 import AuthStore from './AuthStore';
 
-export default class RootStore {
-  // public api: AxiosInstance;
+import ApiService from '../services/ApiService';
+import AuthService from '../services/AuthService';
 
+export default class RootStore {
   public authStore: AuthStore;
+
+  public apiService: ApiService;
+
+  public authService: AuthService;
 
   constructor() {
     /**
-     * Api root instance
-     */
-    // this.api = axios.create({
-    //   baseURL: API_BASE_URL,
-    //   responseType: 'json',
-    // });
-
-    /**
-     * Auth store
+     * Stores
      */
     this.authStore = new AuthStore(this);
+
+    /**
+     * Services
+     */
+    this.apiService = new ApiService(this, {
+      baseURL: API_BASE_URL,
+      responseType: 'json',
+    });
+    this.authService = new AuthService(this.apiService);
   }
 }
