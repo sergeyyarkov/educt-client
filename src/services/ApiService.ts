@@ -6,9 +6,12 @@ export default class ApiService {
 
   public api: AxiosInstance;
 
+  public config: AxiosRequestConfig | undefined;
+
   constructor(root: RootStore, config?: AxiosRequestConfig | undefined) {
     this.root = root;
-    this.api = axios.create(config);
+    this.config = config;
+    this.api = axios.create(this.config);
     this.setupInterceptors();
   }
 
@@ -28,9 +31,5 @@ export default class ApiService {
       }
       return Promise.reject(error);
     });
-  }
-
-  get config(): AxiosRequestConfig | undefined {
-    return this.config;
   }
 }

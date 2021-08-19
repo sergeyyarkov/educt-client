@@ -14,10 +14,6 @@ export default class AuthStore {
     makeAutoObservable(this);
   }
 
-  get getToken(): string | null {
-    return this.token;
-  }
-
   public setIsLoggedIn(value: boolean) {
     Cookies.remove('logged_in');
     this.isLoggedIn = value;
