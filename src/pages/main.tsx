@@ -7,12 +7,13 @@ import {
   BreadcrumbLink,
   Grid,
 } from '@chakra-ui/react';
+
 import { IPageProps } from '../interfaces';
 
 /**
  * Main page
  */
-const MainPage: React.FC<IPageProps> = ({ title, history }) => {
+const MainPage: React.FC<IPageProps> = ({ title }) => {
   return (
     <>
       <Breadcrumb fontWeight='medium' fontSize='sm'>
