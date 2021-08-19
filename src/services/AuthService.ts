@@ -1,4 +1,5 @@
-import api from '../axios/index';
+import axios from 'axios';
+import { API_BASE_URL } from '../constants';
 import { IDataResult } from '../interfaces';
 
 interface ILoginResult extends IDataResult {
@@ -8,6 +9,11 @@ interface ILoginResult extends IDataResult {
     expires_at: string;
   };
 }
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  responseType: 'json',
+});
 
 export default class AuthService {
   public async requestLogin(

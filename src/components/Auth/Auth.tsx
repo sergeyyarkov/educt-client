@@ -24,17 +24,17 @@ type LoginDataInput = {
  * Authorize user through a form.
  */
 const Auth: React.FC = () => {
-  const [loginData, setLoginData] = useState<LoginDataInput>({
+  const [loginFormData, setLoginFormData] = useState<LoginDataInput>({
     login: '',
     password: '',
   });
   const { authStore } = useRootStore();
   const history = useHistory();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { login, password } = loginData;
+    const { login, password } = loginFormData;
     await authStore.login(login, password);
     history.push('/');
   };
@@ -54,7 +54,7 @@ const Auth: React.FC = () => {
           </Flex>
         </Box>
         <Box my='30px'>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLoginForm}>
             <FormControl isRequired={true}>
               <FormLabel>Login</FormLabel>
               <InputGroup>
@@ -63,9 +63,12 @@ const Auth: React.FC = () => {
                   type='text'
                   name='login'
                   placeholder='email@mail.com'
-                  value={loginData.login}
+                  value={loginFormData.login}
                   onChange={(e) =>
-                    setLoginData({ ...loginData, login: e.target.value })
+                    setLoginFormData({
+                      ...loginFormData,
+                      login: e.target.value,
+                    })
                   }
                 />
               </InputGroup>
@@ -78,9 +81,12 @@ const Auth: React.FC = () => {
                   type='password'
                   name='password'
                   placeholder='********'
-                  value={loginData.password}
+                  value={loginFormData.password}
                   onChange={(e) =>
-                    setLoginData({ ...loginData, password: e.target.value })
+                    setLoginFormData({
+                      ...loginFormData,
+                      password: e.target.value,
+                    })
                   }
                 />
               </InputGroup>
