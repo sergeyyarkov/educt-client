@@ -1,11 +1,8 @@
 import { observer } from 'mobx-react';
-import React from 'react';
-import {
-  Flex,
-  Box,
-} from '@chakra-ui/react';
-import { MdSchool } from "react-icons/md";
 import Helmet from 'react-helmet';
+import React, { useEffect } from 'react';
+import { Flex, Box } from '@chakra-ui/react';
+import { MdSchool } from 'react-icons/md';
 import { useHistory } from 'react-router-dom';
 import { useRootStore } from '../hooks/useRootStore';
 import { IPageProps } from '../interfaces';
@@ -19,19 +16,24 @@ const AuthPage: React.FC<IPageProps> = () => {
   const { authStore } = useRootStore();
   const history = useHistory();
 
-  if (authStore.isLoggedIn) {
-    history.push('/');
-  }
+  useEffect(() => {
+    if (authStore.isLoggedIn) {
+      history.push('/');
+    }
+  });
 
   return (
     <>
       <Helmet>
         <title>Auth</title>
       </Helmet>
-      <Flex minHeight='100vh' align='center' justifyContent='center'>
+      <Flex
+        minHeight='100vh'
+        align='center'
+        justifyContent='center'
+        padding='5'>
         <Box
           p={8}
-          my={40}
           width='full'
           maxWidth='450px'
           borderWidth={1}
@@ -41,7 +43,7 @@ const AuthPage: React.FC<IPageProps> = () => {
               <MdSchool fill='blue' size='64px' />
             </Flex>
           </Box>
-          <Box my='30px'>
+          <Box>
             <AuthForm />
           </Box>
         </Box>

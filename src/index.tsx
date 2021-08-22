@@ -1,7 +1,7 @@
-import { ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
+import App from './App';
 import { RootStoreProvider } from './providers';
 import reportWebVitals from './reportWebVitals';
 
@@ -9,7 +9,9 @@ ReactDOM.render(
   <>
     <ColorModeScript />
     <RootStoreProvider>
-      <App />
+      <ChakraProvider theme={theme}>
+        <App />
+      </ChakraProvider>
     </RootStoreProvider>
   </>,
   document.getElementById('root')

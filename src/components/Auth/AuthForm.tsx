@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
 import {
   FormControl,
@@ -12,44 +12,39 @@ import {
 import { useRootStore } from '../../hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
-type AuthFormState = {
+type AuthInputs = {
   login: string;
   password: string;
 };
 
 const AuthForm: React.FC = () => {
-  const [authFormState, setAuthFormState] = useState<AuthFormState>({
-    login: '',
-    password: '',
-  });
+  const { register, reset, handleSubmit } = useForm<AuthInputs>();
   const { authStore } = useRootStore();
   const history = useHistory();
-  const handleLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    const { login, password } = authFormState;
-    await authStore.login(login, password);
-    history.push('/');
+  const onSubmit: SubmitHandler<AuthInputs> = async (data) => {
+    try {
+      await authStore.login(data.login, data.password);
+      history.push('/');
+    } catch (error) {
+      console.log('error while log in ');
+    } finally {
+      reset();
+    }
   };
 
   return (
-    <form onSubmit={handleLoginForm}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isRequired={true}>
         <FormLabel>Login</FormLabel>
         <InputGroup>
           <InputLeftElement children={<Icon as={MdAccountCircle} />} />
           <Input
             type='text'
-            name='login'
             placeholder='email@mail.com'
-            value={authFormState.login}
-            onChange={(e) =>
-              setAuthFormState({
-                ...authFormState,
-                login: e.target.value,
-              })
-            }
+            {...register('login', { required: true })}
           />
         </InputGroup>
       </FormControl>
@@ -59,20 +54,14 @@ const AuthForm: React.FC = () => {
           <InputLeftElement children={<Icon as={MdVpnKey} />} />
           <Input
             type='password'
-            name='password'
             placeholder='********'
-            value={authFormState.password}
-            onChange={(e) =>
-              setAuthFormState({
-                ...authFormState,
-                password: e.target.value,
-              })
-            }
+            {...register('password', { required: true })}
           />
         </InputGroup>
       </FormControl>
       <Button
         loadingText='Logging in...'
+        isLoading={authStore.loading}
         type='submit'
         colorScheme='blue'
         variant='outline'
@@ -81,7 +70,7 @@ const AuthForm: React.FC = () => {
         Log in
       </Button>
     </form>
-  )
-}
+  );
+};
 
-export default observer(AuthForm)
+export default observer(AuthForm);

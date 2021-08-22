@@ -9,6 +9,8 @@ export default class AuthStore {
 
   public isLoggedIn: boolean = !!Cookies.get('logged_in');
 
+  public loading: boolean = false;
+
   constructor(root: RootStore) {
     this.root = root;
     makeAutoObservable(this);
@@ -19,17 +21,44 @@ export default class AuthStore {
     this.isLoggedIn = value;
   }
 
+  public setLoading(value: boolean) {
+    this.loading = value;
+  }
+
   public setToken(token: string) {
     Cookies.set('logged_in', 'true');
     this.token = token;
   }
 
   public async login(login: string, password: string) {
-    const result = await this.root.authService.requestLogin(login, password);
+    try {
+      this.setLoading(true);
+      const result = await this.root.authService.requestLogin(login, password);
 
-    this.setIsLoggedIn(true);
-    this.setToken(result.data.token);
+      this.setIsLoggedIn(true);
+      this.setToken(result.data.token);
+
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      this.setLoading(false);
+    }
   }
 
-  public logout() {}
+  public async logout() {
+    try {
+      this.setLoading(true);
+      const result = await this.root.authService.requestLogout();
+
+      this.setIsLoggedIn(false);
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      this.setLoading(false);
+    }
+  }
 }
