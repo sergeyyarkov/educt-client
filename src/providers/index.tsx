@@ -8,7 +8,5 @@ import RootStore from '../stores/RootStore';
 export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
   const store = new RootStore();
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };

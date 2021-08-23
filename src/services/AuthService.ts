@@ -23,10 +23,7 @@ export default class AuthService {
    * @param password User password
    * @returns Login result
    */
-  public async requestLogin(
-    login: string,
-    password: string
-  ): Promise<ILoginResult> {
+  public async requestLogin(login: string, password: string): Promise<ILoginResult> {
     const result = await this.api.post('v1/auth/login', {
       login,
       password,

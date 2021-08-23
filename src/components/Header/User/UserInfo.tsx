@@ -12,6 +12,7 @@ import {
   Avatar,
   Text,
   Link,
+  useToast,
 } from '@chakra-ui/react';
 import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
@@ -21,13 +22,13 @@ import { useHistory } from 'react-router-dom';
 const UserInfo: React.FC = () => {
   const { authStore } = useRootStore();
   const history = useHistory();
+  const toast = useToast();
 
-  const onLogoutHandler = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const onLogoutHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
       await authStore.logout();
       history.push('/auth');
+      toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
     } catch (error) {
       console.error(error);
     }

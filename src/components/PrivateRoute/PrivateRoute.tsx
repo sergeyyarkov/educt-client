@@ -10,19 +10,14 @@ import { observer } from 'mobx-react';
  * Checks if the user is loggedIn by reactive variable and if not,
  * then a redirect to "/auth" route.
  */
-const PrivateRoute: React.FC<IPrivateRouteProps> = ({
-  children,
-  component: Component,
-  title,
-  ...options
-}) => {
+const PrivateRoute: React.FC<IPrivateRouteProps> = ({ children, component: Component, title, ...options }) => {
   const { authStore } = useRootStore();
   const isLoggedIn = authStore.isLoggedIn;
 
   return (
     <Route
       {...options}
-      render={(props) =>
+      render={props =>
         isLoggedIn ? (
           <Layout>
             <Helmet>
@@ -31,9 +26,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
             <Component {...props} title={title} />
           </Layout>
         ) : (
-          <Redirect
-            to={{ pathname: '/auth', state: { from: props.location } }}
-          />
+          <Redirect to={{ pathname: '/auth', state: { from: props.location } }} />
         )
       }
     />

@@ -1,18 +1,11 @@
 import React from 'react';
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
-import {
-  FormControl,
-  FormLabel,
-  InputGroup,
-  Input,
-  InputLeftElement,
-  Button,
-  Icon,
-} from '@chakra-ui/react';
+import { FormControl, FormLabel, InputGroup, Input, InputLeftElement, Button, Icon, useToast } from '@chakra-ui/react';
 import { useRootStore } from '../../hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useErrorHandler } from 'react-error-boundary';
 
 type AuthInputs = {
   login: string;
@@ -23,13 +16,35 @@ const AuthForm: React.FC = () => {
   const { register, reset, handleSubmit } = useForm<AuthInputs>();
   const { authStore } = useRootStore();
   const history = useHistory();
+  const handleError = useErrorHandler();
+  const toast = useToast();
 
-  const onSubmit: SubmitHandler<AuthInputs> = async (data) => {
+  const onSubmit: SubmitHandler<AuthInputs> = async data => {
     try {
       await authStore.login(data.login, data.password);
       history.push('/');
+      toast({
+        title: `👋 Welcome back!`,
+        description: 'You are successfully logged in.',
+        isClosable: true,
+        status: 'success',
+      });
     } catch (error) {
-      console.log('error while log in ');
+      if (error.response) {
+        switch (error.response.status) {
+          case 404:
+            toast({ title: 'User not found in a system.', status: 'error' });
+            break;
+          case 401:
+            toast({ title: 'Invalid password.', status: 'error' });
+            break;
+          default:
+            handleError(error);
+            break;
+        }
+      } else {
+        handleError(error);
+      }
     } finally {
       reset();
     }
@@ -41,22 +56,14 @@ const AuthForm: React.FC = () => {
         <FormLabel>Login</FormLabel>
         <InputGroup>
           <InputLeftElement children={<Icon as={MdAccountCircle} />} />
-          <Input
-            type='text'
-            placeholder='email@mail.com'
-            {...register('login', { required: true })}
-          />
+          <Input type='text' placeholder='Type your login' {...register('login', { required: true })} />
         </InputGroup>
       </FormControl>
       <FormControl mt={5} isRequired={true}>
         <FormLabel>Password</FormLabel>
         <InputGroup>
           <InputLeftElement children={<Icon as={MdVpnKey} />} />
-          <Input
-            type='password'
-            placeholder='********'
-            {...register('password', { required: true })}
-          />
+          <Input type='password' placeholder='********' {...register('password', { required: true })} />
         </InputGroup>
       </FormControl>
       <Button
@@ -66,7 +73,8 @@ const AuthForm: React.FC = () => {
         colorScheme='blue'
         variant='outline'
         width='full'
-        mt={4}>
+        mt={4}
+      >
         Log in
       </Button>
     </form>

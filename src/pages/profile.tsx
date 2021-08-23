@@ -6,9 +6,9 @@ import { useRootStore } from '../hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 
 /**
- * Main page
+ * Profile page
  */
-const MainPage: React.FC<IPageProps> = ({ title }) => {
+const ProfilePage: React.FC<IPageProps> = ({ title }) => {
   const { authStore } = useRootStore();
   const history = useHistory();
 
@@ -27,7 +27,7 @@ const MainPage: React.FC<IPageProps> = ({ title }) => {
       </Breadcrumb>
       <Box mt='10'>
         <Box>
-          <Heading as='h1'>Main page</Heading>
+          <Heading as='h1'>Profile page</Heading>
           <Grid templateColumns='3fr 1fr' mt='25px'>
             ...
           </Grid>
@@ -37,4 +37,4 @@ const MainPage: React.FC<IPageProps> = ({ title }) => {
   );
 };
 
-export default MainPage;
+export default ProfilePage;

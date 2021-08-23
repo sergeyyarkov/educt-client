@@ -27,17 +27,8 @@ const AuthPage: React.FC<IPageProps> = () => {
       <Helmet>
         <title>Auth</title>
       </Helmet>
-      <Flex
-        minHeight='100vh'
-        align='center'
-        justifyContent='center'
-        padding='5'>
-        <Box
-          p={8}
-          width='full'
-          maxWidth='450px'
-          borderWidth={1}
-          borderRadius={8}>
+      <Flex minHeight='100vh' align='center' justifyContent='center' padding='5'>
+        <Box p={8} width='full' maxWidth='450px' borderWidth={1} borderRadius={8}>
           <Box textAlign='center'>
             <Flex justifyContent='center'>
               <MdSchool fill='blue' size='64px' />

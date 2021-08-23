@@ -22,7 +22,8 @@ const UserNotifications: React.FC = () => {
         width: '15px',
         height: '15px',
         borderRadius: '100%',
-      }}>
+      }}
+    >
       <Box as={MdNotifications} boxSize='21px' />
     </Button>
   );

@@ -16,14 +16,16 @@ const Header: React.FC = () => {
       borderBottomWidth={1}
       width='100%'
       height='4rem'
-      zIndex={4}>
+      zIndex={4}
+    >
       <Flex
         justifyContent='space-between'
         width='100%'
         height='100%'
         alignItems='center'
         paddingLeft='1.5rem'
-        paddingRight='1.5rem'>
+        paddingRight='1.5rem'
+      >
         <AppName />
         <Flex>
           <UserNotifications />

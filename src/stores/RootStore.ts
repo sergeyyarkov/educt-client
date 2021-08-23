@@ -7,8 +7,6 @@ import UserStore from './UserStore';
 import { makeAutoObservable } from 'mobx';
 
 export default class RootStore {
-  public networkApiError: any;
-
   public authStore: AuthStore;
 
   public userStore: UserStore;
@@ -34,9 +32,5 @@ export default class RootStore {
     });
     this.authService = new AuthService(this.apiService.api);
     makeAutoObservable(this);
-  }
-
-  public setNetworkApiError(error: any) {
-    this.networkApiError = error;
   }
 }

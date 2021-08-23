@@ -19,29 +19,17 @@ export default class ApiService {
     /**
      * Response
      */
-    this.api.interceptors.response.use(undefined, (error) => {
+    this.api.interceptors.response.use(undefined, error => {
       if (error.response) {
-        /**
-         * Internal Server Error 500
-         */
-        if (error.response.status === 500) {
-        }
-
         /**
          * Unauthorized Error 401
          */
         if (error.response.status === 401) {
           if (this.root.authStore.isLoggedIn) {
+            this.root.userStore.user = null;
             this.root.authStore.setIsLoggedIn(false);
           }
         }
-
-        /* Clear error state from root */
-        if (this.root.networkApiError !== undefined) {
-          this.root.setNetworkApiError(undefined);
-        }
-      } else {
-        this.root.setNetworkApiError(error);
       }
       return Promise.reject(error);
     });

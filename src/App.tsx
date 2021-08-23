@@ -1,42 +1,34 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import { useRootStore } from './hooks/useRootStore';
-import { observer } from 'mobx-react';
+import ErrorFallback from './components/ErrorFallback';
 
 /**
  * Pages
  */
 import MainPage from './pages/main';
+import CoursesPage from './pages/courses';
+import MessagesPage from './pages/messages';
+import ProfilePage from './pages/profile';
 import AuthPage from './pages/auth';
 import NotFoundPage from './pages/404';
-import { useToast } from '@chakra-ui/react';
-import { autorun } from 'mobx';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const App = () => {
-  const rootStore = useRootStore();
-  const toast = useToast();
-
-  React.useEffect(() => {
-    autorun(() => {
-      if (rootStore.networkApiError !== undefined) {
-        toast({
-          title: `Network error while connecting to the server.`,
-          description: 'Try your request later.',
-          status: 'error',
-        });
-      }
-    });
-  });
-
   return (
-    <Router>
-      <Switch>
-        <PrivateRoute exact path='/' component={MainPage} title='Main' />
-        <Route path='/auth' component={AuthPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
-    </Router>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Router>
+        <Switch>
+          <PrivateRoute exact path='/' component={MainPage} title='Main' />
+          <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
+          <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
+          <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
+          <Route path='/auth' component={AuthPage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Router>
+    </ErrorBoundary>
   );
 };
 
