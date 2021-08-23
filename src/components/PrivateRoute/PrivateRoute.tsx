@@ -12,13 +12,12 @@ import { observer } from 'mobx-react';
  */
 const PrivateRoute: React.FC<IPrivateRouteProps> = ({ children, component: Component, title, ...options }) => {
   const { authStore } = useRootStore();
-  const isLoggedIn = authStore.isLoggedIn;
 
   return (
     <Route
       {...options}
       render={props =>
-        isLoggedIn ? (
+        authStore.isLoggedIn ? (
           <Layout>
             <Helmet>
               <title>{title} • App </title>

@@ -1,26 +1,23 @@
 import { observer } from 'mobx-react';
 import Helmet from 'react-helmet';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Flex, Box } from '@chakra-ui/react';
 import { MdSchool } from 'react-icons/md';
-import { useHistory } from 'react-router-dom';
-import { useRootStore } from '../hooks/useRootStore';
 import { IPageProps } from '../interfaces';
 
 import AuthForm from '../components/Auth/AuthForm';
+import { useRootStore } from '../hooks/useRootStore';
+import { Redirect } from 'react-router-dom';
 
 /**
  * Auth page
  */
 const AuthPage: React.FC<IPageProps> = () => {
   const { authStore } = useRootStore();
-  const history = useHistory();
 
-  useEffect(() => {
-    if (authStore.isLoggedIn) {
-      history.push('/');
-    }
-  });
+  if (authStore.isLoggedIn) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <>

@@ -13,6 +13,7 @@ import {
   Text,
   Link,
   useToast,
+  Skeleton,
 } from '@chakra-ui/react';
 import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
@@ -20,7 +21,7 @@ import { useRootStore } from '../../../hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 
 const UserInfo: React.FC = () => {
-  const { authStore } = useRootStore();
+  const { authStore, userStore } = useRootStore();
   const history = useHistory();
   const toast = useToast();
 
@@ -34,6 +35,10 @@ const UserInfo: React.FC = () => {
     }
   };
 
+  if (userStore.me === null) {
+    return <Skeleton width='160px' borderRadius='md' />;
+  }
+
   return (
     <Flex alignItems='center'>
       <Menu>
@@ -41,12 +46,12 @@ const UserInfo: React.FC = () => {
           <Flex alignItems='center'>
             <Avatar size='sm' name='user name' marginRight={3} />
             <Text as='span' mr={2}>
-              Username
+              {`${userStore.me.first_name} ${userStore.me.last_name}`}
             </Text>
           </Flex>
         </MenuButton>
         <MenuList mr='1rem'>
-          <MenuGroup title='User fullname'>
+          <MenuGroup title={`${userStore.me.first_name} ${userStore.me.last_name}`}>
             <MenuDivider />
             <Link to='/profile'>
               <MenuItem>

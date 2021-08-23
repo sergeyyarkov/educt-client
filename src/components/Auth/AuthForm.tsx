@@ -33,10 +33,10 @@ const AuthForm: React.FC = () => {
       if (error.response) {
         switch (error.response.status) {
           case 404:
-            toast({ title: 'User not found in a system.', status: 'error' });
+            toast({ title: 'User not found in a system.', status: 'error', duration: 2000 });
             break;
           case 401:
-            toast({ title: 'Invalid password.', status: 'error' });
+            toast({ title: 'Invalid password.', status: 'error', duration: 2000 });
             break;
           default:
             handleError(error);

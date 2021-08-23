@@ -2,6 +2,9 @@ import React from 'react';
 import { Flex, Box } from '@chakra-ui/react';
 import Header from '../Header/Header';
 import Nav from '../Nav/Nav';
+import { observer } from 'mobx-react';
+import { useRootStore } from '../../hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
 
 /**
  *
@@ -9,6 +12,19 @@ import Nav from '../Nav/Nav';
  * Сomponent for rendering the current page.
  */
 const Layout: React.FC = ({ children }) => {
+  const { authStore } = useRootStore();
+  const handleError = useErrorHandler();
+
+  React.useEffect(() => {
+    if (authStore.isLoggedIn) {
+      authStore.root.userStore.loadCurrentUserData().catch(error => {
+        if (error.response && error.response.status === 401) {
+          handleError(error);
+        }
+      });
+    }
+  });
+
   return (
     <>
       <Header />
@@ -24,4 +40,4 @@ const Layout: React.FC = ({ children }) => {
   );
 };
 
-export default Layout;
+export default observer(Layout);
