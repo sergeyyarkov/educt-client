@@ -40,7 +40,11 @@ const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ lin
     >
       <Box
         color={history.location.pathname === link.location || activeLink.title === link.title ? 'blue.400' : ''}
-        backgroundColor={activeLink.title === link.title ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}` : ''}
+        backgroundColor={
+          activeLink.title === link.title || history.location.pathname === link.location
+            ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}`
+            : ''
+        }
         alignItems='center'
         borderRadius='9999px'
         display='flex'

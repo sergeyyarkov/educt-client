@@ -44,7 +44,7 @@ const UserInfo: React.FC = () => {
       <Menu>
         <MenuButton as={Button} pr={6}>
           <Flex alignItems='center'>
-            <Avatar size='sm' name='user name' marginRight={3} />
+            <Avatar size='sm' name={`${userStore.me.first_name} ${userStore.me.last_name}`} marginRight={3} />
             <Text as='span' mr={2}>
               {`${userStore.me.first_name} ${userStore.me.last_name}`}
             </Text>
