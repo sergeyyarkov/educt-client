@@ -1,6 +1,7 @@
 import { IconType } from 'react-icons/lib';
 import type { RouteProps } from 'react-router-dom';
 import type { RouteComponentProps } from 'react-router-dom';
+import { UserRoleEnum } from '../enums';
 
 export type LinkType = {
   location: string;
@@ -19,7 +20,7 @@ export interface IAppConfig {
 export interface IUserRole {
   id: number;
   name: string;
-  slug: string;
+  slug: UserRoleEnum;
 }
 
 export interface IDataResult {

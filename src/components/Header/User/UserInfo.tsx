@@ -18,6 +18,7 @@ import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
 import { useRootStore } from '../../../hooks/useRootStore';
 import { useHistory, Link } from 'react-router-dom';
+import UserBadge from './UserBadge';
 
 const UserInfo: React.FC = () => {
   const { authStore, userStore } = useRootStore();
@@ -35,7 +36,7 @@ const UserInfo: React.FC = () => {
   };
 
   if (userStore.me === null) {
-    return <Skeleton width='160px' borderRadius='md' />;
+    return <Skeleton width='180px' borderRadius='md' />;
   }
 
   return (
@@ -47,6 +48,7 @@ const UserInfo: React.FC = () => {
             <Text as='span' mr={2}>
               {`${userStore.me.first_name} ${userStore.me.last_name}`}
             </Text>
+            <UserBadge roles={userStore.me.roles} />
           </Flex>
         </MenuButton>
         <MenuList mr='1rem'>

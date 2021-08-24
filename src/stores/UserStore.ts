@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUserResult } from '../interfaces';
+import { IUserResult, IUserRole } from '../interfaces';
 import UserService from '../services/UserService';
 import RootStore from './RootStore';
 
@@ -9,6 +9,7 @@ export interface IUser {
   first_name: string;
   last_name: string;
   email: string;
+  roles: IUserRole[];
 }
 
 export default class UserStore {
