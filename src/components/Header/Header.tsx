@@ -3,8 +3,12 @@ import { Flex, Box } from '@chakra-ui/react';
 import AppName from './AppName';
 import UserInfo from './User/UserInfo';
 import UserNotifications from './User/UserNotifications';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
+import NavMobile from '../Nav/Mobile/Nav';
 
 const Header: React.FC = () => {
+  const { isDesktop } = useWindowDimensions();
+
   return (
     <Box
       as='header'
@@ -27,8 +31,14 @@ const Header: React.FC = () => {
       >
         <AppName />
         <Flex>
-          <UserNotifications />
-          <UserInfo />
+          {isDesktop ? (
+            <>
+              <UserNotifications />
+              <UserInfo />
+            </>
+          ) : (
+            <NavMobile />
+          )}
         </Flex>
       </Flex>
     </Box>

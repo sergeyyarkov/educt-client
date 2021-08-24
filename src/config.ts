@@ -2,6 +2,10 @@ import { MdAccountCircle, MdCollectionsBookmark, MdHome, MdMessage } from 'react
 import { IAppConfig } from './interfaces';
 
 const config: IAppConfig = {
+  metaData: {
+    appName: 'Educt',
+    appDescription: 'Learn management system',
+  },
   links: [
     { location: '/', title: 'Home', icon: MdHome },
     { location: '/courses', title: 'Courses', icon: MdCollectionsBookmark },

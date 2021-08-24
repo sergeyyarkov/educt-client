@@ -28,7 +28,7 @@ const AuthPage: React.FC<IPageProps> = () => {
         <Box p={8} width='full' maxWidth='450px' borderWidth={1} borderRadius={8}>
           <Box textAlign='center'>
             <Flex justifyContent='center'>
-              <MdSchool fill='blue' size='64px' />
+              <Box as={MdSchool} color='blue.500' size='64px' />
             </Flex>
           </Box>
           <Box>

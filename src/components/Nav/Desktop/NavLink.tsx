@@ -1,43 +1,35 @@
 import React from 'react';
 import { Box, useColorMode } from '@chakra-ui/react';
-import type { History } from 'history';
-import type { LinkType } from '../../interfaces';
-import type { ActiveLinkState } from './Nav';
+import type { LinkType } from '../../../interfaces';
+import { useHistory } from 'react-router-dom';
+
+type ActiveLinkState = {
+  title: string | null;
+};
 
 /**
  *
  * NavLink component
  * Returns the link component for navigation.
- *
  */
-
-interface NavLinkProps {
-  handleOnHoverLink: (title: string) => void;
-  handleOnLeaveLink: () => void;
-  handleRoute: (location: string) => void;
-  history: History;
-  activeLink: ActiveLinkState;
-  link: LinkType;
-}
-
-const NavLink: React.FC<NavLinkProps> = ({
-  handleOnHoverLink,
-  handleOnLeaveLink,
-  handleRoute,
-  history,
-  activeLink,
-  link,
-}) => {
+const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ link, onCloseDrawer }) => {
+  const [activeLink, setActiveLink] = React.useState<ActiveLinkState>({ title: null });
   const { colorMode } = useColorMode();
-  const onMouseEnter = () => handleOnHoverLink(link.title);
-  const onClick = () => handleRoute(link.location);
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(link.location);
+
+    /* Close mobile drawer on click link */
+    onCloseDrawer && onCloseDrawer();
+  };
 
   return (
     <Box
       as='a'
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={handleOnLeaveLink}
-      onClick={onClick}
+      onMouseEnter={() => setActiveLink({ title: link.title })}
+      onMouseLeave={() => setActiveLink({ title: null })}
+      onClick={handleClick}
       display='flex'
       margin='3px 0'
       width='100%'

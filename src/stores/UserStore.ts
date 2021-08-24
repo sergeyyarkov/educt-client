@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { autorun, makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { IUserResult } from '../interfaces';
 import UserService from '../services/UserService';
 import RootStore from './RootStore';
@@ -30,7 +30,7 @@ export default class UserStore {
     try {
       const result = await this.userService.fetchMe();
 
-      autorun(() => {
+      runInAction(() => {
         this.me = result.data;
       });
 

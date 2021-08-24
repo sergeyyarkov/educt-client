@@ -9,6 +9,10 @@ export type LinkType = {
 };
 
 export interface IAppConfig {
+  metaData: {
+    appName: string;
+    appDescription: string;
+  };
   links: LinkType[];
 }
 
