@@ -11,14 +11,13 @@ import {
   Box,
   Avatar,
   Text,
-  Link,
   useToast,
   Skeleton,
 } from '@chakra-ui/react';
 import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
 import { useRootStore } from '../../../hooks/useRootStore';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const UserInfo: React.FC = () => {
   const { authStore, userStore } = useRootStore();

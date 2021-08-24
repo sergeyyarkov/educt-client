@@ -12,15 +12,13 @@ import { useErrorHandler } from 'react-error-boundary';
  * Сomponent for rendering the current page.
  */
 const Layout: React.FC = ({ children }) => {
-  const { authStore } = useRootStore();
+  const { authStore, userStore } = useRootStore();
   const handleError = useErrorHandler();
 
   React.useEffect(() => {
     if (authStore.isLoggedIn) {
-      authStore.root.userStore.loadCurrentUserData().catch(error => {
-        if (error.response && error.response.status === 401) {
-          handleError(error);
-        }
+      userStore.loadCurrentUserData().catch(error => {
+        handleError(error);
       });
     }
   });

@@ -12,10 +12,34 @@ export interface IAppConfig {
   links: LinkType[];
 }
 
+export interface IUserRole {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export interface IDataResult {
   data: any;
   message: string;
   status: number;
+}
+
+export interface ILoginResult extends IDataResult {
+  data: {
+    token: string;
+    type: string;
+    expires_at: string;
+  };
+}
+
+export interface IUserResult extends IDataResult {
+  data: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    roles: IUserRole[];
+  };
 }
 
 export interface IPageProps extends RouteComponentProps {

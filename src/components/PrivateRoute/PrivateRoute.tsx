@@ -5,6 +5,8 @@ import { Route, Redirect } from 'react-router-dom';
 import { IPrivateRouteProps } from '../../interfaces';
 import { useRootStore } from '../../hooks/useRootStore';
 import { observer } from 'mobx-react';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '../ErrorFallback';
 
 /**
  * Checks if the user is loggedIn by reactive variable and if not,
@@ -18,12 +20,14 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({ children, component: Compo
       {...options}
       render={props =>
         authStore.isLoggedIn ? (
-          <Layout>
-            <Helmet>
-              <title>{title} • App </title>
-            </Helmet>
-            <Component {...props} title={title} />
-          </Layout>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Layout>
+              <Helmet>
+                <title>{title} • App </title>
+              </Helmet>
+              <Component {...props} title={title} />
+            </Layout>
+          </ErrorBoundary>
         ) : (
           <Redirect to={{ pathname: '/auth', state: { from: props.location } }} />
         )

@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { IUserResult } from '../interfaces';
 
 export default class UserService {
   public api: AxiosInstance;
@@ -12,7 +13,7 @@ export default class UserService {
    *
    * @returns User data
    */
-  public async fetchMe(): Promise<any> {
+  public async fetchMe(): Promise<IUserResult> {
     const result = await this.api.get('v1/me');
     return result.data;
   }

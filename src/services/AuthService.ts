@@ -1,13 +1,5 @@
-import { IDataResult } from '../interfaces';
-import { AxiosInstance } from 'axios';
-
-export interface ILoginResult extends IDataResult {
-  data: {
-    token: string;
-    type: string;
-    expires_at: string;
-  };
-}
+import { IDataResult, ILoginResult } from '../interfaces';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 export default class AuthService {
   public api: AxiosInstance;
@@ -24,22 +16,20 @@ export default class AuthService {
    * @returns Login result
    */
   public async requestLogin(login: string, password: string): Promise<ILoginResult> {
-    const result = await this.api.post('v1/auth/login', {
+    const result: AxiosResponse<any> = await this.api.post('v1/auth/login', {
       login,
       password,
     });
-
     return result.data;
   }
 
   /**
    * Revoke token
    *
-   * @returns Logout result
+   * @returns Data result
    */
-  public async requestLogout(): Promise<any> {
-    const result = await this.api.post('v1/auth/logout');
-
+  public async requestLogout(): Promise<IDataResult> {
+    const result: AxiosResponse<any> = await this.api.post('v1/auth/logout');
     return result.data;
   }
 }

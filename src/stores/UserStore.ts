@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { autorun, makeAutoObservable } from 'mobx';
+import { IUserResult } from '../interfaces';
 import UserService from '../services/UserService';
 import RootStore from './RootStore';
 
@@ -25,13 +26,17 @@ export default class UserStore {
     makeAutoObservable(this);
   }
 
-  public async loadCurrentUserData(): Promise<any> {
-    const result = await this.userService.fetchMe();
+  public async loadCurrentUserData(): Promise<IUserResult> {
+    try {
+      const result = await this.userService.fetchMe();
 
-    autorun(() => {
-      this.me = result.data;
-    });
+      autorun(() => {
+        this.me = result.data;
+      });
 
-    return result;
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }

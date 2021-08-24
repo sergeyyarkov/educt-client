@@ -13,22 +13,19 @@ import MessagesPage from './pages/messages';
 import ProfilePage from './pages/profile';
 import AuthPage from './pages/auth';
 import NotFoundPage from './pages/404';
-import { ErrorBoundary } from 'react-error-boundary';
 
 const App = () => {
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Router>
-        <Switch>
-          <PrivateRoute exact path='/' component={MainPage} title='Main' />
-          <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
-          <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
-          <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
-          <Route path='/auth' component={AuthPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </Router>
-    </ErrorBoundary>
+    <Router>
+      <Switch>
+        <PrivateRoute exact path='/' component={MainPage} title='Main' />
+        <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
+        <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
+        <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
+        <Route path='/auth' component={AuthPage} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
   );
 };
 

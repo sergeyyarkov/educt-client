@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import RootStore from './RootStore';
 import AuthService from '../services/AuthService';
 import { AxiosInstance } from 'axios';
+import { IDataResult, ILoginResult } from '../interfaces';
 
 export default class AuthStore {
   public root: RootStore;
@@ -27,7 +28,7 @@ export default class AuthStore {
     this.loading = value;
   }
 
-  public async login(login: string, password: string) {
+  public async login(login: string, password: string): Promise<ILoginResult> {
     try {
       this.setLoading(true);
       const result = await this.authService.requestLogin(login, password);
@@ -43,7 +44,7 @@ export default class AuthStore {
     }
   }
 
-  public async logout() {
+  public async logout(): Promise<IDataResult> {
     try {
       this.setLoading(true);
       const result = await this.authService.requestLogout();
