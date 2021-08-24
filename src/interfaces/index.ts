@@ -47,6 +47,11 @@ export interface IPageProps extends RouteComponentProps {
 }
 
 export interface IPrivateRouteProps extends RouteProps {
-  component: React.FC<any>;
+  component: React.FC<IPageProps>;
+  title?: string;
+}
+
+export interface IPublicRouteProps extends RouteProps {
+  component: React.FC<IPageProps>;
   title?: string;
 }

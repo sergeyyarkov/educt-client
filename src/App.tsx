@@ -1,8 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
+/**
+ * Components
+ */
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import ErrorFallback from './components/ErrorFallback';
+import PublicRoute from './components/PublicRoute/PublicRoute';
 
 /**
  * Pages
@@ -22,11 +25,11 @@ const App = () => {
         <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
         <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
-        <Route path='/auth' component={AuthPage} />
-        <Route component={NotFoundPage} />
+        <PublicRoute path='/auth' component={AuthPage} />
+        <PublicRoute component={NotFoundPage} />
       </Switch>
     </Router>
   );
 };
 
-export default observer(App);
+export default App;

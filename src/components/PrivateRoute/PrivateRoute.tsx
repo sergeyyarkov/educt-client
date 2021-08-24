@@ -12,7 +12,7 @@ import ErrorFallback from '../ErrorFallback';
  * Checks if the user is loggedIn by reactive variable and if not,
  * then a redirect to "/auth" route.
  */
-const PrivateRoute: React.FC<IPrivateRouteProps> = ({ children, component: Component, title, ...options }) => {
+const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, title, ...options }) => {
   const { authStore } = useRootStore();
 
   return (

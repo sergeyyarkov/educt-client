@@ -30,7 +30,7 @@ const Nav: React.FC = () => {
           alignItems='flex-start'
           textDecoration='none'
           height='calc(100vh - 4rem)'
-          padding='1.5rem 1.2rem'
+          padding='5'
         >
           {config.links.map((link, i) => (
             <NavLink

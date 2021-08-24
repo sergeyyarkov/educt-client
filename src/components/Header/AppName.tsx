@@ -6,10 +6,10 @@ const AppName: React.FC = () => {
   return (
     <Flex alignItems='center'>
       <Box mr='4'>
-        <MdSchool fill='blue' size='36px' />
+        <Box as={MdSchool} color='blue.500' size='36px' />
       </Box>
       <Box lineHeight='1'>
-        <Heading as='p' fontSize='2xl' color='gray.700'>
+        <Heading as='p' fontSize='2xl'>
           App name
         </Heading>
         <Text as='small'>App description</Text>

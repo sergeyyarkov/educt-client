@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorMode } from '@chakra-ui/react';
 import type { History } from 'history';
 import type { LinkType } from '../../interfaces';
 import type { ActiveLinkState } from './Nav';
@@ -28,6 +28,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   activeLink,
   link,
 }) => {
+  const { colorMode } = useColorMode();
   const onMouseEnter = () => handleOnHoverLink(link.title);
   const onClick = () => handleRoute(link.location);
 
@@ -46,8 +47,8 @@ const NavLink: React.FC<NavLinkProps> = ({
       cursor='pointer'
     >
       <Box
-        color={history.location.pathname === link.location || activeLink.title === link.title ? 'blue.500' : ''}
-        backgroundColor={activeLink.title === link.title ? '#EBF8FF' : ''}
+        color={history.location.pathname === link.location || activeLink.title === link.title ? 'blue.400' : ''}
+        backgroundColor={activeLink.title === link.title ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}` : ''}
         alignItems='center'
         borderRadius='9999px'
         display='flex'

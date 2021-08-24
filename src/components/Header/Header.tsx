@@ -8,7 +8,6 @@ const Header: React.FC = () => {
   return (
     <Box
       as='header'
-      background='#fff'
       position='fixed'
       top={0}
       left={0}

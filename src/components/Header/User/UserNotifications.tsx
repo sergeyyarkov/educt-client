@@ -6,7 +6,8 @@ import { MdNotifications } from 'react-icons/md';
 const UserNotifications: React.FC = () => {
   return (
     <Button
-      marginRight={3}
+      mr={3}
+      ml={3}
       variant='solid'
       outline='none'
       border='none'
