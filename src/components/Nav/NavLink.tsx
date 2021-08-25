@@ -46,6 +46,10 @@ const NavLink: React.FC<NavLinkProps> = ({ link, onCloseDrawer }) => {
         padding='10px 15px'
         fontWeight='500'
         transition='all .1s'
+        _hover={{
+          bg: `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}`,
+          color: `blue.400`,
+        }}
       >
         <Box as={link.icon} boxSize='26px' mr={3} />
         {link.title}

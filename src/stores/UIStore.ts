@@ -15,8 +15,7 @@ export default class UIStore {
     makeAutoObservable(this);
 
     this.history.listen(({ pathname }) => {
-      console.log(`[history]: pathname changed to ${pathname}`);
-
+      console.log(`[history]: pathname changed to "${pathname}"`);
       this.location = pathname;
     });
   }
