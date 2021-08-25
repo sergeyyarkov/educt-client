@@ -21,9 +21,11 @@ import { UserRoleEnum } from 'enums';
 import { useRootStore } from 'hooks/useRootStore';
 
 const App = () => {
-  const { uiStore } = useRootStore();
+  const {
+    uiStore: { history },
+  } = useRootStore();
   return (
-    <Router history={uiStore.history}>
+    <Router history={history}>
       <Switch>
         <PrivateRoute exact path='/' component={MainPage} title='Home' />
         <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />

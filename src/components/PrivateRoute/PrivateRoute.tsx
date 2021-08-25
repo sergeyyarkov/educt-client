@@ -32,7 +32,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, titl
             </Layout>
           </ErrorBoundary>
         ) : (
-          <Redirect to={{ pathname: '/auth', state: { from: props.location } }} />
+          <Redirect to='/auth' />
         )
       }
     />
