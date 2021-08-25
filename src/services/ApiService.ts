@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
-import RootStore from '../stores/RootStore';
+import RootStore from 'stores/RootStore';
 
 export default class ApiService {
   public root: RootStore;

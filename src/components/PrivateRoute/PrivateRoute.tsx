@@ -1,9 +1,9 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Layout from '../Layout/Layout';
+import Layout from 'components/Layout/Layout';
 import { Route, Redirect } from 'react-router-dom';
-import { IPrivateRouteProps } from '../../interfaces';
-import { useRootStore } from '../../hooks/useRootStore';
+import { IPrivateRouteProps } from 'interfaces';
+import { useRootStore } from 'hooks/useRootStore';
 import { observer } from 'mobx-react';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../ErrorFallback';

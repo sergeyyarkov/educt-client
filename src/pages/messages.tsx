@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Box, Heading, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Grid } from '@chakra-ui/react';
 
-import { IPageProps } from '../interfaces';
-import { useRootStore } from '../hooks/useRootStore';
+import { IPageProps } from 'interfaces';
+import { useRootStore } from 'hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 
 /**

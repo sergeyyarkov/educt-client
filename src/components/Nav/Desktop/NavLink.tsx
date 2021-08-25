@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, useColorMode } from '@chakra-ui/react';
-import type { LinkType } from '../../../interfaces';
+import type { LinkType } from 'interfaces';
 import { useHistory } from 'react-router-dom';
 
 type ActiveLinkState = {

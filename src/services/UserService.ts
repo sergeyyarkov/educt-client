@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { IUserResult } from '../interfaces';
+import { IUserResult } from 'interfaces';
 
 export default class UserService {
   public api: AxiosInstance;

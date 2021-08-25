@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { StoreContext } from '../contexts';
-import RootStore from '../stores/RootStore';
+import { StoreContext } from 'contexts';
+import RootStore from 'stores/RootStore';
 
 /**
  * Root store provider

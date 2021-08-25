@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUserResult, IUserRole } from '../interfaces';
-import UserService from '../services/UserService';
+import { IUserResult, IUserRole } from 'interfaces';
+
+import UserService from 'services/UserService';
 import RootStore from './RootStore';
 
 export interface IUser {

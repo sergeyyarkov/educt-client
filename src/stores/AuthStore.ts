@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import Cookies from 'js-cookie';
 import RootStore from './RootStore';
-import AuthService from '../services/AuthService';
+import AuthService from 'services/AuthService';
 import { AxiosInstance } from 'axios';
-import { IDataResult, ILoginResult } from '../interfaces';
+import { IDataResult, ILoginResult } from 'interfaces';
 
 export default class AuthStore {
   public root: RootStore;

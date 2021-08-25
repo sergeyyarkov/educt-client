@@ -1,7 +1,7 @@
 import React from 'react';
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
 import { FormControl, FormLabel, InputGroup, Input, InputLeftElement, Button, Icon, useToast } from '@chakra-ui/react';
-import { useRootStore } from '../../hooks/useRootStore';
+import { useRootStore } from 'hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';

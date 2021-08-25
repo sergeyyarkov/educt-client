@@ -1,4 +1,4 @@
-import { IDataResult, ILoginResult } from '../interfaces';
+import { IDataResult, ILoginResult } from 'interfaces';
 import { AxiosInstance, AxiosResponse } from 'axios';
 
 export default class AuthService {

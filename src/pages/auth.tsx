@@ -3,10 +3,10 @@ import Helmet from 'react-helmet';
 import React from 'react';
 import { Flex, Box } from '@chakra-ui/react';
 import { MdSchool } from 'react-icons/md';
-import { IPageProps } from '../interfaces';
+import { IPageProps } from 'interfaces';
 
-import AuthForm from '../components/Auth/AuthForm';
-import { useRootStore } from '../hooks/useRootStore';
+import AuthForm from 'components/Auth/AuthForm';
+import { useRootStore } from 'hooks/useRootStore';
 import { Redirect } from 'react-router-dom';
 
 /**

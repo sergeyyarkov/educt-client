@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Text, Heading } from '@chakra-ui/react';
 import { MdSchool } from 'react-icons/md';
-import config from '../../config';
+import config from 'config';
 
 const AppName: React.FC = () => {
   return (

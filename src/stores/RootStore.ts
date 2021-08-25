@@ -1,9 +1,16 @@
-import { API_BASE_URL } from '../constants';
-import AuthStore from './AuthStore';
-
-import ApiService from '../services/ApiService';
-import UserStore from './UserStore';
 import { makeAutoObservable } from 'mobx';
+import { API_BASE_URL } from '../constants';
+
+/**
+ * Services
+ */
+import ApiService from 'services/ApiService';
+
+/**
+ * Stores
+ */
+import AuthStore from './AuthStore';
+import UserStore from './UserStore';
 
 export default class RootStore {
   public authStore: AuthStore;

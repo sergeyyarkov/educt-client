@@ -4,18 +4,18 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 /**
  * Components
  */
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import PublicRoute from './components/PublicRoute/PublicRoute';
+import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
+import PublicRoute from 'components/PublicRoute/PublicRoute';
 
 /**
  * Pages
  */
-import MainPage from './pages/main';
-import CoursesPage from './pages/courses';
-import MessagesPage from './pages/messages';
-import ProfilePage from './pages/profile';
-import AuthPage from './pages/auth';
-import NotFoundPage from './pages/404';
+import MainPage from 'pages/main';
+import CoursesPage from 'pages/courses';
+import MessagesPage from 'pages/messages';
+import ProfilePage from 'pages/profile';
+import AuthPage from 'pages/auth';
+import NotFoundPage from 'pages/404';
 
 const App = () => {
   return (
