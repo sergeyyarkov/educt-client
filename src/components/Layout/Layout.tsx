@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { ColorModeSwitcher } from 'components/ColorModeSwitcher/ColorModeSwitcher';
+import LoadingPage from 'components/Loading/LoadingPage';
 
 /**
  *
@@ -37,7 +38,7 @@ const Layout: React.FC = ({ children }) => {
           }}
         >
           <Box as='main' mr='auto' ml='auto' maxW='85rem' pl={5} pr={5} pt='2rem' pb='2rem'>
-            {children}
+            {userStore.me === null ? <LoadingPage /> : children}
             <ColorModeSwitcher position='absolute' right={0} bottom={0} margin={5} />
           </Box>
         </Box>

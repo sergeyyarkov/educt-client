@@ -1,18 +1,19 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Layout from 'components/Layout/Layout';
+import Layout from '../Layout/Layout';
 import { Route, Redirect } from 'react-router-dom';
 import { IPrivateRouteProps } from 'interfaces';
 import { useRootStore } from 'hooks/useRootStore';
 import { observer } from 'mobx-react';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../ErrorFallback';
+import config from 'config';
 
 /**
  * Checks if the user is loggedIn by reactive variable and if not,
  * then a redirect to "/auth" route.
  */
-const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, title, ...options }) => {
+const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, title, roles, ...options }) => {
   const { authStore } = useRootStore();
 
   return (
@@ -23,9 +24,11 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, titl
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Layout>
               <Helmet>
-                <title>{title} • App </title>
+                <title>
+                  {title} • {config.metaData.appName}{' '}
+                </title>
               </Helmet>
-              <Component {...props} title={title} />
+              <Component {...props} title={title} roles={roles} />
             </Layout>
           </ErrorBoundary>
         ) : (

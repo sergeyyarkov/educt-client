@@ -2,7 +2,6 @@ import React from 'react';
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
 import { FormControl, FormLabel, InputGroup, Input, InputLeftElement, Button, Icon, useToast } from '@chakra-ui/react';
 import { useRootStore } from 'hooks/useRootStore';
-import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useErrorHandler } from 'react-error-boundary';
@@ -15,14 +14,12 @@ type AuthInputs = {
 const AuthForm: React.FC = () => {
   const { register, reset, handleSubmit } = useForm<AuthInputs>();
   const { authStore } = useRootStore();
-  const history = useHistory();
   const handleError = useErrorHandler();
   const toast = useToast();
 
   const onSubmit: SubmitHandler<AuthInputs> = async data => {
     try {
       await authStore.login(data.login, data.password);
-      history.push('/');
       toast({
         title: `👋 Welcome back!`,
         description: 'You are successfully logged in.',

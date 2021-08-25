@@ -50,6 +50,7 @@ export default class AuthStore {
       const result = await this.authService.requestLogout();
 
       this.setIsLoggedIn(false);
+      this.root.userStore.reset();
       Cookies.remove('logged_in');
       return result;
     } catch (error) {

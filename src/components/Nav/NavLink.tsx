@@ -2,18 +2,19 @@ import React from 'react';
 import { Box, useColorMode } from '@chakra-ui/react';
 import type { LinkType } from 'interfaces';
 import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import { useRootStore } from 'hooks/useRootStore';
 
-type ActiveLinkState = {
-  title: string | null;
+export type NavLinkProps = {
+  link: LinkType;
+  onCloseDrawer?: () => void;
 };
 
 /**
- *
- * NavLink component
  * Returns the link component for navigation.
  */
-const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ link, onCloseDrawer }) => {
-  const [activeLink, setActiveLink] = React.useState<ActiveLinkState>({ title: null });
+const NavLink: React.FC<NavLinkProps> = ({ link, onCloseDrawer }) => {
+  const { uiStore } = useRootStore();
   const { colorMode } = useColorMode();
   const history = useHistory();
 
@@ -27,8 +28,6 @@ const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ lin
   return (
     <Box
       as='a'
-      onMouseEnter={() => setActiveLink({ title: link.title })}
-      onMouseLeave={() => setActiveLink({ title: null })}
       onClick={handleClick}
       display='flex'
       margin='3px 0'
@@ -39,12 +38,8 @@ const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ lin
       cursor='pointer'
     >
       <Box
-        color={history.location.pathname === link.location || activeLink.title === link.title ? 'blue.400' : ''}
-        backgroundColor={
-          activeLink.title === link.title || history.location.pathname === link.location
-            ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}`
-            : ''
-        }
+        color={uiStore.location === link.location ? 'blue.400' : ''}
+        backgroundColor={uiStore.location === link.location ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}` : ''}
         alignItems='center'
         borderRadius='9999px'
         display='flex'
@@ -59,4 +54,4 @@ const NavLink: React.FC<{ link: LinkType; onCloseDrawer?: () => void }> = ({ lin
   );
 };
 
-export default NavLink;
+export default observer(NavLink);

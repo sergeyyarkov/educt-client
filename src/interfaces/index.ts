@@ -6,6 +6,7 @@ import { UserRoleEnum } from '../enums';
 export type LinkType = {
   location: string;
   title: string;
+  public: boolean;
   icon: IconType;
 };
 
@@ -15,6 +16,14 @@ export interface IAppConfig {
     appDescription: string;
   };
   links: LinkType[];
+}
+
+export interface IUser {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  roles: IUserRole[];
 }
 
 export interface IUserRole {
@@ -49,11 +58,13 @@ export interface IUserResult extends IDataResult {
 
 export interface IPageProps extends RouteComponentProps {
   title?: string;
+  roles?: UserRoleEnum[];
 }
 
 export interface IPrivateRouteProps extends RouteProps {
   component: React.FC<IPageProps>;
   title?: string;
+  roles?: UserRoleEnum[];
 }
 
 export interface IPublicRouteProps extends RouteProps {

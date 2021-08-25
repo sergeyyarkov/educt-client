@@ -1,8 +1,7 @@
 import React from 'react';
-import NavLink from './NavLink';
-import config from 'config';
 import { Flex, Box } from '@chakra-ui/react';
 import useWindowDimensions from 'hooks/useWindowDimensions';
+import NavList from '../NavList';
 
 /**
  *
@@ -24,9 +23,7 @@ const Nav: React.FC = () => {
             height='calc(100vh - 4rem)'
             padding='5'
           >
-            {config.links.map((link, i) => (
-              <NavLink link={link} key={i} />
-            ))}
+            <NavList />
           </Flex>
         </Box>
       </Box>

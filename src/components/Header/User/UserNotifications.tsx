@@ -1,9 +1,18 @@
 import React from 'react';
 import { Box } from '@chakra-ui/layout';
+import { Skeleton } from '@chakra-ui/skeleton';
 import { Button } from '@chakra-ui/button';
 import { MdNotifications } from 'react-icons/md';
+import { useRootStore } from 'hooks/useRootStore';
+import { observer } from 'mobx-react';
 
 const UserNotifications: React.FC = () => {
+  const { userStore } = useRootStore();
+
+  if (userStore.me === null) {
+    return <Skeleton width='50px' height='40px' mr={3} ml={3} borderRadius='md' />;
+  }
+
   return (
     <Button
       mr={3}
@@ -30,4 +39,4 @@ const UserNotifications: React.FC = () => {
   );
 };
 
-export default UserNotifications;
+export default observer(UserNotifications);

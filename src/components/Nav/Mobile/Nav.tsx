@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import config from 'config';
 import { Link } from 'react-router-dom';
 import { useRootStore } from 'hooks/useRootStore';
 
@@ -9,7 +8,7 @@ import { Flex, Box, Text } from '@chakra-ui/layout';
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/modal';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDisclosure, IconButton, useColorMode, Skeleton } from '@chakra-ui/react';
-import NavLink from '../Desktop/NavLink';
+import NavList from '../NavList';
 
 const NavMobile: React.FC = () => {
   const { userStore } = useRootStore();
@@ -24,9 +23,7 @@ const NavMobile: React.FC = () => {
         <DrawerContent backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}>
           <DrawerBody>
             <Flex as='nav' flexDirection='column' alignItems='flex-start' textDecoration='none'>
-              {config.links.map((link, i) => (
-                <NavLink link={link} key={i} onCloseDrawer={onClose} />
-              ))}
+              <NavList onCloseDrawer={onClose} />
             </Flex>
             {userStore.me ? (
               <Box

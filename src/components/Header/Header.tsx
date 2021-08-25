@@ -5,6 +5,7 @@ import UserInfo from './User/UserInfo';
 import UserNotifications from './User/UserNotifications';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import NavMobile from '../Nav/Mobile/Nav';
+import { observer } from 'mobx-react';
 
 const Header: React.FC = () => {
   const { isDesktop } = useWindowDimensions();
@@ -45,4 +46,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default observer(Header);

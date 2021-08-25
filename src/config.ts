@@ -1,4 +1,4 @@
-import { MdAccountCircle, MdCollectionsBookmark, MdHome, MdMessage } from 'react-icons/md';
+import { MdAccountCircle, MdBuild, MdCollectionsBookmark, MdHome, MdMessage } from 'react-icons/md';
 import { IAppConfig } from './interfaces';
 
 const config: IAppConfig = {
@@ -7,10 +7,11 @@ const config: IAppConfig = {
     appDescription: 'Learn management system',
   },
   links: [
-    { location: '/', title: 'Home', icon: MdHome },
-    { location: '/courses', title: 'Courses', icon: MdCollectionsBookmark },
-    { location: '/messages', title: 'Messages', icon: MdMessage },
-    { location: '/profile', title: 'Profile', icon: MdAccountCircle },
+    { location: '/', title: 'Home', public: true, icon: MdHome },
+    { location: '/courses', title: 'Courses', public: true, icon: MdCollectionsBookmark },
+    { location: '/messages', title: 'Messages', public: true, icon: MdMessage },
+    { location: '/profile', title: 'Profile', public: true, icon: MdAccountCircle },
+    { location: '/control', title: 'Control', public: false, icon: MdBuild },
   ],
 };
 
