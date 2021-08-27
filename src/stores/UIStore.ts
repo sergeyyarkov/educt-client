@@ -1,7 +1,11 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { createBrowserHistory } from 'history';
-import RootStore from './RootStore';
 import { IWindowDimensions } from 'interfaces';
+
+/**
+ * Stores
+ */
+import RootStore from './RootStore';
 
 export default class UIStore {
   public root: RootStore;
@@ -20,22 +24,33 @@ export default class UIStore {
       windowDimensions: observable.struct,
     });
 
+    this.setupListeners();
+  }
+
+  /**
+   * Initialize some listeners
+   */
+  private setupListeners(): void {
+    /**
+     * Pathname changed
+     */
     this.history.listen(({ pathname }) => {
       console.log(`[history]: pathname changed to "${pathname}"`);
       this.location = pathname;
     });
 
-    window.onresize = () => {
-      this.windowDimensions = this.getWindowDimensions();
-    };
+    /**
+     * Window dimensions updated
+     */
+    window.onresize = () => this.updateWindowDimensions();
   }
 
   public setLocation(location: string): void {
     this.location = location;
   }
 
-  private getWindowDimensions(): IWindowDimensions {
-    return { width: window.innerWidth, height: window.innerHeight };
+  private updateWindowDimensions(): void {
+    this.windowDimensions = { width: window.innerWidth, height: window.innerHeight };
   }
 
   get isDesktop() {

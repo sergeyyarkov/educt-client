@@ -2,7 +2,14 @@ import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { IUserResult, IUser } from 'interfaces';
 
+/**
+ * Services
+ */
 import UserService from 'services/UserService';
+
+/**
+ * Stores
+ */
 import RootStore from './RootStore';
 
 export default class UserStore {
