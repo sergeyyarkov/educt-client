@@ -11,29 +11,28 @@ import {
   Box,
   Avatar,
   Text,
-  useToast,
   Skeleton,
 } from '@chakra-ui/react';
 import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UserBadge from 'components/User/UserBadge';
+import useLogoutQuery from 'hooks/useLogoutQuery';
 
 const UserInfo: React.FC = () => {
-  const { authStore, userStore } = useRootStore();
-  const history = useHistory();
-  const toast = useToast();
+  const { userStore } = useRootStore();
+  const { logout } = useLogoutQuery();
 
-  const onLogoutHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    try {
-      await authStore.logout();
-      history.push('/auth');
-      toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onLogoutHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   try {
+  //     await authStore.logout();
+  //     history.push('/auth');
+  //     toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   if (userStore.me === null) {
     return <Skeleton width='260px' height='40px' borderRadius='md' />;
@@ -60,7 +59,7 @@ const UserInfo: React.FC = () => {
                 My profile
               </MenuItem>
             </Link>
-            <MenuItem onClick={onLogoutHandler}>
+            <MenuItem onClick={logout}>
               <Box as={MdExitToApp} mr={2} />
               Logout
             </MenuItem>

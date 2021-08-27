@@ -2,14 +2,13 @@ import { Badge } from '@chakra-ui/react';
 import React from 'react';
 import { UserRoleEnum } from 'enums';
 import { IUserRole } from 'interfaces';
+import { userHasRoles } from 'helpers';
 
 /**
  * Returns the badge for user based on roles
  */
 const UserBadge: React.FC<{ roles: IUserRole[] }> = ({ roles }) => {
-  const slugs = roles.map(role => role.slug);
-
-  if (slugs.includes(UserRoleEnum.ADMIN)) {
+  if (userHasRoles(roles, [UserRoleEnum.ADMIN])) {
     return (
       <Badge colorScheme='purple' variant='subtle'>
         Administrator
@@ -17,7 +16,7 @@ const UserBadge: React.FC<{ roles: IUserRole[] }> = ({ roles }) => {
     );
   }
 
-  if (slugs.includes(UserRoleEnum.TEACHER)) {
+  if (userHasRoles(roles, [UserRoleEnum.TEACHER])) {
     return (
       <Badge colorScheme='orange' variant='subtle'>
         Teacher
@@ -25,7 +24,7 @@ const UserBadge: React.FC<{ roles: IUserRole[] }> = ({ roles }) => {
     );
   }
 
-  if (slugs.includes(UserRoleEnum.STUDENT)) {
+  if (userHasRoles(roles, [UserRoleEnum.STUDENT])) {
     return <Badge variant='green'>Student</Badge>;
   }
 

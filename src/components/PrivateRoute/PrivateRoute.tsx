@@ -4,7 +4,6 @@ import Layout from '../Layout/Layout';
 import { Route, Redirect } from 'react-router-dom';
 import { IPrivateRouteProps } from 'interfaces';
 import { useRootStore } from 'hooks/useRootStore';
-import { observer } from 'mobx-react';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '../ErrorFallback';
 import config from 'config';
@@ -39,4 +38,4 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, titl
   );
 };
 
-export default observer(PrivateRoute);
+export default PrivateRoute;

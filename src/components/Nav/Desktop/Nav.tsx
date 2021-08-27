@@ -1,7 +1,8 @@
 import React from 'react';
 import { Flex, Box } from '@chakra-ui/react';
-import useWindowDimensions from 'hooks/useWindowDimensions';
 import NavList from '../NavList';
+import { useRootStore } from 'hooks/useRootStore';
+import { observer } from 'mobx-react';
 
 /**
  *
@@ -9,7 +10,9 @@ import NavList from '../NavList';
  * Component for navigating the application.
  */
 const Nav: React.FC = () => {
-  const { isDesktop } = useWindowDimensions();
+  const {
+    uiStore: { isDesktop },
+  } = useRootStore();
 
   if (isDesktop) {
     return (
@@ -32,4 +35,4 @@ const Nav: React.FC = () => {
   return null;
 };
 
-export default Nav;
+export default observer(Nav);

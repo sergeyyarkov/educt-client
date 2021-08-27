@@ -71,3 +71,8 @@ export interface IPublicRouteProps extends RouteProps {
   component: React.FC<IPageProps>;
   title?: string;
 }
+
+export interface IWindowDimensions {
+  width: number;
+  height: number;
+}

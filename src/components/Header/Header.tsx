@@ -3,12 +3,14 @@ import { Flex, Box } from '@chakra-ui/react';
 import AppName from './AppName';
 import UserInfo from './User/UserInfo';
 import UserNotifications from './User/UserNotifications';
-import useWindowDimensions from 'hooks/useWindowDimensions';
 import NavMobile from '../Nav/Mobile/Nav';
 import { observer } from 'mobx-react';
+import { useRootStore } from 'hooks/useRootStore';
 
 const Header: React.FC = () => {
-  const { isDesktop } = useWindowDimensions();
+  const {
+    uiStore: { isDesktop },
+  } = useRootStore();
 
   return (
     <Box

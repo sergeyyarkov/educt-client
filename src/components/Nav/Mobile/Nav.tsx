@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { MdExitToApp } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useRootStore } from 'hooks/useRootStore';
 
@@ -47,6 +48,7 @@ const NavMobile: React.FC = () => {
                       View profile
                     </Link>
                   </Flex>
+                  <IconButton aria-label='Logout' backgroundColor='gray.200' marginLeft='auto' icon={<MdExitToApp />} />
                 </Flex>
               </Box>
             ) : (

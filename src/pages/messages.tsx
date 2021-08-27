@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Heading, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Grid } from '@chakra-ui/react';
 
 import { IPageProps } from 'interfaces';
-import { useRootStore } from 'hooks/useRootStore';
-import { useHistory } from 'react-router-dom';
 
 /**
  * Messages page
  */
 const MessagesPage: React.FC<IPageProps> = ({ title }) => {
-  const { authStore } = useRootStore();
-  const history = useHistory();
-
-  useEffect(() => {
-    if (!authStore.isLoggedIn) {
-      history.push('/auth');
-    }
-  });
-
   return (
     <>
       <Breadcrumb fontWeight='medium' fontSize='sm'>
