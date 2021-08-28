@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import Cookies from 'js-cookie';
 import { AxiosInstance } from 'axios';
+import Cookies from 'js-cookie';
 import { IDataResult, ILoginResult } from 'interfaces';
 
 /**
@@ -20,8 +20,6 @@ export default class AuthStore {
 
   public isLoggedIn: boolean = !!Cookies.get('logged_in');
 
-  public loading: boolean = false;
-
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
     this.authService = new AuthService(api);
@@ -32,13 +30,8 @@ export default class AuthStore {
     this.isLoggedIn = value;
   }
 
-  public setLoading(value: boolean) {
-    this.loading = value;
-  }
-
   public async login(login: string, password: string): Promise<ILoginResult> {
     try {
-      this.setLoading(true);
       const result = await this.authService.requestLogin(login, password);
 
       this.setIsLoggedIn(true);
@@ -47,14 +40,11 @@ export default class AuthStore {
       return result;
     } catch (error) {
       throw error;
-    } finally {
-      this.setLoading(false);
     }
   }
 
   public async logout(): Promise<IDataResult> {
     try {
-      this.setLoading(true);
       const result = await this.authService.requestLogout();
 
       this.setIsLoggedIn(false);
@@ -63,8 +53,6 @@ export default class AuthStore {
       return result;
     } catch (error) {
       throw error;
-    } finally {
-      this.setLoading(false);
     }
   }
 }

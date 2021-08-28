@@ -1,34 +1,27 @@
 import React from 'react';
 import { Box, useColorMode } from '@chakra-ui/react';
 import type { LinkType } from 'interfaces';
-import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
 
-export type NavLinkProps = {
+type NavLinkPropsType = {
   link: LinkType;
-  onCloseDrawer?: () => void;
+  onClickLink: (link: LinkType) => void;
 };
 
 /**
  * Returns the link component for navigation.
  */
-const NavLink: React.FC<NavLinkProps> = ({ link, onCloseDrawer }) => {
+const NavLink: React.FC<NavLinkPropsType> = ({ link, onClickLink }) => {
   const { uiStore } = useRootStore();
   const { colorMode } = useColorMode();
-  const history = useHistory();
 
-  const handleClick = () => {
-    history.push(link.location);
-
-    /* Close mobile drawer on click link */
-    onCloseDrawer && onCloseDrawer();
-  };
+  const onClick = () => onClickLink(link);
 
   return (
     <Box
       as='a'
-      onClick={handleClick}
+      onClick={onClick}
       display='flex'
       margin='3px 0'
       width='100%'
@@ -41,7 +34,7 @@ const NavLink: React.FC<NavLinkProps> = ({ link, onCloseDrawer }) => {
         color={uiStore.location === link.location ? 'blue.400' : ''}
         backgroundColor={uiStore.location === link.location ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}` : ''}
         alignItems='center'
-        borderRadius='9999px'
+        borderRadius='3xl'
         display='flex'
         padding='10px 15px'
         fontWeight='500'

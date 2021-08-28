@@ -1,10 +1,8 @@
 import React from 'react';
 import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
-import { FormControl, FormLabel, InputGroup, Input, InputLeftElement, Button, Icon, useToast } from '@chakra-ui/react';
-import { useRootStore } from 'hooks/useRootStore';
-import { observer } from 'mobx-react';
+import { FormControl, FormLabel, InputGroup, Input, InputLeftElement, Button, Icon } from '@chakra-ui/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useErrorHandler } from 'react-error-boundary';
+import useLoginQuery from 'hooks/useLoginQuery';
 
 type AuthInputs = {
   login: string;
@@ -13,35 +11,13 @@ type AuthInputs = {
 
 const AuthForm: React.FC = () => {
   const { register, reset, handleSubmit } = useForm<AuthInputs>();
-  const { authStore } = useRootStore();
-  const handleError = useErrorHandler();
-  const toast = useToast();
+  const { login, loading } = useLoginQuery();
 
   const onSubmit: SubmitHandler<AuthInputs> = async data => {
     try {
-      await authStore.login(data.login, data.password);
-      toast({
-        title: `👋 Welcome back!`,
-        description: 'You are successfully logged in.',
-        isClosable: true,
-        status: 'success',
-      });
+      await login(data.login, data.password);
     } catch (error) {
-      if (error.response) {
-        switch (error.response.status) {
-          case 404:
-            toast({ title: 'User not found in a system.', status: 'error', duration: 2000 });
-            break;
-          case 401:
-            toast({ title: 'Invalid password.', status: 'error', duration: 2000 });
-            break;
-          default:
-            handleError(error);
-            break;
-        }
-      } else {
-        handleError(error);
-      }
+      console.error(error);
     } finally {
       reset();
     }
@@ -65,7 +41,7 @@ const AuthForm: React.FC = () => {
       </FormControl>
       <Button
         loadingText='Logging in...'
-        isLoading={authStore.loading}
+        isLoading={loading}
         type='submit'
         colorScheme='blue'
         variant='outline'
@@ -78,4 +54,4 @@ const AuthForm: React.FC = () => {
   );
 };
 
-export default observer(AuthForm);
+export default AuthForm;

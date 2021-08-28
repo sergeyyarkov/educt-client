@@ -10,6 +10,7 @@ import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/mod
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDisclosure, IconButton, useColorMode, Skeleton } from '@chakra-ui/react';
 import NavList from '../NavList';
+import config from 'config';
 
 const NavMobile: React.FC = () => {
   const { userStore } = useRootStore();
@@ -24,7 +25,7 @@ const NavMobile: React.FC = () => {
         <DrawerContent backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}>
           <DrawerBody>
             <Flex as='nav' flexDirection='column' alignItems='flex-start' textDecoration='none'>
-              <NavList onCloseDrawer={onClose} />
+              <NavList links={config.links} onCloseDrawer={onClose} />
             </Flex>
             {userStore.me ? (
               <Box

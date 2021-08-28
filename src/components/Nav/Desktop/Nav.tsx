@@ -3,6 +3,7 @@ import { Flex, Box } from '@chakra-ui/react';
 import NavList from '../NavList';
 import { useRootStore } from 'hooks/useRootStore';
 import { observer } from 'mobx-react';
+import config from 'config';
 
 /**
  *
@@ -26,7 +27,7 @@ const Nav: React.FC = () => {
             height='calc(100vh - 4rem)'
             padding='5'
           >
-            <NavList />
+            <NavList links={config.links} />
           </Flex>
         </Box>
       </Box>

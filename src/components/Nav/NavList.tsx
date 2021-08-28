@@ -1,31 +1,37 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import config from 'config';
 import NavLink from './NavLink';
-import { useRootStore } from 'hooks/useRootStore';
-import { userHasRoles } from 'helpers';
-import { UserRoleEnum } from 'enums';
+// import { useRootStore } from 'hooks/useRootStore';
+// import { userHasRoles } from 'helpers';
+// import { UserRoleEnum } from 'enums';
+import { useHistory } from 'react-router-dom';
+import { LinkType } from 'interfaces';
+
+type NavListPropsType = {
+  links: LinkType[];
+  onCloseDrawer?: () => void;
+};
 
 /**
  * Render a navigation list of links
  */
-const NavList: React.FC<{ onCloseDrawer?: () => void }> = ({ onCloseDrawer }) => {
-  const { userStore } = useRootStore();
+const NavList: React.FC<NavListPropsType> = ({ links, onCloseDrawer }) => {
+  // const { userStore } = useRootStore();
+  const history = useHistory();
+  const onClickLink = useCallback(
+    (link: LinkType) => {
+      history.push(link.location);
+
+      /* Close mobile drawer on click link */
+      onCloseDrawer && onCloseDrawer();
+    },
+    [history, onCloseDrawer]
+  );
 
   return (
     <>
-      {config.links.map((link, i) => {
-        if (link.public) {
-          return <NavLink link={link} key={i} onCloseDrawer={onCloseDrawer} />;
-        } else {
-          /**
-           * Render not public link
-           */
-          if (userStore.me && userHasRoles(userStore.me.roles, [UserRoleEnum.ADMIN])) {
-            return <NavLink link={link} key={i} onCloseDrawer={onCloseDrawer} />;
-          }
-          return null;
-        }
+      {links.map(link => {
+        return <NavLink link={link} key={link.location} onClickLink={onClickLink} />;
       })}
     </>
   );

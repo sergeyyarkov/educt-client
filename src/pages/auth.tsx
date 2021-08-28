@@ -1,13 +1,13 @@
-import { observer } from 'mobx-react';
-import Helmet from 'react-helmet';
 import React from 'react';
-import { Flex, Box } from '@chakra-ui/react';
-import { MdSchool } from 'react-icons/md';
+import Helmet from 'react-helmet';
+import { Redirect } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import { IPageProps } from 'interfaces';
+import { Flex, Box } from '@chakra-ui/react';
+import { useRootStore } from 'hooks/useRootStore';
+import { MdSchool } from 'react-icons/md';
 
 import AuthForm from 'components/Auth/AuthForm';
-import { useRootStore } from 'hooks/useRootStore';
-import { Redirect } from 'react-router-dom';
 
 /**
  * Auth page
