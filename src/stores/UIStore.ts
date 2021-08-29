@@ -54,11 +54,11 @@ export default class UIStore {
   }
 
   get isDesktop() {
-    return this.windowDimensions.width > 768;
+    return this.windowDimensions.width > 991;
   }
 
   get isTablet() {
-    return this.windowDimensions.width < 768;
+    return this.windowDimensions.width < 991;
   }
 
   get isMobile() {

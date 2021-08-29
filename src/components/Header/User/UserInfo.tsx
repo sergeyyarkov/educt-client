@@ -24,16 +24,6 @@ const UserInfo: React.FC = () => {
   const { userStore } = useRootStore();
   const { logout } = useLogoutQuery();
 
-  // const onLogoutHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   try {
-  //     await authStore.logout();
-  //     history.push('/auth');
-  //     toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   if (userStore.me === null) {
     return <Skeleton width='260px' height='40px' borderRadius='md' />;
   }

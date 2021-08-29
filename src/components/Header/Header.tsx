@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, useColorMode } from '@chakra-ui/react';
 import AppName from './AppName';
 import UserInfo from './User/UserInfo';
 import UserNotifications from './User/UserNotifications';
@@ -11,6 +11,7 @@ const Header: React.FC = () => {
   const {
     uiStore: { isDesktop },
   } = useRootStore();
+  const { colorMode } = useColorMode();
 
   return (
     <Box
@@ -20,8 +21,7 @@ const Header: React.FC = () => {
       left={0}
       right={0}
       borderBottomWidth={1}
-      width='100%'
-      height='4rem'
+      backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}
       zIndex={4}
     >
       <Flex
@@ -29,8 +29,7 @@ const Header: React.FC = () => {
         width='100%'
         height='100%'
         alignItems='center'
-        paddingLeft='1.5rem'
-        paddingRight='1.5rem'
+        padding='5px 1.5rem 5px 1.5rem'
       >
         <AppName />
         <Flex>

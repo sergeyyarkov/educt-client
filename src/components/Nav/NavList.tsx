@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
 import NavLink from './NavLink';
-// import { useRootStore } from 'hooks/useRootStore';
-// import { userHasRoles } from 'helpers';
-// import { UserRoleEnum } from 'enums';
+import { useRootStore } from 'hooks/useRootStore';
+import { userHasRoles } from 'helpers';
+import { UserRoleEnum } from 'enums';
 import { useHistory } from 'react-router-dom';
 import { LinkType } from 'interfaces';
 
@@ -16,7 +16,7 @@ type NavListPropsType = {
  * Render a navigation list of links
  */
 const NavList: React.FC<NavListPropsType> = ({ links, onCloseDrawer }) => {
-  // const { userStore } = useRootStore();
+  const { userStore } = useRootStore();
   const history = useHistory();
   const onClickLink = useCallback(
     (link: LinkType) => {
@@ -31,7 +31,14 @@ const NavList: React.FC<NavListPropsType> = ({ links, onCloseDrawer }) => {
   return (
     <>
       {links.map(link => {
-        return <NavLink link={link} key={link.location} onClickLink={onClickLink} />;
+        if (link.public) {
+          return <NavLink link={link} key={link.location} onClickLink={onClickLink} />;
+        } else {
+          if (userStore.me && userHasRoles(userStore.me.roles, [UserRoleEnum.ADMIN])) {
+            return <NavLink link={link} key={link.location} onClickLink={onClickLink} />;
+          }
+        }
+        return null;
       })}
     </>
   );
