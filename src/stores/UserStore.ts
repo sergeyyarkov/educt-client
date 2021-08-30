@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUserResult, IUser } from 'interfaces';
+import { IUserResult, IUser, IUserContacts, IUpdatedContactsResult } from 'interfaces';
 
 /**
  * Services
@@ -33,6 +33,22 @@ export default class UserStore {
 
       runInAction(() => {
         this.me = result.data;
+      });
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async updateCurrentUserContacts(data: IUserContacts): Promise<IUpdatedContactsResult> {
+    try {
+      const result = await this.userService.updateContacts(data);
+
+      runInAction(() => {
+        if (this.me) {
+          this.me.contacts = result.data;
+        }
       });
 
       return result;

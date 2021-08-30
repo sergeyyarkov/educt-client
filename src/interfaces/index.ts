@@ -24,6 +24,14 @@ export interface IUser {
   last_name: string;
   email: string;
   roles: IUserRole[];
+  contacts: IUserContacts | null;
+}
+
+export interface IUserContacts {
+  phone_number: string | null;
+  twitter_id: string | null;
+  telegram_id: string | null;
+  vk_id: string | null;
 }
 
 export interface IUserRole {
@@ -46,14 +54,12 @@ export interface ILoginResult extends IDataResult {
   };
 }
 
+export interface IUpdatedContactsResult extends IDataResult {
+  data: IUserContacts;
+}
+
 export interface IUserResult extends IDataResult {
-  data: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    roles: IUserRole[];
-  };
+  data: IUser;
 }
 
 export interface IPageProps extends RouteComponentProps {

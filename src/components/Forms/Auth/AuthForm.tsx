@@ -15,7 +15,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useLoginQuery from 'hooks/useLoginQuery';
-import LoginValidatorSchema from 'validators/LoginValidatorSchema';
+import LoginSchema from 'validators/LoginSchema';
 
 type AuthInputType = {
   login: string;
@@ -29,7 +29,7 @@ const AuthForm: React.FC = () => {
     formState: { errors },
     handleSubmit,
   } = useForm<AuthInputType>({
-    resolver: yupResolver(LoginValidatorSchema),
+    resolver: yupResolver(LoginSchema),
   });
   const { login, loading } = useLoginQuery();
 

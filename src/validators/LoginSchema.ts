@@ -1,8 +1,8 @@
-import * as yup from 'yup';
+import yup from 'validators';
 
-const LoginValidatorSchema = yup.object().shape({
+const LoginSchema = yup.object().shape({
   login: yup.string().required('Login is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
 
-export default LoginValidatorSchema;
+export default LoginSchema;

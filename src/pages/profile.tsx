@@ -108,7 +108,7 @@ const ProfilePage: React.FC<IPageProps> = ({ title }) => {
               <UserAccountInfo user={userStore.me} />
             </TabPanel>
             <TabPanel padding='10px 0' mt='20px'>
-              <UpdateUserContactsForm />
+              <UpdateUserContactsForm contacts={userStore.me.contacts} />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -12,3 +12,13 @@ export function userHasRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boo
   }
   return true;
 }
+
+/**
+ * Clean object values
+ *
+ * @param obj Current object that have null values
+ * @returns Clean object that don't have null values
+ */
+export function removeEmptyValues(obj: object) {
+  return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== null));
+}
