@@ -53,6 +53,7 @@ const useLoginQuery = () => {
             break;
         }
       } else {
+        console.error(error);
         handleError(error);
       }
     } finally {
