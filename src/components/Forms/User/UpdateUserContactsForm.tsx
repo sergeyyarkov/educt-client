@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import UpdateUserContactsSchema from 'validators/UpdateUserContactsSchema';
 import useUpdateUserContactsQuery from 'hooks/useUpdateUserContactsQuery';
+import { observer } from 'mobx-react';
 
 type UpdateUserContactsInputType = {
   phone_number: string | null;
@@ -41,7 +42,14 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
   const { updateContacts, loading } = useUpdateUserContactsQuery();
 
   const onSubmit: SubmitHandler<UpdateUserContactsInputType> = data => {
-    updateContacts(data).finally(() => reset(data));
+    updateContacts(data).finally(() =>
+      reset({
+        phone_number: data.phone_number ?? '',
+        twitter_id: data.twitter_id ?? '',
+        telegram_id: data.telegram_id ?? '',
+        vk_id: data.vk_id ?? '',
+      })
+    );
   };
 
   return (
@@ -106,4 +114,4 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
   );
 };
 
-export default UpdateUserContactsForm;
+export default observer(UpdateUserContactsForm);
