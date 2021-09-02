@@ -1,11 +1,11 @@
 import React from 'react';
-import { Flex, Box } from '@chakra-ui/react';
-import Header from 'components/Header/Header';
-import NavDesktop from 'components/Nav/Desktop/Nav';
 import { observer } from 'mobx-react';
-import { useRootStore } from 'hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
-import { ColorModeSwitcher } from 'components/ColorModeSwitcher/ColorModeSwitcher';
+import { Flex, Box } from '@chakra-ui/react';
+import { useRootStore } from 'hooks/useRootStore';
+import Header from 'components/Header';
+import NavDesktop from 'components/Nav/Desktop';
+import ColorModeSwitcher from 'components/ColorModeSwitcher';
 
 /**
  *

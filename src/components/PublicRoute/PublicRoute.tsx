@@ -2,7 +2,7 @@ import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route } from 'react-router-dom';
 import { IPublicRouteProps } from 'interfaces';
-import ErrorFallback from '../ErrorFallback';
+import ErrorFallback from 'components/ErrorFallback';
 
 /**
  * Render public page

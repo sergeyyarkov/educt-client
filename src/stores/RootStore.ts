@@ -1,5 +1,5 @@
+import apiConfig from 'api.config';
 import { makeAutoObservable } from 'mobx';
-import { API_BASE_URL } from '../constants';
 
 /**
  * Services
@@ -26,11 +26,7 @@ export default class RootStore {
     /**
      * Api service
      */
-    this.apiService = new ApiService(this, {
-      baseURL: API_BASE_URL,
-      responseType: 'json',
-      withCredentials: true,
-    });
+    this.apiService = new ApiService(this, apiConfig);
 
     /**
      * Stores

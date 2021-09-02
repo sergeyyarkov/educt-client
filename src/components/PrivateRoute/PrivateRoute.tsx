@@ -1,12 +1,12 @@
+import config from 'config';
 import React from 'react';
 import Helmet from 'react-helmet';
-import Layout from '../Layout/Layout';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Redirect } from 'react-router-dom';
 import { IPrivateRouteProps } from 'interfaces';
 import { useRootStore } from 'hooks/useRootStore';
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallback from '../ErrorFallback';
-import config from 'config';
+import Layout from 'components/Layout';
+import ErrorFallback from 'components/ErrorFallback';
 
 /**
  * Checks if the user is loggedIn by reactive variable and if not,

@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import NavLink from './NavLink';
+import { useHistory } from 'react-router-dom';
 import { useRootStore } from 'hooks/useRootStore';
 import { userHasRoles } from 'helpers';
 import { UserRoleEnum } from 'enums';
-import { useHistory } from 'react-router-dom';
 import { LinkType } from 'interfaces';
+import NavLink from './NavLink';
 
 type NavListPropsType = {
   links: LinkType[];

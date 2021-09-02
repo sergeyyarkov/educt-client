@@ -1,11 +1,13 @@
 import React from 'react';
 import { Router, Switch } from 'react-router-dom';
+import { UserRoleEnum } from 'enums';
+import { useRootStore } from 'hooks/useRootStore';
 
 /**
  * Components
  */
-import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
-import PublicRoute from 'components/PublicRoute/PublicRoute';
+import PrivateRoute from 'components/PrivateRoute';
+import PublicRoute from 'components/PublicRoute';
 
 /**
  * Pages
@@ -17,13 +19,12 @@ import ProfilePage from 'pages/profile';
 import ControlPage from 'pages/control';
 import AuthPage from 'pages/auth';
 import NotFoundPage from 'pages/404';
-import { UserRoleEnum } from 'enums';
-import { useRootStore } from 'hooks/useRootStore';
 
 const App = () => {
   const {
     uiStore: { history },
   } = useRootStore();
+
   return (
     <Router history={history}>
       <Switch>

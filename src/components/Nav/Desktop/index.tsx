@@ -1,9 +1,9 @@
-import React from 'react';
-import { Flex, Box, useColorMode } from '@chakra-ui/react';
-import NavList from '../NavList';
-import { useRootStore } from 'hooks/useRootStore';
-import { observer } from 'mobx-react';
 import config from 'config';
+import React from 'react';
+import { observer } from 'mobx-react';
+import { Flex, Box, useColorMode } from '@chakra-ui/react';
+import { useRootStore } from 'hooks/useRootStore';
+import NavList from '../NavList';
 
 /**
  *

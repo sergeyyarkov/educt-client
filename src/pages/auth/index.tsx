@@ -6,7 +6,7 @@ import { IPageProps } from 'interfaces';
 import { Flex } from '@chakra-ui/react';
 import { useRootStore } from 'hooks/useRootStore';
 
-import AuthForm from 'components/Forms/Auth/AuthForm';
+import AuthForm from './components/AuthForm';
 
 /**
  * Auth page

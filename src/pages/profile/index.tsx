@@ -17,10 +17,11 @@ import { IPageProps } from 'interfaces';
 import { useRootStore } from 'hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import UserBadge from 'components/User/UserBadge';
-import LoadingProfilePage from 'components/Loading/LoadingProfilePage';
-import UserAccountInfo from 'components/User/UserAccountInfo';
-import UpdateUserContactsForm from 'components/Forms/User/UpdateUserContactsForm';
+import UserBadge from 'components/UserBadge';
+
+import LoadingPage from './components/LoadingPage';
+import UserAccountInfo from './components/UserAccountInfo';
+import UpdateUserContactsForm from './components/UpdateUserContactsForm';
 
 /**
  * Profile page
@@ -37,7 +38,7 @@ const ProfilePage: React.FC<IPageProps> = ({ title }) => {
   });
 
   if (userStore.me === null) {
-    return <LoadingProfilePage />;
+    return <LoadingPage />;
   }
 
   return (

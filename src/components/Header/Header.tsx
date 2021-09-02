@@ -1,11 +1,11 @@
 import React from 'react';
-import { Flex, Box, useColorMode } from '@chakra-ui/react';
-import AppName from './AppName';
-import UserInfo from './User/UserInfo';
-import UserNotifications from './User/UserNotifications';
-import NavMobile from '../Nav/Mobile/Nav';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
+import { Flex, Box, useColorMode } from '@chakra-ui/react';
+import AppName from './AppName';
+import UserInfo from './UserInfo';
+import UserNotifications from './UserNotifications';
+import NavMobile from 'components/Nav/Mobile';
 
 const Header: React.FC = () => {
   const {
