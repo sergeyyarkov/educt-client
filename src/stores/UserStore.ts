@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUserResult, IUser, IUserContacts, IUpdatedContactsResult } from 'interfaces';
+import { IUserResult, IUser, IUserContacts, IUpdatedContactsResult, IDataResult } from 'interfaces';
 
 /**
  * Services
@@ -51,6 +51,15 @@ export default class UserStore {
         }
       });
 
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async updateCurrentUserPassword(oldPassword: string, newPassword: string): Promise<IDataResult> {
+    try {
+      const result = await this.userService.updatePassword(oldPassword, newPassword);
       return result;
     } catch (error) {
       throw error;

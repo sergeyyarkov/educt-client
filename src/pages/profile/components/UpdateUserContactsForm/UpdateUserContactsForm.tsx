@@ -1,17 +1,14 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
 import { IUserContacts } from 'interfaces';
 import { Box, Heading, Stack } from '@chakra-ui/layout';
+import { Text, Input, Button } from '@chakra-ui/react';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
-import { Text } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/button';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import UpdateUserContactsSchema from 'validators/UpdateUserContactsSchema';
 import useUpdateUserContactsQuery from 'hooks/useUpdateUserContactsQuery';
-import { observer } from 'mobx-react';
+import UpdateUserContactsSchema from 'validators/UpdateUserContactsSchema';
 
 type UpdateUserContactsInputType = {
   phone_number: string | null;
@@ -67,6 +64,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
                 size='md'
                 variant='flushed'
                 placeholder='+1 (234) 555-1234'
+                isInvalid={errors.phone_number ? true : false}
                 {...register('phone_number')}
               />
               <Text as='small' color='red.500'>
@@ -75,21 +73,42 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
             </FormControl>
             <FormControl id='twitter_id'>
               <FormHelperText color='gray.500'>Twitter</FormHelperText>
-              <Input type='text' size='md' variant='flushed' placeholder='@tw_username' {...register('twitter_id')} />
+              <Input
+                type='text'
+                size='md'
+                variant='flushed'
+                placeholder='@tw_username'
+                isInvalid={errors.twitter_id ? true : false}
+                {...register('twitter_id')}
+              />
               <Text as='small' color='red.500'>
                 {errors.twitter_id?.message}
               </Text>
             </FormControl>
             <FormControl id='telegram'>
               <FormHelperText color='gray.500'>Telegram</FormHelperText>
-              <Input type='text' size='md' variant='flushed' placeholder='@tg_username' {...register('telegram_id')} />
+              <Input
+                type='text'
+                size='md'
+                variant='flushed'
+                placeholder='@tg_username'
+                isInvalid={errors.telegram_id ? true : false}
+                {...register('telegram_id')}
+              />
               <Text as='small' color='red.500'>
                 {errors.telegram_id?.message}
               </Text>
             </FormControl>
             <FormControl id='vk'>
               <FormHelperText color='gray.500'>VKontakte</FormHelperText>
-              <Input type='text' size='md' variant='flushed' placeholder='VKontakte id' {...register('vk_id')} />
+              <Input
+                type='text'
+                size='md'
+                variant='flushed'
+                placeholder='VKontakte id'
+                isInvalid={errors.vk_id ? true : false}
+                {...register('vk_id')}
+              />
               <Text as='small' color='red.500'>
                 {errors.vk_id?.message}
               </Text>

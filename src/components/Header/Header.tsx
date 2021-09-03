@@ -1,11 +1,13 @@
+import config from 'config';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
-import { Flex, Box, useColorMode } from '@chakra-ui/react';
-import AppName from './AppName';
+import { Flex, Box, Heading, Text, useColorMode } from '@chakra-ui/react';
 import UserInfo from './UserInfo';
 import UserNotifications from './UserNotifications';
 import NavMobile from 'components/Nav/Mobile';
+import ColorModeSwitcher from 'components/ColorModeSwitcher';
+import { MdSchool } from 'react-icons/md';
 
 const Header: React.FC = () => {
   const {
@@ -31,17 +33,26 @@ const Header: React.FC = () => {
         alignItems='center'
         padding='5px 1.5rem 5px 1.5rem'
       >
-        <AppName />
-        <Flex>
-          {isDesktop ? (
-            <>
-              <UserNotifications />
-              <UserInfo />
-            </>
-          ) : (
-            <NavMobile />
-          )}
+        <Flex alignItems='center'>
+          <Box mr='4'>
+            <Box as={MdSchool} color='blue.500' size='36px' />
+          </Box>
+          <Box>
+            <Heading as='p' fontSize='2xl' lineHeight='1'>
+              {config.metaData.appName}
+            </Heading>
+            <Text as='small'>{config.metaData.appDescription}</Text>
+          </Box>
         </Flex>
+        {isDesktop ? (
+          <Flex>
+            <ColorModeSwitcher />
+            <UserNotifications />
+            <UserInfo />
+          </Flex>
+        ) : (
+          <NavMobile />
+        )}
       </Flex>
     </Box>
   );

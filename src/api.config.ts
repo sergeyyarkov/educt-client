@@ -1,8 +1,8 @@
 import { AxiosRequestConfig } from 'axios';
-import { API_BASE_URL } from './constants';
+import * as constants from './constants';
 
 const apiConfig: AxiosRequestConfig = {
-  baseURL: API_BASE_URL,
+  baseURL: constants.API_BASE_URL,
   responseType: 'json',
   withCredentials: true,
 };

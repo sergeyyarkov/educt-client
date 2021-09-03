@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import Cookies from 'js-cookie';
 import RootStore from 'stores/RootStore';
 
 export default class ApiService {
@@ -26,9 +25,9 @@ export default class ApiService {
          * Unauthorized Error 401
          */
         if (error.response.status === 401) {
-          this.root.userStore.me = null;
-          this.root.authStore.setIsLoggedIn(false);
-          Cookies.remove('logged_in');
+          // this.root.userStore.me = null;
+          // this.root.authStore.setIsLoggedIn(false);
+          // Cookies.remove('logged_in');
         }
       }
       return Promise.reject(error);

@@ -18,9 +18,7 @@ const MainPage: React.FC<IPageProps> = ({ title }) => {
       <Box mt='10'>
         <Box>
           <Heading as='h1'>Main page</Heading>
-          <Grid templateColumns='3fr 1fr' mt='25px'>
-            ...
-          </Grid>
+          <Grid templateColumns='3fr 1fr' mt='25px'></Grid>
         </Box>
       </Box>
     </>

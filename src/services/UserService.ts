@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { IUpdatedContactsResult, IUserContacts, IUserResult } from 'interfaces';
+import { IDataResult, IUpdatedContactsResult, IUserContacts, IUserResult } from 'interfaces';
 import * as helpers from 'helpers';
 
 export default class UserService {
@@ -27,6 +27,21 @@ export default class UserService {
    */
   public async updateContacts(data: IUserContacts): Promise<IUpdatedContactsResult> {
     const result = await this.api.put('v1/me/contacts', helpers.removeEmptyValues(data));
+    return result.data;
+  }
+
+  /**
+   * Update password of authorized user
+   *
+   * @param oldPassword string
+   * @param newPassword string
+   * @returns Result data
+   */
+  public async updatePassword(oldPassword: string, newPassword: string): Promise<IDataResult> {
+    const result = await this.api.patch('v1/me/password', {
+      oldPassword,
+      newPassword,
+    });
     return result.data;
   }
 }

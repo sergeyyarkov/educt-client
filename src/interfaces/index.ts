@@ -1,14 +1,7 @@
-import { IconType } from 'react-icons/lib';
 import type { RouteProps } from 'react-router-dom';
 import type { RouteComponentProps } from 'react-router-dom';
+import { LinkType } from 'types';
 import { UserRoleEnum } from '../enums';
-
-export type LinkType = {
-  location: string;
-  title: string;
-  public: boolean;
-  icon: IconType;
-};
 
 export interface IAppConfig {
   metaData: {

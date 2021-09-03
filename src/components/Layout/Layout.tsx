@@ -5,7 +5,6 @@ import { Flex, Box } from '@chakra-ui/react';
 import { useRootStore } from 'hooks/useRootStore';
 import Header from 'components/Header';
 import NavDesktop from 'components/Nav/Desktop';
-import ColorModeSwitcher from 'components/ColorModeSwitcher';
 
 /**
  *
@@ -27,7 +26,7 @@ const Layout: React.FC = ({ children }) => {
         <NavDesktop />
         <Box
           as='main'
-          flex='1 0 auto'
+          flex='1 0'
           maxW='85rem'
           ml='25rem'
           mt='7rem'
@@ -45,7 +44,6 @@ const Layout: React.FC = ({ children }) => {
         >
           {children}
         </Box>
-        <ColorModeSwitcher position='absolute' right={0} bottom={0} margin={5} />
       </Flex>
     </>
   );
