@@ -9,6 +9,7 @@ type UserAccountInfoPropsType = {
 
 const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
   const { setStatusPageView } = useContext(ProfilePageViewContext);
+
   return (
     <Box borderRadius='md' borderWidth='1px' padding='20px'>
       <Heading as='h3' size='lg'>
@@ -44,7 +45,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
               {user.email}
             </Text>
           </Box>
-          <Button>Edit</Button>
+          <Button onClick={() => setStatusPageView('update-email')}>Edit</Button>
         </Flex>
         <Flex justifyContent='space-between' alignItems='center'>
           <Box>

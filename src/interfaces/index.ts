@@ -53,7 +53,7 @@ export interface IUpdatedContactsResult extends IDataResult {
 }
 
 export interface IUserResult extends IDataResult {
-  data: IUser;
+  data: Omit<IUser, 'fullname'>;
 }
 
 export interface IPageProps extends RouteComponentProps {

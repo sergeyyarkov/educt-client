@@ -23,6 +23,7 @@ import LoadingPage from './components/LoadingPage';
 import UserAccountInfo from './components/UserAccountInfo';
 import UpdateUserContactsForm from './components/UpdateUserContactsForm';
 import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
+import UpdateEmailContainer from './containers/UpdateEmailContainer';
 
 /**
  * Profile page
@@ -120,6 +121,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
         </Box>
       )}
       {statusPageView === 'update-password' && <UpdatePasswordContainer />}
+      {statusPageView === 'update-email' && <UpdateEmailContainer />}
     </ProfilePageViewContext.Provider>
   );
 };
