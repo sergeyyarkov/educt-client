@@ -8,7 +8,7 @@ import { Text, Input, Button } from '@chakra-ui/react';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useUpdateUserContactsQuery from 'hooks/useUpdateUserContactsQuery';
-import UpdateUserContactsSchema from 'validators/UpdateUserContactsSchema';
+import UpdateUserContactsSchema from './UpdateUserContactsForm.validator';
 
 type UpdateUserContactsInputType = {
   phone_number: string | null;

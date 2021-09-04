@@ -15,7 +15,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useLoginQuery from 'hooks/useLoginQuery';
-import LoginSchema from 'validators/LoginSchema';
+import LoginSchema from './AuthForm.validator';
 
 type AuthInputType = {
   login: string;

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useRootStore } from 'hooks/useRootStore';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
 import { Button } from '@chakra-ui/button';
@@ -6,7 +7,6 @@ import { Input } from '@chakra-ui/input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import UpdatePasswordSchema from './UpdatePasswordForm.validator';
-import { useRootStore } from 'hooks/useRootStore';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
 import { ProfilePageViewContext } from 'contexts';
@@ -27,6 +27,7 @@ const UpdatePasswordForm: React.FC = () => {
     handleSubmit,
     register,
     reset,
+    setFocus,
     formState: { errors },
   } = useForm<UpdatePasswordInputType>({
     resolver: yupResolver(UpdatePasswordSchema),
@@ -35,9 +36,9 @@ const UpdatePasswordForm: React.FC = () => {
   const toast = useToast();
   const handleError = useErrorHandler();
 
-  const onSubmit: SubmitHandler<UpdatePasswordInputType> = async data => {
+  const onSubmit: SubmitHandler<UpdatePasswordInputType> = async ({ old_password, new_password, confirm_password }) => {
     try {
-      await userStore.updateCurrentUserPassword(data.old_password, data.new_password);
+      await userStore.updateCurrentUserPassword(old_password, new_password);
       toast({ title: 'Password changed.', status: 'success' });
       reset();
       setStatusPageView(undefined);
@@ -45,6 +46,10 @@ const UpdatePasswordForm: React.FC = () => {
       if (error.response) {
         if (error.response.status === 401) {
           toast({ title: 'Invalid current password.', status: 'error', duration: 2000 });
+          reset({ old_password: '', new_password, confirm_password });
+          setFocus('old_password');
+        } else {
+          handleError(error);
         }
       } else {
         handleError(error);
@@ -79,7 +84,7 @@ const UpdatePasswordForm: React.FC = () => {
               {...register('new_password')}
             />
             <FormHelperText color={errors.new_password ? 'red' : 'gray.500'}>
-              Must be at least 6 characters.
+              {errors.new_password ? errors.new_password.message : 'Must be at least 6 characters.'}
             </FormHelperText>
           </FormControl>
           <FormControl id='confirm_password' isRequired>
@@ -93,7 +98,7 @@ const UpdatePasswordForm: React.FC = () => {
               {...register('confirm_password')}
             />
             <FormHelperText color={errors.confirm_password ? 'red' : 'gray.500'}>
-              Both passwords must match.
+              {errors.confirm_password ? errors.confirm_password.message : 'Both passwords must match.'}
             </FormHelperText>
           </FormControl>
         </Stack>

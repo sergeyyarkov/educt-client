@@ -1,4 +1,4 @@
-import yup from 'validators';
+import yup from 'schema';
 
 const UpdateUserContactsSchema = yup.object().shape({
   phone_number: yup
