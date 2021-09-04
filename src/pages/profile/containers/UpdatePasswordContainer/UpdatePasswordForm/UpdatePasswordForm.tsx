@@ -41,7 +41,7 @@ const UpdatePasswordForm: React.FC = () => {
       await userStore.updateCurrentUserPassword(old_password, new_password);
       toast({ title: 'Password changed.', status: 'success' });
       reset();
-      setStatusPageView(undefined);
+      setStatusPageView('default');
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 401) {

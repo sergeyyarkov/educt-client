@@ -33,15 +33,15 @@ const UserInfo: React.FC = () => {
       <Menu>
         <MenuButton as={Button} pr={6}>
           <Flex alignItems='center'>
-            <Avatar size='sm' name={`${userStore.me.first_name} ${userStore.me.last_name}`} marginRight={3} />
+            <Avatar size='sm' name={userStore.me.fullname} marginRight={3} />
             <Text as='span' mr={2}>
-              {`${userStore.me.first_name} ${userStore.me.last_name}`}
+              {userStore.me.fullname}
             </Text>
             <UserBadge roles={userStore.me.roles} />
           </Flex>
         </MenuButton>
         <MenuList mr='1rem'>
-          <MenuGroup title={`${userStore.me.first_name} ${userStore.me.last_name}`}>
+          <MenuGroup title={userStore.me.fullname}>
             <MenuDivider />
             <Link to='/profile'>
               <MenuItem>

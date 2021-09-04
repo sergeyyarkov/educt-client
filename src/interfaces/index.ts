@@ -13,6 +13,7 @@ export interface IAppConfig {
 
 export interface IUser {
   id: string;
+  fullname: string;
   first_name: string;
   last_name: string;
   email: string;

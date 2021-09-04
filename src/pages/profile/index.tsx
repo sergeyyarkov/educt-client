@@ -28,7 +28,7 @@ import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
  * Profile page
  */
 const ProfilePage: React.FC<IPageProps> = () => {
-  const [statusPageView, setStatusPageView] = useState<ProfilePageStatusType>(undefined);
+  const [statusPageView, setStatusPageView] = useState<ProfilePageStatusType>('default');
   const { colorMode } = useColorMode();
   const { userStore, authStore } = useRootStore();
   const history = useHistory();
@@ -45,7 +45,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
 
   return (
     <ProfilePageViewContext.Provider value={{ statusPageView, setStatusPageView }}>
-      {statusPageView === undefined && (
+      {statusPageView === 'default' && (
         <Box maxW='900px'>
           <Heading as='h1'>My account</Heading>
           <Flex
@@ -64,7 +64,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
               <Avatar
                 border={`4px solid ${colorMode === 'dark' ? '#2D3748' : '#E2E8F0'}`}
                 size='2xl'
-                name={`${userStore.me.first_name} ${userStore.me.last_name}`}
+                name={userStore.me.fullname}
               />
             </Box>
             <Flex
@@ -77,7 +77,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
                 },
               }}
             >
-              <Heading as='h2'>{`${userStore.me.first_name} ${userStore.me.last_name}`}</Heading>
+              <Heading as='h2'>{userStore.me.fullname}</Heading>
               <Flex
                 alignItems='center'
                 sx={{

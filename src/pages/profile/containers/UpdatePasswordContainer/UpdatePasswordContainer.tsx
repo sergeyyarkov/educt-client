@@ -14,7 +14,7 @@ const UpdatePasswordContainer: React.FC = () => {
           aria-label='Back'
           borderRadius='full'
           icon={<ChevronLeftIcon />}
-          onClick={() => setStatusPageView(undefined)}
+          onClick={() => setStatusPageView('default')}
           mr='5'
         />
         <Heading as='h1'>Update password</Heading>

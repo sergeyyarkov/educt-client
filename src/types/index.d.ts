@@ -7,7 +7,7 @@ export type LinkType = {
   icon: IconType;
 };
 
-export type ProfilePageStatusType = 'update-password' | 'update-email' | undefined;
+export type ProfilePageStatusType = 'update-password' | 'update-email' | 'default';
 export type ProfilePageViewStatusContextType = {
   statusPageView: ProfilePageStatusType;
   setStatusPageView: React.Dispatch<React.SetStateAction<ProfilePageStatusType>>;
