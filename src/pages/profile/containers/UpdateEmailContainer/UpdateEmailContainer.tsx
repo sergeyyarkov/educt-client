@@ -15,7 +15,7 @@ const UpdateEmailContainer: React.FC = () => {
           aria-label='Back'
           borderRadius='full'
           icon={<ChevronLeftIcon />}
-          onClick={() => setStatusPageView('default')}
+          onClick={() => setStatusPageView({ status: 'default' })}
           mr='5'
         />
         <Heading as='h1'>Edit email address</Heading>

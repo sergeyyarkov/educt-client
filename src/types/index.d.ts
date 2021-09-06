@@ -7,8 +7,18 @@ export type LinkType = {
   icon: IconType;
 };
 
-export type ProfilePageStatusType = 'update-password' | 'update-email' | 'default';
+export type ProfilePageStatusType = {
+  status: 'update-password' | 'update-email' | 'confirm-email' | 'default';
+  data?: {
+    /**
+     * The field that is set when trying to change the mail address through form
+     */
+    confirmEmailData?: {
+      newEmail: string;
+    };
+  };
+};
 export type ProfilePageViewStatusContextType = {
-  statusPageView: ProfilePageStatusType;
+  statusPageView: ProfilePageStatusType['status'];
   setStatusPageView: React.Dispatch<React.SetStateAction<ProfilePageStatusType>>;
 };

@@ -3,8 +3,9 @@ import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ProfilePageViewContext } from 'contexts';
 import { useRootStore } from 'hooks/useRootStore';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UpdateEmailSchema from './UpdateEmailForm.validator';
 
@@ -16,6 +17,7 @@ type UpdateEmailInputType = {
  * Update email using form
  */
 const UpdateEmailForm: React.FC = () => {
+  const { setStatusPageView } = useContext(ProfilePageViewContext);
   const {
     userStore: { me },
   } = useRootStore();
@@ -29,6 +31,7 @@ const UpdateEmailForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<UpdateEmailInputType> = async data => {
     console.log(data);
+    setStatusPageView({ status: 'confirm-email', data: { confirmEmailData: { newEmail: data.email } } });
   };
 
   return (

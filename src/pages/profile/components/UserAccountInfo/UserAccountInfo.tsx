@@ -45,7 +45,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
               {user.email}
             </Text>
           </Box>
-          <Button onClick={() => setStatusPageView('update-email')}>Edit</Button>
+          <Button onClick={() => setStatusPageView({ status: 'update-email' })}>Edit</Button>
         </Flex>
         <Flex justifyContent='space-between' alignItems='center'>
           <Box>
@@ -56,7 +56,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
               **********
             </Text>
           </Box>
-          <Button onClick={() => setStatusPageView('update-password')}>Change</Button>
+          <Button onClick={() => setStatusPageView({ status: 'update-password' })}>Change</Button>
         </Flex>
       </Stack>
     </Box>

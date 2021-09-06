@@ -24,12 +24,13 @@ import UserAccountInfo from './components/UserAccountInfo';
 import UpdateUserContactsForm from './components/UpdateUserContactsForm';
 import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
 import UpdateEmailContainer from './containers/UpdateEmailContainer';
+import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
 
 /**
  * Profile page
  */
 const ProfilePage: React.FC<IPageProps> = () => {
-  const [statusPageView, setStatusPageView] = useState<ProfilePageStatusType>('default');
+  const [statusPageView, setStatusPageView] = useState<ProfilePageStatusType>({ status: 'default' });
   const { colorMode } = useColorMode();
   const { userStore, authStore } = useRootStore();
   const history = useHistory();
@@ -45,8 +46,8 @@ const ProfilePage: React.FC<IPageProps> = () => {
   }
 
   return (
-    <ProfilePageViewContext.Provider value={{ statusPageView, setStatusPageView }}>
-      {statusPageView === 'default' && (
+    <ProfilePageViewContext.Provider value={{ statusPageView: statusPageView.status, setStatusPageView }}>
+      {statusPageView.status === 'default' && (
         <Box maxW='900px'>
           <Heading as='h1'>My account</Heading>
           <Flex
@@ -120,8 +121,11 @@ const ProfilePage: React.FC<IPageProps> = () => {
           </Box>
         </Box>
       )}
-      {statusPageView === 'update-password' && <UpdatePasswordContainer />}
-      {statusPageView === 'update-email' && <UpdateEmailContainer />}
+      {statusPageView.status === 'update-password' && <UpdatePasswordContainer />}
+      {statusPageView.status === 'update-email' && <UpdateEmailContainer />}
+      {statusPageView.status === 'confirm-email' && statusPageView.data?.confirmEmailData && (
+        <ConfirmEmailContainer newEmail={statusPageView.data.confirmEmailData.newEmail} />
+      )}
     </ProfilePageViewContext.Provider>
   );
 };
