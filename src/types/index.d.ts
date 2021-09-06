@@ -7,15 +7,18 @@ export type LinkType = {
   icon: IconType;
 };
 
+export type ConfirmEmailContainerDataType = {
+  newEmail: string;
+  expired_seconds: number;
+};
+
 export type ProfilePageStatusType = {
   status: 'update-password' | 'update-email' | 'confirm-email' | 'default';
   data?: {
     /**
      * The field that is set when trying to change the mail address through form
      */
-    confirmEmailData?: {
-      newEmail: string;
-    };
+    confirmEmailData?: ConfirmEmailContainerDataType;
   };
 };
 export type ProfilePageViewStatusContextType = {

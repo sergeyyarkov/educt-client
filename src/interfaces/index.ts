@@ -52,6 +52,12 @@ export interface IUpdatedContactsResult extends IDataResult {
   data: IUserContacts;
 }
 
+export interface IUpdatedEmailResult extends IDataResult {
+  data: {
+    expired_seconds: number;
+  };
+}
+
 export interface IUserResult extends IDataResult {
   data: Omit<IUser, 'fullname'>;
 }

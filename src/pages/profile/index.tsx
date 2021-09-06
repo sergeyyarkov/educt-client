@@ -124,7 +124,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
       {statusPageView.status === 'update-password' && <UpdatePasswordContainer />}
       {statusPageView.status === 'update-email' && <UpdateEmailContainer />}
       {statusPageView.status === 'confirm-email' && statusPageView.data?.confirmEmailData && (
-        <ConfirmEmailContainer newEmail={statusPageView.data.confirmEmailData.newEmail} />
+        <ConfirmEmailContainer data={statusPageView.data.confirmEmailData} />
       )}
     </ProfilePageViewContext.Provider>
   );

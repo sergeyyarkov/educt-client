@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { IDataResult, IUpdatedContactsResult, IUserContacts, IUserResult } from 'interfaces';
+import { IDataResult, IUpdatedContactsResult, IUpdatedEmailResult, IUserContacts, IUserResult } from 'interfaces';
 import * as helpers from 'helpers';
 
 export default class UserService {
@@ -41,6 +41,19 @@ export default class UserService {
     const result = await this.api.patch('v1/me/password', {
       oldPassword,
       newPassword,
+    });
+    return result.data;
+  }
+
+  public async updateEmail(email: string): Promise<IUpdatedEmailResult> {
+    const result = await this.api.patch('v1/me/email', { email });
+    return result.data;
+  }
+
+  public async updateEmailConfirm(email: string, confirmationCode: number): Promise<IDataResult> {
+    const result = await this.api.post('v1/me/email/change/confirm', {
+      email,
+      confirmationCode,
     });
     return result.data;
   }
