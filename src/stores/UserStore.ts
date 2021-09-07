@@ -6,7 +6,8 @@ import {
   IUserContacts,
   IUpdatedContactsResult,
   IDataResult,
-  IUpdatedEmailResult,
+  ISentCodeResult,
+  IUpdatedUserEmail,
 } from 'interfaces';
 
 /**
@@ -84,9 +85,24 @@ export default class UserStore {
     }
   }
 
-  public async updateUserEmail(email: string): Promise<IUpdatedEmailResult> {
+  /**
+   * Send confirmation code on update user email
+   *
+   * @param email New email
+   * @returns Expires at code in seconds
+   */
+  public async updateCurrentUserEmail(email: string): Promise<ISentCodeResult> {
     try {
       const result = await this.userService.updateEmail(email);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async updateCurrentUserEmailConfirm(email: string, confirmationCode: string): Promise<IUpdatedUserEmail> {
+    try {
+      const result = await this.userService.updateEmailConfirm(email, confirmationCode);
       return result;
     } catch (error) {
       throw error;

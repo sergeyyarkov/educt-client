@@ -2,12 +2,11 @@ import { Button } from '@chakra-ui/button';
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
-import { useToast } from '@chakra-ui/toast';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ProfilePageViewContext } from 'contexts';
 import { useRootStore } from 'hooks/useRootStore';
-import React, { useContext } from 'react';
-import { useErrorHandler } from 'react-error-boundary';
+import useUpdateUserEmailQuery from 'hooks/useUpdateUserEmailQuery.ts';
+import React, { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UpdateEmailSchema from './UpdateEmailForm.validator';
 
@@ -19,8 +18,10 @@ type UpdateEmailInputType = {
  * Update email using form
  */
 const UpdateEmailForm: React.FC = () => {
+  const [email, setEmail] = useState<string | null>(null);
   const { setStatusPageView } = useContext(ProfilePageViewContext);
   const { userStore } = useRootStore();
+  const { sendConfirmationCode, loading, result } = useUpdateUserEmailQuery();
   const {
     handleSubmit,
     register,
@@ -28,25 +29,19 @@ const UpdateEmailForm: React.FC = () => {
   } = useForm<UpdateEmailInputType>({
     resolver: yupResolver(UpdateEmailSchema),
   });
-  const toast = useToast();
-  const handleError = useErrorHandler();
 
-  const onSubmit: SubmitHandler<UpdateEmailInputType> = async ({ email }) => {
-    userStore
-      .updateUserEmail(email)
-      .then(({ data }) => {
-        setStatusPageView({
-          status: 'confirm-email',
-          data: { confirmEmailData: { newEmail: email, expired_seconds: data.expired_seconds } },
-        });
-      })
-      .catch(error => {
-        if (error.response) {
-          toast({ title: `${error.message}`, status: 'error' });
-        } else {
-          handleError(error);
-        }
+  useEffect(() => {
+    if (email !== null && result !== null) {
+      setStatusPageView({
+        status: 'confirm-email',
+        data: { confirmEmailData: { newEmail: email, expired_seconds: result.data.expired_seconds } },
       });
+    }
+  });
+
+  const onSubmit: SubmitHandler<UpdateEmailInputType> = ({ email }) => {
+    setEmail(email);
+    sendConfirmationCode(email);
   };
 
   return (
@@ -65,7 +60,15 @@ const UpdateEmailForm: React.FC = () => {
             </FormHelperText>
           </FormControl>
         </Stack>
-        <Button colorScheme='blue' mt='4' type='submit' size='md' variant='outline' loadingText='Saving...'>
+        <Button
+          colorScheme='blue'
+          mt='4'
+          type='submit'
+          size='md'
+          variant='outline'
+          isLoading={loading}
+          loadingText='Sending...'
+        >
           Send code
         </Button>
       </form>

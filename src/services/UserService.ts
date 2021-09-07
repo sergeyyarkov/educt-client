@@ -1,5 +1,12 @@
 import { AxiosInstance } from 'axios';
-import { IDataResult, IUpdatedContactsResult, IUpdatedEmailResult, IUserContacts, IUserResult } from 'interfaces';
+import {
+  IDataResult,
+  ISentCodeResult,
+  IUpdatedContactsResult,
+  IUpdatedUserEmail,
+  IUserContacts,
+  IUserResult,
+} from 'interfaces';
 import * as helpers from 'helpers';
 
 export default class UserService {
@@ -45,12 +52,12 @@ export default class UserService {
     return result.data;
   }
 
-  public async updateEmail(email: string): Promise<IUpdatedEmailResult> {
+  public async updateEmail(email: string): Promise<ISentCodeResult> {
     const result = await this.api.patch('v1/me/email', { email });
     return result.data;
   }
 
-  public async updateEmailConfirm(email: string, confirmationCode: number): Promise<IDataResult> {
+  public async updateEmailConfirm(email: string, confirmationCode: string): Promise<IUpdatedUserEmail> {
     const result = await this.api.post('v1/me/email/change/confirm', {
       email,
       confirmationCode,

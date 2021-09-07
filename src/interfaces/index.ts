@@ -52,7 +52,13 @@ export interface IUpdatedContactsResult extends IDataResult {
   data: IUserContacts;
 }
 
-export interface IUpdatedEmailResult extends IDataResult {
+export interface IUpdatedUserEmail extends IDataResult {
+  data: {
+    email: IUser['email'];
+  };
+}
+
+export interface ISentCodeResult extends IDataResult {
   data: {
     expired_seconds: number;
   };

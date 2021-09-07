@@ -1,52 +1,49 @@
-import { useToast } from '@chakra-ui/react';
-import { ILoginResult } from 'interfaces';
+import { useToast } from '@chakra-ui/toast';
+import { ISentCodeResult } from 'interfaces';
 import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';
 import { useRootStore } from './useRootStore';
 
-type LoginStateType = {
-  result: ILoginResult | null;
+type UpdateUserEmailStateType = {
+  result: ISentCodeResult | null;
   error: any;
   loading: boolean;
   fetched: boolean;
 };
 
-const useLoginQuery = () => {
+const useUpdateUserEmailQuery = () => {
   const isMountedRef = useIsMountedRef();
-  const { authStore } = useRootStore();
-  const [state, setState] = useState<LoginStateType>({ result: null, error: null, loading: false, fetched: false });
+  const { userStore } = useRootStore();
+  const [state, setState] = useState<UpdateUserEmailStateType>({
+    result: null,
+    error: null,
+    loading: false,
+    fetched: false,
+  });
   const toast = useToast();
   const handleError = useErrorHandler();
 
-  const login = async (login: string, password: string) => {
+  const sendConfirmationCode = async (email: string) => {
     try {
       setState(s => ({ ...s, loading: true }));
-      const result = await authStore.login(login, password);
-      toast({
-        title: `👋 Welcome back!`,
-        description: 'You are successfully logged in.',
-        isClosable: true,
-        status: 'success',
-      });
+      const result = await userStore.updateCurrentUserEmail(email);
+      toast({ title: 'Confirmation code has been sent.', status: 'info' });
 
       if (isMountedRef.current) {
         setState(s => ({ ...s, result }));
       }
+
+      return result;
     } catch (error: any) {
       if (isMountedRef.current) {
         setState(s => ({ ...s, error }));
       }
+
       if (error.response) {
-        /**
-         * Handle response error
-         */
         switch (error.response.status) {
-          case 404:
-            toast({ title: 'User not found in a system.', status: 'error', duration: 2000 });
-            break;
-          case 401:
-            toast({ title: 'Invalid password.', status: 'error', duration: 2000 });
+          case 503:
+            toast({ title: 'Service unavailable. Please, try later again.', status: 'error' });
             break;
           default:
             handleError(error);
@@ -63,7 +60,7 @@ const useLoginQuery = () => {
     }
   };
 
-  return { ...state, login };
+  return { ...state, sendConfirmationCode };
 };
 
-export default useLoginQuery;
+export default useUpdateUserEmailQuery;
