@@ -11,6 +11,31 @@ export interface IAppConfig {
   links: LinkType[];
 }
 
+export interface ICourse {
+  id: string;
+  title: string;
+  description: string;
+  teacher: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
+  category: ICategory;
+  lessons: ILesson[];
+  students: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ILesson {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string;
+}
+
+export interface ICategory {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export interface IUser {
   id: string;
   fullname: string;
@@ -19,6 +44,7 @@ export interface IUser {
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
+  courses: Pick<ICourse, 'id' | 'title' | 'description' | 'created_at' | 'updated_at'>[];
 }
 
 export interface IUserContacts {

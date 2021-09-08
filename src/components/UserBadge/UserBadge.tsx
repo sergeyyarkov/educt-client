@@ -25,7 +25,11 @@ const UserBadge: React.FC<{ roles: IUserRole[] }> = ({ roles }) => {
   }
 
   if (userHasRoles(roles, [UserRoleEnum.STUDENT])) {
-    return <Badge variant='green'>Student</Badge>;
+    return (
+      <Badge colorScheme='orange' variant='subtle'>
+        Student
+      </Badge>
+    );
   }
 
   return null;

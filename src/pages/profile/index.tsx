@@ -11,6 +11,8 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Stack,
+  StackDivider,
 } from '@chakra-ui/react';
 import { IPageProps } from 'interfaces';
 import { ProfilePageStatusType } from 'types';
@@ -18,6 +20,7 @@ import { useRootStore } from 'hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { ProfilePageViewContext } from 'contexts';
+import { userHasRoles } from 'helpers';
 import UserBadge from 'components/UserBadge';
 import LoadingPage from './components/LoadingPage';
 import UserAccountInfo from './components/UserAccountInfo';
@@ -25,6 +28,7 @@ import UpdateUserContactsForm from './components/UpdateUserContactsForm';
 import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
 import UpdateEmailContainer from './containers/UpdateEmailContainer';
 import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
+import { UserRoleEnum } from 'enums';
 
 /**
  * Profile page
@@ -44,6 +48,8 @@ const ProfilePage: React.FC<IPageProps> = () => {
   if (userStore.me === null) {
     return <LoadingPage />;
   }
+
+  const isStudent = userHasRoles(userStore.me.roles, [UserRoleEnum.STUDENT]);
 
   return (
     <ProfilePageViewContext.Provider value={{ statusPageView: statusPageView.status, setStatusPageView }}>
@@ -108,6 +114,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
               <TabList>
                 <Tab>Account information</Tab>
                 <Tab>My contacts</Tab>
+                {isStudent && <Tab>Available courses</Tab>}
               </TabList>
               <TabPanels>
                 <TabPanel padding='10px 0' mt='20px'>
@@ -116,6 +123,31 @@ const ProfilePage: React.FC<IPageProps> = () => {
                 <TabPanel padding='10px 0' mt='20px'>
                   <UpdateUserContactsForm contacts={userStore.me.contacts} />
                 </TabPanel>
+                {isStudent && (
+                  <TabPanel padding='10px 0' mt='20px'>
+                    <Box>
+                      <Stack spacing='8' divider={<StackDivider />}>
+                        {userStore.me.courses.map(course => (
+                          <Box
+                            key={course.id}
+                            borderWidth='1px'
+                            borderRadius='md'
+                            p='10px'
+                            cursor='pointer'
+                            onClick={() => {
+                              history.push(`/course/${course.id}`);
+                            }}
+                          >
+                            <Heading as='h3' size='md'>
+                              {course.title}
+                            </Heading>
+                            <Text>{course.description}</Text>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
+                  </TabPanel>
+                )}
               </TabPanels>
             </Tabs>
           </Box>

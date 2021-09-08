@@ -44,8 +44,10 @@ export default class UserStore {
     try {
       const result = await this.userService.fetchMe();
       const {
-        data: { id, first_name, last_name, email, roles, contacts },
+        data: { id, first_name, last_name, email, roles, contacts, courses },
       } = result;
+
+      console.log(result);
 
       runInAction(() => {
         this.me = {
@@ -56,6 +58,7 @@ export default class UserStore {
           email,
           roles,
           contacts,
+          courses,
         };
       });
 
