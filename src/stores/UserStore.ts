@@ -35,6 +35,11 @@ export default class UserStore {
     makeAutoObservable(this);
   }
 
+  /**
+   * Initialize authorized user in store
+   *
+   * @returns User result
+   */
   public async loadCurrentUserData(): Promise<IUserResult> {
     try {
       const result = await this.userService.fetchMe();
@@ -60,6 +65,12 @@ export default class UserStore {
     }
   }
 
+  /**
+   * Update contacts of authorized user
+   *
+   * @param data New contacts
+   * @returns Updated user contacts
+   */
   public async updateCurrentUserContacts(data: IUserContacts): Promise<IUpdatedContactsResult> {
     try {
       const result = await this.userService.updateContacts(data);
@@ -76,6 +87,13 @@ export default class UserStore {
     }
   }
 
+  /**
+   * Update password of authorized user
+   *
+   * @param oldPassword Old password
+   * @param newPassword New password
+   * @returns Data result status
+   */
   public async updateCurrentUserPassword(oldPassword: string, newPassword: string): Promise<IDataResult> {
     try {
       const result = await this.userService.updatePassword(oldPassword, newPassword);
@@ -100,9 +118,21 @@ export default class UserStore {
     }
   }
 
+  /**
+   * Confirm code and update current user email
+   *
+   * @param email New email
+   * @param confirmationCode Confirmation code
+   * @returns Updated user email
+   */
   public async updateCurrentUserEmailConfirm(email: string, confirmationCode: string): Promise<IUpdatedUserEmail> {
     try {
       const result = await this.userService.updateEmailConfirm(email, confirmationCode);
+      runInAction(() => {
+        if (this.me) {
+          this.me.email = result.data.email;
+        }
+      });
       return result;
     } catch (error) {
       throw error;

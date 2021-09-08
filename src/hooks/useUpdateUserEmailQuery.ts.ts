@@ -41,16 +41,19 @@ const useUpdateUserEmailQuery = () => {
       }
 
       if (error.response) {
-        switch (error.response.status) {
-          case 503:
-            toast({ title: 'Service unavailable. Please, try later again.', status: 'error' });
-            break;
-          default:
-            handleError(error);
-            break;
+        if (error.response.status === 503) {
+          switch (error.response.data.code) {
+            case 'E_CONFIRM_CODE_EXIST':
+              toast({ title: 'Please, try send code later.', status: 'info' });
+              break;
+            default:
+              toast({ title: `Unable to send confirmation code, try again later.`, status: 'error' });
+              break;
+          }
+        } else {
+          handleError(error);
         }
       } else {
-        console.error(error);
         handleError(error);
       }
     } finally {
