@@ -47,7 +47,7 @@ export default class UserStore {
         data: { id, first_name, last_name, email, roles, contacts, courses },
       } = result;
 
-      console.log(result);
+      console.log(`[UserStore]: Fetched authorized user data.`, result);
 
       runInAction(() => {
         this.me = {

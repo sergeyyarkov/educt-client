@@ -19,6 +19,9 @@ export interface ICourse {
   category: ICategory;
   lessons: ILesson[];
   students: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
+  students_count: string;
+  likes_count: string;
+  lessons_count: string;
   created_at: string;
   updated_at: string;
 }
@@ -36,6 +39,22 @@ export interface ICategory {
   description: string;
 }
 
+/**
+ * User with available course
+ */
+export type UserCourseType = Pick<
+  ICourse,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'category'
+  | 'students_count'
+  | 'likes_count'
+  | 'lessons_count'
+  | 'created_at'
+  | 'updated_at'
+>;
+
 export interface IUser {
   id: string;
   fullname: string;
@@ -44,7 +63,7 @@ export interface IUser {
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
-  courses: Pick<ICourse, 'id' | 'title' | 'description' | 'created_at' | 'updated_at'>[];
+  courses: UserCourseType[];
 }
 
 export interface IUserContacts {

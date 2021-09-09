@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
 import {
   Box,
   Heading,
@@ -11,24 +12,42 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Stack,
-  StackDivider,
 } from '@chakra-ui/react';
-import { IPageProps } from 'interfaces';
-import { ProfilePageStatusType } from 'types';
-import { useRootStore } from 'hooks/useRootStore';
-import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react';
-import { ProfilePageViewContext } from 'contexts';
 import { userHasRoles } from 'helpers';
+
+/**
+ * Types
+ */
+import { ProfilePageStatusType } from 'types';
+import { IPageProps } from 'interfaces';
+import { UserRoleEnum } from 'enums';
+
+/**
+ *  Components
+ */
+import CourseList from './components/CourseList';
 import UserBadge from 'components/UserBadge';
 import LoadingPage from './components/LoadingPage';
 import UserAccountInfo from './components/UserAccountInfo';
 import UpdateUserContactsForm from './components/UpdateUserContactsForm';
+
+/**
+ *  Containers
+ */
 import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
 import UpdateEmailContainer from './containers/UpdateEmailContainer';
 import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
-import { UserRoleEnum } from 'enums';
+
+/**
+ * Hooks
+ */
+import { useRootStore } from 'hooks/useRootStore';
+import { useHistory } from 'react-router-dom';
+
+/**
+ * Contexts
+ */
+import { ProfilePageViewContext } from 'contexts';
 
 /**
  * Profile page
@@ -117,35 +136,15 @@ const ProfilePage: React.FC<IPageProps> = () => {
                 {isStudent && <Tab>Available courses</Tab>}
               </TabList>
               <TabPanels>
-                <TabPanel padding='10px 0' mt='20px'>
+                <TabPanel>
                   <UserAccountInfo user={userStore.me} />
                 </TabPanel>
-                <TabPanel padding='10px 0' mt='20px'>
+                <TabPanel>
                   <UpdateUserContactsForm contacts={userStore.me.contacts} />
                 </TabPanel>
                 {isStudent && (
-                  <TabPanel padding='10px 0' mt='20px'>
-                    <Box>
-                      <Stack spacing='8' divider={<StackDivider />}>
-                        {userStore.me.courses.map(course => (
-                          <Box
-                            key={course.id}
-                            borderWidth='1px'
-                            borderRadius='md'
-                            p='10px'
-                            cursor='pointer'
-                            onClick={() => {
-                              history.push(`/course/${course.id}`);
-                            }}
-                          >
-                            <Heading as='h3' size='md'>
-                              {course.title}
-                            </Heading>
-                            <Text>{course.description}</Text>
-                          </Box>
-                        ))}
-                      </Stack>
-                    </Box>
+                  <TabPanel>
+                    <CourseList courses={userStore.me.courses} />
                   </TabPanel>
                 )}
               </TabPanels>

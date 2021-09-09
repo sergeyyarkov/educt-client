@@ -11,7 +11,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
   const { setStatusPageView } = useContext(ProfilePageViewContext);
 
   return (
-    <Box borderRadius='md' borderWidth='1px' padding='20px'>
+    <Box borderRadius='md' borderWidth='1px' padding='20px' boxShadow='sm'>
       <Heading as='h3' size='lg'>
         Account information
       </Heading>
