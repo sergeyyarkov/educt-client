@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { useErrorHandler } from 'react-error-boundary';
 import { Flex, Box } from '@chakra-ui/react';
 import { useRootStore } from 'hooks/useRootStore';
 import Header from 'components/Header';
 import NavDesktop from 'components/Nav/Desktop';
+import { UserRoleEnum } from 'enums';
+import { userContainRoles } from 'helpers';
+import { Redirect } from 'react-router';
+
+type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
 
 /**
- *
  * Layout component
  * Сomponent for rendering the current page.
  */
-const Layout: React.FC = ({ children }) => {
+const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   const { userStore } = useRootStore();
   const handleError = useErrorHandler();
 
-  React.useEffect(() => {
+  useEffect(() => {
     userStore.loadCurrentUserData().catch(error => handleError(error));
   }, [handleError, userStore]);
 
@@ -42,7 +46,28 @@ const Layout: React.FC = ({ children }) => {
             },
           }}
         >
-          {children}
+          {(() => {
+            /**
+             * Check user roles if defined "roles" prop in
+             * PrivateRoute component and return page
+             */
+            if (roles) {
+              const { me } = userStore;
+              if (me === null) return null;
+
+              /**
+               * The user does not have the required roles
+               */
+              if (!userContainRoles(me.roles, roles)) return <Redirect to='/404' />;
+
+              return children;
+            } else {
+              /**
+               * Return children if "roles" prop is not defined
+               */
+              return children;
+            }
+          })()}
         </Box>
       </Flex>
     </>

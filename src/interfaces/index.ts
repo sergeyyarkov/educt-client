@@ -119,12 +119,14 @@ export interface IUserResult extends IDataResult {
 
 export interface IPageProps extends RouteComponentProps {
   title?: string;
-  roles?: UserRoleEnum[];
 }
 
 export interface IPrivateRouteProps extends RouteProps {
   component: React.FC<IPageProps>;
   title?: string;
+  /**
+   * This field means who can access the page
+   */
   roles?: UserRoleEnum[];
 }
 

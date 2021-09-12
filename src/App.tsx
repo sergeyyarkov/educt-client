@@ -1,6 +1,14 @@
 import React from 'react';
 import { Router, Switch } from 'react-router-dom';
+
+/**
+ * Types
+ */
 import { UserRoleEnum } from 'enums';
+
+/**
+ * Hooks
+ */
 import { useRootStore } from 'hooks/useRootStore';
 
 /**
@@ -32,7 +40,12 @@ const App = () => {
         <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
         <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
-        <PrivateRoute path='/control' component={ControlPage} title='Control' roles={[UserRoleEnum.ADMIN]} />
+        <PrivateRoute
+          path='/control'
+          component={ControlPage}
+          title='Control'
+          roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
+        />
         <PublicRoute path='/auth' component={AuthPage} />
         <PublicRoute component={NotFoundPage} />
       </Switch>

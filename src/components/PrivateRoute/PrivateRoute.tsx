@@ -21,13 +21,13 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({ component: Component, titl
       render={props =>
         authStore.isLoggedIn ? (
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Layout>
+            <Layout roles={roles}>
               <Helmet>
                 <title>
                   {title} • {config.metaData.appName}{' '}
                 </title>
               </Helmet>
-              <Component {...props} title={title} roles={roles} />
+              <Component {...props} title={title} />
             </Layout>
           </ErrorBoundary>
         ) : (

@@ -14,6 +14,17 @@ export function userHasRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boo
 }
 
 /**
+ * Return true if user roles contain any one
+ * of roles in second param
+ *
+ * @param userRoles Current user roles
+ * @param roles Roles to check
+ */
+export function userContainRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boolean {
+  return userRoles.map(r => r.slug).some(r => roles.includes(r));
+}
+
+/**
  * Clean object values
  *
  * @param obj Current object that have null values

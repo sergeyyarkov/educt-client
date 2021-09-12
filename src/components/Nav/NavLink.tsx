@@ -1,8 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Box, useColorMode } from '@chakra-ui/react';
-import type { LinkType } from 'interfaces';
+import type { LinkType } from 'types';
 import { useRootStore } from 'hooks/useRootStore';
+import { userContainRoles } from 'helpers';
 
 type NavLinkPropsType = {
   link: LinkType;
@@ -13,10 +14,15 @@ type NavLinkPropsType = {
  * Returns the link component for navigation.
  */
 const NavLink: React.FC<NavLinkPropsType> = ({ link, onClickLink }) => {
-  const { uiStore } = useRootStore();
+  const { uiStore, userStore } = useRootStore();
   const { colorMode } = useColorMode();
-
   const onClick = () => onClickLink(link);
+
+  if (!link.public && link.roles !== undefined) {
+    const { me } = userStore;
+    if (me === null) return null;
+    if (!userContainRoles(me.roles, link.roles)) return null;
+  }
 
   return (
     <Box

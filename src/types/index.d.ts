@@ -1,9 +1,15 @@
+import { UserRoleEnum } from 'enums';
 import { IconType } from 'react-icons/lib';
 
 export type LinkType = {
   location: string;
   title: string;
   public: boolean;
+  /**
+   * Render link if user roles includes roles
+   * in config
+   */
+  roles?: UserRoleEnum[];
   icon: IconType;
 };
 
