@@ -63,7 +63,11 @@ export interface IUser {
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
-  courses: UserCourseType[];
+  /**
+   * The field can be undefined if the user
+   * does not have the STUDENT role
+   */
+  courses?: UserCourseType[];
 }
 
 export interface IUserContacts {

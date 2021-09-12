@@ -10,7 +10,11 @@ import { useErrorHandler } from 'react-error-boundary';
 import { ProfilePageViewContext } from 'contexts';
 import useIsMountedRef from 'hooks/useIsMountedRef';
 
-const ConfirmEmailContainer: React.FC<{ data: ConfirmEmailContainerDataType }> = ({ data }) => {
+type ConfirmEmailContainerPropsType = {
+  data: ConfirmEmailContainerDataType;
+};
+
+const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data }) => {
   const { userStore } = useRootStore();
   const { setStatusPageView } = useContext(ProfilePageViewContext);
   const { sendConfirmationCode, loading } = useUpdateUserEmailQuery();

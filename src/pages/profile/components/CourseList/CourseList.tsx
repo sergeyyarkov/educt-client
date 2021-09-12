@@ -8,10 +8,14 @@ type CourseListPropsType = {
 };
 
 /**
- *  Render the course list on profile page
+ *  Render the course list on profile page for STUDENT role
  *  in "Available courses" tab
  */
 const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
+  if (courses === undefined) {
+    return null;
+  }
+
   return (
     <Stack spacing='8' divider={<StackDivider />}>
       {courses.map(course => (

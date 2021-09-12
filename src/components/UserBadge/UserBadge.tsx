@@ -8,30 +8,25 @@ import { userHasRoles } from 'helpers';
  * Returns the badge for user based on roles
  */
 const UserBadge: React.FC<{ roles: IUserRole[] }> = ({ roles }) => {
-  if (userHasRoles(roles, [UserRoleEnum.ADMIN])) {
+  const getCurrentRole = () => {
+    if (userHasRoles(roles, [UserRoleEnum.ADMIN])) return { name: 'Administrator', color: 'purple' };
+    if (userHasRoles(roles, [UserRoleEnum.TEACHER])) return { name: 'Teacher', color: 'orange' };
+    if (userHasRoles(roles, [UserRoleEnum.STUDENT])) return { name: 'Student', color: 'blue' };
+  };
+
+  const role = getCurrentRole();
+
+  if (role !== undefined) {
     return (
-      <Badge colorScheme='purple' variant='subtle'>
-        Administrator
+      <Badge colorScheme={role.color} variant='subtle'>
+        {role.name}
       </Badge>
     );
   }
 
-  if (userHasRoles(roles, [UserRoleEnum.TEACHER])) {
-    return (
-      <Badge colorScheme='orange' variant='subtle'>
-        Teacher
-      </Badge>
-    );
-  }
-
-  if (userHasRoles(roles, [UserRoleEnum.STUDENT])) {
-    return (
-      <Badge colorScheme='orange' variant='subtle'>
-        Student
-      </Badge>
-    );
-  }
-
+  /**
+   * Cannot find any role for user
+   */
   return null;
 };
 
