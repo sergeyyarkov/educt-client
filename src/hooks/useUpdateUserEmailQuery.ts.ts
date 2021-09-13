@@ -41,7 +41,8 @@ const useUpdateUserEmailQuery = () => {
       }
 
       if (error.response) {
-        if (error.response.status === 503) {
+        const status = error.response.status;
+        if (status === 503) {
           switch (error.response.data.code) {
             case 'E_CONFIRM_CODE_EXIST':
               toast({ title: 'Please, try send code later.', status: 'info' });
@@ -50,6 +51,8 @@ const useUpdateUserEmailQuery = () => {
               toast({ title: `Unable to send confirmation code, try again later.`, status: 'error' });
               break;
           }
+        } else if (status === 422) {
+          toast({ title: error.response.data.errors[0].message, status: 'error' });
         } else {
           handleError(error);
         }
