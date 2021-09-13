@@ -1,6 +1,6 @@
 import React from 'react';
 import { IUser } from 'interfaces';
-import { Stack, StackDivider } from '@chakra-ui/layout';
+import { Box, Text, Stack, StackDivider } from '@chakra-ui/layout';
 import CourseItem from './CourseItem';
 
 type CourseListPropsType = {
@@ -14,6 +14,16 @@ type CourseListPropsType = {
 const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   if (courses === undefined) {
     return null;
+  }
+
+  if (courses.length === 0) {
+    return (
+      <Box textAlign='center' mt='10'>
+        <Text color='gray.500' userSelect='none'>
+          You are not a member of any course
+        </Text>
+      </Box>
+    );
   }
 
   return (

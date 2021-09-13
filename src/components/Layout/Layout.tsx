@@ -1,19 +1,31 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
+import { Redirect } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
+import { userContainRoles } from 'helpers';
 import { Flex, Box } from '@chakra-ui/react';
-import { useRootStore } from 'hooks/useRootStore';
+
+/**
+ * Types
+ */
+import { UserRoleEnum } from 'enums';
+
+/**
+ * Components
+ */
+import LoadingPage from 'components/LoadingPage';
 import Header from 'components/Header';
 import NavDesktop from 'components/Nav/Desktop';
-import { UserRoleEnum } from 'enums';
-import { userContainRoles } from 'helpers';
-import { Redirect } from 'react-router';
+
+/**
+ * Hooks
+ */
+import { useRootStore } from 'hooks/useRootStore';
 
 type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
 
 /**
- * Layout component
- * Сomponent for rendering the current page.
+ * Render the current page using layout
  */
 const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   const { userStore } = useRootStore();
@@ -53,7 +65,7 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
              */
             if (roles) {
               const { me } = userStore;
-              if (me === null) return null;
+              if (me === null) return <LoadingPage />;
 
               /**
                * The user does not have the required roles

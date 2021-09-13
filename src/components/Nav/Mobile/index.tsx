@@ -13,7 +13,9 @@ import config from 'config';
 import useLogoutQuery from 'hooks/useLogoutQuery';
 
 const NavMobile: React.FC = () => {
-  const { userStore } = useRootStore();
+  const {
+    userStore: { me },
+  } = useRootStore();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { logout } = useLogoutQuery();
@@ -29,38 +31,32 @@ const NavMobile: React.FC = () => {
               <Flex as='nav' flexDirection='column' alignItems='flex-start' textDecoration='none' mb='20px'>
                 <NavList links={config.links} onCloseDrawer={onClose} />
               </Flex>
-              {userStore.me ? (
-                <Box pb='10px'>
-                  <Box
-                    minHeight='60px'
-                    padding='10px'
-                    borderRadius='md'
-                    marginTop='auto'
-                    backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-                  >
-                    <Flex alignItems='center'>
-                      <Avatar size='sm' name={`${userStore.me.first_name} ${userStore.me.last_name}`} marginRight={3} />
-                      <Flex flexDirection='column'>
-                        <Text as='span' mr={2} lineHeight='1.2'>
-                          {`${userStore.me.first_name} ${userStore.me.last_name}`}
-                        </Text>
-                        <Link
-                          to={`/profile`}
-                          style={{ fontSize: '13px', textDecoration: 'underline' }}
-                          onClick={onClose}
-                        >
-                          View profile
-                        </Link>
-                      </Flex>
-                      <IconButton
-                        onClick={logout}
-                        aria-label='Logout'
-                        backgroundColor={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
-                        marginLeft='auto'
-                        icon={<MdExitToApp />}
-                      />
+              {me !== null ? (
+                <Box
+                  minHeight='60px'
+                  padding='10px'
+                  borderRadius='md'
+                  marginTop='auto'
+                  backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+                >
+                  <Flex alignItems='center'>
+                    <Avatar size='sm' name={me.fullname} marginRight={3} />
+                    <Flex flexDirection='column'>
+                      <Text as='span' mr={2} lineHeight='1.2'>
+                        {me.fullname}
+                      </Text>
+                      <Link to={`/profile`} style={{ fontSize: '13px', textDecoration: 'underline' }} onClick={onClose}>
+                        View profile
+                      </Link>
                     </Flex>
-                  </Box>
+                    <IconButton
+                      onClick={logout}
+                      aria-label='Logout'
+                      backgroundColor={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
+                      marginLeft='auto'
+                      icon={<MdExitToApp />}
+                    />
+                  </Flex>
                 </Box>
               ) : (
                 <Skeleton
