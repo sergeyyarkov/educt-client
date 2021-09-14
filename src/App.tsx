@@ -24,7 +24,7 @@ import MainPage from 'pages/main';
 import CoursesPage from 'pages/courses';
 import MessagesPage from 'pages/messages';
 import ProfilePage from 'pages/profile';
-import ControlPage from 'pages/control';
+import UsersPage from 'pages/users';
 import AuthPage from 'pages/auth';
 import NotFoundPage from 'pages/404';
 
@@ -41,8 +41,8 @@ const App = () => {
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
         <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
         <PrivateRoute
-          path='/control'
-          component={ControlPage}
+          path='/users'
+          component={UsersPage}
           title='Control'
           roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
         />

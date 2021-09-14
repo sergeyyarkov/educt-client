@@ -33,7 +33,7 @@ const useUpdateUserContactsQuery = () => {
       if (isMountedRef.current) {
         setState(s => ({ ...s, result }));
       }
-    } catch (error) {
+    } catch (error: any) {
       if (isMountedRef.current) {
         setState(s => ({ ...s, error }));
       }

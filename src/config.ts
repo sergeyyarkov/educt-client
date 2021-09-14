@@ -1,5 +1,5 @@
 import { UserRoleEnum } from 'enums';
-import { MdAccountCircle, MdBuild, MdCollectionsBookmark, MdHome, MdMessage } from 'react-icons/md';
+import { MdAccountCircle, MdCollectionsBookmark, MdGroup, MdHome, MdMessage } from 'react-icons/md';
 import { IAppConfig } from './interfaces';
 
 const config: IAppConfig = {
@@ -13,11 +13,11 @@ const config: IAppConfig = {
     { location: '/messages', title: 'Messages', public: true, icon: MdMessage },
     { location: '/profile', title: 'Profile', public: true, icon: MdAccountCircle },
     {
-      location: '/control',
-      title: 'Control',
+      location: '/users',
+      title: 'Users',
       public: false,
       roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
-      icon: MdBuild,
+      icon: MdGroup,
     },
   ],
 };
