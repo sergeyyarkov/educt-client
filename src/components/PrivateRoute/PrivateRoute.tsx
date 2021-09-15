@@ -3,10 +3,21 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Redirect } from 'react-router-dom';
-import { IPrivateRouteProps } from 'interfaces';
+import { RouteProps } from 'react-router';
+import { IPageProps } from 'interfaces';
+import { UserRoleEnum } from 'enums';
 import { useRootStore } from 'hooks/useRootStore';
 import Layout from 'components/Layout';
 import ErrorFallback from 'components/ErrorFallback';
+
+export interface IPrivateRouteProps extends RouteProps {
+  component: React.FC<IPageProps>;
+  title?: string;
+  /**
+   * This field means who can access the page
+   */
+  roles?: UserRoleEnum[];
+}
 
 /**
  * Checks if the user is loggedIn by reactive variable and if not,

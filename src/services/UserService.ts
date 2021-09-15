@@ -1,14 +1,5 @@
 import { AxiosInstance } from 'axios';
-import {
-  IApiRespose,
-  IDataResult,
-  IMe,
-  ISentCodeResult,
-  IUpdatedContactsResult,
-  IUpdatedUserEmail,
-  IUser,
-  IUserContacts,
-} from 'interfaces';
+import { IApiRespose, IMe, IUser, IUserContacts } from 'interfaces';
 import * as helpers from 'helpers';
 
 export default class UserService {
@@ -28,12 +19,12 @@ export default class UserService {
     return result.data;
   }
 
-  public async updateContacts(data: IUserContacts): Promise<IUpdatedContactsResult> {
+  public async updateContacts(data: IUserContacts): Promise<IApiRespose<IUserContacts>> {
     const result = await this.api.put('v1/me/contacts', helpers.removeEmptyValues(data));
     return result.data;
   }
 
-  public async updatePassword(oldPassword: string, newPassword: string): Promise<IDataResult> {
+  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<any>> {
     const result = await this.api.patch('v1/me/password', {
       oldPassword,
       newPassword,
@@ -41,12 +32,15 @@ export default class UserService {
     return result.data;
   }
 
-  public async updateEmail(email: string): Promise<ISentCodeResult> {
+  public async updateEmail(email: string): Promise<IApiRespose<{ expired_seconds: number }>> {
     const result = await this.api.patch('v1/me/email', { email });
     return result.data;
   }
 
-  public async updateEmailConfirm(email: string, confirmationCode: string): Promise<IUpdatedUserEmail> {
+  public async updateEmailConfirm(
+    email: string,
+    confirmationCode: string
+  ): Promise<IApiRespose<{ email: IUser['email'] }>> {
     const result = await this.api.post('v1/me/email/change/confirm', {
       email,
       confirmationCode,

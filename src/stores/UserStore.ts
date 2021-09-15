@@ -1,14 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import {
-  IUser,
-  IUserContacts,
-  IUpdatedContactsResult,
-  IDataResult,
-  ISentCodeResult,
-  IUpdatedUserEmail,
-  IMe,
-} from 'interfaces';
+import { IUser, IUserContacts, IMe } from 'interfaces';
 
 /**
  * Services
@@ -84,7 +76,7 @@ export default class UserStore {
    * @param data New contacts
    * @returns Updated user contacts
    */
-  public async updateCurrentUserContacts(data: IUserContacts): Promise<IUpdatedContactsResult> {
+  public async updateCurrentUserContacts(data: IUserContacts) {
     try {
       const result = await this.userService.updateContacts(data);
 
@@ -107,7 +99,7 @@ export default class UserStore {
    * @param newPassword New password
    * @returns Data result status
    */
-  public async updateCurrentUserPassword(oldPassword: string, newPassword: string): Promise<IDataResult> {
+  public async updateCurrentUserPassword(oldPassword: string, newPassword: string) {
     try {
       const result = await this.userService.updatePassword(oldPassword, newPassword);
       return result;
@@ -122,7 +114,7 @@ export default class UserStore {
    * @param email New email
    * @returns Expires at code in seconds
    */
-  public async updateCurrentUserEmail(email: string): Promise<ISentCodeResult> {
+  public async updateCurrentUserEmail(email: string) {
     try {
       const result = await this.userService.updateEmail(email);
       return result;
@@ -138,7 +130,7 @@ export default class UserStore {
    * @param confirmationCode Confirmation code
    * @returns Updated user email
    */
-  public async updateCurrentUserEmailConfirm(email: string, confirmationCode: string): Promise<IUpdatedUserEmail> {
+  public async updateCurrentUserEmailConfirm(email: string, confirmationCode: string) {
     try {
       const result = await this.userService.updateEmailConfirm(email, confirmationCode);
       runInAction(() => {

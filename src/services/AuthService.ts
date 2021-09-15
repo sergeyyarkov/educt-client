@@ -1,5 +1,5 @@
-import { IDataResult, ILoginResult } from 'interfaces';
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { IApiRespose } from 'interfaces';
+import { AxiosInstance } from 'axios';
 
 export default class AuthService {
   public api: AxiosInstance;
@@ -13,10 +13,13 @@ export default class AuthService {
    *
    * @param login User login
    * @param password User password
-   * @returns Login result
+   * @returns Login result data
    */
-  public async requestLogin(login: string, password: string): Promise<ILoginResult> {
-    const result: AxiosResponse<any> = await this.api.post('v1/auth/login', {
+  public async requestLogin(
+    login: string,
+    password: string
+  ): Promise<IApiRespose<{ token: string; type: string; expires_at: string }>> {
+    const result = await this.api.post('v1/auth/login', {
       login,
       password,
     });
@@ -26,10 +29,10 @@ export default class AuthService {
   /**
    * Revoke token
    *
-   * @returns Data result
+   * @returns Any
    */
-  public async requestLogout(): Promise<IDataResult> {
-    const result: AxiosResponse<any> = await this.api.post('v1/auth/logout');
+  public async requestLogout(): Promise<IApiRespose<any>> {
+    const result = await this.api.post('v1/auth/logout');
     return result.data;
   }
 }

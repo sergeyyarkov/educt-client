@@ -1,4 +1,3 @@
-import type { RouteProps } from 'react-router-dom';
 import type { RouteComponentProps } from 'react-router-dom';
 import { LinkType } from 'types';
 import { UserRoleEnum } from '../enums';
@@ -89,61 +88,13 @@ export interface IUserRole {
   slug: UserRoleEnum;
 }
 
-export interface IDataResult {
-  data: any;
-  message: string;
-  status: number;
-}
-
 export interface IApiRespose<T> {
   data: T;
   message: string;
   status: number;
 }
 
-export interface ILoginResult extends IDataResult {
-  data: {
-    token: string;
-    type: string;
-    expires_at: string;
-  };
-}
-
-export interface IUpdatedContactsResult extends IDataResult {
-  data: IUserContacts;
-}
-
-export interface IUpdatedUserEmail extends IDataResult {
-  data: {
-    email: IUser['email'];
-  };
-}
-
-export interface ISentCodeResult extends IDataResult {
-  data: {
-    expired_seconds: number;
-  };
-}
-
-export interface IUserResult extends IDataResult {
-  data: Omit<IUser, 'fullname'>;
-}
-
 export interface IPageProps extends RouteComponentProps {
-  title?: string;
-}
-
-export interface IPrivateRouteProps extends RouteProps {
-  component: React.FC<IPageProps>;
-  title?: string;
-  /**
-   * This field means who can access the page
-   */
-  roles?: UserRoleEnum[];
-}
-
-export interface IPublicRouteProps extends RouteProps {
-  component: React.FC<IPageProps>;
   title?: string;
 }
 

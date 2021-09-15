@@ -1,8 +1,14 @@
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route } from 'react-router-dom';
-import { IPublicRouteProps } from 'interfaces';
+import { RouteProps } from 'react-router';
+import { IPageProps } from 'interfaces';
 import ErrorFallback from 'components/ErrorFallback';
+
+export interface IPublicRouteProps extends RouteProps {
+  component: React.FC<IPageProps>;
+  title?: string;
+}
 
 /**
  * Render public page

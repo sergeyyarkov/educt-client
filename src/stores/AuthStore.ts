@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { AxiosInstance } from 'axios';
 import Cookies from 'js-cookie';
-import { IDataResult, ILoginResult } from 'interfaces';
 
 /**
  * Services
@@ -30,7 +29,7 @@ export default class AuthStore {
     this.isLoggedIn = value;
   }
 
-  public async login(login: string, password: string): Promise<ILoginResult> {
+  public async login(login: string, password: string) {
     try {
       const result = await this.authService.requestLogin(login, password);
 
@@ -43,7 +42,7 @@ export default class AuthStore {
     }
   }
 
-  public async logout(): Promise<IDataResult> {
+  public async logout() {
     try {
       const result = await this.authService.requestLogout();
 
