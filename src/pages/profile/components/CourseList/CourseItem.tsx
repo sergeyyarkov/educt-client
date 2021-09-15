@@ -10,7 +10,7 @@ type CourseItemPropsType = {
 
 const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
   return (
-    <Box key={course.id} borderWidth='1px' borderRadius='md' p='10px' boxShadow='sm'>
+    <Box borderWidth='1px' borderRadius='md' p='10px' boxShadow='sm'>
       <Flex justifyContent='space-between' alignItems='center'>
         <Link as={ReactRouterLink} to={`course/${course.id}`} fontWeight='bold' fontSize='2xl'>
           {course.title}

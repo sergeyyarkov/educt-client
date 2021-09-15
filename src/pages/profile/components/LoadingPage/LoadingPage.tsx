@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Skeleton, SkeletonCircle, Flex, Spinner } from '@chakra-ui/react';
 
-const LoadingPage = () => {
+const LoadingPage: React.FC = () => {
   return (
     <Box maxW='900px'>
       <Skeleton height='35px' width='250px' borderRadius='md' />

@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import {
-  IUserResult,
   IUser,
   IUserContacts,
   IUpdatedContactsResult,
   IDataResult,
   ISentCodeResult,
   IUpdatedUserEmail,
+  IMe,
 } from 'interfaces';
 
 /**
@@ -25,9 +25,9 @@ export default class UserStore {
 
   public userService: UserService;
 
-  public me: IUser | null = null;
+  public me: IMe | null = null;
 
-  public users: IUser[] = [];
+  public users: IUser[] | null = null;
 
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
@@ -35,19 +35,29 @@ export default class UserStore {
     makeAutoObservable(this);
   }
 
-  /**
-   * Initialize authorized user in store
-   *
-   * @returns User result
-   */
-  public async loadCurrentUserData(): Promise<IUserResult> {
+  public async loadUsersData() {
+    try {
+      const result = await this.userService.fetchAll();
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
+
+      runInAction(() => {
+        this.users = result.data;
+      });
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public async loadCurrentUserData() {
     try {
       const result = await this.userService.fetchMe();
       const {
         data: { id, first_name, last_name, email, roles, contacts, courses },
       } = result;
 
-      console.log(`[UserStore]: ${result.message}`, result);
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
         this.me = {

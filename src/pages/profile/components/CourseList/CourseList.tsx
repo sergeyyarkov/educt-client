@@ -1,10 +1,10 @@
 import React from 'react';
-import { IUser } from 'interfaces';
+import { IMe } from 'interfaces';
 import { Box, Text, Stack, StackDivider } from '@chakra-ui/layout';
 import CourseItem from './CourseItem';
 
 type CourseListPropsType = {
-  courses: IUser['courses'];
+  courses: IMe['courses'];
 };
 
 /**

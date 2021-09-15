@@ -57,12 +57,18 @@ export type UserCourseType = Pick<
 
 export interface IUser {
   id: string;
-  fullname: string;
   first_name: string;
   last_name: string;
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
+}
+
+/**
+ * Current authenticated user data
+ */
+export interface IMe extends IUser {
+  fullname: string;
   /**
    * The field can be undefined if the user
    * does not have the STUDENT role
@@ -85,6 +91,12 @@ export interface IUserRole {
 
 export interface IDataResult {
   data: any;
+  message: string;
+  status: number;
+}
+
+export interface IApiRespose<T> {
+  data: T;
   message: string;
   status: number;
 }

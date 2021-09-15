@@ -1,11 +1,13 @@
 import { AxiosInstance } from 'axios';
 import {
+  IApiRespose,
   IDataResult,
+  IMe,
   ISentCodeResult,
   IUpdatedContactsResult,
   IUpdatedUserEmail,
+  IUser,
   IUserContacts,
-  IUserResult,
 } from 'interfaces';
 import * as helpers from 'helpers';
 
@@ -16,8 +18,13 @@ export default class UserService {
     this.api = api;
   }
 
-  public async fetchMe(): Promise<IUserResult> {
+  public async fetchMe(): Promise<IApiRespose<IMe>> {
     const result = await this.api.get('v1/me');
+    return result.data;
+  }
+
+  public async fetchAll(): Promise<IApiRespose<IUser[]>> {
+    const result = await this.api.get('/v1/users');
     return result.data;
   }
 
