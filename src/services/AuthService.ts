@@ -1,4 +1,4 @@
-import { IApiRespose } from 'interfaces';
+import { IApiRespose, IToken } from 'interfaces';
 import { AxiosInstance } from 'axios';
 
 export default class AuthService {
@@ -15,10 +15,7 @@ export default class AuthService {
    * @param password User password
    * @returns Login result data
    */
-  public async requestLogin(
-    login: string,
-    password: string
-  ): Promise<IApiRespose<{ token: string; type: string; expires_at: string }>> {
+  public async requestLogin(login: string, password: string): Promise<IApiRespose<IToken>> {
     const result = await this.api.post('v1/auth/login', {
       login,
       password,

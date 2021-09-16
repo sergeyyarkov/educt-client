@@ -1,11 +1,11 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUser, IUserContacts, IMe } from 'interfaces';
+import { IUser, IUserContacts, IMe, IPaginationMeta } from 'interfaces';
 
 /**
  * Services
  */
-import UserService from 'services/UserService';
+import UserService, { FetchUsersParamsType } from 'services/UserService';
 
 /**
  * Stores
@@ -19,7 +19,7 @@ export default class UserStore {
 
   public me: IMe | null = null;
 
-  public users: IUser[] | null = null;
+  public users: { data: IUser[]; meta: { pagination?: IPaginationMeta } } | null = null;
 
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
@@ -27,13 +27,18 @@ export default class UserStore {
     makeAutoObservable(this);
   }
 
-  public async loadUsersData() {
+  public async loadUsersData(params?: FetchUsersParamsType) {
     try {
-      const result = await this.userService.fetchAll();
+      const result = await this.userService.fetchAll(params);
       console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
-        this.users = result.data;
+        this.users = {
+          data: result.data,
+          meta: {
+            pagination: result.meta?.pagination,
+          },
+        };
       });
 
       return result;

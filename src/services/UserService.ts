@@ -2,6 +2,8 @@ import { AxiosInstance } from 'axios';
 import { IApiRespose, IMe, IUser, IUserContacts } from 'interfaces';
 import * as helpers from 'helpers';
 
+export type FetchUsersParamsType = { page?: number; limit?: number };
+
 export default class UserService {
   public api: AxiosInstance;
 
@@ -14,8 +16,14 @@ export default class UserService {
     return result.data;
   }
 
-  public async fetchAll(): Promise<IApiRespose<IUser[]>> {
-    const result = await this.api.get('/v1/users');
+  public async fetchAll(params?: FetchUsersParamsType): Promise<IApiRespose<IUser[]>> {
+    const { page, limit } = params || {};
+    const result = await this.api.get('/v1/users', {
+      params: {
+        page,
+        limit,
+      },
+    });
     return result.data;
   }
 

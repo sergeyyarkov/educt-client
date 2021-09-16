@@ -1,12 +1,12 @@
 import { useToast } from '@chakra-ui/react';
-import { ILoginResult } from 'interfaces';
+import { IApiRespose, IToken } from 'interfaces';
 import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';
 import { useRootStore } from './useRootStore';
 
 type LoginStateType = {
-  result: ILoginResult | null;
+  result: IApiRespose<IToken> | null;
   error: any;
   loading: boolean;
   fetched: boolean;

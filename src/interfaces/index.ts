@@ -10,6 +10,12 @@ export interface IAppConfig {
   links: LinkType[];
 }
 
+export interface IToken {
+  token: string;
+  type: string;
+  expires_at: string;
+}
+
 export interface ICourse {
   id: string;
   title: string;
@@ -36,6 +42,21 @@ export interface ICategory {
   id: string;
   title: string;
   description: string;
+}
+
+/**
+ * Pagination meta data that returns from server
+ */
+export interface IPaginationMeta {
+  current_page: number;
+  first_page: number;
+  first_page_url: string;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: string | null;
+  per_page: number;
+  previous_page_url: string | null;
+  total: number;
 }
 
 /**
@@ -90,6 +111,9 @@ export interface IUserRole {
 
 export interface IApiRespose<T> {
   data: T;
+  meta?: {
+    pagination?: IPaginationMeta;
+  };
   message: string;
   status: number;
 }

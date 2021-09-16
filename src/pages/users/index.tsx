@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Select } from '@chakra-ui/react';
-import { Box, Flex, Text, Button, Heading } from '@chakra-ui/react';
+import { Box, Flex, Button, Heading } from '@chakra-ui/react';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import { AddIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from '@chakra-ui/icons';
+import { AddIcon, SearchIcon } from '@chakra-ui/icons';
 import { FaFileExcel } from 'react-icons/fa';
 
 /**
@@ -18,10 +18,11 @@ import UserList from './components/UserList';
 import LoadingPage from './components/LoadingPage';
 
 /**
- *Hooks
+ * Hooks
  */
 import { useRootStore } from 'hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
+import { useLocation } from 'react-router';
 
 /**
  * Users Page
@@ -29,10 +30,11 @@ import { useErrorHandler } from 'react-error-boundary';
 const UsersPage: React.FC<IPageProps> = ({ title }) => {
   const { userStore } = useRootStore();
   const handleError = useErrorHandler();
+  const location = useLocation();
 
   useEffect(() => {
-    userStore.loadUsersData().catch(error => handleError(error));
-  }, [handleError, userStore]);
+    userStore.loadUsersData({ page: 1, limit: 2 }).catch(error => handleError(error));
+  }, [handleError, userStore, location.search]);
 
   return (
     <Box h='full'>
@@ -61,26 +63,9 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
               </Button>
             </Flex>
           </Flex>
-          <Box>
-            <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
-              <Text>Total users: ({userStore.users.length})</Text>
-              <Text>Actions</Text>
-            </Flex>
-            <UserList users={userStore.users} />
-          </Box>
-          <Flex mt='auto' mb='16' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
-            <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
-              Page <b>1</b> of 23
-            </Box>
-            <Flex ml='auto' mr='auto' alignItems='center' sx={{ gap: '30px' }}>
-              <Button variant='link' leftIcon={<ChevronLeftIcon />}>
-                Previous page
-              </Button>
-              <Button variant='link' rightIcon={<ChevronRightIcon />}>
-                Next page
-              </Button>
-            </Flex>
-          </Flex>
+          {userStore.users.meta.pagination && (
+            <UserList users={userStore.users.data} pagination={userStore.users.meta.pagination} />
+          )}
         </Flex>
       ) : (
         <LoadingPage />
