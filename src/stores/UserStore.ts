@@ -19,7 +19,9 @@ export default class UserStore {
 
   public me: IMe | null = null;
 
-  public users: { data: IUser[]; meta: { pagination?: IPaginationMeta } } | null = null;
+  public users: IUser[] | null = null;
+
+  public pagination: IPaginationMeta | undefined;
 
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
@@ -33,12 +35,8 @@ export default class UserStore {
       console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
-        this.users = {
-          data: result.data,
-          meta: {
-            pagination: result.meta?.pagination,
-          },
-        };
+        this.users = result.data;
+        this.pagination = result.meta && result.meta.pagination;
       });
 
       return result;
@@ -70,7 +68,7 @@ export default class UserStore {
       });
 
       return result;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -92,7 +90,7 @@ export default class UserStore {
       });
 
       return result;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -108,7 +106,7 @@ export default class UserStore {
     try {
       const result = await this.userService.updatePassword(oldPassword, newPassword);
       return result;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -123,7 +121,7 @@ export default class UserStore {
     try {
       const result = await this.userService.updateEmail(email);
       return result;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }
@@ -144,7 +142,7 @@ export default class UserStore {
         }
       });
       return result;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }

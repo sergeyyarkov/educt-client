@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, IMe, IUser, IUserContacts } from 'interfaces';
 import * as helpers from 'helpers';
+import { UserRoleEnum } from 'enums';
 
-export type FetchUsersParamsType = { page?: number; limit?: number };
+export type FetchUsersParamsType = { page?: number; limit?: number; role?: UserRoleEnum | 'any' };
 
 export default class UserService {
   public api: AxiosInstance;
@@ -17,11 +18,12 @@ export default class UserService {
   }
 
   public async fetchAll(params?: FetchUsersParamsType): Promise<IApiRespose<IUser[]>> {
-    const { page, limit } = params || {};
+    const { page = 1, limit = 1, role } = params || {};
     const result = await this.api.get('/v1/users', {
       params: {
         page,
         limit,
+        role: role === 'any' ? undefined : role,
       },
     });
     return result.data;

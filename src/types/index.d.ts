@@ -1,4 +1,5 @@
 import { UserRoleEnum } from 'enums';
+import React from 'react';
 import { IconType } from 'react-icons/lib';
 
 export type LinkType = {
@@ -27,7 +28,22 @@ export type ProfilePageStatusType = {
     confirmEmailData?: ConfirmEmailContainerDataType;
   };
 };
+
 export type ProfilePageViewStatusContextType = {
   statusPageView: ProfilePageStatusType['status'];
   setStatusPageView: React.Dispatch<React.SetStateAction<ProfilePageStatusType>>;
+};
+
+export type SearchingRoleStateType = UserRoleEnum | 'any' | undefined;
+export type UsersPageContextType = {
+  /**
+   * Search users by user role
+   */
+  searchingRole: SearchingRoleStateType;
+  setSearchingRole: React.Dispatch<React.SetStateAction<SearchingRoleStateType>>;
+  /**
+   * Set loading state while loading users
+   */
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };

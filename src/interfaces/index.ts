@@ -112,6 +112,9 @@ export interface IUserRole {
 export interface IApiRespose<T> {
   data: T;
   meta?: {
+    /**
+     * The server can return the pagination meta data
+     */
     pagination?: IPaginationMeta;
   };
   message: string;

@@ -75,6 +75,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
       {statusPageView.status === 'default' && (
         <Box maxW='900px'>
           <Heading as='h1'>My account</Heading>
+          <Text mt='2'>Update you contacts information or password here.</Text>
           <Flex
             alignItems='center'
             mt='20'
