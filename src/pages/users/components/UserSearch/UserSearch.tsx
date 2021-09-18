@@ -11,7 +11,8 @@ type SelectRoleStateType = UserRoleEnum | 'any';
 
 const UserSearch: React.FC = () => {
   const { userStore } = useRootStore();
-  const { searchingRole, setSearchingRole, setLoading } = useContext<UsersPageContextType>(UsersPageContext);
+  const { searchingRole, setSearchingRole, setLoading, search, setSearch } =
+    useContext<UsersPageContextType>(UsersPageContext);
   const { pagination } = userStore;
   const handleError = useErrorHandler();
 
@@ -25,8 +26,27 @@ const UserSearch: React.FC = () => {
         page: 1,
         limit: pagination.per_page,
         role: value,
+        search,
       });
       setSearchingRole(value);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSearch: React.ChangeEventHandler<HTMLInputElement> | undefined = async e => {
+    try {
+      const value = e.target.value;
+      setLoading(true);
+      setSearch(value);
+      await userStore.loadUsersData({
+        page: 1,
+        limit: pagination.per_page,
+        role: searchingRole,
+        search: value,
+      });
     } catch (error) {
       handleError(error);
     } finally {
@@ -44,7 +64,7 @@ const UserSearch: React.FC = () => {
       </Select>
       <InputGroup maxW='400px' w='full'>
         <InputLeftElement pointerEvents='none' children={<SearchIcon color='gray.300' />} />
-        <Input placeholder='Search for a user...' />
+        <Input placeholder='Search for a user...' value={search || ''} onChange={onSearch} />
       </InputGroup>
     </Flex>
   );

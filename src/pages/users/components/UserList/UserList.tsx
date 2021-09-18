@@ -16,7 +16,7 @@ type UserListPropsType = {
 
 const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const { userStore } = useRootStore();
-  const { searchingRole, loading, setLoading } = useContext<UsersPageContextType>(UsersPageContext);
+  const { searchingRole, loading, setLoading, search } = useContext<UsersPageContextType>(UsersPageContext);
   const handleError = useErrorHandler();
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
 
@@ -27,6 +27,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
         page: pagination.current_page + 1,
         limit: pagination.per_page,
         role: searchingRole,
+        search,
       });
     } catch (error: any) {
       handleError(error);
@@ -42,6 +43,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
         page: pagination.current_page - 1,
         limit: pagination.per_page,
         role: searchingRole,
+        search,
       });
     } catch (error: any) {
       handleError(error);

@@ -41,9 +41,16 @@ export type UsersPageContextType = {
    */
   searchingRole: SearchingRoleStateType;
   setSearchingRole: React.Dispatch<React.SetStateAction<SearchingRoleStateType>>;
+
   /**
    * Set loading state while loading users
    */
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+
+  /**
+   * Serach user by fullname or email
+   */
+  search: string | undefined;
+  setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
 };

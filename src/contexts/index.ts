@@ -14,4 +14,6 @@ export const UsersPageContext = createContext<UsersPageContextType>({
   setSearchingRole: () => {},
   loading: false,
   setLoading: () => {},
+  search: undefined,
+  setSearch: () => {},
 });

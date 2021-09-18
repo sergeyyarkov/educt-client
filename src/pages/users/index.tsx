@@ -36,6 +36,7 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
   const { userStore } = useRootStore();
   const [searchingRole, setSearchingRole] = useState<SearchingRoleStateType>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string | undefined>(undefined);
   const handleError = useErrorHandler();
   const location = useLocation();
 
@@ -44,7 +45,7 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
   }, [handleError, userStore, location.search]);
 
   return (
-    <UsersPageContext.Provider value={{ searchingRole, setSearchingRole, loading, setLoading }}>
+    <UsersPageContext.Provider value={{ searchingRole, setSearchingRole, loading, setLoading, search, setSearch }}>
       <Box h='full'>
         <Heading as='h1'>User management</Heading>
         <Text mt='2'>You can add or delete your users on this page.</Text>
