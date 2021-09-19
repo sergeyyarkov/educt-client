@@ -73,7 +73,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
               </Stack>
             )}
           </Box>
-          <Flex mt='auto' mb='16' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
+          <Flex mt='auto' mb='6rem' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
             <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
               Page <b>{pagination.current_page}</b> of {pagesCount}
             </Box>

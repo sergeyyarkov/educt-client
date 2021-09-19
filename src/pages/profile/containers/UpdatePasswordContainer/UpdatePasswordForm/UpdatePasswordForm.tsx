@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useRootStore } from 'hooks/useRootStore';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
@@ -10,6 +10,7 @@ import UpdatePasswordSchema from './UpdatePasswordForm.validator';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
 import { ProfilePageViewContext } from 'contexts';
+import useIsMountedRef from 'hooks/useIsMountedRef';
 
 type UpdatePasswordInputType = {
   old_password: string;
@@ -23,6 +24,8 @@ type UpdatePasswordInputType = {
 const UpdatePasswordForm: React.FC = () => {
   const { setStatusPageView } = useContext(ProfilePageViewContext);
   const { userStore } = useRootStore();
+  const isMountedRef = useIsMountedRef();
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     handleSubmit,
     register,
@@ -38,10 +41,11 @@ const UpdatePasswordForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<UpdatePasswordInputType> = async ({ old_password, new_password, confirm_password }) => {
     try {
+      setLoading(true);
       await userStore.updateCurrentUserPassword(old_password, new_password);
       toast({ title: 'Password changed.', status: 'success' });
       reset();
-      setStatusPageView('default');
+      setStatusPageView({ status: 'default' });
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 401) {
@@ -53,6 +57,10 @@ const UpdatePasswordForm: React.FC = () => {
         }
       } else {
         handleError(error);
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setLoading(false);
       }
     }
   };
@@ -102,7 +110,15 @@ const UpdatePasswordForm: React.FC = () => {
             </FormHelperText>
           </FormControl>
         </Stack>
-        <Button colorScheme='blue' mt='4' type='submit' size='md' variant='outline' loadingText='Saving...'>
+        <Button
+          colorScheme='blue'
+          mt='4'
+          type='submit'
+          size='md'
+          variant='outline'
+          isLoading={loading}
+          loadingText='Saving...'
+        >
           Change
         </Button>
       </form>

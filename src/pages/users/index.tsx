@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Box, Flex, Button, Heading, Text } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
 import { FaFileExcel } from 'react-icons/fa';
 
 /**
@@ -28,6 +27,7 @@ import { useLocation } from 'react-router';
  * Context
  */
 import { UsersPageContext } from 'contexts';
+import CreateUserModal from './components/CreateUserModal';
 
 /**
  * Users Page
@@ -46,23 +46,21 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
 
   return (
     <UsersPageContext.Provider value={{ searchingRole, setSearchingRole, loading, setLoading, search, setSearch }}>
-      <Box h='full'>
+      <Box h='100%'>
         <Heading as='h1'>User management</Heading>
         <Text mt='2'>You can add or delete your users on this page.</Text>
-        {userStore.users !== null ? (
+        {userStore.users !== null && userStore.pagination !== undefined ? (
           <Flex mt='5' flexDir='column' h='full'>
             <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
               <UserSearch />
               <Flex sx={{ gap: '10px' }}>
-                <Button variant='outline' color='blue.500' leftIcon={<AddIcon />}>
-                  Create new
-                </Button>
+                <CreateUserModal />
                 <Button variant='outline' colorScheme='green' leftIcon={<FaFileExcel />}>
                   Import
                 </Button>
               </Flex>
             </Flex>
-            {userStore.pagination && <UserList users={userStore.users} pagination={userStore.pagination} />}
+            <UserList users={userStore.users} pagination={userStore.pagination} />
           </Flex>
         ) : (
           <LoadingPage />
