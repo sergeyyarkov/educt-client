@@ -19,19 +19,48 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { MdSupervisorAccount } from 'react-icons/md';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler } from 'react-hook-form';
+import CreateUserSchema from './CreateUserModal.validator';
 
 /**
  * Types
  */
+import { IMe } from 'interfaces';
 import { UserRoleEnum } from 'enums';
 
 /**
  * Hooks
  */
 import { useDisclosure } from '@chakra-ui/hooks';
+import { useForm } from 'react-hook-form';
 
-const CreateUserModal: React.FC = () => {
+type CreateUserModalPropsType = {
+  me: IMe;
+};
+
+type CreateUserInputType = {
+  first_name: string;
+  last_name: string;
+  login: string;
+  email: string;
+  role: UserRoleEnum;
+  password: string;
+};
+
+const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateUserInputType>({
+    resolver: yupResolver(CreateUserSchema),
+  });
+
+  const onSubmit: SubmitHandler<CreateUserInputType> = data => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -41,52 +70,71 @@ const CreateUserModal: React.FC = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            <Flex alignItems='center'>
-              <MdSupervisorAccount />
-              <Text ml={2}>Create new user</Text>
-            </Flex>
-          </ModalHeader>
-          <ModalCloseButton />
-          <Divider />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>First name</FormLabel>
-              <Input placeholder='First name' />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Login</FormLabel>
-              <Input placeholder='e.g student893' />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Email</FormLabel>
-              <Input placeholder='example@email.com' />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Role</FormLabel>
-              <Select w='full' mr='2'>
-                <option value={UserRoleEnum.STUDENT}>Student</option>
-                <option value={UserRoleEnum.TEACHER}>Teacher</option>
-                <option value={UserRoleEnum.ADMIN}>Administrator</option>
-              </Select>
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
-              <Input placeholder='******' />
-              <FormHelperText>Must be at least 6 characters</FormHelperText>
-            </FormControl>
-          </ModalBody>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalHeader>
+              <Flex alignItems='center'>
+                <MdSupervisorAccount />
+                <Text ml={2}>Create new user</Text>
+              </Flex>
+            </ModalHeader>
+            <ModalCloseButton />
+            <Divider />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>First name</FormLabel>
+                <Input
+                  placeholder='First name'
+                  {...register('first_name')}
+                  isInvalid={errors.first_name ? true : false}
+                />
+                {errors.first_name ? (
+                  <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Last name</FormLabel>
+                <Input placeholder='Last name' {...register('last_name')} isInvalid={errors.last_name ? true : false} />
+                {errors.last_name ? <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText> : null}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Login</FormLabel>
+                <Input placeholder='e.g student893' {...register('login')} isInvalid={errors.login ? true : false} />
+                {errors.login ? <FormHelperText color='red.500'>{errors.login.message}</FormHelperText> : null}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Email</FormLabel>
+                <Input placeholder='example@email.com' {...register('email')} isInvalid={errors.email ? true : false} />
+                {errors.email ? <FormHelperText color='red.500'>{errors.email.message}</FormHelperText> : null}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Role</FormLabel>
+                <Select w='full' mr='2' {...register('role')} isInvalid={errors.role ? true : false}>
+                  <option value={UserRoleEnum.STUDENT}>Student</option>
+                  {me.isAdmin ? (
+                    <>
+                      <option value={UserRoleEnum.TEACHER}>Teacher</option>
+                      <option value={UserRoleEnum.ADMIN}>Administrator</option>
+                    </>
+                  ) : null}
+                </Select>
+                {errors.role ? <FormHelperText color='red.500'>{errors.role.message}</FormHelperText> : null}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Password</FormLabel>
+                <Input placeholder='******' {...register('password')} isInvalid={errors.password ? true : false} />
+                <FormHelperText color={errors.password ? 'red' : 'gray.500'}>
+                  {errors.password ? errors.password.message : 'Must be at least 6 characters.'}
+                </FormHelperText>
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button variant='outline' mr={3} colorScheme='blue' leftIcon={<AddIcon />}>
-              Create
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button type='submit' variant='outline' mr={3} colorScheme='blue' leftIcon={<AddIcon />}>
+                Create
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>

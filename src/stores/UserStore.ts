@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { IUser, IUserContacts, IMe, IPaginationMeta } from 'interfaces';
+import * as helpers from 'helpers';
 
 /**
  * Services
@@ -11,6 +12,7 @@ import UserService, { FetchUsersParamsType } from 'services/UserService';
  * Stores
  */
 import RootStore from './RootStore';
+import { UserRoleEnum } from 'enums';
 
 export default class UserStore {
   public root: RootStore;
@@ -64,6 +66,9 @@ export default class UserStore {
           roles,
           contacts,
           courses,
+          isAdmin: helpers.userContainRoles(roles, [UserRoleEnum.ADMIN]),
+          isTeacher: helpers.userContainRoles(roles, [UserRoleEnum.TEACHER]),
+          isStudent: helpers.userContainRoles(roles, [UserRoleEnum.STUDENT]),
         };
       });
 

@@ -49,12 +49,12 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
       <Box h='100%'>
         <Heading as='h1'>User management</Heading>
         <Text mt='2'>You can add or delete your users on this page.</Text>
-        {userStore.users !== null && userStore.pagination !== undefined ? (
+        {userStore.users !== null && userStore.me !== null && userStore.pagination !== undefined ? (
           <Flex mt='5' flexDir='column' h='full'>
             <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
               <UserSearch />
               <Flex sx={{ gap: '10px' }}>
-                <CreateUserModal />
+                <CreateUserModal me={userStore.me} />
                 <Button variant='outline' colorScheme='green' leftIcon={<FaFileExcel />}>
                   Import
                 </Button>
