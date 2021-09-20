@@ -6,7 +6,7 @@ import * as helpers from 'helpers';
 /**
  * Services
  */
-import UserService, { FetchUsersParamsType } from 'services/UserService';
+import UserService, { CreateUserParamsType, FetchUsersParamsType } from 'services/UserService';
 
 /**
  * Stores
@@ -70,6 +70,24 @@ export default class UserStore {
           isTeacher: helpers.userContainRoles(roles, [UserRoleEnum.TEACHER]),
           isStudent: helpers.userContainRoles(roles, [UserRoleEnum.STUDENT]),
         };
+      });
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public async createUser(data: CreateUserParamsType) {
+    try {
+      const result = await this.userService.create(data);
+
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
+
+      runInAction(() => {
+        if (this.users !== null) {
+          this.users.unshift(result.data);
+        }
       });
 
       return result;

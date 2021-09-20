@@ -4,6 +4,14 @@ import * as helpers from 'helpers';
 import { UserRoleEnum } from 'enums';
 
 export type FetchUsersParamsType = { page?: number; limit?: number; role?: UserRoleEnum | 'any'; search?: string };
+export type CreateUserParamsType = {
+  first_name: string;
+  last_name: string;
+  login: string;
+  email: string;
+  role: UserRoleEnum;
+  password: string;
+};
 
 export default class UserService {
   public api: AxiosInstance;
@@ -26,6 +34,18 @@ export default class UserService {
         role: role === 'any' ? undefined : role,
         search: search || undefined,
       },
+    });
+    return result.data;
+  }
+
+  public async create(data: CreateUserParamsType): Promise<IApiRespose<IUser>> {
+    const result = await this.api.post('v1/users', {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      login: data.login,
+      email: data.email,
+      role: data.role,
+      password: data.password,
     });
     return result.data;
   }

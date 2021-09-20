@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -34,6 +34,9 @@ import { UserRoleEnum } from 'enums';
  */
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useForm } from 'react-hook-form';
+import { useRootStore } from 'hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
+import { useToast } from '@chakra-ui/react';
 
 type CreateUserModalPropsType = {
   me: IMe;
@@ -49,17 +52,45 @@ type CreateUserInputType = {
 };
 
 const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
+  const { userStore } = useRootStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateUserInputType>({
     resolver: yupResolver(CreateUserSchema),
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const toast = useToast();
+  const handleError = useErrorHandler();
 
-  const onSubmit: SubmitHandler<CreateUserInputType> = data => {
-    console.log(data);
+  /**
+   * Create new user handler
+   */
+  const onSubmit: SubmitHandler<CreateUserInputType> = async data => {
+    try {
+      setLoading(true);
+      await userStore.createUser(data);
+      /**
+       * Clear form state
+       */
+      reset();
+
+      /**
+       * Close modal
+       */
+      onClose();
+    } catch (error: any) {
+      if (error.response) {
+        toast({ title: `${error.message}`, status: 'error' });
+      } else {
+        handleError(error);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -129,7 +160,15 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
             </ModalBody>
 
             <ModalFooter>
-              <Button type='submit' variant='outline' mr={3} colorScheme='blue' leftIcon={<AddIcon />}>
+              <Button
+                type='submit'
+                variant='outline'
+                mr={3}
+                colorScheme='blue'
+                isLoading={loading}
+                loadingText='Creating...'
+                leftIcon={<AddIcon />}
+              >
                 Create
               </Button>
               <Button onClick={onClose}>Cancel</Button>

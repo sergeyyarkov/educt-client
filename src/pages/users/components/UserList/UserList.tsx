@@ -8,6 +8,7 @@ import { useRootStore } from 'hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { UsersPageContextType } from 'types';
 import { UsersPageContext } from 'contexts';
+import { observer } from 'mobx-react';
 
 type UserListPropsType = {
   users: IUser[];
@@ -106,4 +107,4 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   );
 };
 
-export default UserList;
+export default observer(UserList);
