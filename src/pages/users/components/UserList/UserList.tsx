@@ -1,26 +1,43 @@
+import React from 'react';
+import { observer } from 'mobx-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Flex, Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
-import { IPaginationMeta, IUser } from 'interfaces';
-import React, { useContext } from 'react';
 import UserItem from './UserItem';
-import { useRootStore } from 'hooks/useRootStore';
-import { useErrorHandler } from 'react-error-boundary';
-import { UsersPageContextType } from 'types';
-import { UsersPageContext } from 'contexts';
-import { observer } from 'mobx-react';
+import UpdateUserForm from '../UpdateUserForm';
 
-type UserListPropsType = {
-  users: IUser[];
-  pagination: IPaginationMeta;
-};
+/**
+ * Types
+ */
+import { IPaginationMeta, IUser } from 'interfaces';
+import { UsersPageContextType } from 'types';
+
+/**
+ * Contexts
+ */
+import { UsersPageContext } from 'contexts';
+
+/**
+ * Hooks
+ */
+import { useContext, useState } from 'react';
+import { useRootStore } from 'hooks/useRootStore';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { useErrorHandler } from 'react-error-boundary';
+
+type UserListPropsType = { users: IUser[]; pagination: IPaginationMeta };
 
 const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const { userStore } = useRootStore();
+  const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
   const { searchingRole, loading, setLoading, search } = useContext<UsersPageContextType>(UsersPageContext);
   const handleError = useErrorHandler();
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
+  const { onOpen: onOpenEditModal, onClose: onCloseEditModal, isOpen: isOpenEditModal } = useDisclosure();
 
+  /**
+   * Handle next page
+   */
   const nextPage = async () => {
     try {
       setLoading(true);
@@ -37,6 +54,9 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
     }
   };
 
+  /**
+   * Handle prev page
+   */
   const prevPage = async () => {
     try {
       setLoading(true);
@@ -53,10 +73,20 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
     }
   };
 
+  /**
+   * Set editing state when click on edit button
+   */
+  const onEditUser = (user: IUser) => {
+    setEditingUser(user);
+    onOpenEditModal();
+    console.log(`[LOG]: Editing user "${user.id}"`);
+  };
+
   return (
     <>
       {pagination.total !== 0 ? (
         <>
+          {editingUser && <UpdateUserForm user={editingUser} onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
           <Box>
             <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
               <Text>Total: ({pagination.total})</Text>
@@ -69,7 +99,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
             ) : (
               <Stack mt='4' spacing='2'>
                 {users.map(user => (
-                  <UserItem key={user.id} user={user} />
+                  <UserItem key={user.id} user={user} onEdit={onEditUser} />
                 ))}
               </Stack>
             )}

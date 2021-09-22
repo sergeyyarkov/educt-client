@@ -32,6 +32,7 @@ import { UserRoleEnum } from 'enums';
 /**
  * Hooks
  */
+import useIsMountedRef from 'hooks/useIsMountedRef';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useForm } from 'react-hook-form';
 import { useRootStore } from 'hooks/useRootStore';
@@ -63,6 +64,7 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
     resolver: yupResolver(CreateUserSchema),
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const isMountedRef = useIsMountedRef();
   const toast = useToast();
   const handleError = useErrorHandler();
 
@@ -84,12 +86,18 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
       onClose();
     } catch (error: any) {
       if (error.response) {
-        toast({ title: `${error.message}`, status: 'error' });
+        if (error.response.status === 422) {
+          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
+        } else {
+          toast({ title: `${error.message}`, status: 'error' });
+        }
       } else {
         handleError(error);
       }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 

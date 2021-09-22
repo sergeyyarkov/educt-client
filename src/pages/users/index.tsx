@@ -27,7 +27,7 @@ import { useLocation } from 'react-router';
  * Context
  */
 import { UsersPageContext } from 'contexts';
-import CreateUserModal from './components/CreateUserModal';
+import CreateUserForm from './components/CreateUserForm';
 
 /**
  * Users Page
@@ -54,8 +54,8 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
             <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
               <UserSearch />
               <Flex sx={{ gap: '10px' }}>
-                <CreateUserModal me={userStore.me} />
-                <Button variant='outline' colorScheme='green' leftIcon={<FaFileExcel />}>
+                <CreateUserForm me={userStore.me} />
+                <Button disabled variant='outline' colorScheme='green' leftIcon={<FaFileExcel />}>
                   Import
                 </Button>
               </Flex>
