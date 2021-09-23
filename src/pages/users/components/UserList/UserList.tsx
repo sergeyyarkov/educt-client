@@ -3,6 +3,10 @@ import { observer } from 'mobx-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Flex, Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
+
+/**
+ * Components
+ */
 import UserItem from './UserItem';
 import EditUserForm from '../EditUserForm';
 
@@ -24,16 +28,18 @@ import { useContext } from 'react';
 import { useRootStore } from 'hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useErrorHandler } from 'react-error-boundary';
+import DeleteUserDialog from '../DeleteUserDialog';
 
 type UserListPropsType = { users: IUser[]; pagination: IPaginationMeta };
 
 const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const { userStore } = useRootStore();
-  const { searchingRole, loading, setLoading, search, editingUser, setEditingUser } =
+  const { searchingRole, loading, setLoading, search, editingUser, setEditingUser, deletingUser, setDeletingUser } =
     useContext<UsersPageContextType>(UsersPageContext);
   const handleError = useErrorHandler();
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
   const { onOpen: onOpenEditModal, onClose: onCloseEditModal, isOpen: isOpenEditModal } = useDisclosure();
+  const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
 
   /**
    * Handle next page
@@ -75,6 +81,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
 
   /**
    * Set editing state when click on edit button
+   * and open editing user form modal
    */
   const onEditUser = (user: IUser) => {
     setEditingUser(user);
@@ -82,11 +89,22 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
     console.log(`[LOG]: Editing user "${user.id}"`);
   };
 
+  /**
+   * Set deleting state when click on delete button
+   * and open delete user dialog
+   */
+  const onDeleteUser = (user: IUser) => {
+    setDeletingUser(user);
+    onOpenDeleteDialog();
+    console.log(`[LOG]: Alert delete "${user.id}"`);
+  };
+
   return (
     <>
       {pagination.total !== 0 ? (
         <>
-          {editingUser && <EditUserForm user={editingUser} onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
+          {editingUser && <EditUserForm onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
+          {deletingUser && <DeleteUserDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
           <Box>
             <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
               <Text>Total: ({pagination.total})</Text>
@@ -99,7 +117,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
             ) : (
               <Stack mt='4' spacing='2'>
                 {users.map(user => (
-                  <UserItem key={user.id} user={user} onEdit={onEditUser} />
+                  <UserItem key={user.id} user={user} onEdit={onEditUser} onDelete={onDeleteUser} />
                 ))}
               </Stack>
             )}

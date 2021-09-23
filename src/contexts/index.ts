@@ -20,4 +20,6 @@ export const UsersPageContext = createContext<UsersPageContextType>({
   setSearch: () => {},
   editingUser: undefined,
   setEditingUser: () => {},
+  deletingUser: undefined,
+  setDeletingUser: () => {},
 });

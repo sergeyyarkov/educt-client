@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, Badge, Link, Box, Flex } from '@chakra-ui/layout';
+import { Text, Link, Box, Flex } from '@chakra-ui/layout';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { MdVideoLibrary, MdGroup, MdThumbUp } from 'react-icons/md';
 import { UserCourseType } from 'interfaces';
+import { Tag, TagLabel } from '@chakra-ui/react';
 
 type CourseItemPropsType = {
   course: UserCourseType;
@@ -15,11 +16,11 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
         <Link as={ReactRouterLink} to={`course/${course.id}`} fontWeight='bold' fontSize='2xl'>
           {course.title}
         </Link>
-        <Badge colorScheme='purple'>
-          <Link as={ReactRouterLink} to={`category/${course.category.id}`}>
-            {course.category.title}
-          </Link>
-        </Badge>
+        <Link as={ReactRouterLink} to={`category/${course.category.id}`}>
+          <Tag colorScheme='purple' borderRadius='full'>
+            <TagLabel>{course.category.title}</TagLabel>
+          </Tag>
+        </Link>
       </Flex>
       <Text>{course.description}</Text>
       <Flex mt='5' alignItems='center'>

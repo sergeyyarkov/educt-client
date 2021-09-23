@@ -96,6 +96,24 @@ export default class UserStore {
     }
   }
 
+  public async deleteUser(id: string) {
+    try {
+      const result = await this.userService.delete(id);
+
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
+
+      runInAction(() => {
+        if (this.users !== null) {
+          this.users = this.users.filter(user => user.id !== id);
+        }
+      });
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   /**
    * Update contacts of authorized user
    *

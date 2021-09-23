@@ -1,7 +1,6 @@
 import React from 'react';
 import * as helpres from 'helpers';
 import { Box, Flex, Avatar, Text, IconButton } from '@chakra-ui/react';
-import { MdMoreHoriz } from 'react-icons/md';
 import UserBadge from 'components/UserBadge';
 
 /**
@@ -14,13 +13,15 @@ import { UserRoleEnum } from 'enums';
  * Hooks
  */
 import { useRootStore } from 'hooks/useRootStore';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 type UserItemPropsType = {
   user: IUser;
   onEdit: (user: IUser) => void;
+  onDelete: (user: IUser) => void;
 };
 
-const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit }) => {
+const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
   const {
     userStore: { me },
   } = useRootStore();
@@ -60,9 +61,18 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit }) => {
           <IconButton
             disabled={isDisabledActions()}
             onClick={() => onEdit(user)}
-            aria-label='Actions'
+            aria-label='Edit'
             variant='ghost'
-            icon={<MdMoreHoriz />}
+            mr={1}
+            icon={<EditIcon />}
+          />
+          <IconButton
+            disabled={isDisabledActions()}
+            onClick={() => onDelete(user)}
+            colorScheme='red'
+            aria-label='Delete'
+            variant='ghost'
+            icon={<DeleteIcon />}
           />
         </Box>
       </Flex>

@@ -50,6 +50,11 @@ export default class UserService {
     return result.data;
   }
 
+  public async delete(id: string): Promise<IApiRespose<IUser>> {
+    const result = await this.api.delete(`v1/users/${id}`);
+    return result.data;
+  }
+
   public async updateContacts(data: IUserContacts): Promise<IApiRespose<IUserContacts>> {
     const result = await this.api.put('v1/me/contacts', helpers.removeEmptyValues(data));
     return result.data;

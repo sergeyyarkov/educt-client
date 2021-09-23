@@ -35,10 +35,22 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
+  const [deletingUser, setDeletingUser] = useState<IUser | undefined>(undefined);
 
   return (
     <UsersPageContext.Provider
-      value={{ searchingRole, setSearchingRole, loading, setLoading, search, setSearch, editingUser, setEditingUser }}
+      value={{
+        searchingRole,
+        setSearchingRole,
+        loading,
+        setLoading,
+        search,
+        setSearch,
+        editingUser,
+        setEditingUser,
+        deletingUser,
+        setDeletingUser,
+      }}
     >
       {children}
     </UsersPageContext.Provider>

@@ -62,8 +62,14 @@ export type UsersPageContextType = {
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
 
   /**
-   * Set editing user state when press on action button
+   * Set editing user state when press on edit button
    */
   editingUser: IUser | undefined;
   setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
+
+  /**
+   * Set deliting user state when press on delete button
+   */
+  deletingUser: IUser | undefined;
+  setDeletingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 };
