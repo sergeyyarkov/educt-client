@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import UpdatePasswordSchema from './UpdatePasswordForm.validator';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 import useIsMountedRef from 'hooks/useIsMountedRef';
 
 type UpdatePasswordInputType = {
@@ -22,7 +22,7 @@ type UpdatePasswordInputType = {
  * Update password using form
  */
 const UpdatePasswordForm: React.FC = () => {
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView } = useContext(ProfilePageContext);
   const { userStore } = useRootStore();
   const isMountedRef = useIsMountedRef();
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,7 +45,7 @@ const UpdatePasswordForm: React.FC = () => {
       await userStore.updateCurrentUserPassword(old_password, new_password);
       toast({ title: 'Password changed.', status: 'success' });
       reset();
-      setStatusPageView({ status: 'default' });
+      setStatusPageView('default');
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 401) {

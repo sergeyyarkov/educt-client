@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { Box, Heading, Stack, Flex, StackDivider, Text, Button } from '@chakra-ui/react';
 import { IUser } from 'interfaces';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 
 type UserAccountInfoPropsType = {
   user: IUser;
 };
 
 const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView } = useContext(ProfilePageContext);
 
   return (
     <Box borderRadius='md' borderWidth='1px' padding='20px' boxShadow='sm'>
@@ -45,7 +45,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
               {user.email}
             </Text>
           </Box>
-          <Button onClick={() => setStatusPageView({ status: 'update-email' })}>Edit</Button>
+          <Button onClick={() => setStatusPageView('update-email')}>Edit</Button>
         </Flex>
         <Flex justifyContent='space-between' alignItems='center'>
           <Box>
@@ -56,7 +56,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
               **********
             </Text>
           </Box>
-          <Button onClick={() => setStatusPageView({ status: 'update-password' })}>Change</Button>
+          <Button onClick={() => setStatusPageView('update-password')}>Change</Button>
         </Flex>
       </Stack>
     </Box>

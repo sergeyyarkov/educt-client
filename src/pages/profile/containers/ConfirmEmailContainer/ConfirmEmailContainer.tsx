@@ -7,7 +7,7 @@ import useUpdateUserEmailQuery from 'hooks/useUpdateUserEmailQuery.ts';
 import { useRootStore } from 'hooks/useRootStore';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 import useIsMountedRef from 'hooks/useIsMountedRef';
 
 type ConfirmEmailContainerPropsType = {
@@ -16,7 +16,7 @@ type ConfirmEmailContainerPropsType = {
 
 const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data }) => {
   const { userStore } = useRootStore();
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView } = useContext(ProfilePageContext);
   const { sendConfirmationCode, loading } = useUpdateUserEmailQuery();
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
@@ -47,7 +47,7 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
         status: 'info',
       });
       if (isMountedRef.current) {
-        setStatusPageView({ status: 'default' });
+        setStatusPageView('default');
       }
     } catch (error: any) {
       if (error.response) {
@@ -76,7 +76,9 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
         handleError(error);
       }
     } finally {
-      setIsVerifying(false);
+      if (isMountedRef.current) {
+        setIsVerifying(false);
+      }
     }
   };
 

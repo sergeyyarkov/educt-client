@@ -1,4 +1,5 @@
 import { UserRoleEnum } from 'enums';
+import { IUser } from 'interfaces';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 
@@ -19,19 +20,25 @@ export type ConfirmEmailContainerDataType = {
   expired_seconds: number;
 };
 
-export type ProfilePageStatusType = {
-  status: 'update-password' | 'update-email' | 'confirm-email' | 'default';
-  data?: {
-    /**
-     * The field that is set when trying to change the mail address through form
-     */
-    confirmEmailData?: ConfirmEmailContainerDataType;
-  };
+export type ProfilePageStatusType = 'update-password' | 'update-email' | 'confirm-email' | 'default';
+export type ProfilePageDataType = {
+  /**
+   * The field that is set when trying to change the mail address through form
+   */
+  confirmEmailData?: ConfirmEmailContainerDataType;
 };
-
 export type ProfilePageViewStatusContextType = {
-  statusPageView: ProfilePageStatusType['status'];
+  /**
+   * Render current container by status
+   */
+  statusPageView: ProfilePageStatusType;
   setStatusPageView: React.Dispatch<React.SetStateAction<ProfilePageStatusType>>;
+
+  /**
+   * Some data for other components
+   */
+  pageData: ProfilePageDataType;
+  setPageData: React.Dispatch<React.SetStateAction<ProfilePageDataType>>;
 };
 
 export type SearchingRoleStateType = UserRoleEnum | 'any' | undefined;
@@ -53,4 +60,10 @@ export type UsersPageContextType = {
    */
   search: string | undefined;
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
+
+  /**
+   * Set editing user state when press on action button
+   */
+  editingUser: IUser | undefined;
+  setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 };

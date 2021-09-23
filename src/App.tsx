@@ -43,7 +43,7 @@ const App = () => {
         <PrivateRoute
           path='/users'
           component={UsersPage}
-          title='Control'
+          title='Users Management'
           roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
         />
         <PublicRoute path='/auth' component={AuthPage} />

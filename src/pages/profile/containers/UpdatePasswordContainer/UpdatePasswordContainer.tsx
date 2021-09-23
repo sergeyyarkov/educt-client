@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Box, Heading, Flex, Text, IconButton } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 import UpdatePasswordForm from './UpdatePasswordForm';
 
 const UpdatePasswordContainer: React.FC = () => {
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView } = useContext(ProfilePageContext);
 
   return (
     <Box maxW='700px'>
@@ -14,7 +14,7 @@ const UpdatePasswordContainer: React.FC = () => {
           aria-label='Back'
           borderRadius='full'
           icon={<ChevronLeftIcon />}
-          onClick={() => setStatusPageView({ status: 'default' })}
+          onClick={() => setStatusPageView('default')}
           mr='5'
         />
         <Heading as='h1'>Update password</Heading>

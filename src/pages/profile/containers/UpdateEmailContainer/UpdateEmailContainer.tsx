@@ -1,12 +1,12 @@
 import { IconButton } from '@chakra-ui/button';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 import React, { useContext } from 'react';
 import UpdateEmailForm from './UpdateEmailForm';
 
 const UpdateEmailContainer: React.FC = () => {
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView } = useContext(ProfilePageContext);
 
   return (
     <Box maxW='700px'>
@@ -15,7 +15,7 @@ const UpdateEmailContainer: React.FC = () => {
           aria-label='Back'
           borderRadius='full'
           icon={<ChevronLeftIcon />}
-          onClick={() => setStatusPageView({ status: 'default' })}
+          onClick={() => setStatusPageView('default')}
           mr='5'
         />
         <Heading as='h1'>Edit email address</Heading>

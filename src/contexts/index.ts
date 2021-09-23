@@ -4,9 +4,11 @@ import RootStore from '../stores/RootStore';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
-export const ProfilePageViewContext = createContext<ProfilePageViewStatusContextType>({
+export const ProfilePageContext = createContext<ProfilePageViewStatusContextType>({
   statusPageView: 'default',
   setStatusPageView: () => {},
+  pageData: {},
+  setPageData: () => {},
 });
 
 export const UsersPageContext = createContext<UsersPageContextType>({
@@ -16,4 +18,6 @@ export const UsersPageContext = createContext<UsersPageContextType>({
   setLoading: () => {},
   search: undefined,
   setSearch: () => {},
+  editingUser: undefined,
+  setEditingUser: () => {},
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Box, Flex, Button, Heading, Text } from '@chakra-ui/react';
 import { FaFileExcel } from 'react-icons/fa';
@@ -7,7 +7,6 @@ import { FaFileExcel } from 'react-icons/fa';
  * Types
  */
 import { IPageProps } from 'interfaces';
-import { SearchingRoleStateType } from 'types';
 
 /**
  * Components
@@ -26,17 +25,14 @@ import { useLocation } from 'react-router';
 /**
  * Context
  */
-import { UsersPageContext } from 'contexts';
 import CreateUserForm from './components/CreateUserForm';
+import { UsersPageContextProvider } from 'providers';
 
 /**
  * Users Page
  */
-const UsersPage: React.FC<IPageProps> = ({ title }) => {
+const UsersPage: React.FC<IPageProps> = () => {
   const { userStore } = useRootStore();
-  const [searchingRole, setSearchingRole] = useState<SearchingRoleStateType>(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [search, setSearch] = useState<string | undefined>(undefined);
   const handleError = useErrorHandler();
   const location = useLocation();
 
@@ -45,7 +41,7 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
   }, [handleError, userStore, location.search]);
 
   return (
-    <UsersPageContext.Provider value={{ searchingRole, setSearchingRole, loading, setLoading, search, setSearch }}>
+    <UsersPageContextProvider>
       <Box h='100%'>
         <Heading as='h1'>User management</Heading>
         <Text mt='2'>You can add or delete your users on this page.</Text>
@@ -66,7 +62,7 @@ const UsersPage: React.FC<IPageProps> = ({ title }) => {
           <LoadingPage />
         )}
       </Box>
-    </UsersPageContext.Provider>
+    </UsersPageContextProvider>
   );
 };
 

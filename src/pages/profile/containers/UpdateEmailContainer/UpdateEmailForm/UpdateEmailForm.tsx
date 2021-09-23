@@ -3,7 +3,7 @@ import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ProfilePageViewContext } from 'contexts';
+import { ProfilePageContext } from 'contexts';
 import { useRootStore } from 'hooks/useRootStore';
 import useUpdateUserEmailQuery from 'hooks/useUpdateUserEmailQuery.ts';
 import React, { useContext, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ type UpdateEmailInputType = {
  */
 const UpdateEmailForm: React.FC = () => {
   const [email, setEmail] = useState<string | null>(null);
-  const { setStatusPageView } = useContext(ProfilePageViewContext);
+  const { setStatusPageView, setPageData } = useContext(ProfilePageContext);
   const { userStore } = useRootStore();
   const { sendConfirmationCode, loading, result } = useUpdateUserEmailQuery();
   const {
@@ -32,10 +32,8 @@ const UpdateEmailForm: React.FC = () => {
 
   useEffect(() => {
     if (email !== null && result !== null) {
-      setStatusPageView({
-        status: 'confirm-email',
-        data: { confirmEmailData: { newEmail: email, expired_seconds: result.data.expired_seconds } },
-      });
+      setStatusPageView('confirm-email');
+      setPageData({ confirmEmailData: { newEmail: email, expired_seconds: result.data.expired_seconds } });
     }
   });
 

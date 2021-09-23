@@ -1,12 +1,12 @@
 import { useToast } from '@chakra-ui/react';
-import { IDataResult, IUserContacts } from 'interfaces';
+import { IApiRespose, IUserContacts } from 'interfaces';
 import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';
 import { useRootStore } from './useRootStore';
 
 type UpdateContactsStateType = {
-  result: IDataResult | null;
+  result: IApiRespose<{}> | null;
   error: any;
   loading: boolean;
   fetched: boolean;

@@ -4,7 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Flex, Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import UserItem from './UserItem';
-import UpdateUserForm from '../UpdateUserForm';
+import EditUserForm from '../EditUserForm';
 
 /**
  * Types
@@ -20,7 +20,7 @@ import { UsersPageContext } from 'contexts';
 /**
  * Hooks
  */
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useRootStore } from 'hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useErrorHandler } from 'react-error-boundary';
@@ -29,8 +29,8 @@ type UserListPropsType = { users: IUser[]; pagination: IPaginationMeta };
 
 const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const { userStore } = useRootStore();
-  const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
-  const { searchingRole, loading, setLoading, search } = useContext<UsersPageContextType>(UsersPageContext);
+  const { searchingRole, loading, setLoading, search, editingUser, setEditingUser } =
+    useContext<UsersPageContextType>(UsersPageContext);
   const handleError = useErrorHandler();
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
   const { onOpen: onOpenEditModal, onClose: onCloseEditModal, isOpen: isOpenEditModal } = useDisclosure();
@@ -86,7 +86,7 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
     <>
       {pagination.total !== 0 ? (
         <>
-          {editingUser && <UpdateUserForm user={editingUser} onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
+          {editingUser && <EditUserForm user={editingUser} onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
           <Box>
             <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
               <Text>Total: ({pagination.total})</Text>

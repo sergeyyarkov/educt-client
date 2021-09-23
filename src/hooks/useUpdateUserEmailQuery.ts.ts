@@ -1,12 +1,12 @@
 import { useToast } from '@chakra-ui/toast';
-import { ISentCodeResult } from 'interfaces';
+import { IApiRespose } from 'interfaces';
 import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';
 import { useRootStore } from './useRootStore';
 
 type UpdateUserEmailStateType = {
-  result: ISentCodeResult | null;
+  result: IApiRespose<{ expired_seconds: number }> | null;
   error: any;
   loading: boolean;
   fetched: boolean;
