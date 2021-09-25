@@ -1,6 +1,7 @@
 import React from 'react';
 import * as helpres from 'helpers';
-import { Box, Flex, Avatar, Text, IconButton } from '@chakra-ui/react';
+import { Box, Flex, Avatar, Text, IconButton, Link } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import UserBadge from 'components/UserBadge';
 
 /**
@@ -48,9 +49,9 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
         <Flex alignItems='center' flexBasis='230px'>
           <Avatar name={`${user.first_name} ${user.last_name}`} size='sm' mr='3' />
           <Box>
-            <Text fontSize='md' fontWeight='medium'>
+            <Link as={ReactRouterLink} to={`/user/${user.id}`} fontSize='md' fontWeight='medium'>
               {user.first_name}&nbsp;{user.last_name}
-            </Text>
+            </Link>
             <Text fontSize='sm'>{user.email}</Text>
           </Box>
         </Flex>

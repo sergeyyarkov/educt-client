@@ -6,7 +6,7 @@ import * as helpers from 'helpers';
 /**
  * Services
  */
-import UserService, { CreateUserParamsType, FetchUsersParamsType } from 'services/UserService';
+import UserService, { CreateUserParamsType, UpdateUserParamsType, FetchUsersParamsType } from 'services/UserService';
 
 /**
  * Stores
@@ -78,15 +78,37 @@ export default class UserStore {
     }
   }
 
-  public async createUser(data: CreateUserParamsType) {
+  public async createUser(data: CreateUserParamsType, paramsContext?: FetchUsersParamsType) {
     try {
       const result = await this.userService.create(data);
 
       console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
+      if (this.users !== null) {
+        /**
+         * Fetch updated users data with new pagination data
+         */
+        await this.loadUsersData(paramsContext);
+      }
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public async updateUser(id: string, params: UpdateUserParamsType) {
+    try {
+      const result = await this.userService.update(id, params);
+
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
+
       runInAction(() => {
         if (this.users !== null) {
-          this.users.unshift(result.data);
+          const userIndex = this.users.findIndex(user => user.id === id);
+          if (userIndex !== -1) {
+            this.users[userIndex] = result.data;
+          }
         }
       });
 
@@ -96,17 +118,24 @@ export default class UserStore {
     }
   }
 
-  public async deleteUser(id: string) {
+  /**
+   *
+   * @param id User id
+   * @param paramsContext Params context to refresh users store data
+   * @returns
+   */
+  public async deleteUser(id: string, paramsContext?: FetchUsersParamsType) {
     try {
       const result = await this.userService.delete(id);
 
       console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
-      runInAction(() => {
-        if (this.users !== null) {
-          this.users = this.users.filter(user => user.id !== id);
-        }
-      });
+      if (this.users !== null) {
+        /**
+         * Fetch updated users data with new pagination data
+         */
+        await this.loadUsersData(paramsContext);
+      }
 
       return result;
     } catch (error: any) {

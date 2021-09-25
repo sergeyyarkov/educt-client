@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -12,14 +12,14 @@ import {
   FormHelperText,
   Input,
   Button,
-  Select,
   Flex,
   Text,
   Divider,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { CheckIcon } from '@chakra-ui/icons';
 import { MdModeEdit } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
+import UpdateUserSchema from './EditUserForm.validator';
 
 /**
  * Types
@@ -27,11 +27,18 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { UserRoleEnum } from 'enums';
 
 /**
+ * Contexts
+ */
+import { UsersPageContext } from 'contexts';
+
+/**
  * Hooks
  */
 import { SubmitHandler, useForm } from 'react-hook-form';
-import UpdateUserSchema from './EditUserForm.validator';
-import { UsersPageContext } from 'contexts';
+import { useRootStore } from 'hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
+import { useToast } from '@chakra-ui/react';
+import useIsMountedRef from 'hooks/useIsMountedRef';
 
 type UpdateUserInputType = {
   first_name: string;
@@ -47,12 +54,14 @@ type UpdateUserFormPropsType = {
 };
 
 const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) => {
+  const { userStore } = useRootStore();
   const { editingUser, setEditingUser } = useContext(UsersPageContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
   } = useForm<UpdateUserInputType>({
     resolver: yupResolver(UpdateUserSchema),
     defaultValues: {
@@ -61,13 +70,44 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) 
       email: editingUser && editingUser.email,
     },
   });
+  const isMountedRef = useIsMountedRef();
+  const toast = useToast();
+  const handleError = useErrorHandler();
 
-  const onSubmit: SubmitHandler<UpdateUserInputType> = data => {
-    console.log(data);
+  if (editingUser === undefined) return null;
+
+  const onSubmit: SubmitHandler<UpdateUserInputType> = async data => {
+    try {
+      setIsLoading(true);
+      const params = Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof UpdateUserInputType]]));
+      await userStore.updateUser(editingUser.id, params);
+      toast({ title: 'User updated.', status: 'info' });
+      onCloseModal();
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status === 422) {
+          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
+        } else {
+          toast({ title: `${error.message}`, status: 'error' });
+        }
+      } else {
+        handleError(error);
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const onCloseModal = () => {
+    reset({});
+    setEditingUser(undefined);
+    onClose();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onCloseModal}>
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,45 +120,28 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) 
           <ModalCloseButton />
           <Divider />
           <ModalBody pb={6}>
-            <FormControl>
+            <FormControl isDisabled>
+              <FormLabel>Identificator</FormLabel>
+              <Input value={editingUser?.id} />
+            </FormControl>
+            <FormControl mt={4}>
               <FormLabel>First name</FormLabel>
               <Input
                 placeholder='First name'
                 {...register('first_name')}
                 isInvalid={errors.first_name ? true : false}
               />
-              {errors.first_name ? <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText> : null}
+              {errors.first_name && <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>}
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Last name</FormLabel>
               <Input placeholder='Last name' {...register('last_name')} isInvalid={errors.last_name ? true : false} />
-              {errors.last_name ? <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText> : null}
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Login</FormLabel>
-              <Input placeholder='e.g student893' {...register('login')} isInvalid={errors.login ? true : false} />
-              {errors.login ? <FormHelperText color='red.500'>{errors.login.message}</FormHelperText> : null}
+              {errors.last_name && <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText>}
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Email</FormLabel>
               <Input placeholder='example@email.com' {...register('email')} isInvalid={errors.email ? true : false} />
-              {errors.email ? <FormHelperText color='red.500'>{errors.email.message}</FormHelperText> : null}
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Role</FormLabel>
-              <Select w='full' mr='2' {...register('role')} isInvalid={errors.role ? true : false}>
-                <option value={UserRoleEnum.STUDENT}>Student</option>
-                <option value={UserRoleEnum.TEACHER}>Teacher</option>
-                <option value={UserRoleEnum.ADMIN}>Administrator</option>
-              </Select>
-              {errors.role ? <FormHelperText color='red.500'>{errors.role.message}</FormHelperText> : null}
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
-              <Input placeholder='******' {...register('password')} isInvalid={errors.password ? true : false} />
-              <FormHelperText color={errors.password ? 'red' : 'gray.500'}>
-                {errors.password ? errors.password.message : 'Must be at least 6 characters.'}
-              </FormHelperText>
+              {errors.email && <FormHelperText color='red.500'>{errors.email.message}</FormHelperText>}
             </FormControl>
           </ModalBody>
 
@@ -126,22 +149,16 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) 
             <Button
               type='submit'
               variant='outline'
-              mr={1}
+              mr={3}
               colorScheme='blue'
+              isLoading={isLoading}
               loadingText='Saving...'
-              leftIcon={<AddIcon />}
+              isDisabled={!isDirty}
+              leftIcon={<CheckIcon />}
             >
               Save
             </Button>
-            <Button
-              onClick={() => {
-                reset({});
-                setEditingUser(undefined);
-                onClose();
-              }}
-            >
-              Cancel
-            </Button>
+            <Button onClick={onCloseModal}>Cancel</Button>
           </ModalFooter>
         </form>
       </ModalContent>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -38,6 +38,7 @@ import { useForm } from 'react-hook-form';
 import { useRootStore } from 'hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useToast } from '@chakra-ui/react';
+import { UsersPageContext } from 'contexts';
 
 type CreateUserModalPropsType = {
   me: IMe;
@@ -54,6 +55,7 @@ type CreateUserInputType = {
 
 const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
   const { userStore } = useRootStore();
+  const { searchingRole, search } = useContext(UsersPageContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
@@ -74,7 +76,12 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
   const onSubmit: SubmitHandler<CreateUserInputType> = async data => {
     try {
       setLoading(true);
-      await userStore.createUser(data);
+      await userStore.createUser(data, {
+        page: userStore.pagination?.current_page,
+        limit: userStore.pagination?.per_page,
+        role: searchingRole,
+        search,
+      });
       /**
        * Clear form state
        */

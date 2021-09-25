@@ -2,7 +2,7 @@ import config from 'config';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'hooks/useRootStore';
-import { Flex, Box, Heading, Text, useColorMode } from '@chakra-ui/react';
+import { Flex, Box, Heading, useColorMode } from '@chakra-ui/react';
 import UserInfo from './UserInfo';
 import UserNotifications from './UserNotifications';
 import NavMobile from 'components/Nav/Mobile';
@@ -41,7 +41,6 @@ const Header: React.FC = () => {
             <Heading as='p' fontSize='2xl' lineHeight='1'>
               {config.metaData.appName}
             </Heading>
-            <Text as='small'>{config.metaData.appDescription}</Text>
           </Box>
         </Flex>
         {isDesktop ? (

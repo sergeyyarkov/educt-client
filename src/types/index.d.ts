@@ -27,7 +27,7 @@ export type ProfilePageDataType = {
    */
   confirmEmailData?: ConfirmEmailContainerDataType;
 };
-export type ProfilePageViewStatusContextType = {
+export type ProfilePageContextType = {
   /**
    * Render current container by status
    */

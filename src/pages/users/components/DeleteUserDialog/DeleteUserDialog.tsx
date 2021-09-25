@@ -25,7 +25,7 @@ type DeleteUserDialogPropsType = {
 
 const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ onClose, isOpen }) => {
   const { userStore } = useRootStore();
-  const { deletingUser, setDeletingUser } = useContext(UsersPageContext);
+  const { deletingUser, setDeletingUser, searchingRole, search } = useContext(UsersPageContext);
   const isMountedRef = useIsMountedRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const cancelRef = useRef<HTMLButtonElement | null>(null);
@@ -38,8 +38,13 @@ const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ onClose, isOpen
   const onDelete = async (id: string) => {
     try {
       setIsLoading(true);
-      await userStore.deleteUser(id);
-      toast({ title: 'User deleted', status: 'info' });
+      await userStore.deleteUser(id, {
+        page: userStore.pagination?.current_page,
+        limit: userStore.pagination?.per_page,
+        role: searchingRole,
+        search,
+      });
+      toast({ title: 'User deleted.', status: 'info' });
       onClose();
       setDeletingUser(undefined);
     } catch (error: any) {
