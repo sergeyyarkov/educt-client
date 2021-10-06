@@ -27,21 +27,23 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
     userStore: { me },
   } = useRootStore();
 
-  /**
-   * The user with role TEACHER can edit users with only STUDENT role
-   */
-  const isDisabledActions = () => {
+  const isDisabledActions = (() => {
+    /**
+     * Disable editing when rendering on account item
+     */
+    if (me !== null && me.id === user.id) return true;
+
+    /**
+     * Disable editing based on user roles
+     */
     if (helpres.userContainRoles(user.roles, [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]) && me !== null) {
-      /**
-       * Disable editing
-       */
       if (me.isTeacher || me.isStudent) {
         return true;
       } else return false;
     } else {
       return false;
     }
-  };
+  })();
 
   return (
     <Box borderWidth='1px' borderRadius='lg' w='full' p='3'>
@@ -60,7 +62,7 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
         </Flex>
         <Box>
           <IconButton
-            disabled={isDisabledActions()}
+            disabled={isDisabledActions}
             onClick={() => onEdit(user)}
             aria-label='Edit'
             variant='ghost'
@@ -68,7 +70,7 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
             icon={<EditIcon />}
           />
           <IconButton
-            disabled={isDisabledActions()}
+            disabled={isDisabledActions}
             onClick={() => onDelete(user)}
             colorScheme='red'
             aria-label='Delete'
