@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
-import { Box, Flex, Button, Heading, Text } from '@chakra-ui/react';
-import { FaFileExcel } from 'react-icons/fa';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 /**
  * Types
@@ -51,9 +50,6 @@ const UsersPage: React.FC<IPageProps> = () => {
               <UserSearch />
               <Flex sx={{ gap: '10px' }}>
                 <CreateUserForm me={userStore.me} />
-                <Button disabled variant='outline' colorScheme='green' leftIcon={<FaFileExcel />}>
-                  Import
-                </Button>
               </Flex>
             </Flex>
             <UserList users={userStore.users} pagination={userStore.pagination} />

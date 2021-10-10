@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
           pr='2rem'
           pl='2rem'
           sx={{
-            '@media (max-width: 1280px)': {
+            '@media (max-width: 1400px)': {
               ml: '20rem',
             },
             '@media (max-width: 991px)': {
