@@ -14,29 +14,47 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
-import { MdNote } from 'react-icons/md';
+import { MdNote, MdMoreHoriz } from 'react-icons/md';
 
 import { MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
-import { DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { useColorMode } from '@chakra-ui/color-mode';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { useRootStore } from 'hooks/useRootStore';
 
 const CourseItem: React.FC = () => {
+  const {
+    userStore: { me },
+  } = useRootStore();
+  const { colorMode } = useColorMode();
+
+  if (me === null) return null;
+
   return (
     <Box borderWidth='1px' borderRadius='lg'>
-      <Flex justifyContent='flex-end'>
-        <Box position='absolute' zIndex='1' padding='10px'>
-          <Menu>
-            <MenuButton as={IconButton} colorScheme='gray' aria-label='Actions' icon={<HamburgerIcon />} />
-            <MenuList>
-              <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
-              <MenuItem icon={<MdNote />}>Mark as Draft</MenuItem>
-              <MenuItem icon={<DeleteIcon />} color='red.500'>
-                Delete
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </Box>
-      </Flex>
+      {(me.isAdmin || me.isTeacher) && (
+        <Flex justifyContent='flex-end'>
+          <Box position='absolute' zIndex='1' padding='10px'>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+                aria-label='Actions'
+                icon={<MdMoreHoriz size='18px' />}
+                _hover={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
+                _active={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
+              />
+              <MenuList>
+                <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
+                <MenuItem icon={<MdNote />}>Mark as Draft</MenuItem>
+                <MenuItem icon={<DeleteIcon />} color='red.500'>
+                  Delete
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Flex>
+      )}
       <Link
         to='/course/id'
         as={ReactRouterLink}
@@ -48,7 +66,7 @@ const CourseItem: React.FC = () => {
         <Box
           position='relative'
           minHeight='200px'
-          backgroundColor='gray.200'
+          backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
           borderTopLeftRadius='lg'
           borderTopRightRadius='lg'
           p='10px'

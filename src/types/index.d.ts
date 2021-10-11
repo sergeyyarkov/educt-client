@@ -1,5 +1,5 @@
 import { UserRoleEnum } from 'enums';
-import { IUser } from 'interfaces';
+import { ICategory, IUser } from 'interfaces';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 
@@ -72,4 +72,12 @@ export type UsersPageContextType = {
    */
   deletingUser: IUser | undefined;
   setDeletingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
+};
+
+export type CoursesPageContextType = {
+  /**
+   * Filter courses by switching caterory
+   */
+  selectedCategory: ICategory | undefined;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<ICategory | undefined>>;
 };

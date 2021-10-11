@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ProfilePageContextType, UsersPageContextType } from 'types';
+import { CoursesPageContextType, ProfilePageContextType, UsersPageContextType } from 'types';
 import RootStore from '../stores/RootStore';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
@@ -22,4 +22,9 @@ export const UsersPageContext = createContext<UsersPageContextType>({
   setEditingUser: () => {},
   deletingUser: undefined,
   setDeletingUser: () => {},
+});
+
+export const CoursesPageContext = createContext<CoursesPageContextType>({
+  selectedCategory: undefined,
+  setSelectedCategory: () => {},
 });

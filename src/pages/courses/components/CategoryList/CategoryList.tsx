@@ -1,0 +1,34 @@
+import React, { useContext } from 'react';
+import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
+import { CoursesPageContext } from 'contexts';
+import CategoryItem from './CategoryItem';
+import { ICategory } from 'interfaces';
+
+type CategoryListProps = {
+  categories: ICategory[];
+};
+
+const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
+  const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+  return (
+    <Box mb='5'>
+      <Flex sx={{ columnGap: '7px', rowGap: '5px' }} flexWrap='wrap'>
+        <Tag
+          borderRadius='full'
+          variant={selectedCategory === undefined ? 'solid' : 'outline'}
+          cursor='pointer'
+          transition='all .1s'
+          _hover={{ opacity: '.8' }}
+          onClick={() => setSelectedCategory(undefined)}
+        >
+          <TagLabel>All categories</TagLabel>
+        </Tag>
+        {categories.map((category, i) => {
+          return <CategoryItem key={category.id} category={category} />;
+        })}
+      </Flex>
+    </Box>
+  );
+};
+
+export default CategoryList;

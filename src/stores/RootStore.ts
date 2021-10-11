@@ -12,8 +12,11 @@ import ApiService from 'services/ApiService';
 import AuthStore from './AuthStore';
 import UserStore from './UserStore';
 import UIStore from './UIStore';
+import CategoryStore from './CategoryStore';
 
 export default class RootStore {
+  public categoryStore: CategoryStore;
+
   public uiStore: UIStore;
 
   public authStore: AuthStore;
@@ -31,6 +34,7 @@ export default class RootStore {
     /**
      * Stores
      */
+    this.categoryStore = new CategoryStore(this, this.apiService.api);
     this.uiStore = new UIStore(this);
     this.authStore = new AuthStore(this, this.apiService.api);
     this.userStore = new UserStore(this, this.apiService.api);

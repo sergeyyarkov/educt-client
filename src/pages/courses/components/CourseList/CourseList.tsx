@@ -11,15 +11,12 @@ const CourseList: React.FC = () => {
     <Grid
       templateColumns='repeat(3, 1fr)'
       gap='6'
-      mt='12'
-      padding='0 20px'
       sx={{
         '@media (max-width: 1280px)': {
           gridTemplateColumns: 'repeat(2, 1fr)',
         },
         '@media (max-width: 768px)': {
           gridTemplateColumns: 'repeat(1, 1fr)',
-          padding: '10px',
         },
       }}
     >

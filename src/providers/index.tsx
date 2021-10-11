@@ -1,8 +1,8 @@
 import React, { useState, ReactNode } from 'react';
-import { ProfilePageContext, StoreContext, UsersPageContext } from 'contexts';
+import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext } from 'contexts';
 import { ProfilePageDataType, ProfilePageStatusType, SearchingRoleStateType } from 'types';
 import RootStore from 'stores/RootStore';
-import { IUser } from 'interfaces';
+import { ICategory, IUser } from 'interfaces';
 
 /**
  * Root store context provider
@@ -54,5 +54,18 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
     >
       {children}
     </UsersPageContext.Provider>
+  );
+};
+
+/**
+ * Courses page context provider
+ */
+export const CoursesPageContextProvider: React.FC = ({ children }) => {
+  const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(undefined);
+
+  return (
+    <CoursesPageContext.Provider value={{ selectedCategory, setSelectedCategory }}>
+      {children}
+    </CoursesPageContext.Provider>
   );
 };
