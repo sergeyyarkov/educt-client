@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Flex, Box, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
@@ -155,4 +154,4 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   );
 };
 
-export default observer(UserList);
+export default UserList;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
 import { CoursesPageContext } from 'contexts';
 import CategoryItem from './CategoryItem';
@@ -10,6 +10,14 @@ type CategoryListProps = {
 
 const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+
+  /**
+   * Handle on changing category
+   */
+  useEffect(() => {
+    console.log(`[LOG:] Selected category: ${selectedCategory?.title}`);
+  }, [selectedCategory]);
+
   return (
     <Box mb='5'>
       <Flex sx={{ columnGap: '7px', rowGap: '5px' }} flexWrap='wrap'>

@@ -21,7 +21,9 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
   /**
    * Handle click on change category
    */
-  const onCategoryChange = () => setSelectedCategory(category);
+  const onCategoryChange = () => {
+    setSelectedCategory(category);
+  };
 
   return (
     <Tag

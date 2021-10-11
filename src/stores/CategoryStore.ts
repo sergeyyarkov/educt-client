@@ -9,7 +9,7 @@ export default class CategoryStore {
 
   public categoryService: CategoryService;
 
-  public categories: ICategory[] = [];
+  public categories: ICategory[] | null = null;
 
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
