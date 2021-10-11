@@ -1,6 +1,6 @@
 import type { RouteComponentProps } from 'react-router-dom';
 import { LinkType } from 'types';
-import { UserRoleEnum } from '../enums';
+import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
   metaData: {
@@ -20,6 +20,8 @@ export interface ICourse {
   id: string;
   title: string;
   description: string;
+  status: CourseStatusEnum;
+  image: null | {};
   teacher: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
   category: ICategory;
   lessons: ILesson[];

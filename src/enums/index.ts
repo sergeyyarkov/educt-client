@@ -3,3 +3,8 @@ export enum UserRoleEnum {
   TEACHER = 'teacher',
   STUDENT = 'student',
 }
+
+export enum CourseStatusEnum {
+  PUBLISHED = 'PUBLISHED',
+  DRAFT = 'DRAFT',
+}

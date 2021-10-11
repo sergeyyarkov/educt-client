@@ -4,11 +4,11 @@ import { CoursesPageContext } from 'contexts';
 import CategoryItem from './CategoryItem';
 import { ICategory } from 'interfaces';
 
-type CategoryListProps = {
+type CategoryListPropsType = {
   categories: ICategory[];
 };
 
-const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
+const CategoryList: React.FC<CategoryListPropsType> = ({ categories }) => {
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
 
   /**

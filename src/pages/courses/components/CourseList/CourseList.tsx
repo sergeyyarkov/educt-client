@@ -2,11 +2,20 @@ import React from 'react';
 import { Grid } from '@chakra-ui/react';
 
 /**
+ * Types
+ */
+import { ICourse } from 'interfaces';
+
+/**
  * Components
  */
 import CourseItem from './CourseItem';
 
-const CourseList: React.FC = () => {
+type CourseListPropsType = {
+  courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[];
+};
+
+const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   return (
     <Grid
       templateColumns='repeat(3, 1fr)'
@@ -20,8 +29,8 @@ const CourseList: React.FC = () => {
         },
       }}
     >
-      {[1, 2, 3, 4, 5, 6, 7, 8].map(i => {
-        return <CourseItem key={i} />;
+      {courses.map(course => {
+        return <CourseItem key={course.id} course={course} />;
       })}
     </Grid>
   );

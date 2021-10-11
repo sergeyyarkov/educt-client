@@ -13,16 +13,27 @@ import {
   Link,
   IconButton,
 } from '@chakra-ui/react';
-import { Icon } from '@chakra-ui/react';
-import { MdNote, MdMoreHoriz } from 'react-icons/md';
-
-import { MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { useColorMode } from '@chakra-ui/color-mode';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { Icon } from '@chakra-ui/react';
+import { MdNote, MdMoreHoriz, MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+
+/**
+ * Types
+ */
+import { ICourse } from 'interfaces';
+
+/**
+ * Hooks
+ */
+import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from 'hooks/useRootStore';
 
-const CourseItem: React.FC = () => {
+type CourseItemPropsType = {
+  course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
+};
+
+const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
   const {
     userStore: { me },
   } = useRootStore();
@@ -56,7 +67,7 @@ const CourseItem: React.FC = () => {
         </Flex>
       )}
       <Link
-        to='/course/id'
+        to={`/course/${course.id}`}
         as={ReactRouterLink}
         display='block'
         textDecoration='none'
@@ -86,22 +97,23 @@ const CourseItem: React.FC = () => {
           />
         </Box>
         <Box p='0 10px' mt='10px' pb='20px'>
-          <Badge colorScheme='blue'>ReactJS</Badge>
+          <Badge colorScheme='blue'>{course.category.title}</Badge>
           <Heading as='h2' fontSize='xl' mt='5px'>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+            {course.title}
           </Heading>
+          <Text>{course.description}</Text>
           <Flex mt='20px' flexWrap='wrap'>
             <Flex alignItems='center' mr='1'>
               <Icon as={MdVideoLibrary} mr='2' />
-              <Text mr='4'>24 lesson</Text>
+              <Text mr='4'>{course.lessons_count} lessons</Text>
             </Flex>
             <Flex alignItems='center' mr='1'>
               <Icon as={MdGroup} mr='2' />
-              <Text mr='4'>12 students</Text>
+              <Text mr='4'>{course.students_count} students</Text>
             </Flex>
             <Flex alignItems='center' mr='1'>
               <Icon as={MdThumbUp} mr='2' />
-              <Text>4 likes</Text>
+              <Text>{course.likes_count} likes</Text>
             </Flex>
           </Flex>
         </Box>
