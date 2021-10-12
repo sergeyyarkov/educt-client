@@ -28,6 +28,7 @@ import { ICourse } from 'interfaces';
  */
 import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from 'hooks/useRootStore';
+import CourseStatusBadge from 'components/CourseStatusBadge';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
@@ -97,7 +98,10 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
           />
         </Box>
         <Box p='0 10px' mt='10px' pb='20px'>
-          <Badge colorScheme='blue'>{course.category.title}</Badge>
+          <Flex justifyContent='space-between'>
+            <Badge colorScheme='blue'>{course.category.title}</Badge>
+            {(me.isAdmin || me.isTeacher) && <CourseStatusBadge status={course.status} />}
+          </Flex>
           <Heading as='h2' fontSize='xl' mt='5px'>
             {course.title}
           </Heading>

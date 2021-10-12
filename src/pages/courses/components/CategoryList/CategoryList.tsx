@@ -4,6 +4,11 @@ import { CoursesPageContext } from 'contexts';
 import CategoryItem from './CategoryItem';
 import { ICategory } from 'interfaces';
 import CategoryListLoading from './CategoryListLoading';
+
+/**
+ * Hooks
+ */
+import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from 'hooks/useRootStore';
 
 type CategoryListPropsType = {
@@ -12,16 +17,13 @@ type CategoryListPropsType = {
 };
 
 const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }) => {
-  const { courseStore } = useRootStore();
+  const { categoryStore } = useRootStore();
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+  const handleError = useErrorHandler();
 
-  /**
-   * Handle on changing category
-   */
   useEffect(() => {
-    console.log(`[LOG:] Selected category: ${selectedCategory?.title}`);
-    courseStore.loadCourses({ category_id: selectedCategory?.id });
-  }, [courseStore, selectedCategory]);
+    categoryStore.loadCategories().catch(error => handleError(error));
+  }, [categoryStore, handleError]);
 
   if (isLoading || categories === null) {
     return <CategoryListLoading />;

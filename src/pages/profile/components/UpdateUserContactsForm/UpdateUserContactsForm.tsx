@@ -53,7 +53,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box boxShadow='sm' borderRadius='sm' borderWidth='1px' padding='20px'>
-          <Heading as='h3' size='lg'>
+          <Heading as='h3' size='md'>
             My Contacts
           </Heading>
           <Stack spacing='5px' margin='20px 0'>

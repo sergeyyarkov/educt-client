@@ -12,7 +12,7 @@ const UserAccountInfo: React.FC<UserAccountInfoPropsType> = ({ user }) => {
 
   return (
     <Box borderRadius='md' borderWidth='1px' padding='20px' boxShadow='sm'>
-      <Heading as='h3' size='lg'>
+      <Heading as='h3' size='md'>
         Account information
       </Heading>
       <Stack spacing='10px' mt='20px' divider={<StackDivider />}>

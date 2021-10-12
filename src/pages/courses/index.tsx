@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Flex, Tabs, TabList, Tab, Box, Heading, Text, Button } from '@chakra-ui/react';
 
@@ -10,14 +10,13 @@ import { AddIcon } from '@chakra-ui/icons';
  */
 import CourseList from './components/CourseList';
 import CategoryList from './components/CategoryList';
+import LoadingPage from 'components/LoadingPage';
 
 /**
  * Hooks
  */
 import { useRootStore } from 'hooks/useRootStore';
 import { CoursesPageContextProvider } from 'providers';
-import { useErrorHandler } from 'react-error-boundary';
-import LoadingPage from 'components/LoadingPage';
 
 /**
  * Courses page
@@ -28,14 +27,6 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
     categoryStore,
     courseStore,
   } = useRootStore();
-  const handleError = useErrorHandler();
-
-  useEffect(() => {
-    if (me !== null) {
-      categoryStore.loadCategories().catch(error => handleError(error));
-      // courseStore.loadCourses().catch(error => handleError(error));
-    }
-  }, [me, categoryStore, handleError]);
 
   if (me === null) return <LoadingPage />;
 
