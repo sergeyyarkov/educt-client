@@ -11,14 +11,21 @@ export default class CategoryStore {
 
   public categories: ICategory[] | null = null;
 
+  public isLoading: boolean = false;
+
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
     this.categoryService = new CategoryService(api);
     makeAutoObservable(this);
   }
 
+  public setLoading(loading: boolean) {
+    this.isLoading = loading;
+  }
+
   public async loadCategories() {
     try {
+      this.setLoading(true);
       const result = await this.categoryService.fetchAll();
       console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
@@ -29,6 +36,8 @@ export default class CategoryStore {
       return result;
     } catch (error: any) {
       throw error;
+    } finally {
+      this.setLoading(false);
     }
   }
 }

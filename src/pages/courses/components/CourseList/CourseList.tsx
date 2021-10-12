@@ -10,12 +10,18 @@ import { ICourse } from 'interfaces';
  * Components
  */
 import CourseItem from './CourseItem';
+import CourseListLoading from './CourseListLoading';
 
 type CourseListPropsType = {
-  courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[];
+  courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null;
+  isLoading: boolean;
 };
 
-const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
+const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
+  if (isLoading || courses === null) {
+    return <CourseListLoading />;
+  }
+
   return (
     <Grid
       templateColumns='repeat(3, 1fr)'

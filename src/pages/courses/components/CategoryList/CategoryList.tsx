@@ -3,12 +3,16 @@ import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
 import { CoursesPageContext } from 'contexts';
 import CategoryItem from './CategoryItem';
 import { ICategory } from 'interfaces';
+import CategoryListLoading from './CategoryListLoading';
+import { useRootStore } from 'hooks/useRootStore';
 
 type CategoryListPropsType = {
-  categories: ICategory[];
+  categories: ICategory[] | null;
+  isLoading: boolean;
 };
 
-const CategoryList: React.FC<CategoryListPropsType> = ({ categories }) => {
+const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }) => {
+  const { courseStore } = useRootStore();
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
 
   /**
@@ -16,7 +20,12 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ categories }) => {
    */
   useEffect(() => {
     console.log(`[LOG:] Selected category: ${selectedCategory?.title}`);
-  }, [selectedCategory]);
+    courseStore.loadCourses({ category_id: selectedCategory?.id });
+  }, [courseStore, selectedCategory]);
+
+  if (isLoading || categories === null) {
+    return <CategoryListLoading />;
+  }
 
   return (
     <Box mb='5'>

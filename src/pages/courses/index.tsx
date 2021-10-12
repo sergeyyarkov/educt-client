@@ -17,8 +17,7 @@ import CategoryList from './components/CategoryList';
 import { useRootStore } from 'hooks/useRootStore';
 import { CoursesPageContextProvider } from 'providers';
 import { useErrorHandler } from 'react-error-boundary';
-import CategoryListLoading from './components/CategoryList/CategoryListLoading';
-import CourseListLoading from './components/CourseList/CourseListLoading';
+import LoadingPage from 'components/LoadingPage';
 
 /**
  * Courses page
@@ -34,14 +33,11 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
   useEffect(() => {
     if (me !== null) {
       categoryStore.loadCategories().catch(error => handleError(error));
-      courseStore.loadCourses().catch(error => handleError(error));
+      // courseStore.loadCourses().catch(error => handleError(error));
     }
-  }, [me, categoryStore, courseStore, handleError]);
+  }, [me, categoryStore, handleError]);
 
-  /**
-   * TODO: Loading page for courses
-   */
-  if (me === null) return null;
+  if (me === null) return <LoadingPage />;
 
   return (
     <CoursesPageContextProvider>
@@ -68,15 +64,8 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
             </Tabs>
           )}
           <Box mt='5'>
-            {/* Category List Rendering */}
-            {categoryStore.categories !== null ? (
-              <CategoryList categories={categoryStore.categories} />
-            ) : (
-              <CategoryListLoading />
-            )}
-
-            {/* Course List Rendering */}
-            {courseStore.courses !== null ? <CourseList courses={courseStore.courses} /> : <CourseListLoading />}
+            <CategoryList categories={categoryStore.categories} isLoading={categoryStore.isLoading} />
+            <CourseList courses={courseStore.courses} isLoading={courseStore.isLoading} />
           </Box>
         </Box>
       </Box>

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Grid, Skeleton } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 const CourseListLoading: React.FC = () => {
   return (
-    <Grid templateColumns='repeat(auto-fit, minmax(300px, 1fr))' gap='6'>
-      <Skeleton height='200px' borderRadius='lg' />
-      <Skeleton height='200px' borderRadius='lg' />
-      <Skeleton height='200px' borderRadius='lg' />
-    </Grid>
+    <Box textAlign='center' mt='10' userSelect='none'>
+      <Text color='gray.500'>Wait a second...</Text>
+    </Box>
   );
 };
 
