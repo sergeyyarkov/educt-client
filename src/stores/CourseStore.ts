@@ -1,7 +1,20 @@
 import { AxiosInstance } from 'axios';
-import { ICourse } from 'interfaces';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { CourseService, FetchCoursesParams } from 'services/CourseService';
+
+/**
+ * Types
+ */
+import { FetchCoursesParams } from 'types';
+import { ICourse } from 'interfaces';
+
+/**
+ * Services
+ */
+import { CourseService } from 'services/CourseService';
+
+/**
+ * Stores
+ */
 import RootStore from './RootStore';
 
 export default class CourseStore {

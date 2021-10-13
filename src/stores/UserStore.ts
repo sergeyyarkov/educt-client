@@ -1,18 +1,23 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import { IUser, IUserContacts, IMe, IPaginationMeta } from 'interfaces';
 import * as helpers from 'helpers';
+
+/**
+ * Types
+ */
+import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from 'types';
+import { IUser, IUserContacts, IMe, IPaginationMeta } from 'interfaces';
+import { UserRoleEnum } from 'enums';
 
 /**
  * Services
  */
-import UserService, { CreateUserParamsType, UpdateUserParamsType, FetchUsersParamsType } from 'services/UserService';
+import UserService from 'services/UserService';
 
 /**
  * Stores
  */
 import RootStore from './RootStore';
-import { UserRoleEnum } from 'enums';
 
 export default class UserStore {
   public root: RootStore;

@@ -82,6 +82,8 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
         role: searchingRole,
         search,
       });
+      toast({ title: 'User created.', status: 'info' });
+
       /**
        * Clear form state
        */

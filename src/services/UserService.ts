@@ -1,18 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, IMe, IUser, IUserContacts } from 'interfaces';
 import * as helpers from 'helpers';
-import { UserRoleEnum } from 'enums';
-
-export type FetchUsersParamsType = { page?: number; limit?: number; role?: UserRoleEnum | 'any'; search?: string };
-export type CreateUserParamsType = {
-  first_name: string;
-  last_name: string;
-  login: string;
-  email: string;
-  role: UserRoleEnum;
-  password: string;
-};
-export type UpdateUserParamsType = { first_name?: string; last_name?: string; email?: string };
+import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from 'types';
 
 export default class UserService {
   public api: AxiosInstance;

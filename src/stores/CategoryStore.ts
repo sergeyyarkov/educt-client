@@ -1,7 +1,19 @@
 import { AxiosInstance } from 'axios';
-import { ICategory } from 'interfaces';
 import { makeAutoObservable, runInAction } from 'mobx';
+
+/**
+ * Types
+ */
+import { ICategory } from 'interfaces';
+
+/**
+ * Services
+ */
 import CategoryService from 'services/CategoryService';
+
+/**
+ * Stores
+ */
 import RootStore from './RootStore';
 
 export default class CategoryStore {

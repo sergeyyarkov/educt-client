@@ -1,18 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { CourseStatusEnum } from 'enums';
 import { IApiRespose, ICourse } from 'interfaces';
-
-export type FetchCoursesParams = {
-  /**
-   * Get courses by status
-   */
-  status?: CourseStatusEnum;
-
-  /**
-   * Get courses with category by id
-   */
-  category_id?: string;
-};
+import { FetchCoursesParams } from 'types';
 
 export class CourseService {
   public api: AxiosInstance;

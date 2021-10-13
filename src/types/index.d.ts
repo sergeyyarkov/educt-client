@@ -81,3 +81,29 @@ export type CoursesPageContextType = {
   selectedCategory: ICategory | undefined;
   setSelectedCategory: React.Dispatch<React.SetStateAction<ICategory | undefined>>;
 };
+export type FetchCoursesParams = {
+  /**
+   * Get courses by status
+   */
+  status?: CourseStatusEnum;
+
+  /**
+   * Get courses with category by id
+   */
+  category_id?: string;
+};
+export type FetchUsersParamsType = {
+  page?: number;
+  limit?: number;
+  role?: UserRoleEnum | 'any';
+  search?: string;
+};
+export type CreateUserParamsType = {
+  first_name: string;
+  last_name: string;
+  login: string;
+  email: string;
+  role: UserRoleEnum;
+  password: string;
+};
+export type UpdateUserParamsType = { first_name?: string; last_name?: string; email?: string };

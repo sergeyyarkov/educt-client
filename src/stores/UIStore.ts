@@ -1,5 +1,9 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { createBrowserHistory } from 'history';
+
+/**
+ * Types
+ */
 import { IWindowDimensions } from 'interfaces';
 
 /**
