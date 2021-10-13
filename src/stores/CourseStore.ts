@@ -53,4 +53,21 @@ export default class CourseStore {
       this.setLoading(false);
     }
   }
+
+  public async deleteCourse(id: string) {
+    try {
+      const result = await this.courseService.delete(id);
+      console.log(`[${this.constructor.name}]: ${result.message}`, result);
+
+      runInAction(() => {
+        if (this.courses !== null) {
+          this.courses = this.courses.filter(course => course.id !== id);
+        }
+      });
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

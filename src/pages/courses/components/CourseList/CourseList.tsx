@@ -11,11 +11,13 @@ import { ICourse } from 'interfaces';
  */
 import CourseItem from './CourseItem';
 import CourseListLoading from './CourseListLoading';
+import DeleteCourseDialog from '../DeleteCourseDialog';
 
 /**
  * Hooks
  */
 import { useRootStore } from 'hooks/useRootStore';
+import { useDisclosure } from '@chakra-ui/hooks';
 
 /**
  * Contexts
@@ -33,7 +35,8 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     userStore: { me },
     courseStore,
   } = useRootStore();
-  const { selectedCategory, courseStatus } = useContext(CoursesPageContext);
+  const { selectedCategory, courseStatus, deletingCourse, setDeletingCourse } = useContext(CoursesPageContext);
+  const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
 
   useEffect(() => {
     if (me !== null) {
@@ -44,12 +47,18 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     }
   }, [courseStore, selectedCategory, courseStatus, me]);
 
+  const onDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
+    setDeletingCourse(course);
+    onOpenDeleteDialog();
+  };
+
   if (isLoading || courses === null) {
     return <CourseListLoading />;
   }
 
   return (
     <>
+      {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       {courses.length !== 0 ? (
         <Grid
           templateColumns='repeat(3, 1fr)'
@@ -64,7 +73,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
           }}
         >
           {courses.map(course => (
-            <CourseItem key={course.id} course={course} />
+            <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} />
           ))}
         </Grid>
       ) : (

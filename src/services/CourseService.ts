@@ -25,4 +25,15 @@ export class CourseService {
     });
     return result.data;
   }
+
+  /**
+   * Delete course by id
+   *
+   * @param id Course id
+   * @returns Deleted course
+   */
+  public async delete(id: string): Promise<IApiRespose<Omit<ICourse, 'teacher' | 'students' | 'lessons'>>> {
+    const result = await this.api.delete(`/v1/courses/${id}`);
+    return result.data;
+  }
 }

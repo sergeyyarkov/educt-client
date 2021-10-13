@@ -1,5 +1,5 @@
 import { CourseStatusEnum, UserRoleEnum } from 'enums';
-import { ICategory, IUser } from 'interfaces';
+import { ICategory, ICourse, IUser } from 'interfaces';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 
@@ -68,7 +68,7 @@ export type UsersPageContextType = {
   setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 
   /**
-   * Set deliting user state when press on delete button
+   * Set deleting user state when press on delete button
    */
   deletingUser: IUser | undefined;
   setDeletingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
@@ -86,6 +86,12 @@ export type CoursesPageContextType = {
    */
   courseStatus: CourseStatusEnum | undefined;
   setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
+
+  /**
+   * Set deleting course state when press on delete button
+   */
+  deletingCourse: Pick<ICourse, 'id' | 'title'> | undefined;
+  setDeletingCourse: React.Dispatch<React.SetStateAction<Pick<ICourse, 'id' | 'title'> | undefined>>;
 };
 export type FetchCoursesParams = {
   /**

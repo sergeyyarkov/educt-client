@@ -32,9 +32,10 @@ import CourseStatusBadge from 'components/CourseStatusBadge';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
+  onDelete: (course: Pick<ICourse, 'id' | 'title'>) => void;
 };
 
-const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
+const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete }) => {
   const {
     userStore: { me },
   } = useRootStore();
@@ -59,7 +60,11 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
               <MenuList>
                 <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
                 <MenuItem icon={<MdNote />}>Mark as Draft</MenuItem>
-                <MenuItem icon={<DeleteIcon />} color='red.500'>
+                <MenuItem
+                  onClick={() => onDelete({ id: course.id, title: course.title })}
+                  icon={<DeleteIcon />}
+                  color='red.500'
+                >
                   Delete
                 </MenuItem>
               </MenuList>

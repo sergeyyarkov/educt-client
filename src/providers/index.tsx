@@ -2,7 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext } from 'contexts';
 import { ProfilePageDataType, ProfilePageStatusType, SearchingRoleStateType } from 'types';
 import RootStore from 'stores/RootStore';
-import { ICategory, IUser } from 'interfaces';
+import { ICategory, ICourse, IUser } from 'interfaces';
 import { CourseStatusEnum } from 'enums';
 
 /**
@@ -64,9 +64,19 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
 export const CoursesPageContextProvider: React.FC = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(undefined);
   const [courseStatus, setCourseStatus] = useState<CourseStatusEnum | undefined>(undefined);
+  const [deletingCourse, setDeletingCourse] = useState<Pick<ICourse, 'id' | 'title'> | undefined>(undefined);
 
   return (
-    <CoursesPageContext.Provider value={{ selectedCategory, setSelectedCategory, courseStatus, setCourseStatus }}>
+    <CoursesPageContext.Provider
+      value={{
+        selectedCategory,
+        setSelectedCategory,
+        courseStatus,
+        setCourseStatus,
+        deletingCourse,
+        setDeletingCourse,
+      }}
+    >
       {children}
     </CoursesPageContext.Provider>
   );
