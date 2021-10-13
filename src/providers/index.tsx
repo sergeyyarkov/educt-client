@@ -3,6 +3,7 @@ import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext 
 import { ProfilePageDataType, ProfilePageStatusType, SearchingRoleStateType } from 'types';
 import RootStore from 'stores/RootStore';
 import { ICategory, IUser } from 'interfaces';
+import { CourseStatusEnum } from 'enums';
 
 /**
  * Root store context provider
@@ -62,9 +63,10 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
  */
 export const CoursesPageContextProvider: React.FC = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(undefined);
+  const [courseStatus, setCourseStatus] = useState<CourseStatusEnum | undefined>(undefined);
 
   return (
-    <CoursesPageContext.Provider value={{ selectedCategory, setSelectedCategory }}>
+    <CoursesPageContext.Provider value={{ selectedCategory, setSelectedCategory, courseStatus, setCourseStatus }}>
       {children}
     </CoursesPageContext.Provider>
   );

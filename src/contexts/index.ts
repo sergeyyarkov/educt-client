@@ -27,4 +27,6 @@ export const UsersPageContext = createContext<UsersPageContextType>({
 export const CoursesPageContext = createContext<CoursesPageContextType>({
   selectedCategory: undefined,
   setSelectedCategory: () => {},
+  courseStatus: undefined,
+  setCourseStatus: () => {},
 });

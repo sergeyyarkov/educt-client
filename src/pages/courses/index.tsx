@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Flex, Tabs, TabList, Tab, Box, Heading, Text, Button } from '@chakra-ui/react';
+import { Flex, Box, Heading, Text, Button } from '@chakra-ui/react';
 
 import { IPageProps } from 'interfaces';
 import { AddIcon } from '@chakra-ui/icons';
@@ -17,6 +17,7 @@ import LoadingPage from 'components/LoadingPage';
  */
 import { useRootStore } from 'hooks/useRootStore';
 import { CoursesPageContextProvider } from 'providers';
+import CourseStatusTabs from './components/CourseStatusTabs';
 
 /**
  * Courses page
@@ -45,15 +46,7 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
           )}
         </Flex>
         <Box mt='7'>
-          {(me.isAdmin || me.isTeacher) && (
-            <Tabs>
-              <TabList justifyContent='center'>
-                <Tab>All</Tab>
-                <Tab>Published</Tab>
-                <Tab>Draft</Tab>
-              </TabList>
-            </Tabs>
-          )}
+          {(me.isAdmin || me.isTeacher) && <CourseStatusTabs />}
           <Box mt='5'>
             <CategoryList categories={categoryStore.categories} isLoading={categoryStore.isLoading} />
             <CourseList courses={courseStore.courses} isLoading={courseStore.isLoading} />

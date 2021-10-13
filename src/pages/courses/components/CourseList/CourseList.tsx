@@ -29,11 +29,11 @@ type CourseListPropsType = {
 
 const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
   const { courseStore } = useRootStore();
-  const { selectedCategory } = useContext(CoursesPageContext);
+  const { selectedCategory, courseStatus } = useContext(CoursesPageContext);
 
   useEffect(() => {
-    courseStore.loadCourses({ category_id: selectedCategory?.id });
-  }, [courseStore, selectedCategory]);
+    courseStore.loadCourses({ category_id: selectedCategory?.id, status: courseStatus });
+  }, [courseStore, selectedCategory, courseStatus]);
 
   if (isLoading || courses === null) {
     return <CourseListLoading />;
@@ -60,7 +60,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
         </Grid>
       ) : (
         <Box textAlign='center' mt='10' userSelect='none'>
-          <Text color='gray.500'>There are no courses in this category.</Text>
+          <Text color='gray.500'>There are no courses in this category {courseStatus && 'or with this status'}.</Text>
         </Box>
       )}
     </>

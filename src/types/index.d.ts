@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'enums';
+import { CourseStatusEnum, UserRoleEnum } from 'enums';
 import { ICategory, IUser } from 'interfaces';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
@@ -76,10 +76,16 @@ export type UsersPageContextType = {
 
 export type CoursesPageContextType = {
   /**
-   * Filter courses by switching caterory
+   * Filter courses by caterory
    */
   selectedCategory: ICategory | undefined;
   setSelectedCategory: React.Dispatch<React.SetStateAction<ICategory | undefined>>;
+
+  /**
+   * Filter courses by status
+   */
+  courseStatus: CourseStatusEnum | undefined;
+  setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
 };
 export type FetchCoursesParams = {
   /**
