@@ -21,6 +21,7 @@ import { useRootStore } from 'hooks/useRootStore';
  * Contexts
  */
 import { CoursesPageContext } from 'contexts';
+import { CourseStatusEnum } from 'enums';
 
 type CourseListPropsType = {
   courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null;
@@ -28,12 +29,20 @@ type CourseListPropsType = {
 };
 
 const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
-  const { courseStore } = useRootStore();
+  const {
+    userStore: { me },
+    courseStore,
+  } = useRootStore();
   const { selectedCategory, courseStatus } = useContext(CoursesPageContext);
 
   useEffect(() => {
-    courseStore.loadCourses({ category_id: selectedCategory?.id, status: courseStatus });
-  }, [courseStore, selectedCategory, courseStatus]);
+    if (me !== null) {
+      courseStore.loadCourses({
+        category_id: selectedCategory?.id,
+        status: me.isAdmin || me.isTeacher ? courseStatus : CourseStatusEnum.PUBLISHED,
+      });
+    }
+  }, [courseStore, selectedCategory, courseStatus, me]);
 
   if (isLoading || courses === null) {
     return <CourseListLoading />;
