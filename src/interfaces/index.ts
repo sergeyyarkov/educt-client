@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { LinkType } from 'types';
+import { LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {

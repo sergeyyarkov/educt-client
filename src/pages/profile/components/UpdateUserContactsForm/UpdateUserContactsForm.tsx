@@ -2,12 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
-import { IUserContacts } from 'interfaces';
+import { IUserContacts } from '@educt/interfaces';
 import { Box, Heading, Stack } from '@chakra-ui/layout';
 import { Text, Input, Button } from '@chakra-ui/react';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useUpdateUserContactsQuery from 'hooks/useUpdateUserContactsQuery';
+import useUpdateUserContactsQuery from '@educt/hooks/useUpdateUserContactsQuery';
 import UpdateUserContactsSchema from './UpdateUserContactsForm.validator';
 
 type UpdateUserContactsInputType = {

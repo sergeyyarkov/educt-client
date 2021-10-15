@@ -26,19 +26,19 @@ import CreateUserSchema from './CreateUserModal.validator';
 /**
  * Types
  */
-import { IMe } from 'interfaces';
-import { UserRoleEnum } from 'enums';
+import { IMe } from '@educt/interfaces';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Hooks
  */
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useForm } from 'react-hook-form';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useToast } from '@chakra-ui/react';
-import { UsersPageContext } from 'contexts';
+import { UsersPageContext } from '@educt/contexts';
 
 type CreateUserModalPropsType = {
   me: IMe;

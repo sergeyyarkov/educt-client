@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { IApiRespose, ICategory } from 'interfaces';
+import { IApiRespose, ICategory } from '@educt/interfaces';
 
 export default class CategoryService {
   public api: AxiosInstance;

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Flex, Select, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { useRootStore } from 'hooks/useRootStore';
-import { UserRoleEnum } from 'enums';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { UserRoleEnum } from '@educt/enums';
 import { useErrorHandler } from 'react-error-boundary';
-import { UsersPageContext } from 'contexts';
-import { UsersPageContextType } from 'types';
+import { UsersPageContext } from '@educt/contexts';
+import { UsersPageContextType } from '@educt/types';
 
 type SelectRoleStateType = UserRoleEnum | 'any';
 

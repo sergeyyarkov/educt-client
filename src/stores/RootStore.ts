@@ -1,10 +1,10 @@
-import apiConfig from 'api.config';
+import apiConfig from '@educt/api.config';
 import { makeAutoObservable } from 'mobx';
 
 /**
  * Services
  */
-import ApiService from 'services/ApiService';
+import ApiService from '@educt/services/ApiService';
 
 /**
  * Stores

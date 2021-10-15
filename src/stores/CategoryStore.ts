@@ -4,12 +4,12 @@ import { makeAutoObservable, runInAction } from 'mobx';
 /**
  * Types
  */
-import { ICategory } from 'interfaces';
+import { ICategory } from '@educt/interfaces';
 
 /**
  * Services
  */
-import CategoryService from 'services/CategoryService';
+import CategoryService from '@educt/services/CategoryService';
 
 /**
  * Stores

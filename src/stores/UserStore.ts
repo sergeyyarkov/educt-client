@@ -1,18 +1,18 @@
 import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
-import * as helpers from 'helpers';
+import * as helpers from '@educt/helpers';
 
 /**
  * Types
  */
-import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from 'types';
-import { IUser, IUserContacts, IMe, IPaginationMeta } from 'interfaces';
-import { UserRoleEnum } from 'enums';
+import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
+import { IUser, IUserContacts, IMe, IPaginationMeta } from '@educt/interfaces';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Services
  */
-import UserService from 'services/UserService';
+import UserService from '@educt/services/UserService';
 
 /**
  * Stores

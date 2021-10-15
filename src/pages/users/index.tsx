@@ -5,7 +5,7 @@ import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 /**
  * Types
  */
-import { IPageProps } from 'interfaces';
+import { IPageProps } from '@educt/interfaces';
 
 /**
  * Components
@@ -17,7 +17,7 @@ import LoadingPage from './components/LoadingPage';
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useLocation } from 'react-router';
 
@@ -25,7 +25,7 @@ import { useLocation } from 'react-router';
  * Context
  */
 import CreateUserForm from './components/CreateUserForm';
-import { UsersPageContextProvider } from 'providers';
+import { UsersPageContextProvider } from '@educt/providers';
 
 /**
  * Users Page

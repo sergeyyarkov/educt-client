@@ -2,8 +2,8 @@ import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route } from 'react-router-dom';
 import { RouteProps } from 'react-router';
-import { IPageProps } from 'interfaces';
-import ErrorFallback from 'components/ErrorFallback';
+import { IPageProps } from '@educt/interfaces';
+import ErrorFallback from '@educt/components/ErrorFallback';
 
 export interface IPublicRouteProps extends RouteProps {
   component: React.FC<IPageProps>;

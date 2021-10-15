@@ -1,5 +1,5 @@
 import { Badge } from '@chakra-ui/layout';
-import { CourseStatusEnum } from 'enums';
+import { CourseStatusEnum } from '@educt/enums';
 import React from 'react';
 
 type CourseStatusBadgeProps = {

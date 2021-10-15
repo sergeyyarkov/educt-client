@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 /**
  * Types
  */
-import { IPageProps } from 'interfaces';
+import { IPageProps } from '@educt/interfaces';
 
 /**
  *  Components
@@ -21,18 +21,18 @@ import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 
 /**
  * Contexts
  */
-import { ProfilePageContext } from 'contexts';
+import { ProfilePageContext } from '@educt/contexts';
 
 /**
  * Providers
  */
-import { ProfilePageContextProvider } from 'providers';
+import { ProfilePageContextProvider } from '@educt/providers';
 import MainContainer from './containers/MainContainer';
 
 /**

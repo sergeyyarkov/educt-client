@@ -21,14 +21,14 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 /**
  * Types
  */
-import { ICourse } from 'interfaces';
+import { ICourse } from '@educt/interfaces';
 
 /**
  * Hooks
  */
 import { useColorMode } from '@chakra-ui/color-mode';
-import { useRootStore } from 'hooks/useRootStore';
-import CourseStatusBadge from 'components/CourseStatusBadge';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Heading, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Grid } from '@chakra-ui/react';
 
-import { IPageProps } from 'interfaces';
+import { IPageProps } from '@educt/interfaces';
 
 /**
  * Messages page

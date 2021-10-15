@@ -1,19 +1,19 @@
 import React from 'react';
-import * as helpres from 'helpers';
+import * as helpres from '@educt/helpers';
 import { Box, Flex, Avatar, Text, IconButton, Link } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import UserBadge from 'components/UserBadge';
+import UserBadge from '@educt/components/UserBadge';
 
 /**
  * Types
  */
-import { IUser } from 'interfaces';
-import { UserRoleEnum } from 'enums';
+import { IUser } from '@educt/interfaces';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 type UserItemPropsType = {

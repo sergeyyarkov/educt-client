@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Tabs, TabList, Tab } from '@chakra-ui/react';
-import { CoursesPageContext } from 'contexts';
-import { CourseStatusEnum } from 'enums';
+import { CoursesPageContext } from '@educt/contexts';
+import { CourseStatusEnum } from '@educt/enums';
 
 type CourseStatusTabsProps = {};
 
@@ -25,4 +25,4 @@ const CourseStatusTabs: React.FC<CourseStatusTabsProps> = () => {
   );
 };
 
-export default CourseStatusTabs;
+export default React.memo(CourseStatusTabs);

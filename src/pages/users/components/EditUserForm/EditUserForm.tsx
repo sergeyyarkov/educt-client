@@ -24,21 +24,21 @@ import UpdateUserSchema from './EditUserForm.validator';
 /**
  * Types
  */
-import { UserRoleEnum } from 'enums';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Contexts
  */
-import { UsersPageContext } from 'contexts';
+import { UsersPageContext } from '@educt/contexts';
 
 /**
  * Hooks
  */
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useToast } from '@chakra-ui/react';
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 type UpdateUserInputType = {
   first_name: string;

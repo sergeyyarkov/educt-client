@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 /**
  * Types
  */
-import { IWindowDimensions } from 'interfaces';
+import { IWindowDimensions } from '@educt/interfaces';
 
 /**
  * Stores

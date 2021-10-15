@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 /**
  * Services
  */
-import AuthService from 'services/AuthService';
+import AuthService from '@educt/services/AuthService';
 
 /**
  * Stores

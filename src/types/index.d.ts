@@ -1,5 +1,5 @@
-import { CourseStatusEnum, UserRoleEnum } from 'enums';
-import { ICategory, ICourse, IUser } from 'interfaces';
+import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
+import { ICategory, ICourse, IUser } from '@educt/interfaces';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 

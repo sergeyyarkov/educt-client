@@ -15,10 +15,10 @@ import {
 } from '@chakra-ui/react';
 import { MdSettings, MdExitToApp } from 'react-icons/md';
 import { observer } from 'mobx-react';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { Link } from 'react-router-dom';
-import UserBadge from 'components/UserBadge';
-import useLogoutQuery from 'hooks/useLogoutQuery';
+import UserBadge from '@educt/components/UserBadge';
+import useLogoutQuery from '@educt/hooks/useLogoutQuery';
 
 const UserInfo: React.FC = () => {
   const { userStore } = useRootStore();

@@ -8,13 +8,13 @@ import {
   AlertDialogOverlay,
   Button,
 } from '@chakra-ui/react';
-import { UsersPageContext } from 'contexts';
+import { UsersPageContext } from '@educt/contexts';
 
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useToast } from '@chakra-ui/react';
 import { useErrorHandler } from 'react-error-boundary';
 

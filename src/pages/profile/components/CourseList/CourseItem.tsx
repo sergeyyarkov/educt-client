@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Link, Box, Flex } from '@chakra-ui/layout';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { MdVideoLibrary, MdGroup, MdThumbUp } from 'react-icons/md';
-import { UserCourseType } from 'interfaces';
+import { UserCourseType } from '@educt/interfaces';
 import { Tag, TagLabel } from '@chakra-ui/react';
 
 type CourseItemPropsType = {

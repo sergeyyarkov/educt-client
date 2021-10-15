@@ -4,7 +4,7 @@ import { Box, Grid, Text } from '@chakra-ui/react';
 /**
  * Types
  */
-import { ICourse } from 'interfaces';
+import { ICourse } from '@educt/interfaces';
 
 /**
  * Components
@@ -16,14 +16,14 @@ import DeleteCourseDialog from '../DeleteCourseDialog';
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 
 /**
  * Contexts
  */
-import { CoursesPageContext } from 'contexts';
-import { CourseStatusEnum } from 'enums';
+import { CoursesPageContext } from '@educt/contexts';
+import { CourseStatusEnum } from '@educt/enums';
 
 type CourseListPropsType = {
   courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null;

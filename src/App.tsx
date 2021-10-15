@@ -4,29 +4,29 @@ import { Router, Switch } from 'react-router-dom';
 /**
  * Types
  */
-import { UserRoleEnum } from 'enums';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**
  * Components
  */
-import PrivateRoute from 'components/PrivateRoute';
-import PublicRoute from 'components/PublicRoute';
+import PrivateRoute from '@educt/components/PrivateRoute';
+import PublicRoute from '@educt/components/PublicRoute';
 
 /**
  * Pages
  */
-import MainPage from 'pages/main';
-import CoursesPage from 'pages/courses';
-import MessagesPage from 'pages/messages';
-import ProfilePage from 'pages/profile';
-import UsersPage from 'pages/users';
-import AuthPage from 'pages/auth';
-import NotFoundPage from 'pages/404';
+import MainPage from '@educt/pages/main';
+import CoursesPage from '@educt/pages/courses';
+import MessagesPage from '@educt/pages/messages';
+import ProfilePage from '@educt/pages/profile';
+import UsersPage from '@educt/pages/users';
+import AuthPage from '@educt/pages/auth';
+import NotFoundPage from '@educt/pages/404';
 
 const App = () => {
   const {

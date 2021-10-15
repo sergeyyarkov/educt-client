@@ -2,9 +2,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { IPageProps } from 'interfaces';
+import { IPageProps } from '@educt/interfaces';
 import { Flex } from '@chakra-ui/react';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 import AuthForm from './components/AuthForm';
 

@@ -3,9 +3,9 @@ import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ProfilePageContext } from 'contexts';
-import { useRootStore } from 'hooks/useRootStore';
-import useUpdateUserEmailQuery from 'hooks/useUpdateUserEmailQuery.ts';
+import { ProfilePageContext } from '@educt/contexts';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import useUpdateUserEmailQuery from '@educt/hooks/useUpdateUserEmailQuery.ts';
 import React, { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UpdateEmailSchema from './UpdateEmailForm.validator';

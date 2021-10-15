@@ -1,4 +1,4 @@
-import yup from 'schema';
+import yup from '@educt/schema';
 // import { UserRoleEnum } from 'enums';
 
 const UpdateUserSchema = yup.object().shape({

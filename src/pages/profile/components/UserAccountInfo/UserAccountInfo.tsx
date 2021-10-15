@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Box, Heading, Stack, Flex, StackDivider, Text, Button } from '@chakra-ui/react';
-import { IUser } from 'interfaces';
-import { ProfilePageContext } from 'contexts';
+import { IUser } from '@educt/interfaces';
+import { ProfilePageContext } from '@educt/contexts';
 
 type UserAccountInfoPropsType = {
   user: IUser;

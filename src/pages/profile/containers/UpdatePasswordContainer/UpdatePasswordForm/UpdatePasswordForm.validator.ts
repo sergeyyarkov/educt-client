@@ -1,4 +1,4 @@
-import yup from 'schema';
+import yup from '@educt/schema';
 
 const UpdatePasswordSchema = yup.object().shape({
   old_password: yup.string().required('Old password is required'),

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Box, Heading, Flex, Text, IconButton } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import { ProfilePageContext } from 'contexts';
+import { ProfilePageContext } from '@educt/contexts';
 import UpdatePasswordForm from './UpdatePasswordForm';
 
 const UpdatePasswordContainer: React.FC = () => {

@@ -1,4 +1,4 @@
-import yup from 'schema';
+import yup from '@educt/schema';
 
 const UpdateUserContactsSchema = yup.object().shape({
   phone_number: yup

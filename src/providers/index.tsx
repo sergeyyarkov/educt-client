@@ -1,9 +1,14 @@
 import React, { useState, ReactNode } from 'react';
-import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext } from 'contexts';
-import { ProfilePageDataType, ProfilePageStatusType, SearchingRoleStateType } from 'types';
-import RootStore from 'stores/RootStore';
-import { ICategory, ICourse, IUser } from 'interfaces';
-import { CourseStatusEnum } from 'enums';
+import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext } from '@educt/contexts';
+import {
+  CoursesPageContextType,
+  ProfilePageDataType,
+  ProfilePageStatusType,
+  SearchingRoleStateType,
+} from '@educt/types';
+import RootStore from '@educt/stores/RootStore';
+import { ICategory, ICourse, IUser } from '@educt/interfaces';
+import { CourseStatusEnum } from '@educt/enums';
 
 /**
  * Root store context provider
@@ -66,18 +71,17 @@ export const CoursesPageContextProvider: React.FC = ({ children }) => {
   const [courseStatus, setCourseStatus] = useState<CourseStatusEnum | undefined>(undefined);
   const [deletingCourse, setDeletingCourse] = useState<Pick<ICourse, 'id' | 'title'> | undefined>(undefined);
 
-  return (
-    <CoursesPageContext.Provider
-      value={{
-        selectedCategory,
-        setSelectedCategory,
-        courseStatus,
-        setCourseStatus,
-        deletingCourse,
-        setDeletingCourse,
-      }}
-    >
-      {children}
-    </CoursesPageContext.Provider>
+  const context = React.useMemo(
+    () => ({
+      courseStatus,
+      setCourseStatus,
+      selectedCategory,
+      setSelectedCategory,
+      deletingCourse,
+      setDeletingCourse,
+    }),
+    [courseStatus, setCourseStatus, selectedCategory, setSelectedCategory, deletingCourse, setDeletingCourse]
   );
+
+  return <CoursesPageContext.Provider value={context}>{children}</CoursesPageContext.Provider>;
 };

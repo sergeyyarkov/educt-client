@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { PinInput, PinInputField } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/button';
 import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/layout';
-import { ConfirmEmailContainerDataType } from 'types';
-import useUpdateUserEmailQuery from 'hooks/useUpdateUserEmailQuery.ts';
-import { useRootStore } from 'hooks/useRootStore';
+import { ConfirmEmailContainerDataType } from '@educt/types';
+import useUpdateUserEmailQuery from '@educt/hooks/useUpdateUserEmailQuery.ts';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageContext } from 'contexts';
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import { ProfilePageContext } from '@educt/contexts';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 type ConfirmEmailContainerPropsType = {
   data: ConfirmEmailContainerDataType;

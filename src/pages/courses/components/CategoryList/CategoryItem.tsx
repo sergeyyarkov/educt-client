@@ -4,12 +4,12 @@ import { Tag, TagLabel } from '@chakra-ui/react';
 /**
  * Types
  */
-import { ICategory } from 'interfaces';
+import { ICategory } from '@educt/interfaces';
 
 /**
  * Contexts
  */
-import { CoursesPageContext } from 'contexts';
+import { CoursesPageContext } from '@educt/contexts';
 
 type CategoryItemProps = {
   category: ICategory;

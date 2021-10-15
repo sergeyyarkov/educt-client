@@ -2,25 +2,25 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
-import { userContainRoles } from 'helpers';
+import { userContainRoles } from '@educt/helpers';
 import { Flex, Box } from '@chakra-ui/react';
 
 /**
  * Types
  */
-import { UserRoleEnum } from 'enums';
+import { UserRoleEnum } from '@educt/enums';
 
 /**
  * Components
  */
-import LoadingPage from 'components/LoadingPage';
-import Header from 'components/Header';
-import NavDesktop from 'components/Nav/Desktop';
+import LoadingPage from '@educt/components/LoadingPage';
+import Header from '@educt/components/Header';
+import NavDesktop from '@educt/components/Nav/Desktop';
 
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
 

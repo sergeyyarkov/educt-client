@@ -1,4 +1,4 @@
-import { IApiRespose, IToken } from 'interfaces';
+import { IApiRespose, IToken } from '@educt/interfaces';
 import { AxiosInstance } from 'axios';
 
 export default class AuthService {

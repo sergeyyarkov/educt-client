@@ -4,13 +4,13 @@ import { makeAutoObservable, runInAction } from 'mobx';
 /**
  * Types
  */
-import { FetchCoursesParams } from 'types';
-import { ICourse } from 'interfaces';
+import { FetchCoursesParams } from '@educt/types';
+import { ICourse } from '@educt/interfaces';
 
 /**
  * Services
  */
-import { CourseService } from 'services/CourseService';
+import { CourseService } from '@educt/services/CourseService';
 
 /**
  * Stores

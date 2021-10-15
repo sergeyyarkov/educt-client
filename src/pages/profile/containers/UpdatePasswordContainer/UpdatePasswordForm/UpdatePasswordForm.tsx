@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
 import { Button } from '@chakra-ui/button';
@@ -9,8 +9,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import UpdatePasswordSchema from './UpdatePasswordForm.validator';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageContext } from 'contexts';
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import { ProfilePageContext } from '@educt/contexts';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 type UpdatePasswordInputType = {
   old_password: string;

@@ -1,12 +1,12 @@
-import config from 'config';
+import config from '@educt/config';
 import React from 'react';
 import { observer } from 'mobx-react';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { Flex, Box, Heading, useColorMode } from '@chakra-ui/react';
 import UserInfo from './UserInfo';
 import UserNotifications from './UserNotifications';
-import NavMobile from 'components/Nav/Mobile';
-import ColorModeSwitcher from 'components/ColorModeSwitcher';
+import NavMobile from '@educt/components/Nav/Mobile';
+import ColorModeSwitcher from '@educt/components/ColorModeSwitcher';
 import { MdSchool } from 'react-icons/md';
 
 const Header: React.FC = () => {

@@ -4,15 +4,15 @@ import { Box, Heading, Flex, Avatar, Text, Tabs, TabList, Tab, TabPanels, TabPan
 /**
  * Components
  */
-import UserBadge from 'components/UserBadge';
-import UserAccountInfo from 'pages/profile/components/UserAccountInfo';
-import UpdateUserContactsForm from 'pages/profile/components/UpdateUserContactsForm';
-import CourseList from 'pages/profile/components/CourseList';
+import UserBadge from '@educt/components/UserBadge';
+import UserAccountInfo from '@educt/pages/profile/components/UserAccountInfo';
+import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserContactsForm';
+import CourseList from '@educt/pages/profile/components/CourseList';
 
 /**
  * Hooks
  */
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useColorMode } from '@chakra-ui/color-mode';
 
 const MainContainer: React.FC = () => {

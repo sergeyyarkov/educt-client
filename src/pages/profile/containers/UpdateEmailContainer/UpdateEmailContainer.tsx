@@ -1,7 +1,7 @@
 import { IconButton } from '@chakra-ui/button';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
-import { ProfilePageContext } from 'contexts';
+import { ProfilePageContext } from '@educt/contexts';
 import React, { useContext } from 'react';
 import UpdateEmailForm from './UpdateEmailForm';
 

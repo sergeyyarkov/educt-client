@@ -1,4 +1,4 @@
-import { UserRoleEnum } from 'enums';
+import { UserRoleEnum } from '@educt/enums';
 import { MdAccountCircle, MdCollectionsBookmark, MdGroup, MdHome, MdMessage } from 'react-icons/md';
 import { IAppConfig } from './interfaces';
 

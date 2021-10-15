@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import RootStore from 'stores/RootStore';
+import RootStore from '@educt/stores/RootStore';
 
 export default class ApiService {
   public root: RootStore;

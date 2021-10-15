@@ -11,12 +11,16 @@ import {
 } from '@chakra-ui/react';
 
 /**
+ * Contexts
+ */
+import { CoursesPageContext } from '@educt/contexts';
+
+/**
  * Hooks
  */
-import useIsMountedRef from 'hooks/useIsMountedRef';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useErrorHandler } from 'react-error-boundary';
-import { CoursesPageContext } from 'contexts';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 type DeleteCourseDialogProps = {
   onClose: () => void;

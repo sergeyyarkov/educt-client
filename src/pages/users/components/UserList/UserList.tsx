@@ -12,19 +12,19 @@ import EditUserForm from '../EditUserForm';
 /**
  * Types
  */
-import { IPaginationMeta, IUser } from 'interfaces';
-import { UsersPageContextType } from 'types';
+import { IPaginationMeta, IUser } from '@educt/interfaces';
+import { UsersPageContextType } from '@educt/types';
 
 /**
  * Contexts
  */
-import { UsersPageContext } from 'contexts';
+import { UsersPageContext } from '@educt/contexts';
 
 /**
  * Hooks
  */
 import { useContext } from 'react';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useErrorHandler } from 'react-error-boundary';
 import DeleteUserDialog from '../DeleteUserDialog';

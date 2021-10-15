@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
-import { IApiRespose, IMe, IUser, IUserContacts } from 'interfaces';
-import * as helpers from 'helpers';
-import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from 'types';
+import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
+import * as helpers from '@educt/helpers';
+import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
 
 export default class UserService {
   public api: AxiosInstance;

@@ -1,5 +1,5 @@
-import yup from 'schema';
-import { UserRoleEnum } from 'enums';
+import yup from '@educt/schema';
+import { UserRoleEnum } from '@educt/enums';
 
 const CreateUserSchema = yup.object().shape({
   first_name: yup.string().required('First field name is required'),

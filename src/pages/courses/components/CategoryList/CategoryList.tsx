@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from 'react';
 import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
-import { CoursesPageContext } from 'contexts';
+import { CoursesPageContext } from '@educt/contexts';
 import CategoryItem from './CategoryItem';
-import { ICategory } from 'interfaces';
+import { ICategory } from '@educt/interfaces';
 import CategoryListLoading from './CategoryListLoading';
 
 /**
  * Hooks
  */
 import { useErrorHandler } from 'react-error-boundary';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 type CategoryListPropsType = {
   categories: ICategory[] | null;

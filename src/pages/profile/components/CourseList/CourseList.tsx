@@ -1,5 +1,5 @@
 import React from 'react';
-import { IMe } from 'interfaces';
+import { IMe } from '@educt/interfaces';
 import { Box, Text, Stack, StackDivider } from '@chakra-ui/layout';
 import CourseItem from './CourseItem';
 

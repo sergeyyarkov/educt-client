@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { Button } from '@chakra-ui/button';
 import { MdNotifications } from 'react-icons/md';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { observer } from 'mobx-react';
 
 const UserNotifications: React.FC = () => {

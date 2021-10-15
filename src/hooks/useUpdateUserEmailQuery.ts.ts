@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/toast';
-import { IApiRespose } from 'interfaces';
+import { IApiRespose } from '@educt/interfaces';
 import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';

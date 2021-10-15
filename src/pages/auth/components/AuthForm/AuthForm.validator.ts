@@ -1,4 +1,4 @@
-import yup from 'schema';
+import yup from '@educt/schema';
 
 const LoginSchema = yup.object().shape({
   login: yup.string().required('Login is required'),

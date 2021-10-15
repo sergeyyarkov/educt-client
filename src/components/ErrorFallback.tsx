@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useToast, Flex, Box, Heading, Text } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 const ErrorFallback: React.FC<{ error: any }> = props => {
   const { userStore, authStore } = useRootStore();

@@ -1,8 +1,8 @@
 import { Badge } from '@chakra-ui/react';
 import React from 'react';
-import { UserRoleEnum } from 'enums';
-import { IUserRole } from 'interfaces';
-import { userHasRoles } from 'helpers';
+import { UserRoleEnum } from '@educt/enums';
+import { IUserRole } from '@educt/interfaces';
+import { userHasRoles } from '@educt/helpers';
 
 /**
  * Returns the badge for user based on roles

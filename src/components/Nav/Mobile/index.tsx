@@ -2,15 +2,15 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { MdExitToApp } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { useRootStore } from 'hooks/useRootStore';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import { Avatar } from '@chakra-ui/avatar';
 import { Flex, Box, Text } from '@chakra-ui/layout';
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/modal';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { useDisclosure, IconButton, useColorMode, Skeleton } from '@chakra-ui/react';
 import NavList from '../NavList';
-import config from 'config';
-import useLogoutQuery from 'hooks/useLogoutQuery';
+import config from '@educt/config';
+import useLogoutQuery from '@educt/hooks/useLogoutQuery';
 
 const NavMobile: React.FC = () => {
   const {

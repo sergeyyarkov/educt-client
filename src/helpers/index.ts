@@ -1,5 +1,5 @@
-import { UserRoleEnum } from 'enums';
-import { IUserRole } from 'interfaces';
+import { UserRoleEnum } from '@educt/enums';
+import { IUserRole } from '@educt/interfaces';
 
 export function userHasRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boolean {
   for (let i = 0; i < roles.length; i += 1) {

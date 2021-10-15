@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { IApiRespose, ICourse } from 'interfaces';
-import { FetchCoursesParams } from 'types';
+import { IApiRespose, ICourse } from '@educt/interfaces';
+import { FetchCoursesParams } from '@educt/types';
 
 export class CourseService {
   public api: AxiosInstance;

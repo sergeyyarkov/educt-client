@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { CoursesPageContextType, ProfilePageContextType, UsersPageContextType } from 'types';
+import { CoursesPageContextType, ProfilePageContextType, UsersPageContextType } from '@educt/types';
 import RootStore from '../stores/RootStore';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);

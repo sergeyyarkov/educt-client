@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 import { useRootStore } from './useRootStore';
-import { IApiRespose } from 'interfaces';
+import { IApiRespose } from '@educt/interfaces';
 import { useErrorHandler } from 'react-error-boundary';
 import useIsMountedRef from './useIsMountedRef';
 
