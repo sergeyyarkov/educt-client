@@ -39,7 +39,6 @@ export default class UserStore {
   public async loadUsersData(params?: FetchUsersParamsType) {
     try {
       const result = await this.userService.fetchAll(params);
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
         this.users = result.data;
@@ -58,8 +57,6 @@ export default class UserStore {
       const {
         data: { id, first_name, last_name, email, roles, contacts, courses },
       } = result;
-
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
         this.me = {

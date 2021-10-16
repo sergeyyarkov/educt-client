@@ -9,8 +9,6 @@
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
@@ -22,24 +20,27 @@
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "qs": "^6.10.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "react-error-boundary": "^3.1.3",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.12.2",
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
     "validator": "^13.6.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.7",
+    "@types/node": "^16.11.0",
+    "@types/qs": "^6.9.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/js-cookie": "^2.2.7",
-    "@types/qs": "^6.9.7",
     "@types/react-helmet": "^6.1.2",
     "@types/react-router-dom": "^5.1.8",
     "@types/validator": "^13.6.3",
     "@vitejs/plugin-react": "^1.0.0",
+    "rollup-plugin-visualizer": "^5.5.2",
     "typescript": "^4.3.2",
     "vite": "^2.6.4"
   }

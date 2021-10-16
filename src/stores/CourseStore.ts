@@ -40,7 +40,6 @@ export default class CourseStore {
     try {
       this.setLoading(true);
       const result = await this.courseService.fetchAll(params);
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
         this.courses = result.data;

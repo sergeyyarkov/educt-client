@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
@@ -58,28 +58,30 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
             },
           }}
         >
-          {(() => {
-            /**
-             * Check user roles if defined "roles" prop in
-             * PrivateRoute component and return page
-             */
-            if (roles) {
-              const { me } = userStore;
-              if (me === null) return <LoadingPage />;
-
+          <Suspense fallback={<LoadingPage />}>
+            {(() => {
               /**
-               * The user does not have the required roles
+               * Check user roles if defined "roles" prop in
+               * PrivateRoute component and return page
                */
-              if (!userContainRoles(me.roles, roles)) return <Redirect to='/404' />;
+              if (roles) {
+                const { me } = userStore;
+                if (me === null) return <LoadingPage />;
 
-              return children;
-            } else {
-              /**
-               * Return children if "roles" prop is not defined
-               */
-              return children;
-            }
-          })()}
+                /**
+                 * The user does not have the required roles
+                 */
+                if (!userContainRoles(me.roles, roles)) return <Redirect to='/404' />;
+
+                return children;
+              } else {
+                /**
+                 * Return children if "roles" prop is not defined
+                 */
+                return children;
+              }
+            })()}
+          </Suspense>
         </Box>
       </Flex>
     </>

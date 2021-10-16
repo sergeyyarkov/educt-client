@@ -1,15 +1,36 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { dependencies } from './package.json';
+
+function renderChunks(deps: Record<string, string>) {
+  let chunks = {};
+  Object.keys(deps).forEach(key => {
+    if (['@chakra-ui/react', '@chakra-ui/icons', 'framer-motion'].includes(key)) chunks[key] = [key];
+    return;
+  });
+  return chunks;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: './',
+  publicDir: 'public',
   plugins: [react()],
   resolve: {
     alias: [{ find: '@educt', replacement: path.resolve(__dirname, 'src') }],
   },
   build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          ...renderChunks(dependencies),
+        },
+      },
+      plugins: [visualizer()],
+    },
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
   },
 });

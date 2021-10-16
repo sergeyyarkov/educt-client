@@ -39,7 +39,6 @@ export default class CategoryStore {
     try {
       this.setLoading(true);
       const result = await this.categoryService.fetchAll();
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       runInAction(() => {
         this.categories = result.data;
