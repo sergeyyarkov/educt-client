@@ -51,39 +51,35 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
       {(me.isAdmin || me.isTeacher) && (
         <Flex justifyContent='flex-end'>
           <Box position='absolute' zIndex='1' padding='10px'>
-            <Menu>
-              {({ isOpen, onClose }) => (
-                <>
-                  <MenuButton
-                    as={IconButton}
-                    backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-                    aria-label='Actions'
-                    icon={<MdMoreHoriz size='18px' />}
-                    _hover={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
-                    _active={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
-                  />
-                  <MenuList>
-                    <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
-                    {course.status === CourseStatusEnum.DRAFT && (
-                      <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.PUBLISHED)} icon={<CheckIcon />}>
-                        Publish
-                      </MenuItem>
-                    )}
-                    {course.status === CourseStatusEnum.PUBLISHED && (
-                      <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)} icon={<MdNote />}>
-                        Mark as Draft
-                      </MenuItem>
-                    )}
-                    <MenuItem
-                      onClick={() => onDelete({ id: course.id, title: course.title })}
-                      icon={<DeleteIcon />}
-                      color='red.500'
-                    >
-                      Delete
-                    </MenuItem>
-                  </MenuList>
-                </>
-              )}
+            <Menu isLazy>
+              <MenuButton
+                as={IconButton}
+                backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+                aria-label='Actions'
+                icon={<MdMoreHoriz size='18px' />}
+                _hover={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
+                _active={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
+              />
+              <MenuList>
+                <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
+                {course.status === CourseStatusEnum.DRAFT && (
+                  <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.PUBLISHED)} icon={<CheckIcon />}>
+                    Publish
+                  </MenuItem>
+                )}
+                {course.status === CourseStatusEnum.PUBLISHED && (
+                  <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)} icon={<MdNote />}>
+                    Mark as Draft
+                  </MenuItem>
+                )}
+                <MenuItem
+                  onClick={() => onDelete({ id: course.id, title: course.title })}
+                  icon={<DeleteIcon />}
+                  color='red.500'
+                >
+                  Delete
+                </MenuItem>
+              </MenuList>
             </Menu>
           </Box>
         </Flex>

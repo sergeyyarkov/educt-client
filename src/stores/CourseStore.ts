@@ -77,24 +77,37 @@ export default class CourseStore {
   }
 
   public async setCourseStatus(id: string, status: CourseStatusEnum) {
-    try {
-      const result = await this.courseService.setStatus(id, status);
+    const course = this.courses?.find(course => course.id === id);
 
+    /**
+     * Save previous course status before sending request
+     */
+    const { status: prevCourseStatus } = course ?? {};
+
+    try {
       /**
        * Update status in store
        */
       runInAction(() => {
-        if (this.courses !== null) {
-          const courseIndex = this.courses.findIndex(course => course.id === id);
-
-          if (courseIndex !== -1) {
-            this.courses[courseIndex].status = status;
-          }
+        if (this.courses !== null && course !== undefined) {
+          course.status = status;
         }
       });
 
+      /**
+       * Make request on update course status
+       */
+      const result = await this.courseService.setStatus(id, status);
       return result;
     } catch (error: any) {
+      /**
+       * Resume status if there was an error on request
+       */
+      runInAction(() => {
+        if (this.courses !== null && course !== undefined && prevCourseStatus !== undefined) {
+          course.status = prevCourseStatus;
+        }
+      });
       throw error;
     }
   }
