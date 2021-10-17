@@ -16,6 +16,7 @@ import { CourseService } from '@educt/services/CourseService';
  * Stores
  */
 import RootStore from './RootStore';
+import { CourseStatusEnum } from '@educt/enums';
 
 export default class CourseStore {
   public root: RootStore;
@@ -41,6 +42,9 @@ export default class CourseStore {
       this.setLoading(true);
       const result = await this.courseService.fetchAll(params);
 
+      /**
+       * Load courses in store
+       */
       runInAction(() => {
         this.courses = result.data;
       });
@@ -56,11 +60,36 @@ export default class CourseStore {
   public async deleteCourse(id: string) {
     try {
       const result = await this.courseService.delete(id);
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
+      /**
+       * Remove deleted course form store
+       */
       runInAction(() => {
         if (this.courses !== null) {
           this.courses = this.courses.filter(course => course.id !== id);
+        }
+      });
+
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public async setCourseStatus(id: string, status: CourseStatusEnum) {
+    try {
+      const result = await this.courseService.setStatus(id, status);
+
+      /**
+       * Update status in store
+       */
+      runInAction(() => {
+        if (this.courses !== null) {
+          const courseIndex = this.courses.findIndex(course => course.id === id);
+
+          if (courseIndex !== -1) {
+            this.courses[courseIndex].status = status;
+          }
         }
       });
 

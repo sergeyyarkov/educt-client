@@ -18,6 +18,8 @@ import DeleteCourseDialog from '../DeleteCourseDialog';
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { useToast } from '@chakra-ui/toast';
+import { useErrorHandler } from 'react-error-boundary';
 
 /**
  * Contexts
@@ -37,6 +39,8 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
   } = useRootStore();
   const { selectedCategory, courseStatus, deletingCourse, setDeletingCourse } = useContext(CoursesPageContext);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
+  const handleError = useErrorHandler();
+  const toast = useToast();
 
   useEffect(() => {
     if (me !== null) {
@@ -47,9 +51,29 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     }
   }, [courseStore, selectedCategory, courseStatus, me]);
 
+  /**
+   * Handle delete course
+   * Set deleting course to context and open dialog
+   */
   const onDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
     setDeletingCourse(course);
     onOpenDeleteDialog();
+  };
+
+  /**
+   * Handle update course status
+   */
+  const onSetStatus = async (id: string, status: CourseStatusEnum) => {
+    try {
+      await courseStore.setCourseStatus(id, status);
+      toast({ title: 'Status updated.', status: 'info' });
+    } catch (error: any) {
+      if (error.response) {
+        toast({ title: error.message, status: 'error' });
+      } else {
+        handleError(error);
+      }
+    }
   };
 
   if (isLoading || courses === null) {
@@ -73,7 +97,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
           }}
         >
           {courses.map(course => (
-            <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} />
+            <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />
           ))}
         </Grid>
       ) : (

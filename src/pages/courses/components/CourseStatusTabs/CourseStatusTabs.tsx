@@ -1,7 +1,15 @@
 import React, { useContext } from 'react';
 import { Tabs, TabList, Tab } from '@chakra-ui/react';
-import { CoursesPageContext } from '@educt/contexts';
+
+/**
+ * Types
+ */
 import { CourseStatusEnum } from '@educt/enums';
+
+/**
+ * Contexts
+ */
+import { CoursesPageContext } from '@educt/contexts';
 
 type CourseStatusTabsProps = {};
 
@@ -13,16 +21,11 @@ const CourseStatusTabs: React.FC<CourseStatusTabsProps> = () => {
     <Tabs>
       <TabList justifyContent='center'>
         <Tab onClick={() => handleChangeStatus(undefined)}>All</Tab>
-        {Object.values(CourseStatusEnum).map(status => {
-          return (
-            <Tab key={status} onClick={() => handleChangeStatus(status)}>{`${status.charAt(0).toUpperCase()}${status
-              .substr(1)
-              .toLowerCase()}`}</Tab>
-          );
-        })}
+        <Tab onClick={() => handleChangeStatus(CourseStatusEnum.PUBLISHED)}>Published</Tab>
+        <Tab onClick={() => handleChangeStatus(CourseStatusEnum.DRAFT)}>Unpublished Drafts</Tab>
       </TabList>
     </Tabs>
   );
 };
 
-export default React.memo(CourseStatusTabs);
+export default CourseStatusTabs;

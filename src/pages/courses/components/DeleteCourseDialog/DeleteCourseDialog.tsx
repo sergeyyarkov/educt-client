@@ -36,6 +36,11 @@ const DeleteCourseDialog: React.FC<DeleteCourseDialogProps> = ({ onClose, isOpen
   const handleError = useErrorHandler();
   const toast = useToast();
 
+  /**
+   * Delete course handler
+   *
+   * @param id Course id
+   */
   const onDelete = async (id: string) => {
     try {
       setIsLoading(true);

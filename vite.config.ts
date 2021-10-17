@@ -5,7 +5,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import { dependencies } from './package.json';
 
 function renderChunks(deps: Record<string, string>) {
-  let chunks = {};
+  const chunks = {};
   Object.keys(deps).forEach(key => {
     if (['@chakra-ui/react', '@chakra-ui/icons', 'framer-motion'].includes(key)) chunks[key] = [key];
     return;

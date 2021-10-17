@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { observer } from 'mobx-react';
 import { Flex, Box, Heading, Text, Button } from '@chakra-ui/react';
-
-import { IPageProps } from '@educt/interfaces';
 import { AddIcon } from '@chakra-ui/icons';
+
+/**
+ * Types
+ */
+import { IPageProps } from '@educt/interfaces';
 
 /**
  * Components
  */
 import CourseList from './components/CourseList';
 import CategoryList from './components/CategoryList';
+import CourseStatusTabs from './components/CourseStatusTabs';
 import LoadingPage from '@educt/components/LoadingPage';
 
 /**
@@ -17,7 +21,6 @@ import LoadingPage from '@educt/components/LoadingPage';
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { CoursesPageContextProvider } from '@educt/providers';
-import CourseStatusTabs from './components/CourseStatusTabs';
 
 /**
  * Courses page
@@ -28,10 +31,6 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
     categoryStore,
     courseStore,
   } = useRootStore();
-
-  useEffect(() => {
-    console.log('upadate');
-  });
 
   if (me === null) return <LoadingPage />;
 
