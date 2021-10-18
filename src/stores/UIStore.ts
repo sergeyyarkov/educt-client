@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { createBrowserHistory } from 'history';
 
 /**
@@ -39,8 +39,7 @@ export default class UIStore {
      * Pathname changed
      */
     this.history.listen(({ pathname }) => {
-      console.log(`[history]: pathname changed to "${pathname}"`);
-      this.location = pathname;
+      this.setLocation(pathname);
     });
 
     /**
@@ -50,6 +49,7 @@ export default class UIStore {
   }
 
   public setLocation(location: string): void {
+    console.log(`[history]: location changed to "${location}"`);
     this.location = location;
   }
 

@@ -22,6 +22,7 @@ import PublicRoute from '@educt/components/PublicRoute';
  */
 import AuthPage from '@educt/pages/auth/auth';
 import NotFoundPage from '@educt/pages/404/404';
+import CreateCoursePage from '@educt/pages/courses/create/create';
 const CoursesPage = React.lazy(() => import('@educt/pages/courses/courses'));
 const MainPage = React.lazy(() => import('@educt/pages/main/main'));
 const MessagesPage = React.lazy(() => import('@educt/pages/messages/messages'));
@@ -37,6 +38,12 @@ const App = () => {
     <Router history={history}>
       <Switch>
         <PrivateRoute exact path='/' component={MainPage} title='Home' />
+        <PrivateRoute
+          path='/courses/create'
+          component={CreateCoursePage}
+          title='Create new course'
+          roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
+        />
         <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
         <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />

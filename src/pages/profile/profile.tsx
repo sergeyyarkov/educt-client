@@ -14,6 +14,7 @@ import LoadingPage from './components/LoadingPage';
 /**
  *  Containers
  */
+import MainContainer from './containers/MainContainer';
 import UpdatePasswordContainer from './containers/UpdatePasswordContainer';
 import UpdateEmailContainer from './containers/UpdateEmailContainer';
 import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
@@ -33,7 +34,6 @@ import { ProfilePageContext } from '@educt/contexts';
  * Providers
  */
 import { ProfilePageContextProvider } from '@educt/providers';
-import MainContainer from './containers/MainContainer';
 
 /**
  * Profile page

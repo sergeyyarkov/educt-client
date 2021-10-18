@@ -21,6 +21,7 @@ import LoadingPage from '@educt/components/LoadingPage';
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { CoursesPageContextProvider } from '@educt/providers';
+import { useHistory, useLocation } from 'react-router';
 
 /**
  * Courses page
@@ -31,6 +32,7 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
     categoryStore,
     courseStore,
   } = useRootStore();
+  const history = useHistory();
 
   if (me === null) return <LoadingPage />;
 
@@ -43,7 +45,12 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
             <Text mt='2'>List of all available courses.</Text>
           </Box>
           {(me.isAdmin || me.isTeacher) && (
-            <Button variant='outline' colorScheme='blue' leftIcon={<AddIcon />}>
+            <Button
+              onClick={() => history.push('/courses/create')}
+              variant='outline'
+              colorScheme='blue'
+              leftIcon={<AddIcon />}
+            >
               Create new
             </Button>
           )}
