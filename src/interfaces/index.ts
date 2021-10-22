@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { LinkType } from '@educt/types';
+import { CourseImage, LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -21,7 +21,7 @@ export interface ICourse {
   title: string;
   description: string;
   status: CourseStatusEnum;
-  image: null | {};
+  image: null | CourseImage;
   teacher: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
   category: ICategory;
   lessons: ILesson[];

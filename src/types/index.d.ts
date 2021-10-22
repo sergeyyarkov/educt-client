@@ -15,6 +15,14 @@ export type LinkType = {
   icon: IconType;
 };
 
+export type CourseImage = {
+  id: number;
+  name: string;
+  ext: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ConfirmEmailContainerDataType = {
   newEmail: string;
   expired_seconds: number;

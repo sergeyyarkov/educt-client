@@ -31,6 +31,7 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 import { CourseStatusEnum } from '@educt/enums';
 import { observer } from 'mobx-react';
+import { API_BASE_URL } from '@educt/constants';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
@@ -111,7 +112,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
             w='100%'
             borderTopLeftRadius='lg'
             borderTopRightRadius='lg'
-            src='https://bit.ly/2k1H1t6'
+            src={course.image ? `/api/assets/images/courses/${course.image.name}` : ''}
           />
         </Box>
         <Box p='0 10px' mt='10px' pb='20px'>
