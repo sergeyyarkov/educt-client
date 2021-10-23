@@ -38,13 +38,13 @@ const App = () => {
     <Router history={history}>
       <Switch>
         <PrivateRoute exact path='/' component={MainPage} title='Home' />
+        <PrivateRoute exact path='/courses' component={CoursesPage} title='Courses' />
         <PrivateRoute
           path='/courses/create'
           component={CreateCoursePage}
           title='Create new course'
           roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
         />
-        <PrivateRoute path='/courses' component={CoursesPage} title='Courses' />
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
         <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
         <PrivateRoute

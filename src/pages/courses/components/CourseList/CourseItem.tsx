@@ -31,7 +31,6 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 import { CourseStatusEnum } from '@educt/enums';
 import { observer } from 'mobx-react';
-import { API_BASE_URL } from '@educt/constants';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
@@ -63,16 +62,27 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
               />
               <MenuList>
                 <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
-                {course.status === CourseStatusEnum.DRAFT && (
-                  <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.PUBLISHED)} icon={<CheckIcon />}>
-                    Publish
-                  </MenuItem>
-                )}
-                {course.status === CourseStatusEnum.PUBLISHED && (
-                  <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)} icon={<MdNote />}>
-                    Mark as Draft
-                  </MenuItem>
-                )}
+                {(() => {
+                  switch (course.status) {
+                    case CourseStatusEnum.DRAFT:
+                      return (
+                        <MenuItem
+                          onClick={() => onSetStatus(course.id, CourseStatusEnum.PUBLISHED)}
+                          icon={<CheckIcon />}
+                        >
+                          Publish
+                        </MenuItem>
+                      );
+                    case CourseStatusEnum.PUBLISHED:
+                      return (
+                        <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)} icon={<MdNote />}>
+                          Mark as Draft
+                        </MenuItem>
+                      );
+                    default:
+                      return null;
+                  }
+                })()}
                 <MenuItem
                   onClick={() => onDelete({ id: course.id, title: course.title })}
                   icon={<DeleteIcon />}
@@ -101,19 +111,21 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
           borderTopRightRadius='lg'
           p='10px'
         >
-          <Image
-            position='absolute'
-            top='0'
-            bottom='0'
-            right='0'
-            left='0'
-            fit='cover'
-            h='100%'
-            w='100%'
-            borderTopLeftRadius='lg'
-            borderTopRightRadius='lg'
-            src={course.image ? `/api/assets/images/courses/${course.image.name}` : ''}
-          />
+          {course.image && (
+            <Image
+              position='absolute'
+              top='0'
+              bottom='0'
+              right='0'
+              left='0'
+              fit='cover'
+              h='100%'
+              w='100%'
+              borderTopLeftRadius='lg'
+              borderTopRightRadius='lg'
+              src={`/api/assets/images/courses/${course.image.name}`}
+            />
+          )}
         </Box>
         <Box p='0 10px' mt='10px' pb='20px'>
           <Flex justifyContent='space-between'>

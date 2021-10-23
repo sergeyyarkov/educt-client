@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
-import { IUserContacts } from '@educt/interfaces';
-import { Box, Heading, Stack } from '@chakra-ui/layout';
 import { Text, Input, Button } from '@chakra-ui/react';
+import { Box, Heading, Stack } from '@chakra-ui/layout';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
 import { yupResolver } from '@hookform/resolvers/yup';
-import useUpdateUserContactsQuery from '@educt/hooks/useUpdateUserContactsQuery';
+
+/**
+ * Types
+ */
+import { IUserContacts } from '@educt/interfaces';
+
+/**
+ * Hooks
+ */
+import { useToast } from '@chakra-ui/toast';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
+
+/**
+ * Schema
+ */
 import UpdateUserContactsSchema from './UpdateUserContactsForm.validator';
 
 type UpdateUserContactsInputType = {
@@ -17,11 +31,11 @@ type UpdateUserContactsInputType = {
   vk_id: string | null;
 };
 
-type UpdateUserContactsFormProps = {
+type UpdateUserContactsFormPropsType = {
   contacts: IUserContacts | null;
 };
 
-const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contacts }) => {
+const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ contacts }) => {
   const {
     register,
     formState: { errors, isDirty },
@@ -36,17 +50,41 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
       vk_id: contacts && (contacts.vk_id ?? ''),
     },
   });
-  const { updateContacts, loading } = useUpdateUserContactsQuery();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { userStore } = useRootStore();
+  const toast = useToast();
+  const handleError = useErrorHandler();
 
-  const onSubmit: SubmitHandler<UpdateUserContactsInputType> = data => {
-    updateContacts(data).finally(() =>
+  /**
+   * Sumbit form handler
+   */
+  const onSubmit: SubmitHandler<UpdateUserContactsInputType> = async data => {
+    try {
+      setIsLoading(true);
+      await userStore.updateCurrentUserContacts(data);
+      toast({ title: 'Contacts saved!', status: 'info' });
       reset({
         phone_number: data.phone_number ?? '',
         twitter_id: data.twitter_id ?? '',
         telegram_id: data.telegram_id ?? '',
         vk_id: data.vk_id ?? '',
-      })
-    );
+      });
+      setIsLoading(false);
+    } catch (error: any) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 422:
+            toast({ title: error.response.data.errors[0].message, status: 'error', duration: 2000 });
+            break;
+          default:
+            handleError(error);
+        }
+      } else {
+        handleError(error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,7 +159,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormProps> = ({ contact
           type='submit'
           size='md'
           variant='outline'
-          isLoading={loading}
+          isLoading={isLoading}
           loadingText='Saving...'
           rightIcon={<MdSave />}
           isDisabled={!isDirty}
