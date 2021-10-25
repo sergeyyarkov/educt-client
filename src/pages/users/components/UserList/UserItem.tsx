@@ -49,10 +49,10 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
     <Box borderWidth='1px' borderRadius='lg' w='full' p='3'>
       <Flex alignItems='center' justifyContent='space-between' sx={{ gap: '20px' }}>
         <Flex alignItems='center' flexBasis='230px'>
-          <Avatar name={`${user.first_name} ${user.last_name}`} size='sm' mr='3' />
+          <Avatar name={user.fullname} size='sm' mr='3' />
           <Box>
             <Link as={ReactRouterLink} to={`/user/${user.id}`} fontSize='md' fontWeight='medium'>
-              {user.first_name}&nbsp;{user.last_name}
+              {user.fullname}
             </Link>
             <Text fontSize='sm'>{user.email}</Text>
           </Box>

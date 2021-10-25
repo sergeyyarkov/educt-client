@@ -111,7 +111,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
           borderTopRightRadius='lg'
           p='10px'
         >
-          {course.image && (
+          {course.image && course.image.url && (
             <Image
               position='absolute'
               top='0'
@@ -123,7 +123,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
               w='100%'
               borderTopLeftRadius='lg'
               borderTopRightRadius='lg'
-              src={`/api/assets/images/courses/${course.image.name}`}
+              src={course.image.url}
             />
           )}
         </Box>

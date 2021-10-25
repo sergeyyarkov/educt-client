@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { CourseImage, LinkType } from '@educt/types';
+import { AttachmentFileType, LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -18,10 +18,10 @@ export interface IToken {
 
 export interface ICourse {
   id: string;
+  image: AttachmentFileType | null;
   title: string;
   description: string;
   status: CourseStatusEnum;
-  image: null | CourseImage;
   teacher: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
   category: ICategory;
   lessons: ILesson[];
@@ -81,6 +81,7 @@ export interface IUser {
   id: string;
   first_name: string;
   last_name: string;
+  fullname: string;
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
@@ -90,7 +91,6 @@ export interface IUser {
  * Current authenticated user data
  */
 export interface IMe extends IUser {
-  fullname: string;
   /**
    * The field can be undefined if the user
    * does not have the STUDENT role

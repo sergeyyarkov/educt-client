@@ -15,12 +15,12 @@ export type LinkType = {
   icon: IconType;
 };
 
-export type CourseImage = {
-  id: number;
+export type AttachmentFileType = {
+  url?: string;
+  size: number;
   name: string;
-  ext: string;
-  created_at: string;
-  updated_at: string;
+  mimeType: string;
+  extname: string;
 };
 
 export type ConfirmEmailContainerDataType = {

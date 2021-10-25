@@ -55,17 +55,17 @@ export default class UserStore {
     try {
       const result = await this.userService.fetchMe();
       const {
-        data: { id, first_name, last_name, email, roles, contacts, courses },
+        data: { id, first_name, last_name, fullname, email, roles, contacts, courses },
       } = result;
 
       runInAction(() => {
         this.me = {
           id,
-          fullname: `${first_name} ${last_name}`,
           first_name,
           last_name,
           email,
           roles,
+          fullname,
           contacts,
           courses,
           isAdmin: helpers.userContainRoles(roles, [UserRoleEnum.ADMIN]),
