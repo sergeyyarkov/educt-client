@@ -44,7 +44,7 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
           as='main'
           flex='1 0'
           maxW='85rem'
-          ml='25rem'
+          ml='20rem'
           mt='7rem'
           mb='1rem'
           pr='2rem'

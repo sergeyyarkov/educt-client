@@ -85,7 +85,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
       {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       {courses.length !== 0 ? (
         <Grid
-          templateColumns='repeat(3, 1fr)'
+          templateColumns='repeat(3, minmax(0, 1fr))'
           gap='6'
           sx={{
             '@media (max-width: 1280px)': {

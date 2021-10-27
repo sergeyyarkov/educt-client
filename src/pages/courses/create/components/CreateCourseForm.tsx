@@ -1,22 +1,46 @@
-import React from 'react';
-import { Box, Grid, useToast } from '@chakra-ui/react';
-import { Input } from '@chakra-ui/react';
-import { Flex, Button, Textarea } from '@chakra-ui/react';
-import { FormControl, FormLabel, InputGroup, InputRightElement } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import {
+  Box,
+  Grid,
+  useToast,
+  Text,
+  Flex,
+  Button,
+  Textarea,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  Input,
+} from '@chakra-ui/react';
+import { MdCloudUpload } from 'react-icons/md';
+import { SubmitHandler, useForm, useWatch, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncSelect from 'react-select/async';
+import * as helpers from '@educt/helpers';
 
 /**
  * Types
  */
-import { MdCloudUpload } from 'react-icons/md';
+import { OptionType } from '@educt/types';
+import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
+
+/**
+ * Hooks
+ */
+import { useHistory } from 'react-router';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { UserRoleEnum } from '@educt/enums';
 import { useErrorHandler } from 'react-error-boundary';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+
+/**
+ * Schema
+ */
+import CreateCourseSchema from './CreateCourseForm.validator';
 
 type CreateCourseInputType = {
   title: string;
-  image: File;
+  image: FileList;
   category_id: string;
   description: string;
   teacher_id: string;
@@ -27,21 +51,45 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
   const {
     userStore: { userService },
     categoryStore: { categoryService },
+    courseStore: { courseService },
   } = useRootStore();
-  const { register, formState, handleSubmit, control, reset } = useForm<CreateCourseInputType>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    watch,
+    reset,
+  } = useForm<CreateCourseInputType>({
+    resolver: yupResolver(CreateCourseSchema),
+  });
   const handleError = useErrorHandler();
   const toast = useToast();
+  const history = useHistory();
+  const isMountedRef = useIsMountedRef();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<CourseStatusEnum | undefined>(undefined);
+
+  const title = useWatch({
+    control,
+    name: 'title',
+    defaultValue: '',
+  });
 
   /**
    *  Load users into select field
    */
-  const loadUsersOptions = async (inputValue: string) => {
+  const loadUsersOptions = async (inputValue: string): Promise<OptionType[] | undefined> => {
     try {
       const users = await userService.fetchAll({ search: inputValue, role: UserRoleEnum.TEACHER });
-      return users.data.map(user => ({
-        label: user.fullname,
-        value: user.id,
-      }));
+
+      // TODO: remove filter later
+      return users.data
+        .filter(user => helpers.userContainRoles(user.roles, [UserRoleEnum.TEACHER]))
+        .map(user => ({
+          label: user.fullname,
+          value: user.id,
+        }));
     } catch (error: any) {
       if (error.response) {
         toast({ title: 'Error' });
@@ -54,7 +102,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
   /**
    *  Load categories into select filed
    */
-  const loadCategoriesOptions = async (inputValue: string) => {
+  const loadCategoriesOptions = async (inputValue: string): Promise<OptionType[] | undefined> => {
     try {
       const categories = await categoryService.fetchAll();
       return categories.data.map(category => ({
@@ -74,27 +122,68 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
    * Submit form handler
    */
   const onSubmit: SubmitHandler<CreateCourseInputType> = async data => {
-    console.log(data);
+    try {
+      setIsLoading(true);
+      await courseService.create({
+        title: data.title,
+        description: data.description,
+        teacher_id: data.teacher_id,
+        category_id: data.category_id,
+        image: data.image[0],
+        status: status ?? CourseStatusEnum.DRAFT,
+      });
+      toast({ title: `Course successfully created.`, status: 'success' });
+      history.push('/courses');
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status === 422) {
+          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
+        } else {
+          toast({ title: `${error.message}`, status: 'error' });
+        }
+      } else {
+        handleError(error);
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setIsLoading(false);
+        setStatus(undefined);
+      }
+    }
   };
 
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid templateColumns={{ md: '2.5fr 1fr' }} gap='5'>
-          <FormControl id='title'>
+          <FormControl id='title' isInvalid={!!errors.title}>
             <FormLabel>Title</FormLabel>
             <InputGroup>
-              <Input size='md' placeholder='Type course title' type='text' {...register('title')} />
-              <InputRightElement fontSize='sm' mr='2' color='gray.500' children={'0/60'} />
+              <Input pr='60px' size='md' placeholder='Type course title' type='text' {...register('title')} />
+              <InputRightElement
+                mr='2'
+                children={
+                  <Text as='small' color={!!errors.title || title.length > 60 ? 'red.500' : 'gray.500'}>
+                    {title.length}/60
+                  </Text>
+                }
+              />
             </InputGroup>
+            <Text as='small' color='red.500'>
+              {errors.title?.message}
+            </Text>
           </FormControl>
-          <FormControl id='image'>
-            <FormLabel>Image</FormLabel>
-            <Input size='md' variant='unstyled' type='file' {...register('image')} />
-          </FormControl>
-          <FormControl id='category_id' gridColumn='1'>
-            <FormLabel>Category</FormLabel>
 
+          <FormControl id='image' isInvalid={!!errors.image}>
+            <FormLabel>Image</FormLabel>
+            <Input size='md' variant='unstyled' {...register('image')} type='file' accept='image/*' />
+            <Text as='small' color='red.500'>
+              {errors.image?.message}
+            </Text>
+          </FormControl>
+
+          <FormControl id='category_id' gridColumn='1' isInvalid={!!errors.category_id}>
+            <FormLabel>Category</FormLabel>
             <Controller
               control={control}
               name='category_id'
@@ -111,8 +200,11 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
                 />
               )}
             />
+            <Text as='small' color='red.500'>
+              {errors.category_id?.message}
+            </Text>
           </FormControl>
-          <FormControl id='teacher_id' gridColumn={{ md: '2' }} gridRow={{ md: '1' }}>
+          <FormControl id='teacher_id' gridColumn={{ md: '2' }} gridRow={{ md: '1' }} isInvalid={!!errors.teacher_id}>
             <FormLabel>Teacher</FormLabel>
             <Controller
               control={control}
@@ -129,17 +221,41 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
                 />
               )}
             />
+            <Text as='small' color='red.500'>
+              {errors.teacher_id?.message}
+            </Text>
           </FormControl>
-          <FormControl id='description' gridColumn='1'>
+          <FormControl id='description' gridColumn='1' isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
-            <Textarea resize='none' minH='150px' placeholder='Write some description for course...' />
+            <Textarea
+              resize='none'
+              minH='150px'
+              placeholder='Write some description for course...'
+              {...register('description')}
+            />
+            <Text as='small' color='red.500'>
+              {errors.description?.message}
+            </Text>
           </FormControl>
         </Grid>
         <Flex mt='6'>
-          <Button type='submit' mr='2' colorScheme='blue' variant='outline' rightIcon={<MdCloudUpload size='14px' />}>
+          <Button
+            loadingText='Saving...'
+            type='submit'
+            mr='2'
+            colorScheme='blue'
+            variant='outline'
+            rightIcon={<MdCloudUpload size='14px' />}
+            onClick={() => setStatus(CourseStatusEnum.DRAFT)}
+          >
             Save as Draft
           </Button>
-          <Button type='submit' colorScheme='green'>
+          <Button
+            loadingText='Saving...'
+            type='submit'
+            colorScheme='green'
+            onClick={() => setStatus(CourseStatusEnum.PUBLISHED)}
+          >
             Publish
           </Button>
         </Flex>

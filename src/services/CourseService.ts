@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ICourse } from '@educt/interfaces';
-import { FetchCoursesParams } from '@educt/types';
+import { CreateCourseParamsType, FetchCoursesParams } from '@educt/types';
 import { CourseStatusEnum } from '@educt/enums';
 
 export class CourseService {
@@ -38,6 +38,30 @@ export class CourseService {
     const result = await this.api.post(`/v1/courses/${id}/set-status`, {
       status,
     });
+    return result.data;
+  }
+
+  /**
+   *
+   * @param data Data for creating course
+   * @returns
+   */
+  public async create(
+    data: CreateCourseParamsType
+  ): Promise<IApiRespose<Pick<ICourse, 'id' | 'title' | 'description' | 'status' | 'created_at' | 'updated_at'>>> {
+    const formData = new FormData();
+
+    /**
+     * Append value to form-data format
+     */
+    Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
+
+    const result = await this.api.post('/v1/courses', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
     return result.data;
   }
 

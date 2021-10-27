@@ -28,6 +28,11 @@ export type ConfirmEmailContainerDataType = {
   expired_seconds: number;
 };
 
+export type OptionType = {
+  value: string;
+  label: string;
+};
+
 export type ProfilePageStatusType = 'update-password' | 'update-email' | 'confirm-email' | 'default';
 export type ProfilePageDataType = {
   /**
@@ -127,3 +132,12 @@ export type CreateUserParamsType = {
   password: string;
 };
 export type UpdateUserParamsType = { first_name?: string; last_name?: string; email?: string };
+
+export type CreateCourseParamsType = {
+  title: string;
+  description: string;
+  teacher_id: string;
+  category_id: string;
+  image: File | undefined;
+  status: CourseStatusEnum;
+};

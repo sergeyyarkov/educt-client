@@ -1,15 +1,21 @@
 import yup from '@educt/schema';
 
-const MAX_FILE_SIZE = 300 * 1024;
+const FILE_SIZE = 160 * 1024;
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
 const CreateCourseSchema = yup.object().shape({
-  title: yup.string().required('Title field name is required'),
+  title: yup.string().required('Title field name is required').max(60, 'Title must be at most 60 characters'),
   description: yup.string().required('Description field name is required'),
   image: yup
     .mixed()
-    .test('fileSize', 'File size is too large', (value: File) => value && value.size >= MAX_FILE_SIZE)
-    .test('fileFormat', 'Usupported file format', (value: File) => value && SUPPORTED_FORMATS.includes(value.type))
+    .test('fileSize', 'File size is too large', (value: FileList) => {
+      if (!value.length) return true;
+      return value[0] && value[0].size <= FILE_SIZE;
+    })
+    .test('fileFormat', 'This file format is not supported', (value: FileList) => {
+      if (!value.length) return true;
+      return value[0] && SUPPORTED_FORMATS.includes(value[0].type);
+    })
     .optional(),
   category_id: yup.string().required('Category field is required'),
   teacher_id: yup.string().required('Teacher field is required'),
