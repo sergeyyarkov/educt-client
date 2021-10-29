@@ -33,3 +33,20 @@ export function userContainRoles(userRoles: IUserRole[], roles: UserRoleEnum[]):
 export function removeEmptyValues(obj: object) {
   return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== null));
 }
+
+/**
+ * Transform object data to FormData
+ *
+ * @param data Input data
+ * @returns Data formatted in FormData
+ */
+export function transformToFormData(data: object): FormData {
+  const formData = new FormData();
+
+  /**
+   * Append value to form-data format
+   */
+  Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
+
+  return formData;
+}

@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import * as helpers from '@educt/helpers';
 import { IApiRespose, ICourse } from '@educt/interfaces';
 import { CreateCourseParamsType, FetchCoursesParams } from '@educt/types';
 import { CourseStatusEnum } from '@educt/enums';
@@ -49,14 +50,7 @@ export class CourseService {
   public async create(
     data: CreateCourseParamsType
   ): Promise<IApiRespose<Pick<ICourse, 'id' | 'title' | 'description' | 'status' | 'created_at' | 'updated_at'>>> {
-    const formData = new FormData();
-
-    /**
-     * Append value to form-data format
-     */
-    Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
-
-    const result = await this.api.post('/v1/courses', formData, {
+    const result = await this.api.post('/v1/courses', helpers.transformToFormData(data), {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
