@@ -1,16 +1,25 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { MdExitToApp } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { useRootStore } from '@educt/hooks/useRootStore';
+import { IconButton, Skeleton } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Flex, Box, Text } from '@chakra-ui/layout';
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/modal';
+import { MdExitToApp } from 'react-icons/md';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { useDisclosure, IconButton, useColorMode, Skeleton } from '@chakra-ui/react';
-import NavList from '../NavList';
 import config from '@educt/config';
+
+/**
+ * Components
+ */
+import NavList from '../NavList';
+
+/**
+ * Hooks
+ */
 import useLogoutQuery from '@educt/hooks/useLogoutQuery';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { useColorMode, useDisclosure } from '@chakra-ui/react';
 
 const NavMobile: React.FC = () => {
   const {

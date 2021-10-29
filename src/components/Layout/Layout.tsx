@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
@@ -20,6 +20,7 @@ import NavDesktop from '@educt/components/Nav/Desktop';
 /**
  * Hooks
  */
+import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
@@ -31,6 +32,9 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   const { userStore } = useRootStore();
   const handleError = useErrorHandler();
 
+  /**
+   * Fetch authorized user handler
+   */
   useEffect(() => {
     userStore.loadCurrentUserData().catch(error => handleError(error));
   }, [handleError, userStore]);
@@ -38,8 +42,8 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   return (
     <>
       <Header />
-      <Flex minH='100vh'>
-        <NavDesktop />
+      <NavDesktop />
+      <Flex minH='100vh' justifyContent='center'>
         <Box
           as='main'
           flex='1 0'

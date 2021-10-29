@@ -1,9 +1,17 @@
-import config from '@educt/config';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Flex, Box, useColorMode } from '@chakra-ui/react';
-import { useRootStore } from '@educt/hooks/useRootStore';
+import config from '@educt/config';
+
+/**
+ * Components
+ */
 import NavList from '../NavList';
+
+/**
+ * Hooks
+ */
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**
  *

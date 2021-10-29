@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Flex, Avatar, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Box, Heading, Flex, Avatar, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Button } from '@chakra-ui/react';
 
 /**
  * Components
@@ -12,6 +12,7 @@ import CourseList from '@educt/pages/profile/components/CourseList';
 /**
  * Hooks
  */
+import useLogoutQuery from '@educt/hooks/useLogoutQuery';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useColorMode } from '@chakra-ui/color-mode';
 
@@ -20,6 +21,7 @@ const MainContainer: React.FC = () => {
     userStore: { me },
   } = useRootStore();
   const { colorMode } = useColorMode();
+  const { logout } = useLogoutQuery();
 
   if (me === null) return null;
 
@@ -29,47 +31,17 @@ const MainContainer: React.FC = () => {
       <Text mt='2'>Update you contacts information or password here.</Text>
       <Flex
         alignItems='center'
+        flexDir={{ base: 'column', md: 'row' }}
+        textAlign={{ base: 'center', md: 'left' }}
         mt='20'
-        sx={{
-          '@media (max-width: 768px)': {
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            mt: '10',
-          },
-        }}
       >
         <Box>
           <Avatar border={`4px solid ${colorMode === 'dark' ? '#2D3748' : '#E2E8F0'}`} size='2xl' name={me.fullname} />
         </Box>
-        <Flex
-          ml='50'
-          flexDirection='column'
-          sx={{
-            '@media (max-width: 768px)': {
-              ml: '0',
-              mt: '5',
-            },
-          }}
-        >
+        <Flex ml={{ md: '50' }} mt={{ base: '2', md: '0' }} flexDirection='column'>
           <Heading as='h2'>{me.fullname}</Heading>
-          <Flex
-            alignItems='center'
-            sx={{
-              '@media (max-width: 768px)': {
-                flexDirection: 'column',
-              },
-            }}
-          >
-            <Text
-              mr='10px'
-              sx={{
-                '@media (max-width: 768px)': {
-                  mr: '0',
-                  mb: '5px',
-                },
-              }}
-            >
+          <Flex alignItems='center' flexDir={{ base: 'column', md: 'row' }}>
+            <Text mr='10px' mb={{ base: '2', md: '0' }}>
               {me.email}
             </Text>
             <UserBadge roles={me.roles} />
@@ -83,7 +55,7 @@ const MainContainer: React.FC = () => {
             <Tab>My contacts</Tab>
             {me.isStudent && <Tab>Available courses</Tab>}
           </TabList>
-          <TabPanels>
+          <TabPanels mt='2'>
             <TabPanel>
               <UserAccountInfo user={me} />
             </TabPanel>
@@ -97,6 +69,11 @@ const MainContainer: React.FC = () => {
             )}
           </TabPanels>
         </Tabs>
+      </Box>
+      <Box textAlign='center' mt='3'>
+        <Button onClick={logout} w={{ base: 'full', sm: '150px' }}>
+          Sign Out
+        </Button>
       </Box>
     </Box>
   );

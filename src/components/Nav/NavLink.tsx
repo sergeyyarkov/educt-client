@@ -1,9 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { userContainRoles } from '@educt/helpers';
 import { Box, useColorMode } from '@chakra-ui/react';
 import type { LinkType } from '@educt/types';
+
+/**
+ * Hooks
+ */
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { userContainRoles } from '@educt/helpers';
 
 type NavLinkPropsType = {
   link: LinkType;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { MdAccountCircle, MdSchool, MdVpnKey } from 'react-icons/md';
 import {
   FormControl,
   FormLabel,
@@ -12,9 +11,23 @@ import {
   Flex,
   Box,
 } from '@chakra-ui/react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { MdAccountCircle, MdSchool, MdVpnKey } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+/**
+ * Types
+ */
+import type { SubmitHandler } from 'react-hook-form';
+
+/**
+ * Hooks
+ */
+import { useForm } from 'react-hook-form';
 import useLoginQuery from '@educt/hooks/useLoginQuery';
+
+/**
+ * Schema
+ */
 import LoginSchema from './AuthForm.validator';
 
 type AuthInputType = {
@@ -33,6 +46,9 @@ const AuthForm: React.FC = () => {
   });
   const { login, loading } = useLoginQuery();
 
+  /**
+   * Login handler
+   */
   const onSubmit: SubmitHandler<AuthInputType> = data => {
     login(data.login, data.password).finally(() => reset());
   };

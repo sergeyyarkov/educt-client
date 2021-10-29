@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Tag, TagLabel } from '@chakra-ui/react';
 
 /**
@@ -11,6 +11,11 @@ import { ICategory } from '@educt/interfaces';
  */
 import { CoursesPageContext } from '@educt/contexts';
 
+/**
+ * Hooks
+ */
+import { useContext } from 'react';
+
 type CategoryItemProps = {
   category: ICategory;
 };
@@ -21,9 +26,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
   /**
    * Handle click on change category
    */
-  const onCategoryChange = () => {
-    setSelectedCategory(category);
-  };
+  const onCategoryChange = () => setSelectedCategory(category);
 
   return (
     <Tag

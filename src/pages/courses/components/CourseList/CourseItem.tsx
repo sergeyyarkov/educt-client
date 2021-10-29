@@ -1,20 +1,9 @@
 import React from 'react';
-import {
-  Flex,
-  Box,
-  Heading,
-  Text,
-  Menu,
-  MenuButton,
-  Badge,
-  MenuItem,
-  MenuList,
-  Image,
-  Link,
-  IconButton,
-} from '@chakra-ui/react';
+import { observer } from 'mobx-react';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Icon } from '@chakra-ui/react';
+import { Badge, Image, Link, IconButton, Icon } from '@chakra-ui/react';
+import { Flex, Box, Heading, Text } from '@chakra-ui/layout';
+import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { MdNote, MdMoreHoriz, MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
 import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
@@ -22,15 +11,18 @@ import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
  * Types
  */
 import { ICourse } from '@educt/interfaces';
+import { CourseStatusEnum } from '@educt/enums';
+
+/**
+ * Components
+ */
+import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 
 /**
  * Hooks
  */
 import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import CourseStatusBadge from '@educt/components/CourseStatusBadge';
-import { CourseStatusEnum } from '@educt/enums';
-import { observer } from 'mobx-react';
 
 type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
@@ -51,6 +43,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
       {(me.isAdmin || me.isTeacher) && (
         <Flex justifyContent='flex-end'>
           <Box position='absolute' zIndex='1' padding='10px'>
+            {/* Actions */}
             <Menu isLazy>
               <MenuButton
                 as={IconButton}

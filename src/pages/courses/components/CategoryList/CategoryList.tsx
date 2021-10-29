@@ -1,15 +1,28 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
-import { CoursesPageContext } from '@educt/contexts';
-import CategoryItem from './CategoryItem';
+
+/**
+ * Types
+ */
 import { ICategory } from '@educt/interfaces';
+
+/**
+ * Components
+ */
+import CategoryItem from './CategoryItem';
 import CategoryListLoading from './CategoryListLoading';
+
+/**
+ * Contexts
+ */
+import { CoursesPageContext } from '@educt/contexts';
 
 /**
  * Hooks
  */
-import { useErrorHandler } from 'react-error-boundary';
+import { useContext, useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
 
 type CategoryListPropsType = {
   categories: ICategory[] | null;
@@ -21,6 +34,9 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
   const handleError = useErrorHandler();
 
+  /**
+   * Fetch handler
+   */
   useEffect(() => {
     categoryStore.loadCategories().catch(error => handleError(error));
   }, [categoryStore, handleError]);
@@ -42,9 +58,10 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }
         >
           <TagLabel>All categories</TagLabel>
         </Tag>
-        {categories.map((category, i) => {
-          return <CategoryItem key={category.id} category={category} />;
-        })}
+        {/* Render items */}
+        {categories.map((category, i) => (
+          <CategoryItem key={category.id} category={category} />
+        ))}
       </Flex>
     </Box>
   );

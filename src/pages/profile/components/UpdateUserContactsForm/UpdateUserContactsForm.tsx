@@ -90,11 +90,8 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box boxShadow='sm' borderRadius='sm' borderWidth='1px' padding='20px'>
-          <Heading as='h3' size='md'>
-            My Contacts
-          </Heading>
-          <Stack spacing='5px' margin='20px 0'>
+        <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='20px'>
+          <Stack spacing='5px'>
             <FormControl id='phone_number'>
               <FormHelperText color='gray.500'>Phone number with country code</FormHelperText>
               <Input

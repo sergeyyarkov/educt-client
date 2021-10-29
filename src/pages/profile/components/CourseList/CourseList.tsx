@@ -1,16 +1,20 @@
 import React from 'react';
+import { Box, Text, Flex } from '@chakra-ui/layout';
+
+/**
+ * Types
+ */
 import { IMe } from '@educt/interfaces';
-import { Box, Text, Stack, StackDivider } from '@chakra-ui/layout';
+
+/**
+ * Components
+ */
 import CourseItem from './CourseItem';
 
 type CourseListPropsType = {
   courses: IMe['courses'];
 };
 
-/**
- *  Render the course list on profile page for STUDENT role
- *  in "Available courses" tab
- */
 const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   if (courses === undefined) {
     return null;
@@ -27,11 +31,11 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   }
 
   return (
-    <Stack spacing='8' divider={<StackDivider />}>
+    <Flex flexDirection='column'>
       {courses.map(course => (
         <CourseItem course={course} key={course.id} />
       ))}
-    </Stack>
+    </Flex>
   );
 };
 

@@ -17,11 +17,15 @@ import CourseStatusTabs from './components/CourseStatusTabs';
 import LoadingPage from '@educt/components/LoadingPage';
 
 /**
+ * Providers
+ */
+import { CoursesPageContextProvider } from '@educt/providers';
+
+/**
  * Hooks
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { CoursesPageContextProvider } from '@educt/providers';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 /**
  * Courses page

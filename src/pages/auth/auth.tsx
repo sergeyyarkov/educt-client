@@ -14,6 +14,9 @@ import AuthForm from './components/AuthForm';
 const AuthPage: React.FC<IPageProps> = () => {
   const { authStore } = useRootStore();
 
+  /**
+   * User already authorized
+   */
   if (authStore.isLoggedIn) {
     return <Redirect to='/' />;
   }

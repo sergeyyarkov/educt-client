@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
 /**
@@ -22,6 +22,7 @@ import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
 /**
  * Hooks
  */
+import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 

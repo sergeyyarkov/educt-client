@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Box, Grid, Text } from '@chakra-ui/react';
 
 /**
  * Types
  */
 import { ICourse } from '@educt/interfaces';
+import { CourseStatusEnum } from '@educt/enums';
 
 /**
  * Components
@@ -16,6 +17,7 @@ import DeleteCourseDialog from '../DeleteCourseDialog';
 /**
  * Hooks
  */
+import { useContext, useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useToast } from '@chakra-ui/toast';
@@ -25,7 +27,6 @@ import { useErrorHandler } from 'react-error-boundary';
  * Contexts
  */
 import { CoursesPageContext } from '@educt/contexts';
-import { CourseStatusEnum } from '@educt/enums';
 
 type CourseListPropsType = {
   courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null;
@@ -42,6 +43,9 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
   const handleError = useErrorHandler();
   const toast = useToast();
 
+  /**
+   * Fetch handler
+   */
   useEffect(() => {
     if (me !== null) {
       courseStore.loadCourses({
@@ -84,18 +88,8 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     <>
       {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       {courses.length !== 0 ? (
-        <Grid
-          templateColumns='repeat(3, minmax(0, 1fr))'
-          gap='6'
-          sx={{
-            '@media (max-width: 1280px)': {
-              gridTemplateColumns: 'repeat(2, 1fr)',
-            },
-            '@media (max-width: 768px)': {
-              gridTemplateColumns: 'repeat(1, 1fr)',
-            },
-          }}
-        >
+        <Grid templateColumns='repeat(auto-fill, minmax(400px, 1fr))' gap='6'>
+          {/* Render items */}
           {courses.map(course => (
             <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />
           ))}

@@ -1,8 +1,20 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { useHistory } from 'react-router-dom';
+
+/**
+ * Types
+ */
 import { LinkType } from '@educt/types';
+
+/**
+ * Components
+ */
 import NavLink from './NavLink';
+
+/**
+ * Hooks
+ */
+import { useHistory } from 'react-router-dom';
 
 type NavListPropsType = {
   links: LinkType[];

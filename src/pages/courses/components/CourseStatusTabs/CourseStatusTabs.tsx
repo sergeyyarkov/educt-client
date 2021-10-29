@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Tabs, TabList, Tab } from '@chakra-ui/react';
 
 /**
@@ -10,6 +10,11 @@ import { CourseStatusEnum } from '@educt/enums';
  * Contexts
  */
 import { CoursesPageContext } from '@educt/contexts';
+
+/**
+ * Hooks
+ */
+import { useContext } from 'react';
 
 type CourseStatusTabsProps = {};
 
