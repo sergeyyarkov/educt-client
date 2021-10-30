@@ -1,6 +1,6 @@
+import React from 'react';
 import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
 import { ICategory, ICourse, IUser } from '@educt/interfaces';
-import React from 'react';
 import { IconType } from 'react-icons/lib';
 
 export type LinkType = {
@@ -23,35 +23,32 @@ export type AttachmentFileType = {
   extname: string;
 };
 
-export type ConfirmEmailContainerDataType = {
-  newEmail: string;
-  expired_seconds: number;
-};
-
 export type OptionType = {
   value: string;
   label: string;
 };
 
-export type ProfilePageStatusType = 'update-password' | 'update-email' | 'confirm-email' | 'default';
-export type ProfilePageDataType = {
-  /**
-   * The field that is set when trying to change the mail address through form
-   */
-  confirmEmailData?: ConfirmEmailContainerDataType;
+export type ConfirmEmailContainerDataType = {
+  newEmail: string;
+  expired_seconds: number;
 };
-export type ProfilePageContextType = {
-  /**
-   * Render current container by status
-   */
-  statusPageView: ProfilePageStatusType;
-  setStatusPageView: React.Dispatch<React.SetStateAction<ProfilePageStatusType>>;
+
+/**
+ * Change email page context
+ */
+export type ConfirmEmailDataType = {
+  newEmail: string;
+  expired_seconds: number;
+};
+export type ChangeEmailPageContextType = {
+  isCodeSent: boolean;
+  setIsCodeSent: React.Dispatch<React.SetStateAction<boolean>>;
 
   /**
-   * Some data for other components
+   * Set this data when confirmation code has been sent
    */
-  pageData: ProfilePageDataType;
-  setPageData: React.Dispatch<React.SetStateAction<ProfilePageDataType>>;
+  confirmEmailData?: ConfirmEmailDataType;
+  setConfirmEmailData: React.Dispatch<React.SetStateAction<ConfirmEmailDataType | undefined>>;
 };
 
 export type SearchingRoleStateType = UserRoleEnum | 'any' | undefined;

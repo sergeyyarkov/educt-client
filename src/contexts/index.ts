@@ -1,14 +1,14 @@
 import { createContext } from 'react';
-import { CoursesPageContextType, ProfilePageContextType, UsersPageContextType } from '@educt/types';
+import { ChangeEmailPageContextType, CoursesPageContextType, UsersPageContextType } from '@educt/types';
 import RootStore from '../stores/RootStore';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
-export const ProfilePageContext = createContext<ProfilePageContextType>({
-  statusPageView: 'default',
-  setStatusPageView: () => {},
-  pageData: {},
-  setPageData: () => {},
+export const ChangeEmailPageContext = createContext<ChangeEmailPageContextType>({
+  isCodeSent: false,
+  setIsCodeSent: () => {},
+  confirmEmailData: undefined,
+  setConfirmEmailData: () => {},
 });
 
 export const UsersPageContext = createContext<UsersPageContextType>({

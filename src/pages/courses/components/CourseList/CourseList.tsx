@@ -88,7 +88,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     <>
       {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       {courses.length !== 0 ? (
-        <Grid templateColumns='repeat(auto-fill, minmax(400px, 1fr))' gap='6'>
+        <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
           {/* Render items */}
           {courses.map(course => (
             <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />

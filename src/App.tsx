@@ -23,6 +23,8 @@ import PublicRoute from '@educt/components/PublicRoute';
 import AuthPage from '@educt/pages/auth/auth';
 import NotFoundPage from '@educt/pages/404/404';
 import CreateCoursePage from '@educt/pages/courses/create/create';
+import ChangePasswordPage from '@educt/pages/profile/change-password/change-password';
+import ChangeEmailPage from '@educt/pages/profile/change-email/change-email';
 const CoursesPage = React.lazy(() => import('@educt/pages/courses/courses'));
 const MainPage = React.lazy(() => import('@educt/pages/main/main'));
 const MessagesPage = React.lazy(() => import('@educt/pages/messages/messages'));
@@ -46,7 +48,9 @@ const App = () => {
           roles={[UserRoleEnum.ADMIN, UserRoleEnum.TEACHER]}
         />
         <PrivateRoute path='/messages' component={MessagesPage} title='Messages' />
-        <PrivateRoute path='/profile' component={ProfilePage} title='Profile' />
+        <PrivateRoute exact path='/profile' component={ProfilePage} title='Profile' />
+        <PrivateRoute path='/profile/change-password' component={ChangePasswordPage} title='Change Password' />
+        <PrivateRoute path='/profile/change-email' component={ChangeEmailPage} title='Change Email' />
         <PrivateRoute
           path='/users'
           component={UsersPage}

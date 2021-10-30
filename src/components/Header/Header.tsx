@@ -1,18 +1,24 @@
-import config from '@educt/config';
 import React from 'react';
 import { observer } from 'mobx-react';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { Flex, Box, Heading, useColorMode } from '@chakra-ui/react';
-import UserInfo from './UserInfo';
-import UserNotifications from './UserNotifications';
+import { MdSchool } from 'react-icons/md';
+import config from '@educt/config';
+
+/**
+ * Components
+ */
 import NavMobile from '@educt/components/Nav/Mobile';
 import ColorModeSwitcher from '@educt/components/ColorModeSwitcher';
-import { MdSchool } from 'react-icons/md';
+import UserInfo from './UserInfo';
+import UserNotifications from './UserNotifications';
+
+/**
+ * Hooks
+ */
+import { useMediaQuery } from '@chakra-ui/media-query';
 
 const Header: React.FC = () => {
-  const {
-    uiStore: { isDesktop },
-  } = useRootStore();
+  const [isDesktop] = useMediaQuery('(min-width: 992px)');
   const { colorMode } = useColorMode();
 
   return (
@@ -22,7 +28,9 @@ const Header: React.FC = () => {
       top={0}
       left={0}
       right={0}
-      borderBottomWidth={1}
+      // borderBottomWidth={1}
+      // h='43px'
+      boxShadow='md'
       backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}
       zIndex={4}
     >

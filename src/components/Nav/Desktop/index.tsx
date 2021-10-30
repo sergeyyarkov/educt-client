@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Flex, Box, useColorMode } from '@chakra-ui/react';
+import { Flex, Box, Text, Link, IconButton } from '@chakra-ui/react';
 import config from '@educt/config';
 
 /**
@@ -11,7 +11,8 @@ import NavList from '../NavList';
 /**
  * Hooks
  */
-import { useRootStore } from '@educt/hooks/useRootStore';
+import { useColorMode, useMediaQuery } from '@chakra-ui/react';
+import { FaGithub } from 'react-icons/fa';
 
 /**
  *
@@ -19,14 +20,13 @@ import { useRootStore } from '@educt/hooks/useRootStore';
  * Component for navigating the application.
  */
 const Nav: React.FC = () => {
-  const {
-    uiStore: { isDesktop },
-  } = useRootStore();
   const { colorMode } = useColorMode();
+  const [isDesktop] = useMediaQuery('(min-width: 992px)');
 
   if (isDesktop) {
     return (
-      <Box
+      <Flex
+        flexDir='column'
         borderRightWidth='1px'
         w='18rem'
         position='fixed'
@@ -49,7 +49,19 @@ const Nav: React.FC = () => {
         >
           <NavList links={config.links} />
         </Flex>
-      </Box>
+        <Box textAlign='center' mt='auto' mb='5'>
+          <Text fontSize='xs' color='gray.500' lineHeight='1.5'>
+            Learning Management System <br /> Made by Sergey Yarkov
+          </Text>
+          <Box textAlign='center' mt='2'>
+            <IconButton variant='link' aria-label='GitHub repository'>
+              <Link isExternal href='https://github.com/sergeyyarkov/educt-client'>
+                <Box as={FaGithub} />
+              </Link>
+            </IconButton>
+          </Box>
+        </Box>
+      </Flex>
     );
   }
   return null;

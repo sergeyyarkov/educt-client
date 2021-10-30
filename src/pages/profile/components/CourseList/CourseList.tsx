@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Flex } from '@chakra-ui/layout';
+import { Box, Text, Flex, Stack } from '@chakra-ui/layout';
 
 /**
  * Types
@@ -16,9 +16,7 @@ type CourseListPropsType = {
 };
 
 const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
-  if (courses === undefined) {
-    return null;
-  }
+  if (courses === undefined) return null;
 
   if (courses.length === 0) {
     return (
@@ -31,7 +29,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   }
 
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDir='column'>
       {courses.map(course => (
         <CourseItem course={course} key={course.id} />
       ))}

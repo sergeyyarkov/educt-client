@@ -1,22 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { PinInput, PinInputField } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/button';
 import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/layout';
-import { ConfirmEmailContainerDataType } from '@educt/types';
+
+/**
+ * Types
+ */
+import { ConfirmEmailDataType } from '@educt/types';
+
+/**
+ * Hooks
+ */
+import { useEffect, useState } from 'react';
 import useUpdateUserEmailQuery from '@educt/hooks/useUpdateUserEmailQuery.ts';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageContext } from '@educt/contexts';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+import { useHistory } from 'react-router';
 
 type ConfirmEmailContainerPropsType = {
-  data: ConfirmEmailContainerDataType;
+  data: ConfirmEmailDataType;
 };
 
 const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data }) => {
   const { userStore } = useRootStore();
-  const { setStatusPageView } = useContext(ProfilePageContext);
   const { sendConfirmationCode, loading } = useUpdateUserEmailQuery();
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
@@ -24,6 +32,7 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
   const isMountedRef = useIsMountedRef();
   const toast = useToast();
   const handleError = useErrorHandler();
+  const history = useHistory();
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -47,7 +56,7 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
         status: 'info',
       });
       if (isMountedRef.current) {
-        setStatusPageView('default');
+        history.push('/profile');
       }
     } catch (error: any) {
       if (error.response) {

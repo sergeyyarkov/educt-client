@@ -1,11 +1,6 @@
 import React, { useState, ReactNode } from 'react';
-import { CoursesPageContext, ProfilePageContext, StoreContext, UsersPageContext } from '@educt/contexts';
-import {
-  CoursesPageContextType,
-  ProfilePageDataType,
-  ProfilePageStatusType,
-  SearchingRoleStateType,
-} from '@educt/types';
+import { ChangeEmailPageContext, CoursesPageContext, StoreContext, UsersPageContext } from '@educt/contexts';
+import { ConfirmEmailDataType, SearchingRoleStateType } from '@educt/types';
 import RootStore from '@educt/stores/RootStore';
 import { ICategory, ICourse, IUser } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
@@ -20,16 +15,16 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
 };
 
 /**
- * Profile page context provider
+ * Change email page context provider
  */
-export const ProfilePageContextProvider: React.FC = ({ children }) => {
-  const [statusPageView, setStatusPageView] = useState<ProfilePageStatusType>('default');
-  const [pageData, setPageData] = useState<ProfilePageDataType>({});
+export const ChangeEmailPageContextProvider: React.FC = ({ children }) => {
+  const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
+  const [confirmEmailData, setConfirmEmailData] = useState<ConfirmEmailDataType | undefined>(undefined);
 
   return (
-    <ProfilePageContext.Provider value={{ statusPageView, setStatusPageView, pageData, setPageData }}>
+    <ChangeEmailPageContext.Provider value={{ isCodeSent, setIsCodeSent, confirmEmailData, setConfirmEmailData }}>
       {children}
-    </ProfilePageContext.Provider>
+    </ChangeEmailPageContext.Provider>
   );
 };
 

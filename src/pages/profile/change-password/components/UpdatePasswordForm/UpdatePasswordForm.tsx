@@ -1,16 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { useRootStore } from '@educt/hooks/useRootStore';
+import React from 'react';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import UpdatePasswordSchema from './UpdatePasswordForm.validator';
-import { useToast } from '@chakra-ui/toast';
+
+/**
+ * Types
+ */
+import type { SubmitHandler } from 'react-hook-form';
+
+/**
+ * Hooks
+ */
+import { useState } from 'react';
+import { useHistory } from 'react-router';
+import { useForm } from 'react-hook-form';
 import { useErrorHandler } from 'react-error-boundary';
-import { ProfilePageContext } from '@educt/contexts';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+import { useToast } from '@chakra-ui/toast';
+
+/**
+ * Schema
+ */
+import UpdatePasswordSchema from './UpdatePasswordForm.validator';
 
 type UpdatePasswordInputType = {
   old_password: string;
@@ -22,10 +36,9 @@ type UpdatePasswordInputType = {
  * Update password using form
  */
 const UpdatePasswordForm: React.FC = () => {
-  const { setStatusPageView } = useContext(ProfilePageContext);
   const { userStore } = useRootStore();
   const isMountedRef = useIsMountedRef();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     handleSubmit,
     register,
@@ -35,19 +48,25 @@ const UpdatePasswordForm: React.FC = () => {
   } = useForm<UpdatePasswordInputType>({
     resolver: yupResolver(UpdatePasswordSchema),
   });
-
+  const history = useHistory();
   const toast = useToast();
   const handleError = useErrorHandler();
 
+  /**
+   *  Submit form handler
+   */
   const onSubmit: SubmitHandler<UpdatePasswordInputType> = async ({ old_password, new_password, confirm_password }) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       await userStore.updateCurrentUserPassword(old_password, new_password);
       toast({ title: 'Password changed.', status: 'success' });
       reset();
-      setStatusPageView('default');
+      history.push('/profile');
     } catch (error: any) {
       if (error.response) {
+        /**
+         * Invalid current password handler
+         */
         if (error.response.status === 401) {
           toast({ title: 'Invalid current password.', status: 'error', duration: 2000 });
           reset({ old_password: '', new_password, confirm_password });
@@ -60,7 +79,7 @@ const UpdatePasswordForm: React.FC = () => {
       }
     } finally {
       if (isMountedRef.current) {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
   };
@@ -76,7 +95,7 @@ const UpdatePasswordForm: React.FC = () => {
               size='md'
               variant='filled'
               placeholder='*******'
-              isInvalid={errors.old_password ? true : false}
+              isInvalid={!!errors.old_password}
               {...register('old_password')}
             />
             <FormHelperText color='gray.500'>Type your current password.</FormHelperText>
@@ -88,7 +107,7 @@ const UpdatePasswordForm: React.FC = () => {
               size='md'
               variant='filled'
               placeholder='*******'
-              isInvalid={errors.new_password ? true : false}
+              isInvalid={!!errors.new_password}
               {...register('new_password')}
             />
             <FormHelperText color={errors.new_password ? 'red' : 'gray.500'}>
@@ -102,7 +121,7 @@ const UpdatePasswordForm: React.FC = () => {
               size='md'
               variant='filled'
               placeholder='*******'
-              isInvalid={errors.confirm_password ? true : false}
+              isInvalid={!!errors.confirm_password}
               {...register('confirm_password')}
             />
             <FormHelperText color={errors.confirm_password ? 'red' : 'gray.500'}>
@@ -116,7 +135,7 @@ const UpdatePasswordForm: React.FC = () => {
           type='submit'
           size='md'
           variant='outline'
-          isLoading={loading}
+          isLoading={isLoading}
           loadingText='Saving...'
         >
           Change

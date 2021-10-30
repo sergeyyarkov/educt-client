@@ -44,24 +44,7 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
       <Header />
       <NavDesktop />
       <Flex minH='100vh' justifyContent='center'>
-        <Box
-          as='main'
-          flex='1 0'
-          maxW='85rem'
-          ml='20rem'
-          mt='7rem'
-          mb='1rem'
-          pr='2rem'
-          pl='2rem'
-          sx={{
-            '@media (max-width: 1400px)': {
-              ml: '20rem',
-            },
-            '@media (max-width: 991px)': {
-              ml: '0',
-            },
-          }}
-        >
+        <Box as='main' flex='1 0' maxW='85rem' ml={{ base: '0', lg: '20rem' }} mt='7rem' mb='1rem' pr='2rem' pl='2rem'>
           <Suspense fallback={<LoadingPage />}>
             {(() => {
               /**
