@@ -1,6 +1,7 @@
 import { UserRoleEnum } from '@educt/enums';
 import { MdAccountCircle, MdCollectionsBookmark, MdGroup, MdHome, MdMessage } from 'react-icons/md';
 import { IAppConfig } from './interfaces';
+import packageJson from '../package.json';
 
 const config: IAppConfig = {
   /**
@@ -8,7 +9,8 @@ const config: IAppConfig = {
    */
   metaData: {
     appName: 'Educt',
-    appDescription: 'Learn management system',
+    appDescription: 'Learning management system',
+    appVersion: packageJson.version,
   },
   /**
    * Links that are rendered in the navigation

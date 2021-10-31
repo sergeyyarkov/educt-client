@@ -50,8 +50,8 @@ const Nav: React.FC = () => {
           <NavList links={config.links} />
         </Flex>
         <Box textAlign='center' mt='auto' mb='5'>
-          <Text fontSize='xs' color='gray.500' lineHeight='1.5'>
-            Learning Management System <br /> Made by Sergey Yarkov
+          <Text fontSize='xs' color='gray.500' lineHeight='1.6'>
+            Learning Management System <br /> Made by Sergey Yarkov <br />v{config.metaData.appVersion}
           </Text>
           <Box textAlign='center' mt='2'>
             <IconButton variant='link' aria-label='GitHub repository'>

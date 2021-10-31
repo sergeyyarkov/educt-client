@@ -7,7 +7,7 @@ import ErrorFallback from '@educt/components/ErrorFallback';
 
 export interface IPublicRouteProps extends RouteProps {
   component: React.FC<IPageProps>;
-  title?: string;
+  title: string;
 }
 
 /**

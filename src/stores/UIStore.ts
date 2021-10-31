@@ -1,10 +1,5 @@
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { createBrowserHistory } from 'history';
-
-/**
- * Types
- */
-import { IWindowDimensions } from '@educt/interfaces';
 
 /**
  * Stores
@@ -18,15 +13,11 @@ export default class UIStore {
 
   public history: ReturnType<typeof createBrowserHistory>;
 
-  public windowDimensions: IWindowDimensions = { width: window.innerWidth, height: window.innerHeight };
-
   constructor(root: RootStore) {
     this.root = root;
     this.history = createBrowserHistory();
 
-    makeAutoObservable(this, {
-      windowDimensions: observable.struct,
-    });
+    makeAutoObservable(this);
 
     this.setupListeners();
   }
@@ -41,31 +32,10 @@ export default class UIStore {
     this.history.listen(({ pathname }) => {
       this.setLocation(pathname);
     });
-
-    /**
-     * Window dimensions updated
-     */
-    window.onresize = () => this.updateWindowDimensions();
   }
 
   public setLocation(location: string): void {
     console.log(`[history]: location changed to "${location}"`);
     this.location = location;
-  }
-
-  private updateWindowDimensions(): void {
-    this.windowDimensions = { width: window.innerWidth, height: window.innerHeight };
-  }
-
-  get isDesktop() {
-    return this.windowDimensions.width > 991;
-  }
-
-  get isTablet() {
-    return this.windowDimensions.width < 991;
-  }
-
-  get isMobile() {
-    return this.windowDimensions.width < 568;
   }
 }

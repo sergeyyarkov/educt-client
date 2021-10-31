@@ -30,7 +30,7 @@ import { useHistory } from 'react-router';
 /**
  * Courses page
  */
-const CoursesPage: React.FC<IPageProps> = ({ title }) => {
+const CoursesPage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
     categoryStore,
@@ -46,7 +46,7 @@ const CoursesPage: React.FC<IPageProps> = ({ title }) => {
         <Flex alignItems='center' justifyContent='space-between'>
           <Box>
             <Heading as='h1'>Courses</Heading>
-            <Text mt='2'>List of all available courses.</Text>
+            <Text mt='2'>List of all courses.</Text>
           </Box>
           {(me.isAdmin || me.isTeacher) && (
             <Button

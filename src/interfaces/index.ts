@@ -6,6 +6,7 @@ export interface IAppConfig {
   metaData: {
     appName: string;
     appDescription: string;
+    appVersion: string;
   };
   links: LinkType[];
 }
@@ -127,10 +128,5 @@ export interface IApiRespose<T> {
 }
 
 export interface IPageProps extends RouteComponentProps {
-  title?: string;
-}
-
-export interface IWindowDimensions {
-  width: number;
-  height: number;
+  title: string;
 }

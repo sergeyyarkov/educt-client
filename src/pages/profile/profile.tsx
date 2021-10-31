@@ -1,7 +1,20 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Avatar, Tabs, TabList, Tab, TabPanels, TabPanel, Button } from '@chakra-ui/react';
-import { Box, Flex, Heading, Text, Stack, StackDivider } from '@chakra-ui/layout';
+import {
+  Avatar,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Button,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Stack } from '@chakra-ui/layout';
 
 /**
  * Types
@@ -69,52 +82,50 @@ const ProfilePage: React.FC<IPageProps> = () => {
           </TabList>
           <TabPanels mt='2'>
             <TabPanel>
-              <Box borderRadius='lg' borderWidth='1px' padding='20px' boxShadow='sm'>
-                <Stack spacing='10px' divider={<StackDivider />}>
-                  <Flex>
-                    <Box>
-                      <Text as='small' color='gray.500'>
-                        First Name
-                      </Text>
-                      <Text fontWeight='medium' fontSize='lg'>
-                        {me.first_name}
-                      </Text>
-                    </Box>
-                  </Flex>
-                  <Flex>
-                    <Box>
-                      <Text as='small' color='gray.500'>
-                        Last Name
-                      </Text>
-                      <Text fontWeight='medium' fontSize='lg'>
-                        {me.last_name}
-                      </Text>
-                    </Box>
-                  </Flex>
-                  <Flex justifyContent='space-between' alignItems='center'>
-                    <Box>
-                      <Text as='small' color='gray.500'>
-                        Email
-                      </Text>
-                      <Text fontWeight='medium' fontSize='lg'>
-                        {me.email}
-                      </Text>
-                    </Box>
-                    <Button onClick={() => history.push('/profile/change-email')}>Edit</Button>
-                  </Flex>
-                  <Flex justifyContent='space-between' alignItems='center'>
-                    <Box>
-                      <Text as='small' color='gray.500'>
-                        Password
-                      </Text>
-                      <Text fontWeight='medium' fontSize='lg'>
-                        **********
-                      </Text>
-                    </Box>
-                    <Button onClick={() => history.push('/profile/change-password')}>Change</Button>
-                  </Flex>
-                </Stack>
-              </Box>
+              <form>
+                <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='5'>
+                  <Stack spacing='5px'>
+                    <FormControl isDisabled>
+                      <FormHelperText color='gray.500'>First name</FormHelperText>
+                      <Input type='text' value={me.first_name} size='md' variant='flushed' />
+                    </FormControl>
+
+                    <FormControl isDisabled>
+                      <FormHelperText color='gray.500'>Last name</FormHelperText>
+                      <Input type='text' value={me.last_name} size='md' variant='flushed' />
+                    </FormControl>
+
+                    <FormControl isDisabled>
+                      <FormHelperText color='gray.500'>Email</FormHelperText>
+                      <InputGroup>
+                        <Input type='text' value={me.email} size='md' variant='flushed' />
+                        <InputRightElement width='4rem'>
+                          <Button size='sm' h='1.90rem' w='full' onClick={() => history.push('/profile/change-email')}>
+                            Edit
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+
+                    <FormControl isDisabled>
+                      <FormHelperText color='gray.500'>Password</FormHelperText>
+                      <InputGroup>
+                        <Input type='text' value='**********' size='md' variant='flushed' />
+                        <InputRightElement width='5rem'>
+                          <Button
+                            size='sm'
+                            h='1.90rem'
+                            w='full'
+                            onClick={() => history.push('/profile/change-password')}
+                          >
+                            Change
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                  </Stack>
+                </Box>
+              </form>
             </TabPanel>
             <TabPanel>
               <UpdateUserContactsForm contacts={me.contacts} />

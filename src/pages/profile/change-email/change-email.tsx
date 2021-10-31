@@ -15,6 +15,11 @@ import LoadingPage from '@educt/components/LoadingPage';
 import UpdateEmailForm from './components/UpdateEmailForm';
 
 /**
+ * Containers
+ */
+import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
+
+/**
  * Hooks
  */
 import { useHistory } from 'react-router';
@@ -22,21 +27,14 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import { observer } from 'mobx-react';
 
 /**
+ * Contexts
+ */
+import { ChangeEmailPageContext } from '@educt/contexts';
+
+/**
  * Providers
  */
 import { ChangeEmailPageContextProvider } from '@educt/providers';
-import { ChangeEmailPageContext } from '@educt/contexts';
-import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
-
-{
-  /* <>
-              {!isCodeSent ? (
-                <UpdateEmailForm currentEmail={me.email} />
-              ) : (
-                confirmEmailData && <ConfirmEmailContainer data={confirmEmailData} />
-              )}
-            </> */
-}
 
 /**
  * Change email page

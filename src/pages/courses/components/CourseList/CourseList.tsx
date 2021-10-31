@@ -44,7 +44,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
   const toast = useToast();
 
   /**
-   * Fetch handler
+   * Fetch courses handler
    */
   useEffect(() => {
     if (me !== null) {
@@ -53,7 +53,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
         status: me.isAdmin || me.isTeacher ? courseStatus : CourseStatusEnum.PUBLISHED,
       });
     }
-  }, [courseStore, selectedCategory, courseStatus, me]);
+  }, [courseStore, selectedCategory, courseStatus]);
 
   /**
    * Handle delete course

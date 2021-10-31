@@ -90,7 +90,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='20px'>
+        <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='5'>
           <Stack spacing='5px'>
             <FormControl id='phone_number'>
               <FormHelperText color='gray.500'>Phone number with country code</FormHelperText>
@@ -106,6 +106,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 {errors.phone_number?.message}
               </Text>
             </FormControl>
+
             <FormControl id='twitter_id'>
               <FormHelperText color='gray.500'>Twitter</FormHelperText>
               <Input
@@ -120,6 +121,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 {errors.twitter_id?.message}
               </Text>
             </FormControl>
+
             <FormControl id='telegram'>
               <FormHelperText color='gray.500'>Telegram</FormHelperText>
               <Input
@@ -134,6 +136,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 {errors.telegram_id?.message}
               </Text>
             </FormControl>
+
             <FormControl id='vk'>
               <FormHelperText color='gray.500'>VKontakte</FormHelperText>
               <Input

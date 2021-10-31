@@ -1,10 +1,15 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { MdError } from 'react-icons/md';
-import { Flex, Box, Heading, Text, useToast, Link } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { Flex, Box, Heading, Text, useToast, Link } from '@chakra-ui/react';
+import { MdError } from 'react-icons/md';
 
-const NotFoundPage: React.FC = () => {
+/**
+ * Types
+ */
+import { IPageProps } from '@educt/interfaces';
+
+const NotFoundPage: React.FC<IPageProps> = ({ title }) => {
   const toast = useToast();
 
   React.useEffect(() => {
@@ -14,7 +19,7 @@ const NotFoundPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Error 404</title>
+        <title>{title}</title>
       </Helmet>
       <Box textAlign='center' mt={40}>
         <Flex justifyContent='center'>

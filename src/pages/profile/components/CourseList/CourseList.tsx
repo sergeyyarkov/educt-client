@@ -29,11 +29,11 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses }) => {
   }
 
   return (
-    <Flex flexDir='column'>
+    <Stack>
       {courses.map(course => (
         <CourseItem course={course} key={course.id} />
       ))}
-    </Flex>
+    </Stack>
   );
 };
 

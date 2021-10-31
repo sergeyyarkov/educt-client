@@ -3,16 +3,13 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Redirect } from 'react-router-dom';
-import { RouteProps } from 'react-router';
-import { IPageProps } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import Layout from '@educt/components/Layout';
 import ErrorFallback from '@educt/components/ErrorFallback';
+import { IPublicRouteProps } from '../PublicRoute/PublicRoute';
 
-export interface IPrivateRouteProps extends RouteProps {
-  component: React.FC<IPageProps>;
-  title?: string;
+export interface IPrivateRouteProps extends IPublicRouteProps {
   /**
    * This field means who can access the page
    */

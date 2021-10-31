@@ -11,7 +11,7 @@ import AuthForm from './components/AuthForm';
 /**
  * Auth page
  */
-const AuthPage: React.FC<IPageProps> = () => {
+const AuthPage: React.FC<IPageProps> = ({ title }) => {
   const { authStore } = useRootStore();
 
   /**
@@ -24,7 +24,7 @@ const AuthPage: React.FC<IPageProps> = () => {
   return (
     <>
       <Helmet>
-        <title>Auth</title>
+        <title>{title}</title>
       </Helmet>
       <Flex minHeight='100vh' align='center' justifyContent='center' padding='5'>
         <AuthForm />
