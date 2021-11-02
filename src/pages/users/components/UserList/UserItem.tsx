@@ -21,7 +21,7 @@ import UserBadge from '@educt/components/UserBadge';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useColorModeValue } from '@chakra-ui/react';
 
-type UserItemPropsType = {
+export type UserItemPropsType = {
   user: IUser;
   onEdit: (user: IUser) => void;
   onDelete: (user: IUser) => void;

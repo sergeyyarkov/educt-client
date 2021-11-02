@@ -6,6 +6,7 @@ import { UserRoleEnum } from '@educt/enums';
 import { useErrorHandler } from 'react-error-boundary';
 import { UsersPageContext } from '@educt/contexts';
 import { UsersPageContextType } from '@educt/types';
+import { observer } from 'mobx-react';
 
 type SelectRoleStateType = UserRoleEnum | 'any';
 
@@ -70,4 +71,4 @@ const UserSearch: React.FC = () => {
   );
 };
 
-export default UserSearch;
+export default observer(UserSearch);
