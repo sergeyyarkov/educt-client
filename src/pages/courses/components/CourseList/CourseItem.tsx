@@ -24,7 +24,7 @@ import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
-type CourseItemPropsType = {
+export type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
   onDelete: (course: Pick<ICourse, 'id' | 'title'>) => void;
   onSetStatus: (id: string, status: CourseStatusEnum) => Promise<void>;

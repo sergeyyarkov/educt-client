@@ -1,15 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Box, Flex, Tag, TagLabel } from '@chakra-ui/react';
 
 /**
  * Types
  */
-import { ICategory } from '@educt/interfaces';
+import { CategoryItemPropsType } from './CategoryItem';
 
 /**
  * Components
  */
-import CategoryItem from './CategoryItem';
 import CategoryListLoading from './CategoryListLoading';
 
 /**
@@ -25,14 +25,14 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 
 type CategoryListPropsType = {
-  categories: ICategory[] | null;
-  isLoading: boolean;
+  render: React.FC<CategoryItemPropsType>;
 };
 
-const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }) => {
+const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
   const { categoryStore } = useRootStore();
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
   const handleError = useErrorHandler();
+  const { categories, isLoading } = categoryStore;
 
   /**
    * Fetch handler
@@ -41,9 +41,10 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }
     categoryStore.loadCategories().catch(error => handleError(error));
   }, [categoryStore, handleError]);
 
-  if (isLoading || categories === null) {
-    return <CategoryListLoading />;
-  }
+  /**
+   * Loading
+   */
+  if (categories === null || isLoading) return <CategoryListLoading />;
 
   return (
     <Box mb='5'>
@@ -58,13 +59,13 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ categories, isLoading }
         >
           <TagLabel>All categories</TagLabel>
         </Tag>
-        {/* Render items */}
-        {categories.map((category, i) => (
-          <CategoryItem key={category.id} category={category} />
+
+        {categories.map(category => (
+          <Item key={category.id} category={category} />
         ))}
       </Flex>
     </Box>
   );
 };
 
-export default CategoryList;
+export default observer(CategoryList);

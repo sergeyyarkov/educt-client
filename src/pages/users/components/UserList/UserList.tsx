@@ -8,6 +8,7 @@ import { Button } from '@chakra-ui/button';
  */
 import UserItem from './UserItem';
 import EditUserForm from '../EditUserForm';
+import DeleteUserDialog from '../DeleteUserDialog';
 
 /**
  * Types
@@ -27,7 +28,6 @@ import { useContext } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useErrorHandler } from 'react-error-boundary';
-import DeleteUserDialog from '../DeleteUserDialog';
 
 type UserListPropsType = { users: IUser[]; pagination: IPaginationMeta };
 
@@ -85,7 +85,6 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const onEditUser = (user: IUser) => {
     setEditingUser(user);
     onOpenEditModal();
-    console.log(`[LOG]: Editing user "${user.id}"`);
   };
 
   /**
@@ -95,7 +94,6 @@ const UserList: React.FC<UserListPropsType> = ({ users, pagination }) => {
   const onDeleteUser = (user: IUser) => {
     setDeletingUser(user);
     onOpenDeleteDialog();
-    console.log(`[LOG]: Alert delete "${user.id}"`);
   };
 
   return (

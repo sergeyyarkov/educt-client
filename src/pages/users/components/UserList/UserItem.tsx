@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import * as helpres from '@educt/helpers';
 import { Box, Flex, Avatar, Text, IconButton, Link } from '@chakra-ui/react';
-import { Link as ReactRouterLink } from 'react-router-dom';
-import UserBadge from '@educt/components/UserBadge';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 /**
  * Types
@@ -11,10 +11,15 @@ import { IUser } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
 
 /**
+ * Components
+ */
+import UserBadge from '@educt/components/UserBadge';
+
+/**
  * Hooks
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { useColorModeValue } from '@chakra-ui/react';
 
 type UserItemPropsType = {
   user: IUser;
@@ -46,7 +51,7 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
   })();
 
   return (
-    <Box borderWidth='1px' borderRadius='lg' w='full' p='3'>
+    <Box borderBottomWidth='1px' borderRadius='lg' w='full' p='3' bg={useColorModeValue('gray.50', 'gray.700')}>
       <Flex alignItems='center' justifyContent='space-between' sx={{ gap: '20px' }}>
         <Flex alignItems='center' flexBasis='230px'>
           <Avatar name={user.fullname} size='sm' mr='3' />

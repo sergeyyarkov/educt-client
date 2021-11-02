@@ -16,11 +16,11 @@ import { CoursesPageContext } from '@educt/contexts';
  */
 import { useContext } from 'react';
 
-type CategoryItemProps = {
+export type CategoryItemPropsType = {
   category: ICategory;
 };
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
+const CategoryItem: React.FC<CategoryItemPropsType> = ({ category }) => {
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
 
   /**

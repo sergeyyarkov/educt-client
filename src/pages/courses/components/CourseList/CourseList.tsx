@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Box, Grid, Text } from '@chakra-ui/react';
 
 /**
@@ -10,7 +11,7 @@ import { CourseStatusEnum } from '@educt/enums';
 /**
  * Components
  */
-import CourseItem from './CourseItem';
+import CourseItem, { CourseItemPropsType } from './CourseItem';
 import CourseListLoading from './CourseListLoading';
 import DeleteCourseDialog from '../DeleteCourseDialog';
 
@@ -29,11 +30,10 @@ import { useErrorHandler } from 'react-error-boundary';
 import { CoursesPageContext } from '@educt/contexts';
 
 type CourseListPropsType = {
-  courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null;
-  isLoading: boolean;
+  render: React.FC<CourseItemPropsType>;
 };
 
-const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
+const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   const {
     userStore: { me },
     courseStore,
@@ -42,6 +42,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
   const handleError = useErrorHandler();
   const toast = useToast();
+  const { courses, isLoading } = courseStore;
 
   /**
    * Fetch courses handler
@@ -80,27 +81,31 @@ const CourseList: React.FC<CourseListPropsType> = ({ courses, isLoading }) => {
     }
   };
 
-  if (isLoading || courses === null) {
-    return <CourseListLoading />;
-  }
+  /**
+   * Loading
+   */
+  if (courses === null || isLoading) return <CourseListLoading />;
+
+  /**
+   * No courses
+   */
+  if (courses.length === 0)
+    return (
+      <Box textAlign='center' mt='10' userSelect='none'>
+        <Text color='gray.500'>There are no courses in this category {courseStatus && 'or with this status'}.</Text>
+      </Box>
+    );
 
   return (
-    <>
+    <Box>
       {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
-      {courses.length !== 0 ? (
-        <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
-          {/* Render items */}
-          {courses.map(course => (
-            <CourseItem key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />
-          ))}
-        </Grid>
-      ) : (
-        <Box textAlign='center' mt='10' userSelect='none'>
-          <Text color='gray.500'>There are no courses in this category {courseStatus && 'or with this status'}.</Text>
-        </Box>
-      )}
-    </>
+      <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
+        {courses.map(course => (
+          <Item key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
-export default CourseList;
+export default observer(CourseList);

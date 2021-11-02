@@ -83,7 +83,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
           <TabPanels mt='2'>
             <TabPanel>
               <form>
-                <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='5'>
+                <Box borderRadius='lg' borderWidth='1px' padding='5'>
                   <Stack spacing='5px'>
                     <FormControl isDisabled>
                       <FormHelperText color='gray.500'>First name</FormHelperText>

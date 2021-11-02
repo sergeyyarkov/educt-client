@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
 import { Text, Input, Button } from '@chakra-ui/react';
-import { Box, Heading, Stack } from '@chakra-ui/layout';
+import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -90,7 +90,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box boxShadow='sm' borderRadius='lg' borderWidth='1px' padding='5'>
+        <Box borderRadius='lg' borderWidth='1px' padding='5'>
           <Stack spacing='5px'>
             <FormControl id='phone_number'>
               <FormHelperText color='gray.500'>Phone number with country code</FormHelperText>

@@ -1,7 +1,6 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
-import { IconButton } from '@chakra-ui/button';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 /**
  * Types
@@ -22,9 +21,7 @@ import ConfirmEmailContainer from './containers/ConfirmEmailContainer';
 /**
  * Hooks
  */
-import { useHistory } from 'react-router';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { observer } from 'mobx-react';
 
 /**
  * Contexts
@@ -35,6 +32,7 @@ import { ChangeEmailPageContext } from '@educt/contexts';
  * Providers
  */
 import { ChangeEmailPageContextProvider } from '@educt/providers';
+import PrevPageButton from '@educt/components/PrevPageButton';
 
 /**
  * Change email page
@@ -43,7 +41,6 @@ const ChangeEmailPage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
   } = useRootStore();
-  const history = useHistory();
 
   if (me === null) return <LoadingPage />;
 
@@ -55,13 +52,7 @@ const ChangeEmailPage: React.FC<IPageProps> = () => {
             {!isCodeSent ? (
               <Box maxW='700px'>
                 <Flex alignItems='center'>
-                  <IconButton
-                    aria-label='Back'
-                    borderRadius='full'
-                    icon={<ChevronLeftIcon />}
-                    onClick={() => history.push('/profile')}
-                    mr='5'
-                  />
+                  <PrevPageButton prevPage='/profile' />
                   <Heading as='h1'>Edit email address</Heading>
                 </Flex>
                 <Box mt='3'>

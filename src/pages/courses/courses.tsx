@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import { Flex, Box, Heading, Text, Button } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
@@ -26,6 +25,8 @@ import { CoursesPageContextProvider } from '@educt/providers';
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router';
+import CategoryItem from './components/CategoryList/CategoryItem';
+import CourseItem from './components/CourseList/CourseItem';
 
 /**
  * Courses page
@@ -33,8 +34,6 @@ import { useHistory } from 'react-router';
 const CoursesPage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
-    categoryStore,
-    courseStore,
   } = useRootStore();
   const history = useHistory();
 
@@ -62,8 +61,8 @@ const CoursesPage: React.FC<IPageProps> = () => {
         <Box mt='7'>
           {(me.isAdmin || me.isTeacher) && <CourseStatusTabs />}
           <Box mt='5'>
-            <CategoryList categories={categoryStore.categories} isLoading={categoryStore.isLoading} />
-            <CourseList courses={courseStore.courses} isLoading={courseStore.isLoading} />
+            <CategoryList render={CategoryItem} />
+            <CourseList render={CourseItem} />
           </Box>
         </Box>
       </Box>
@@ -71,4 +70,4 @@ const CoursesPage: React.FC<IPageProps> = () => {
   );
 };
 
-export default observer(CoursesPage);
+export default CoursesPage;
