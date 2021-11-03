@@ -16,8 +16,6 @@ import {
 import { MdCloudUpload } from 'react-icons/md';
 import { SubmitHandler, useForm, useWatch, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AsyncSelect from 'react-select/async';
-import * as helpers from '@educt/helpers';
 
 /**
  * Types
@@ -37,6 +35,8 @@ import useIsMountedRef from '@educt/hooks/useIsMountedRef';
  * Schema
  */
 import CreateCourseSchema from './CreateCourseForm.validator';
+import AsyncSelect from '@educt/components/AsyncSelect';
+import Select from '@educt/components/Select';
 
 type CreateCourseInputType = {
   title: string;
@@ -79,17 +79,14 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
   /**
    *  Load users into select field
    */
-  const loadUsersOptions = async (inputValue: string): Promise<OptionType[] | undefined> => {
+  const loadUsersOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const users = await userService.fetchAll({ search: inputValue, role: UserRoleEnum.TEACHER });
+      const users = await userService.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
 
-      // TODO: remove filter later
-      return users.data
-        .filter(user => helpers.userContainRoles(user.roles, [UserRoleEnum.TEACHER]))
-        .map(user => ({
-          label: user.fullname,
-          value: user.id,
-        }));
+      return users.data.map(user => ({
+        label: user.fullname,
+        value: user.id,
+      }));
     } catch (error: any) {
       if (error.response) {
         toast({ title: 'Error' });
@@ -102,7 +99,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
   /**
    *  Load categories into select filed
    */
-  const loadCategoriesOptions = async (inputValue: string): Promise<OptionType[] | undefined> => {
+  const loadCategoriesOptions = async (): Promise<OptionType[] | undefined> => {
     try {
       const categories = await categoryService.fetchAll();
       return categories.data.map(category => ({
@@ -163,8 +160,8 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
               <InputRightElement
                 mr='2'
                 children={
-                  <Text as='small' color={!!errors.title || title.length > 60 ? 'red.500' : 'gray.500'}>
-                    {title.length}/60
+                  <Text as='small' color={!!errors.title || title.length > 90 ? 'red.500' : 'gray.500'}>
+                    {title.length}/90
                   </Text>
                 }
               />
@@ -187,16 +184,14 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
             <Controller
               control={control}
               name='category_id'
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange, value } }) => (
                 <AsyncSelect
-                  defaultOptions
-                  cacheOptions
                   loadOptions={loadCategoriesOptions}
-                  isSearchable={false}
-                  onChange={selected => onChange(selected?.value)}
+                  onChange={selected => onChange(selected)}
+                  value={value}
                   placeholder='Select Category'
-                  loadingMessage={() => 'Loading...'}
-                  noOptionsMessage={() => 'There are no categories.'}
+                  noOptionsMessage='There are no categories.'
+                  loadingText='Wait...'
                 />
               )}
             />
@@ -209,15 +204,14 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
             <Controller
               control={control}
               name='teacher_id'
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange, value } }) => (
                 <AsyncSelect
-                  defaultOptions
-                  cacheOptions
                   loadOptions={loadUsersOptions}
-                  onChange={selected => onChange(selected?.value)}
+                  onChange={selected => onChange(selected)}
+                  value={value}
                   placeholder='Select Teacher'
-                  loadingMessage={() => 'Loading...'}
-                  noOptionsMessage={() => 'Cannot find any teacher.'}
+                  noOptionsMessage='There are no teachers.'
+                  loadingText='Wait...'
                 />
               )}
             />

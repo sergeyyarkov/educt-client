@@ -6,23 +6,11 @@ import { IPageProps } from '@educt/interfaces';
 /**
  * Messages page
  */
-const MessagesPage: React.FC<IPageProps> = ({ title }) => {
+const MessagesPage: React.FC<IPageProps> = () => {
   return (
-    <>
-      <Breadcrumb fontWeight='medium' fontSize='sm'>
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href='/'>{title}</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
-      <Box mt='10'>
-        <Box>
-          <Heading as='h1'>Messages page</Heading>
-          <Grid templateColumns='3fr 1fr' mt='25px'>
-            ...
-          </Grid>
-        </Box>
-      </Box>
-    </>
+    <Box>
+      <Heading as='h1'>Messages page</Heading>
+    </Box>
   );
 };
 

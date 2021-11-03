@@ -147,4 +147,4 @@ const ProfilePage: React.FC<IPageProps> = () => {
   );
 };
 
-export default observer(ProfilePage);
+export default ProfilePage;

@@ -46,7 +46,7 @@ const NavMobile: React.FC = () => {
                   padding='10px'
                   borderRadius='md'
                   marginTop='auto'
-                  backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+                  backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.50'}
                 >
                   <Flex alignItems='center'>
                     <Avatar size='sm' name={me.fullname} marginRight={3} />

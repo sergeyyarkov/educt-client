@@ -4,7 +4,7 @@ const FILE_SIZE = 160 * 1024;
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
 const CreateCourseSchema = yup.object().shape({
-  title: yup.string().required('Title field name is required').max(60, 'Title must be at most 60 characters'),
+  title: yup.string().required('Title field name is required').max(90, 'Title must be at most 90 characters'),
   description: yup.string().required('Description field name is required'),
   image: yup
     .mixed()
