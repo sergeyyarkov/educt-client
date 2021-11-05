@@ -84,8 +84,6 @@ export default class UserStore {
     try {
       const result = await this.userService.create(data);
 
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
-
       if (this.users !== null) {
         /**
          * Fetch updated users data with new pagination data
@@ -103,11 +101,10 @@ export default class UserStore {
     try {
       const result = await this.userService.update(id, params);
 
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
-
       runInAction(() => {
         if (this.users !== null) {
           const userIndex = this.users.findIndex(user => user.id === id);
+
           if (userIndex !== -1) {
             this.users[userIndex] = result.data;
           }
@@ -129,8 +126,6 @@ export default class UserStore {
   public async deleteUser(id: string, paramsContext?: FetchUsersParamsType) {
     try {
       const result = await this.userService.delete(id);
-
-      console.log(`[${this.constructor.name}]: ${result.message}`, result);
 
       if (this.users !== null) {
         /**

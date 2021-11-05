@@ -79,8 +79,8 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me
       last_name: editingUser && editingUser.last_name,
       email: editingUser && editingUser.email,
       role: editingUser && editingUser.roles[0].slug,
-      login: null,
-      password: null,
+      login: '',
+      password: '',
     },
   });
   const isMountedRef = useIsMountedRef();
