@@ -30,6 +30,7 @@ import { useLocation } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
+import LoadingList from '@educt/components/LoadingList';
 
 type UserListPropsType = { render: React.FC<UserItemPropsType> };
 
@@ -47,7 +48,7 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item }) => {
     userStore.loadUsersData().catch(error => handleError(error));
   }, [handleError, userStore, location.search]);
 
-  if (pagination === undefined || users === null) return <div>Loading users...</div>;
+  if (pagination === undefined || users === null) return <LoadingList />;
 
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
 
@@ -123,23 +124,21 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item }) => {
           <Text>Total: ({pagination.total})</Text>
           <Text>Actions</Text>
         </Flex>
-        {loading ? (
-          <Box textAlign='center' mt='10' userSelect='none'>
-            <Text color='gray.500'>Wait a second...</Text>
-          </Box>
-        ) : (
+        {!loading ? (
           <Stack mt='4' spacing='2'>
             {users.map(user => (
               <Item key={user.id} user={user} onEdit={onEditUser} onDelete={onDeleteUser} />
             ))}
           </Stack>
+        ) : (
+          <LoadingList />
         )}
       </Box>
       <Flex margin='2rem 0' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
         <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
           Page <b>{pagination.current_page}</b> of {pagesCount}
         </Box>
-        <Flex ml='auto' mr='auto' alignItems='center' sx={{ gap: '30px' }}>
+        <Flex ml='auto' mr='auto' justifyContent='center' flexWrap='wrap' alignItems='center' sx={{ gap: '30px' }}>
           <Button
             onClick={prevPage}
             disabled={pagination.current_page <= 1}

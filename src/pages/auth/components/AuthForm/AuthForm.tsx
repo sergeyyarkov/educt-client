@@ -54,7 +54,7 @@ const AuthForm: React.FC = () => {
   };
 
   return (
-    <Box w='full' maxW='450px' borderWidth='1px' borderRadius='lg' p='8'>
+    <Box flexBasis='500px' borderWidth='1px' borderRadius='lg' p='8'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex justifyContent='center' alignItems='center'>
           <Box w='full'>
@@ -67,27 +67,24 @@ const AuthForm: React.FC = () => {
               <FormLabel>Login</FormLabel>
               <InputGroup>
                 <InputLeftElement children={<Icon as={MdAccountCircle} />} />
-                <Input type='text' placeholder='Login' {...register('login')} isInvalid={errors.login ? true : false} />
+                <Input type='text' placeholder='Login' {...register('login')} isInvalid={!!errors.login} />
               </InputGroup>
               <Text as='small' color='red.500'>
                 {errors.login?.message}
               </Text>
             </FormControl>
+
             <FormControl mt={5}>
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <InputLeftElement children={<Icon as={MdVpnKey} />} />
-                <Input
-                  type='password'
-                  placeholder='******'
-                  {...register('password')}
-                  isInvalid={errors.password ? true : false}
-                />
+                <Input type='password' placeholder='******' {...register('password')} isInvalid={!!errors.password} />
               </InputGroup>
               <Text as='small' color='red.500'>
                 {errors.password?.message}
               </Text>
             </FormControl>
+
             <Button
               loadingText='Logging in...'
               isLoading={loading}

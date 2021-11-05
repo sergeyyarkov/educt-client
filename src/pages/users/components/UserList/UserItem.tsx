@@ -52,17 +52,19 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
 
   return (
     <Box borderBottomWidth='1px' borderRadius='lg' w='full' p='3' bg={useColorModeValue('gray.50', 'gray.700')}>
-      <Flex alignItems='center' justifyContent='space-between' sx={{ gap: '20px' }}>
-        <Flex alignItems='center' flexBasis='230px'>
-          <Avatar name={user.fullname} size='sm' mr='3' />
-          <Box>
+      <Flex flexDir={{ base: 'column', sm: 'row' }} alignItems='center' sx={{ gap: '20px' }}>
+        <Flex alignItems='center' flexDir={{ base: 'column', sm: 'row' }} flex='1 1 0'>
+          <Avatar name={user.fullname} size='sm' mr={{ base: '0', sm: '3' }} mb={{ base: '1', sm: '0' }} />
+          <Box textAlign={{ base: 'center', sm: 'left' }}>
             <Link as={ReactRouterLink} to={`/user/${user.id}`} fontSize='md' fontWeight='medium'>
               {user.fullname}
             </Link>
-            <Text fontSize='sm'>{user.email}</Text>
+            <Text fontSize='sm' overflowWrap='anywhere'>
+              {user.email}
+            </Text>
           </Box>
         </Flex>
-        <Flex sx={{ gap: '5px' }}>
+        <Flex sx={{ gap: '5px' }} justifyContent='center' flex='1 1 0'>
           <UserBadge roles={user.roles} />
         </Flex>
         <Box>

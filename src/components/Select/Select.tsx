@@ -29,6 +29,8 @@ const Select: React.FC<ISelectPropsType> = props => {
         <MenuButton
           as={Button}
           variant='outline'
+          fontWeight='400'
+          fontSize='md'
           width='full'
           textAlign='left'
           justifyContent='flex-end'

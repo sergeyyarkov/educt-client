@@ -13,9 +13,10 @@ import {
   InputRightElement,
   Input,
 } from '@chakra-ui/react';
-import { MdCloudUpload } from 'react-icons/md';
+import { MdAttachFile, MdCloudUpload } from 'react-icons/md';
 import { SubmitHandler, useForm, useWatch, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncSelect from '@educt/components/AsyncSelect';
 
 /**
  * Types
@@ -29,18 +30,18 @@ import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
 import { useHistory } from 'react-router';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 /**
  * Schema
  */
 import CreateCourseSchema from './CreateCourseForm.validator';
-import AsyncSelect from '@educt/components/AsyncSelect';
-import Select from '@educt/components/Select';
+import FileSelect from '@educt/components/FileSelect/FileSelect';
 
 type CreateCourseInputType = {
   title: string;
-  image: FileList;
+  image: File;
   category_id: string;
   description: string;
   teacher_id: string;
@@ -126,7 +127,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
         description: data.description,
         teacher_id: data.teacher_id,
         category_id: data.category_id,
-        image: data.image[0],
+        image: data.image,
         status: status ?? CourseStatusEnum.DRAFT,
       });
       toast({ title: `Course successfully created.`, status: 'success' });
@@ -173,7 +174,13 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
 
           <FormControl id='image' isInvalid={!!errors.image}>
             <FormLabel>Image</FormLabel>
-            <Input size='md' variant='unstyled' {...register('image')} type='file' accept='image/*' />
+            <Controller
+              control={control}
+              name='image'
+              render={({ field: { onChange } }) => (
+                <FileSelect onChange={file => onChange(file)} supportedFormats={['JPG', 'JPEG', 'PNG', 'WEBP']} />
+              )}
+            />
             <Text as='small' color='red.500'>
               {errors.image?.message}
             </Text>

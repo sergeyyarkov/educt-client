@@ -7,13 +7,13 @@ import { Box, Grid, Text } from '@chakra-ui/react';
  */
 import { ICourse } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
+import { CourseItemPropsType } from './CourseItem';
 
 /**
  * Components
  */
-import CourseItem, { CourseItemPropsType } from './CourseItem';
-import CourseListLoading from './CourseListLoading';
 import DeleteCourseDialog from '../DeleteCourseDialog';
+import LoadingList from '@educt/components/LoadingList';
 
 /**
  * Hooks
@@ -84,7 +84,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   /**
    * Loading
    */
-  if (courses === null || isLoading) return <CourseListLoading />;
+  if (courses === null || isLoading) return <LoadingList />;
 
   /**
    * No courses
