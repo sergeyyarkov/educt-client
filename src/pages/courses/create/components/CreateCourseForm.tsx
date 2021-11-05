@@ -13,10 +13,11 @@ import {
   InputRightElement,
   Input,
 } from '@chakra-ui/react';
-import { MdAttachFile, MdCloudUpload } from 'react-icons/md';
+import { MdCloudUpload } from 'react-icons/md';
 import { SubmitHandler, useForm, useWatch, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncSelect from '@educt/components/AsyncSelect';
+import FileSelect from '@educt/components/FileSelect';
 
 /**
  * Types
@@ -30,14 +31,12 @@ import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
 import { useHistory } from 'react-router';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
-import { useColorModeValue } from '@chakra-ui/color-mode';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 /**
  * Schema
  */
 import CreateCourseSchema from './CreateCourseForm.validator';
-import FileSelect from '@educt/components/FileSelect/FileSelect';
 
 type CreateCourseInputType = {
   title: string;
@@ -154,7 +153,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid templateColumns={{ md: '2.5fr 1fr' }} gap='5'>
-          <FormControl id='title' isInvalid={!!errors.title}>
+          <FormControl isRequired id='title' isInvalid={!!errors.title}>
             <FormLabel>Title</FormLabel>
             <InputGroup>
               <Input pr='60px' size='md' placeholder='Type course title' type='text' {...register('title')} />
@@ -186,7 +185,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
             </Text>
           </FormControl>
 
-          <FormControl id='category_id' gridColumn='1' isInvalid={!!errors.category_id}>
+          <FormControl isRequired id='category_id' gridColumn='1' isInvalid={!!errors.category_id}>
             <FormLabel>Category</FormLabel>
             <Controller
               control={control}
@@ -206,7 +205,13 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
               {errors.category_id?.message}
             </Text>
           </FormControl>
-          <FormControl id='teacher_id' gridColumn={{ md: '2' }} gridRow={{ md: '1' }} isInvalid={!!errors.teacher_id}>
+          <FormControl
+            isRequired
+            id='teacher_id'
+            gridColumn={{ md: '2' }}
+            gridRow={{ md: '1' }}
+            isInvalid={!!errors.teacher_id}
+          >
             <FormLabel>Teacher</FormLabel>
             <Controller
               control={control}
@@ -226,7 +231,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
               {errors.teacher_id?.message}
             </Text>
           </FormControl>
-          <FormControl id='description' gridColumn='1' isInvalid={!!errors.description}>
+          <FormControl isRequired id='description' gridColumn='1' isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
             <Textarea
               resize='none'

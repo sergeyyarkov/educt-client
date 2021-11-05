@@ -15,16 +15,28 @@ import {
   Flex,
   Text,
   Divider,
+  Select,
+  Stack,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { MdModeEdit } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
-import UpdateUserSchema from './EditUserForm.validator';
 
 /**
  * Types
  */
+import { IMe } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
+import { SubmitHandler } from 'react-hook-form';
+
+/**
+ * Hooks
+ */
+import { useForm } from 'react-hook-form';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { useErrorHandler } from 'react-error-boundary';
+import { useToast } from '@chakra-ui/react';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 /**
  * Contexts
@@ -32,28 +44,26 @@ import { UserRoleEnum } from '@educt/enums';
 import { UsersPageContext } from '@educt/contexts';
 
 /**
- * Hooks
+ * Schema
  */
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useRootStore } from '@educt/hooks/useRootStore';
-import { useErrorHandler } from 'react-error-boundary';
-import { useToast } from '@chakra-ui/react';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+import UpdateUserSchema from './EditUserForm.validator';
+
+type UpdateUserFormPropsType = {
+  onClose: () => void;
+  isOpen: boolean;
+  me: IMe;
+};
 
 type UpdateUserInputType = {
   first_name: string;
   last_name: string;
-  login: string;
+  login: string | null;
   email: string;
   role: UserRoleEnum;
-  password: string;
-};
-type UpdateUserFormPropsType = {
-  onClose: () => void;
-  isOpen: boolean;
+  password: string | null;
 };
 
-const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) => {
+const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me }) => {
   const { userStore } = useRootStore();
   const { editingUser, setEditingUser } = useContext(UsersPageContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -68,6 +78,9 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) 
       first_name: editingUser && editingUser.first_name,
       last_name: editingUser && editingUser.last_name,
       email: editingUser && editingUser.email,
+      role: editingUser && editingUser.roles[0].slug,
+      login: null,
+      password: null,
     },
   });
   const isMountedRef = useIsMountedRef();
@@ -120,29 +133,58 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen }) 
           <ModalCloseButton />
           <Divider />
           <ModalBody pb={6}>
-            <FormControl isDisabled>
-              <FormLabel>Identificator</FormLabel>
-              <Input value={editingUser?.id} />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>First name</FormLabel>
-              <Input
-                placeholder='First name'
-                {...register('first_name')}
-                isInvalid={errors.first_name ? true : false}
-              />
-              {errors.first_name && <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>}
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' {...register('last_name')} isInvalid={errors.last_name ? true : false} />
-              {errors.last_name && <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText>}
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Email</FormLabel>
-              <Input placeholder='example@email.com' {...register('email')} isInvalid={errors.email ? true : false} />
-              {errors.email && <FormHelperText color='red.500'>{errors.email.message}</FormHelperText>}
-            </FormControl>
+            <Stack spacing='4'>
+              <FormControl isDisabled>
+                <FormLabel>Identificator</FormLabel>
+                <Input value={editingUser?.id} />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>New Login</FormLabel>
+                <Input placeholder='e.g student001' {...register('login')} isInvalid={!!errors.login} />
+                {errors.login && <FormHelperText color='red.500'>{errors.login.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>First name</FormLabel>
+                <Input placeholder='First name' {...register('first_name')} isInvalid={!!errors.first_name} />
+                {errors.first_name && <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Last name</FormLabel>
+                <Input placeholder='Last name' {...register('last_name')} isInvalid={!!errors.last_name} />
+                {errors.last_name && <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Email</FormLabel>
+                <Input placeholder='example@email.com' {...register('email')} isInvalid={!!errors.email} />
+                {errors.email && <FormHelperText color='red.500'>{errors.email.message}</FormHelperText>}
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Role</FormLabel>
+                <Select w='full' mr='2' {...register('role')} isInvalid={!!errors.role}>
+                  <option value={UserRoleEnum.STUDENT}>Student</option>
+                  {me.isAdmin && (
+                    <>
+                      <option value={UserRoleEnum.TEACHER}>Teacher</option>
+                      <option value={UserRoleEnum.ADMIN}>Administrator</option>
+                    </>
+                  )}
+                </Select>
+                {errors.role ? <FormHelperText color='red.500'>{errors.role.message}</FormHelperText> : null}
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>New Password</FormLabel>
+                <Input placeholder='******' {...register('password')} isInvalid={!!errors.password} />
+                <FormHelperText color={errors.password ? 'red' : 'gray.500'}>
+                  {errors.password ? errors.password.message : 'Must be at least 6 characters.'}
+                </FormHelperText>
+              </FormControl>
+            </Stack>
           </ModalBody>
 
           <ModalFooter>

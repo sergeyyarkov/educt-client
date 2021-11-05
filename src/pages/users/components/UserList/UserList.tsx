@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/button';
 /**
  * Components
  */
+import LoadingList from '@educt/components/LoadingList';
 import EditUserForm from '../EditUserForm';
 import DeleteUserDialog from '../DeleteUserDialog';
 
@@ -30,7 +31,6 @@ import { useLocation } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
-import LoadingList from '@educt/components/LoadingList';
 
 type UserListPropsType = { render: React.FC<UserItemPropsType> };
 
@@ -42,13 +42,13 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item }) => {
   const handleError = useErrorHandler();
   const { onOpen: onOpenEditModal, onClose: onCloseEditModal, isOpen: isOpenEditModal } = useDisclosure();
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
-  const { users, pagination } = userStore;
+  const { users, pagination, me } = userStore;
 
   useEffect(() => {
     userStore.loadUsersData().catch(error => handleError(error));
   }, [handleError, userStore, location.search]);
 
-  if (pagination === undefined || users === null) return <LoadingList />;
+  if (pagination === undefined || users === null || me === null) return <LoadingList />;
 
   const pagesCount = Math.ceil(pagination.total / pagination.per_page);
 
@@ -117,7 +117,7 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item }) => {
 
   return (
     <>
-      {editingUser && <EditUserForm onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
+      {editingUser && <EditUserForm me={me} onClose={onCloseEditModal} isOpen={isOpenEditModal} />}
       {deletingUser && <DeleteUserDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       <Box>
         <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>

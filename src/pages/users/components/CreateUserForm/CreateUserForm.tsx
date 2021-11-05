@@ -12,6 +12,7 @@ import {
   FormHelperText,
   Input,
   Button,
+  Stack,
   Select,
   Flex,
   Text,
@@ -38,6 +39,10 @@ import { useForm } from 'react-hook-form';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useToast } from '@chakra-ui/react';
+
+/**
+ * Contexts
+ */
 import { UsersPageContext } from '@educt/contexts';
 
 type CreateUserModalPropsType = {
@@ -128,52 +133,53 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
             <ModalCloseButton />
             <Divider />
             <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>First name</FormLabel>
-                <Input
-                  placeholder='First name'
-                  {...register('first_name')}
-                  isInvalid={errors.first_name ? true : false}
-                />
-                {errors.first_name ? (
-                  <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Last name</FormLabel>
-                <Input placeholder='Last name' {...register('last_name')} isInvalid={errors.last_name ? true : false} />
-                {errors.last_name ? <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText> : null}
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Login</FormLabel>
-                <Input placeholder='e.g student893' {...register('login')} isInvalid={errors.login ? true : false} />
-                {errors.login ? <FormHelperText color='red.500'>{errors.login.message}</FormHelperText> : null}
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Email</FormLabel>
-                <Input placeholder='example@email.com' {...register('email')} isInvalid={errors.email ? true : false} />
-                {errors.email ? <FormHelperText color='red.500'>{errors.email.message}</FormHelperText> : null}
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Role</FormLabel>
-                <Select w='full' mr='2' {...register('role')} isInvalid={errors.role ? true : false}>
-                  <option value={UserRoleEnum.STUDENT}>Student</option>
-                  {me.isAdmin ? (
-                    <>
-                      <option value={UserRoleEnum.TEACHER}>Teacher</option>
-                      <option value={UserRoleEnum.ADMIN}>Administrator</option>
-                    </>
-                  ) : null}
-                </Select>
-                {errors.role ? <FormHelperText color='red.500'>{errors.role.message}</FormHelperText> : null}
-              </FormControl>
-              <FormControl mt={4}>
-                <FormLabel>Password</FormLabel>
-                <Input placeholder='******' {...register('password')} isInvalid={errors.password ? true : false} />
-                <FormHelperText color={errors.password ? 'red' : 'gray.500'}>
-                  {errors.password ? errors.password.message : 'Must be at least 6 characters.'}
-                </FormHelperText>
-              </FormControl>
+              <Stack spacing='4'>
+                <FormControl isRequired>
+                  <FormLabel>First name</FormLabel>
+                  <Input placeholder='First name' {...register('first_name')} isInvalid={!!errors.first_name} />
+                  {errors.first_name && <FormHelperText color='red.500'>{errors.first_name.message}</FormHelperText>}
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Last name</FormLabel>
+                  <Input placeholder='Last name' {...register('last_name')} isInvalid={!!errors.last_name} />
+                  {errors.last_name && <FormHelperText color='red.500'>{errors.last_name.message}</FormHelperText>}
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Login</FormLabel>
+                  <Input placeholder='e.g student001' {...register('login')} isInvalid={!!errors.login} />
+                  {errors.login && <FormHelperText color='red.500'>{errors.login.message}</FormHelperText>}
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input placeholder='example@email.com' {...register('email')} isInvalid={!!errors.email} />
+                  {errors.email && <FormHelperText color='red.500'>{errors.email.message}</FormHelperText>}
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Role</FormLabel>
+                  <Select w='full' mr='2' {...register('role')} isInvalid={!!errors.role}>
+                    <option value={UserRoleEnum.STUDENT}>Student</option>
+                    {me.isAdmin && (
+                      <>
+                        <option value={UserRoleEnum.TEACHER}>Teacher</option>
+                        <option value={UserRoleEnum.ADMIN}>Administrator</option>
+                      </>
+                    )}
+                  </Select>
+                  {errors.role && <FormHelperText color='red.500'>{errors.role.message}</FormHelperText>}
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Input placeholder='******' {...register('password')} isInvalid={!!errors.password} />
+                  <FormHelperText color={errors.password ? 'red' : 'gray.500'}>
+                    {errors.password ? errors.password.message : 'Must be at least 6 characters.'}
+                  </FormHelperText>
+                </FormControl>
+              </Stack>
             </ModalBody>
 
             <ModalFooter>

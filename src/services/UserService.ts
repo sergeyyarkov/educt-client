@@ -76,7 +76,7 @@ export default class UserService {
    * @returns Updated user
    */
   public async update(id: string, data: UpdateUserParamsType): Promise<IApiRespose<IUser>> {
-    const result = await this.api.patch(`v1/users/${id}`, data);
+    const result = await this.api.patch(`v1/users/${id}`, helpers.removeEmptyValues(data));
     return result.data;
   }
 

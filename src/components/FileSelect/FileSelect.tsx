@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
 import { Button } from '@chakra-ui/button';
 import { MdAttachFile } from 'react-icons/md';
 import * as helpres from '@educt/helpers';
@@ -8,7 +9,6 @@ import * as helpres from '@educt/helpers';
  * Hooks
  */
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Input } from '@chakra-ui/input';
 
 type FileSelectPropsType = {
   onChange: (file: File) => void;
