@@ -60,12 +60,6 @@ export type UsersPageContextType = {
   setSearchingRole: React.Dispatch<React.SetStateAction<SearchingRoleStateType>>;
 
   /**
-   * Set loading state while loading users
-   */
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-
-  /**
    * Serach user by fullname or email
    */
   search: string | undefined;
@@ -76,6 +70,12 @@ export type UsersPageContextType = {
    */
   editingUser: IUser | undefined;
   setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
+
+  /**
+   * Search users by page
+   */
+  searchingPage: number;
+  setSearchingPage: React.Dispatch<React.SetStateAction<number>>;
 
   /**
    * Set deleting user state when press on delete button

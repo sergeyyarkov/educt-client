@@ -1,102 +1,87 @@
-import React, { useContext, useRef, useState } from 'react';
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from '@chakra-ui/react';
+import React from 'react';
+
+/**
+ * Types
+ */
+import { IUser } from '@educt/interfaces';
+
+/**
+ * Components
+ */
+import ConfirmDialog from '@educt/components/ConfirmDialog/ConfirmDialog';
+
+/**
+ * Contexts
+ */
 import { UsersPageContext } from '@educt/contexts';
 
 /**
  * Hooks
  */
+import { useContext, useState } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useToast } from '@chakra-ui/react';
 import { useErrorHandler } from 'react-error-boundary';
 
 type DeleteUserDialogPropsType = {
-  onClose: () => void;
+  user: IUser;
   isOpen: boolean;
+  onClose: () => void;
 };
 
-const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ onClose, isOpen }) => {
+const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose, user }) => {
   const { userStore } = useRootStore();
-  const { deletingUser, setDeletingUser, searchingRole, search } = useContext(UsersPageContext);
-  const isMountedRef = useIsMountedRef();
+  const { setDeletingUser, searchingRole, searchingPage, search } = useContext(UsersPageContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const cancelRef = useRef<HTMLButtonElement | null>(null);
   const handleError = useErrorHandler();
   const toast = useToast();
 
+  const { pagination } = userStore;
+
   /**
    * Delete user handler
+   *
+   * @param isConfirmed Is dialog confirmed
+   * @param id User id
    */
-  const onDelete = async (id: string) => {
-    try {
-      setIsLoading(true);
-      await userStore.deleteUser(id, {
-        page: userStore.pagination?.current_page,
-        limit: userStore.pagination?.per_page,
-        role: searchingRole,
-        search,
-      });
-      toast({ title: 'User deleted.', status: 'info' });
-      onClose();
-      setDeletingUser(undefined);
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: error.message, status: 'error' });
-      } else {
-        handleError(error);
-      }
-    } finally {
-      if (isMountedRef.current) {
+  const deleteUserHandler = async (isConfirmed: boolean, id: string) => {
+    if (isConfirmed) {
+      try {
+        setIsLoading(true);
+        await userStore.deleteUser(id, {
+          page: searchingPage,
+          limit: pagination?.per_page,
+          role: searchingRole,
+          search,
+        });
+        toast({ title: 'User deleted.', status: 'info' });
+      } catch (error: any) {
+        if (error.response) {
+          toast({ title: error.message, status: 'error' });
+        } else {
+          handleError(error);
+        }
+      } finally {
         setIsLoading(false);
+        setDeletingUser(undefined);
       }
     }
+
+    /**
+     * Close dialog
+     */
+    onClose();
   };
 
-  if (deletingUser === undefined) return null;
-
   return (
-    <>
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Confirm deleting
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              The user named "{deletingUser.first_name}&nbsp;{deletingUser.last_name}" will be removed from the system.
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button
-                ref={cancelRef}
-                onClick={() => {
-                  setDeletingUser(undefined);
-                  onClose();
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                colorScheme='red'
-                isLoading={isLoading}
-                loadingText='Deleting...'
-                onClick={() => onDelete(deletingUser.id)}
-                ml={3}
-              >
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
+    <ConfirmDialog
+      isOpen={isOpen}
+      isLoading={isLoading}
+      onClose={isConfirmed => deleteUserHandler(isConfirmed, user.id)}
+      title='Confirm deleting'
+      message={`The user named "${user.fullname}" will be removed from the system.`}
+      confirmMessage='Delete'
+    />
   );
 };
 

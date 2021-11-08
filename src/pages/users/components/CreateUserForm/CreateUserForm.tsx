@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -21,18 +21,17 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { MdSupervisorAccount } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler } from 'react-hook-form';
-import CreateUserSchema from './CreateUserModal.validator';
 
 /**
  * Types
  */
-import { IMe } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
+import { SubmitHandler } from 'react-hook-form';
 
 /**
  * Hooks
  */
+import { useContext, useState } from 'react';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useForm } from 'react-hook-form';
@@ -45,9 +44,12 @@ import { useToast } from '@chakra-ui/react';
  */
 import { UsersPageContext } from '@educt/contexts';
 
-type CreateUserModalPropsType = {
-  me: IMe;
-};
+/**
+ * Schema
+ */
+import CreateUserSchema from './CreateUserForm.validator';
+
+type CreateUserFormPropsType = {};
 
 type CreateUserInputType = {
   first_name: string;
@@ -58,7 +60,7 @@ type CreateUserInputType = {
   password: string;
 };
 
-const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
+const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
   const { userStore } = useRootStore();
   const { searchingRole, search } = useContext(UsersPageContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,8 +77,12 @@ const CreateUserModal: React.FC<CreateUserModalPropsType> = ({ me }) => {
   const toast = useToast();
   const handleError = useErrorHandler();
 
+  const { me } = userStore;
+
+  if (me === null) return null;
+
   /**
-   * Create new user handler
+   * Submit handler
    */
   const onSubmit: SubmitHandler<CreateUserInputType> = async data => {
     try {

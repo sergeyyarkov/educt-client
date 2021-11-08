@@ -33,7 +33,7 @@ export const ChangeEmailPageContextProvider: React.FC = ({ children }) => {
  */
 export const UsersPageContextProvider: React.FC = ({ children }) => {
   const [searchingRole, setSearchingRole] = useState<SearchingRoleStateType>(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [searchingPage, setSearchingPage] = useState<number>(1);
   const [search, setSearch] = useState<string | undefined>(undefined);
   const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
   const [deletingUser, setDeletingUser] = useState<IUser | undefined>(undefined);
@@ -43,8 +43,8 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
       value={{
         searchingRole,
         setSearchingRole,
-        loading,
-        setLoading,
+        searchingPage,
+        setSearchingPage,
         search,
         setSearch,
         editingUser,

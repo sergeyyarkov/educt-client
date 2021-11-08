@@ -1,58 +1,44 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 import { Flex, Select, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { useRootStore } from '@educt/hooks/useRootStore';
-import { UserRoleEnum } from '@educt/enums';
-import { useErrorHandler } from 'react-error-boundary';
-import { UsersPageContext } from '@educt/contexts';
+
+/**
+ * Types
+ */
 import { UsersPageContextType } from '@educt/types';
-import { observer } from 'mobx-react';
+import { UserRoleEnum } from '@educt/enums';
+
+/**
+ * Contexts
+ */
+import { UsersPageContext } from '@educt/contexts';
+
+/**
+ * Hooks
+ */
+import { useContext } from 'react';
 
 type SelectRoleStateType = UserRoleEnum | 'any';
 
 const UserSearch: React.FC = () => {
-  const { userStore } = useRootStore();
-  const { searchingRole, setSearchingRole, setLoading, search, setSearch } =
+  const { searchingRole, setSearchingRole, setSearchingPage, search, setSearch } =
     useContext<UsersPageContextType>(UsersPageContext);
-  const { pagination } = userStore;
-  const handleError = useErrorHandler();
 
-  if (pagination === undefined) return null;
-
-  const onSearchRole: React.ChangeEventHandler<HTMLSelectElement> | undefined = async e => {
-    try {
-      setLoading(true);
-      const value = e.target.value as SelectRoleStateType;
-      await userStore.loadUsersData({
-        page: 1,
-        limit: pagination.per_page,
-        role: value,
-        search,
-      });
-      setSearchingRole(value);
-    } catch (error) {
-      handleError(error);
-    } finally {
-      setLoading(false);
-    }
+  /**
+   * Role change handler
+   */
+  const onSearchRole: React.ChangeEventHandler<HTMLSelectElement> | undefined = e => {
+    setSearchingPage(1);
+    setSearchingRole(e.target.value as SelectRoleStateType);
   };
 
-  const onSearch: React.ChangeEventHandler<HTMLInputElement> | undefined = async e => {
-    try {
-      const value = e.target.value;
-      setLoading(true);
-      setSearch(value);
-      await userStore.loadUsersData({
-        page: 1,
-        limit: pagination.per_page,
-        role: searchingRole,
-        search: value,
-      });
-    } catch (error) {
-      handleError(error);
-    } finally {
-      setLoading(false);
-    }
+  /**
+   * Search box change handler
+   */
+  const onSearch: React.ChangeEventHandler<HTMLInputElement> | undefined = e => {
+    setSearchingPage(1);
+    setSearch(e.target.value);
   };
 
   return (
@@ -71,4 +57,4 @@ const UserSearch: React.FC = () => {
   );
 };
 
-export default observer(UserSearch);
+export default UserSearch;

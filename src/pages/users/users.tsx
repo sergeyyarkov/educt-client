@@ -43,9 +43,9 @@ const UsersPage: React.FC<IPageProps> = () => {
         <Flex mt='5' flexDir='column' h='full'>
           <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
             <UserSearch />
-            <CreateUserForm me={me} />
+            <CreateUserForm />
           </Flex>
-          <UserList render={UserItem} />
+          <UserList render={UserItem} limit={6} />
         </Flex>
       </Box>
     </UsersPageContextProvider>

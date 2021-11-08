@@ -25,7 +25,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 /**
  * Types
  */
-import { IMe } from '@educt/interfaces';
+import { IMe, IUser } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -49,9 +49,9 @@ import { UsersPageContext } from '@educt/contexts';
 import UpdateUserSchema from './EditUserForm.validator';
 
 type UpdateUserFormPropsType = {
-  onClose: () => void;
+  user: IUser;
   isOpen: boolean;
-  me: IMe;
+  onClose: () => void;
 };
 
 type UpdateUserInputType = {
@@ -63,9 +63,9 @@ type UpdateUserInputType = {
   password: string | null;
 };
 
-const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me }) => {
+const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOpen }) => {
   const { userStore } = useRootStore();
-  const { editingUser, setEditingUser } = useContext(UsersPageContext);
+  const { setEditingUser } = useContext(UsersPageContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
@@ -75,10 +75,10 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me
   } = useForm<UpdateUserInputType>({
     resolver: yupResolver(UpdateUserSchema),
     defaultValues: {
-      first_name: editingUser && editingUser.first_name,
-      last_name: editingUser && editingUser.last_name,
-      email: editingUser && editingUser.email,
-      role: editingUser && editingUser.roles[0].slug,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.roles[0].slug,
       login: '',
       password: '',
     },
@@ -87,13 +87,18 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me
   const toast = useToast();
   const handleError = useErrorHandler();
 
-  if (editingUser === undefined) return null;
+  const { me } = userStore;
 
+  if (me === null) return null;
+
+  /**
+   * Submit handler
+   */
   const onSubmit: SubmitHandler<UpdateUserInputType> = async data => {
     try {
       setIsLoading(true);
       const params = Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof UpdateUserInputType]]));
-      await userStore.updateUser(editingUser.id, params);
+      await userStore.updateUser(user.id, params);
       toast({ title: 'User updated.', status: 'info' });
       onCloseModal();
     } catch (error: any) {
@@ -136,7 +141,7 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ onClose, isOpen, me
             <Stack spacing='4'>
               <FormControl isDisabled>
                 <FormLabel>Identificator</FormLabel>
-                <Input value={editingUser?.id} />
+                <Input value={user.id} />
               </FormControl>
 
               <FormControl>

@@ -14,8 +14,8 @@ export const ChangeEmailPageContext = createContext<ChangeEmailPageContextType>(
 export const UsersPageContext = createContext<UsersPageContextType>({
   searchingRole: undefined,
   setSearchingRole: () => {},
-  loading: false,
-  setLoading: () => {},
+  searchingPage: 1,
+  setSearchingPage: () => {},
   search: undefined,
   setSearch: () => {},
   editingUser: undefined,

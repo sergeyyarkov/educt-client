@@ -92,6 +92,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
         to={`/course/${course.id}`}
         as={ReactRouterLink}
         display='block'
+        h='full'
         textDecoration='none'
         _visited={{ textDecoration: 'none' }}
         _hover={{ textDecoration: 'none' }}

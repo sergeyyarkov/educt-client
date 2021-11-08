@@ -30,14 +30,21 @@ export default class UserStore {
 
   public pagination: IPaginationMeta | undefined;
 
+  public isLoading: boolean = false;
+
   constructor(root: RootStore, api: AxiosInstance) {
     this.root = root;
     this.userService = new UserService(api);
     makeAutoObservable(this);
   }
 
+  private setLoading(loading: boolean) {
+    this.isLoading = loading;
+  }
+
   public async loadUsersData(params?: FetchUsersParamsType) {
     try {
+      this.setLoading(true);
       const result = await this.userService.fetchAll(params);
 
       runInAction(() => {
@@ -48,6 +55,8 @@ export default class UserStore {
       return result;
     } catch (error: any) {
       throw error;
+    } finally {
+      this.setLoading(false);
     }
   }
 

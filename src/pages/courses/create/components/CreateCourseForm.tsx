@@ -45,9 +45,9 @@ type CreateCourseInputType = {
   description: string;
   teacher_id: string;
 };
-type CreateCourseFormProps = {};
+type CreateCourseFormPropsType = {};
 
-const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
+const CreateCourseForm: React.FC<CreateCourseFormPropsType> = () => {
   const {
     userStore: { userService },
     categoryStore: { categoryService },
@@ -58,8 +58,6 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
     handleSubmit,
     formState: { errors },
     control,
-    watch,
-    reset,
   } = useForm<CreateCourseInputType>({
     resolver: yupResolver(CreateCourseSchema),
   });
@@ -205,6 +203,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
               {errors.category_id?.message}
             </Text>
           </FormControl>
+
           <FormControl
             isRequired
             id='teacher_id'
@@ -231,6 +230,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = () => {
               {errors.teacher_id?.message}
             </Text>
           </FormControl>
+
           <FormControl isRequired id='description' gridColumn='1' isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
             <Textarea

@@ -57,15 +57,6 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   }, [courseStore, selectedCategory, courseStatus]);
 
   /**
-   * Handle delete course
-   * Set deleting course to context and open dialog
-   */
-  const onDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
-    setDeletingCourse(course);
-    onOpenDeleteDialog();
-  };
-
-  /**
    * Handle update course status
    */
   const onSetStatus = async (id: string, status: CourseStatusEnum) => {
@@ -81,29 +72,38 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
     }
   };
 
-  /**
-   * Loading
-   */
   if (courses === null || isLoading) return <LoadingList />;
-
-  /**
-   * No courses
-   */
-  if (courses.length === 0)
-    return (
-      <Box textAlign='center' mt='10' userSelect='none'>
-        <Text color='gray.500'>There are no courses in this category {courseStatus && 'or with this status'}.</Text>
-      </Box>
-    );
 
   return (
     <Box>
-      {deletingCourse && <DeleteCourseDialog onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
-      <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
-        {courses.map(course => (
-          <Item key={course.id} course={course} onDelete={onDeleteCourse} onSetStatus={onSetStatus} />
-        ))}
-      </Grid>
+      {deletingCourse && (
+        <DeleteCourseDialog course={deletingCourse} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />
+      )}
+      {courses.length !== 0 ? (
+        <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
+          {courses.map(course => (
+            <Item
+              key={course.id}
+              course={course}
+              onDelete={() => {
+                setDeletingCourse(course);
+                onOpenDeleteDialog();
+              }}
+              onSetStatus={onSetStatus}
+            />
+          ))}
+        </Grid>
+      ) : (
+        <Box textAlign='center' mt='10' userSelect='none'>
+          <Text color='gray.500'>
+            There are no courses&nbsp;
+            {!selectedCategory && !courseStatus
+              ? 'in the system yet'
+              : `in this category${courseStatus ? ' or with this status' : ''}`}
+            .
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 };
