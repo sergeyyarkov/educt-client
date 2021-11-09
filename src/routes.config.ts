@@ -11,6 +11,7 @@ import ChangePasswordPage from '@educt/pages/profile/change-password/change-pass
 import ChangeEmailPage from '@educt/pages/profile/change-email/change-email';
 import { UserRoleEnum } from './enums';
 const CoursesPage = lazy(() => import('@educt/pages/courses/courses'));
+const LessonsPage = lazy(() => import('@educt/pages/lessons/lessons'));
 const MainPage = lazy(() => import('@educt/pages/main/main'));
 const MessagesPage = lazy(() => import('@educt/pages/messages/messages'));
 const ProfilePage = lazy(() => import('@educt/pages/profile/profile'));
@@ -40,6 +41,15 @@ export const routes: IRouteOption[] = [
     title: 'Create new course',
     component: CreateCoursePage,
     isPrivate: true,
+    roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+  },
+  {
+    path: '/lessons',
+    title: 'Lessons',
+    component: LessonsPage,
+    isPrivate: true,
+    exact: true,
+    roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {
     path: '/messages',

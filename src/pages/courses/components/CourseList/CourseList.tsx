@@ -5,7 +5,6 @@ import { Box, Grid, Text } from '@chakra-ui/react';
 /**
  * Types
  */
-import { ICourse } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
 import { CourseItemPropsType } from './CourseItem';
 

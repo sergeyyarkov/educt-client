@@ -5,6 +5,7 @@ import {
   useToast,
   Text,
   Flex,
+  Stack,
   Button,
   Textarea,
   FormControl,
@@ -12,8 +13,9 @@ import {
   InputGroup,
   InputRightElement,
   Input,
+  FormHelperText,
+  Divider,
 } from '@chakra-ui/react';
-import { MdCloudUpload } from 'react-icons/md';
 import { SubmitHandler, useForm, useWatch, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncSelect from '@educt/components/AsyncSelect';
@@ -150,11 +152,11 @@ const CreateCourseForm: React.FC<CreateCourseFormPropsType> = () => {
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid templateColumns={{ md: '2.5fr 1fr' }} gap='5'>
+        <Stack spacing='5'>
           <FormControl isRequired id='title' isInvalid={!!errors.title}>
-            <FormLabel>Title</FormLabel>
+            <FormLabel>Name</FormLabel>
             <InputGroup>
-              <Input pr='60px' size='md' placeholder='Type course title' type='text' {...register('title')} />
+              <Input pr='60px' size='md' placeholder='Course name' type='text' {...register('title')} />
               <InputRightElement
                 mr='2'
                 children={
@@ -164,107 +166,98 @@ const CreateCourseForm: React.FC<CreateCourseFormPropsType> = () => {
                 }
               />
             </InputGroup>
+            <FormHelperText>e.g Web Development in Javascript</FormHelperText>
             <Text as='small' color='red.500'>
               {errors.title?.message}
             </Text>
           </FormControl>
 
-          <FormControl id='image' isInvalid={!!errors.image}>
-            <FormLabel>Image</FormLabel>
-            <Controller
-              control={control}
-              name='image'
-              render={({ field: { onChange } }) => (
-                <FileSelect onChange={file => onChange(file)} supportedFormats={['JPG', 'JPEG', 'PNG', 'WEBP']} />
-              )}
-            />
-            <Text as='small' color='red.500'>
-              {errors.image?.message}
-            </Text>
-          </FormControl>
-
-          <FormControl isRequired id='category_id' gridColumn='1' isInvalid={!!errors.category_id}>
-            <FormLabel>Category</FormLabel>
-            <Controller
-              control={control}
-              name='category_id'
-              render={({ field: { onChange, value } }) => (
-                <AsyncSelect
-                  loadOptions={loadCategoriesOptions}
-                  onChange={selected => onChange(selected)}
-                  value={value}
-                  placeholder='Select Category'
-                  noOptionsMessage='There are no categories.'
-                  loadingText='Wait...'
-                />
-              )}
-            />
-            <Text as='small' color='red.500'>
-              {errors.category_id?.message}
-            </Text>
-          </FormControl>
-
-          <FormControl
-            isRequired
-            id='teacher_id'
-            gridColumn={{ md: '2' }}
-            gridRow={{ md: '1' }}
-            isInvalid={!!errors.teacher_id}
-          >
-            <FormLabel>Teacher</FormLabel>
-            <Controller
-              control={control}
-              name='teacher_id'
-              render={({ field: { onChange, value } }) => (
-                <AsyncSelect
-                  loadOptions={loadUsersOptions}
-                  onChange={selected => onChange(selected)}
-                  value={value}
-                  placeholder='Select Teacher'
-                  noOptionsMessage='There are no teachers.'
-                  loadingText='Wait...'
-                />
-              )}
-            />
-            <Text as='small' color='red.500'>
-              {errors.teacher_id?.message}
-            </Text>
-          </FormControl>
-
-          <FormControl isRequired id='description' gridColumn='1' isInvalid={!!errors.description}>
+          <FormControl isRequired id='description' isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
-            <Textarea
-              resize='none'
-              minH='150px'
-              placeholder='Write some description for course...'
-              {...register('description')}
-            />
+            <Textarea resize='none' minH='150px' placeholder='Course description...' {...register('description')} />
             <Text as='small' color='red.500'>
               {errors.description?.message}
             </Text>
           </FormControl>
-        </Grid>
-        <Flex mt='6'>
+
+          <Flex justifyContent='space-between' flexDirection={{ base: 'column', lg: 'row' }}>
+            <Box flexGrow={1} flexBasis='0' mr={{ base: '0', lg: '7' }}>
+              <Stack spacing='5'>
+                <FormControl isRequired id='category_id' isInvalid={!!errors.category_id}>
+                  <FormLabel>Category</FormLabel>
+                  <Controller
+                    control={control}
+                    name='category_id'
+                    render={({ field: { onChange, value } }) => (
+                      <AsyncSelect
+                        loadOptions={loadCategoriesOptions}
+                        onChange={selected => onChange(selected)}
+                        value={value}
+                        placeholder='Select Category'
+                        noOptionsMessage='There are no categories.'
+                        loadingText='Wait...'
+                      />
+                    )}
+                  />
+                  <Text as='small' color='red.500'>
+                    {errors.category_id?.message}
+                  </Text>
+                </FormControl>
+
+                <FormControl isRequired id='teacher_id' isInvalid={!!errors.teacher_id}>
+                  <FormLabel>Author</FormLabel>
+                  <Controller
+                    control={control}
+                    name='teacher_id'
+                    render={({ field: { onChange, value } }) => (
+                      <AsyncSelect
+                        loadOptions={loadUsersOptions}
+                        onChange={selected => onChange(selected)}
+                        value={value}
+                        placeholder='Select Author'
+                        noOptionsMessage='There are no teachers.'
+                        loadingText='Wait...'
+                      />
+                    )}
+                  />
+                  <Text as='small' color='red.500'>
+                    {errors.teacher_id?.message}
+                  </Text>
+                </FormControl>
+              </Stack>
+            </Box>
+
+            <Box flexGrow={0} flexBasis='50%' mt={{ base: '5', lg: '0' }}>
+              <FormControl id='image' isInvalid={!!errors.image}>
+                <FormLabel>Image</FormLabel>
+                <Controller
+                  control={control}
+                  name='image'
+                  render={({ field: { onChange } }) => (
+                    <FileSelect onChange={file => onChange(file)} supportedFormats={['JPG', 'JPEG', 'PNG', 'WEBP']} />
+                  )}
+                />
+                <Text as='small' color='red.500'>
+                  {errors.image?.message}
+                </Text>
+              </FormControl>
+            </Box>
+          </Flex>
+        </Stack>
+
+        <Divider mt='5' />
+
+        <Box mt='5'>
           <Button
+            isLoading={isLoading}
             loadingText='Saving...'
             type='submit'
-            mr='2'
             colorScheme='blue'
-            variant='outline'
-            rightIcon={<MdCloudUpload size='14px' />}
-            onClick={() => setStatus(CourseStatusEnum.DRAFT)}
-          >
-            Save as Draft
-          </Button>
-          <Button
-            loadingText='Saving...'
-            type='submit'
-            colorScheme='green'
             onClick={() => setStatus(CourseStatusEnum.PUBLISHED)}
           >
-            Publish
+            Create
           </Button>
-        </Flex>
+        </Box>
       </form>
     </Box>
   );

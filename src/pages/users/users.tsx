@@ -37,7 +37,7 @@ const UsersPage: React.FC<IPageProps> = () => {
 
   return (
     <UsersPageContextProvider>
-      <Box h='100%'>
+      <Box>
         <Heading as='h1'>User management</Heading>
         <Text mt='2'>You can add or delete users on this page.</Text>
         <Flex mt='5' flexDir='column' h='full'>

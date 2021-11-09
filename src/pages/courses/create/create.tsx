@@ -17,15 +17,15 @@ import CreateCourseForm from './components';
  */
 const CreateCoursePage: React.FC<IPageProps> = () => {
   return (
-    <Box maxW='1200px'>
+    <Box>
       <Box>
         <Flex alignItems='center'>
           <PrevPageButton prevPage='/courses' />
-          <Heading as='h1'>Create course</Heading>
+          <Heading as='h1'>Course creation</Heading>
         </Flex>
         <Text mt='3'>Fill in the required fields to create a course</Text>
       </Box>
-      <Box mt='6'>
+      <Box mt='5'>
         <CreateCourseForm />
       </Box>
     </Box>
