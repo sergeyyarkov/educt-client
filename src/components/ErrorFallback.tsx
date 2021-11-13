@@ -1,15 +1,22 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { useToast, Flex, Box, Heading, Text } from '@chakra-ui/react';
+import { Flex, Box, Heading, Text } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
+
+/**
+ * Hooks
+ */
+import { useEffect } from 'react';
+import { useToast } from '@chakra-ui/toast';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { Redirect } from 'react-router';
 
 const ErrorFallback: React.FC<{ error: any }> = props => {
   const { userStore, authStore } = useRootStore();
   const { error } = props;
   const toast = useToast();
 
-  React.useEffect(() => {
+  useEffect(() => {
     toast({ title: `${error.message}`, duration: 10000, isClosable: true, status: 'error' });
   });
 
@@ -18,7 +25,7 @@ const ErrorFallback: React.FC<{ error: any }> = props => {
       userStore.me = null;
       authStore.setIsLoggedIn(false);
       Cookies.remove('logged_in');
-    }
+    } else if (error.response.status === 404) return <Redirect to='/404' />;
   }
 
   return (

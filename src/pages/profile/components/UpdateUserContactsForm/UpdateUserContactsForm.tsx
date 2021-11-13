@@ -69,7 +69,6 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
         telegram_id: data.telegram_id ?? '',
         vk_id: data.vk_id ?? '',
       });
-      setIsLoading(false);
     } catch (error: any) {
       if (error.response) {
         switch (error.response.status) {

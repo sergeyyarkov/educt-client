@@ -21,6 +21,7 @@ import CourseStatusBadge from '@educt/components/CourseStatusBadge';
 /**
  * Hooks
  */
+import { useHistory } from 'react-router';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
@@ -35,6 +36,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
     userStore: { me },
   } = useRootStore();
   const { colorMode } = useColorMode();
+  const history = useHistory();
 
   if (me === null) return null;
 
@@ -54,7 +56,9 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
                 _active={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
               />
               <MenuList>
-                <MenuItem icon={<EditIcon />}>Edit course</MenuItem>
+                <MenuItem onClick={() => history.push(`/courses/edit/${course.id}`)} icon={<EditIcon />}>
+                  Edit
+                </MenuItem>
                 {(() => {
                   switch (course.status) {
                     case CourseStatusEnum.DRAFT:

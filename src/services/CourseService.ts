@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import * as helpers from '@educt/helpers';
 import { IApiRespose, ICourse } from '@educt/interfaces';
-import { CreateCourseParamsType, FetchCoursesParams } from '@educt/types';
+import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 import { CourseStatusEnum } from '@educt/enums';
 
 export class CourseService {
@@ -25,6 +25,19 @@ export class CourseService {
         category_id: params?.category_id,
       },
     });
+    return result.data;
+  }
+
+  /**
+   * Fetch course by id param
+   *
+   * @param id Course id
+   * @returns Course
+   */
+  public async fetchById(
+    id: string
+  ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
+    const result = await this.api.get(`/v1/courses/${id}`);
     return result.data;
   }
 
@@ -55,6 +68,15 @@ export class CourseService {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    return result.data;
+  }
+
+  public async update(
+    id: string,
+    data: UpdateCourseParamsType
+  ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
+    const result = await this.api.patch(`/v1/courses/${id}`, data);
 
     return result.data;
   }

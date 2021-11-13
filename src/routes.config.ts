@@ -7,6 +7,7 @@ import { IPrivateRouteProps } from './components/PrivateRoute/PrivateRoute';
 import AuthPage from '@educt/pages/auth/auth';
 import NotFoundPage from '@educt/pages/404/404';
 import CreateCoursePage from '@educt/pages/courses/create/create';
+import EditCoursePage from '@educt/pages/courses/edit/edit';
 import ChangePasswordPage from '@educt/pages/profile/change-password/change-password';
 import ChangeEmailPage from '@educt/pages/profile/change-email/change-email';
 import { UserRoleEnum } from './enums';
@@ -41,6 +42,14 @@ export const routes: IRouteOption[] = [
     title: 'Create new course',
     component: CreateCoursePage,
     isPrivate: true,
+    roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+  },
+  {
+    path: '/courses/edit/:id',
+    title: 'Course editor',
+    component: EditCoursePage,
+    isPrivate: true,
+    exact: true,
     roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {

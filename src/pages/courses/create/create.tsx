@@ -10,7 +10,7 @@ import { IPageProps } from '@educt/interfaces';
  * Components
  */
 import PrevPageButton from '@educt/components/PrevPageButton';
-import CreateCourseForm from './components';
+import { CreateCourseForm } from '@educt/components/Forms/CourseForm';
 
 /**
  * Create course page

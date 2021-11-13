@@ -135,6 +135,15 @@ export type CreateCourseParamsType = {
   description: string;
   teacher_id: string;
   category_id: string;
-  image: File | undefined;
+  image?: File | undefined;
   status: CourseStatusEnum;
+};
+
+export type UpdateCourseParamsType = {
+  title?: string | undefined;
+  description?: string | undefined;
+  teacher_id?: string | undefined;
+  category_id?: string | undefined;
+  image?: File | undefined;
+  status?: CourseStatusEnum | undefined;
 };
