@@ -5,6 +5,7 @@ import { ICourse } from '@educt/interfaces';
  */
 import { useEffect, useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
+import useIsMountedRef from './useIsMountedRef';
 import { useRootStore } from './useRootStore';
 
 type CourseStateType = {
@@ -19,6 +20,7 @@ const useFetchCourseQuery = (id: string) => {
     courseStore: { courseService },
   } = useRootStore();
   const [state, setState] = useState<CourseStateType>({ data: null, error: null, loading: false, fetched: false });
+  const isMountedRef = useIsMountedRef();
   const handleError = useErrorHandler();
 
   /**
@@ -29,17 +31,23 @@ const useFetchCourseQuery = (id: string) => {
     courseService
       .fetchById(id)
       .then(data => {
-        setState(s => ({ ...s, data: data.data }));
+        if (isMountedRef.current) {
+          setState(s => ({ ...s, data: data.data }));
+        }
       })
       .catch(error => {
         if (error.response) {
-          setState(s => ({ ...s, error }));
+          if (isMountedRef.current) {
+            setState(s => ({ ...s, error }));
+          }
         } else {
           handleError(error);
         }
       })
       .finally(() => {
-        setState(s => ({ ...s, loading: false, fetched: true }));
+        if (isMountedRef.current) {
+          setState(s => ({ ...s, loading: false, fetched: true }));
+        }
       });
   }, [id]);
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/layout';
 import { Input } from '@chakra-ui/input';
 import { Button } from '@chakra-ui/button';
@@ -13,10 +13,10 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 type FileSelectPropsType = {
   onChange: (file: File) => void;
   supportedFormats?: string[];
+  file?: File | undefined;
 };
 
-const FileSelect: React.FC<FileSelectPropsType> = ({ onChange, supportedFormats }) => {
-  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
+const FileSelect: React.FC<FileSelectPropsType> = ({ onChange, file, supportedFormats }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /**
@@ -37,7 +37,6 @@ const FileSelect: React.FC<FileSelectPropsType> = ({ onChange, supportedFormats 
       const file = files[0];
 
       onChange(file);
-      setSelectedFile(file);
     }
   };
 
@@ -52,12 +51,12 @@ const FileSelect: React.FC<FileSelectPropsType> = ({ onChange, supportedFormats 
       <Input type='file' ref={fileInputRef} onChange={onChangeFileHandler} display='none' />
       <Flex justifyContent='space-between' alignItems='center' sx={{ gap: '10px' }}>
         <Box>
-          {selectedFile ? (
+          {file ? (
             <Text fontSize='lg' fontWeight='bold'>
-              {selectedFile.name}
+              {file.name}
               <br />
               <Text as='small' fontWeight='normal'>
-                {helpres.transformBytes(selectedFile.size)}
+                {helpres.transformBytes(file.size)}
               </Text>
             </Text>
           ) : (

@@ -177,8 +177,12 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
               <Controller
                 control={control}
                 name='image'
-                render={({ field: { onChange } }) => (
-                  <FileSelect onChange={file => onChange(file)} supportedFormats={['JPG', 'JPEG', 'PNG', 'WEBP']} />
+                render={({ field: { onChange, value: file } }) => (
+                  <FileSelect
+                    onChange={file => onChange(file)}
+                    file={file}
+                    supportedFormats={['JPG', 'JPEG', 'PNG', 'WEBP']}
+                  />
                 )}
               />
               <Text as='small' color='red.500'>

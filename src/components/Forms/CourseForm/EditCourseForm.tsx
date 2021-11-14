@@ -70,6 +70,7 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
         description: data.description,
         teacher_id: data.teacher_id,
         category_id: data.category_id,
+        image: data.image,
       });
       toast({ title: `Course updated.`, status: 'info' });
 
@@ -81,6 +82,7 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
         description: course.data.description,
         teacher_id: course.data.teacher.id,
         category_id: course.data.category.id,
+        image: undefined,
       });
     } catch (error: any) {
       if (error.response) {

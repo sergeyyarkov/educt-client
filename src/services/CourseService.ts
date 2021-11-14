@@ -76,7 +76,11 @@ export class CourseService {
     id: string,
     data: UpdateCourseParamsType
   ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
-    const result = await this.api.patch(`/v1/courses/${id}`, data);
+    const result = await this.api.patch(`/v1/courses/${id}`, helpers.transformToFormData(data), {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
     return result.data;
   }
