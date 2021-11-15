@@ -1,3 +1,6 @@
+/**
+ * Types
+ */
 import { ICourse } from '@educt/interfaces';
 
 /**

@@ -133,7 +133,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
           <Heading as='h2' fontSize='xl' mt='5px'>
             {course.title}
           </Heading>
-          <Text>{course.description}</Text>
+          <Text mt='2'>{course.description}</Text>
           <Flex mt='20px' flexWrap='wrap'>
             <Flex alignItems='center' mr='1'>
               <Icon as={MdVideoLibrary} mr='2' />

@@ -1,24 +1,26 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect } from 'react-router-dom';
-import { Box, Heading, Text, Tab, TabList, Tabs, TabPanels, TabPanel, Button } from '@chakra-ui/react';
+import { Box, Heading, Text, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 
 /**
  * Types
  */
-import { IPageProps } from '@educt/interfaces';
+import type { IPageProps } from '@educt/interfaces';
 
 /**
  * Components
  */
 import LoadingPage from '@educt/components/LoadingPage';
 import { EditCourseForm } from '@educt/components/Forms/CourseForm';
+import { LessonList, LessonItem } from './components/LessonList';
+import { StudentList, StudentItem } from './components/StudentList';
 
 /**
  * Hooks
  */
-import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
 import { useParams } from 'react-router-dom';
+import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
 
 /**
  * Course editor
@@ -42,10 +44,13 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       <Helmet>
         <title>Editing {course.title}</title>
       </Helmet>
-      <Box>
-        <Heading as='h1'>Course editor</Heading>
-        <Text mt='2'>{course.title}</Text>
-      </Box>
+      <Flex>
+        <Box>
+          <Heading as='h1'>Course editor</Heading>
+          <Text mt='2'>{course.title}</Text>
+        </Box>
+        <Box></Box>
+      </Flex>
       <Box>
         <Tabs isLazy mt='8'>
           <TabList>
@@ -56,27 +61,24 @@ const EditCoursePage: React.FC<IPageProps> = () => {
 
           <TabPanels>
             <TabPanel>
-              <EditCourseForm
-                defaultValues={{
-                  title: course.title,
-                  description: course.description,
-                  category_id: course.category.id,
-                  teacher_id: course.teacher.id,
-                  image: undefined,
-                }}
-              />
+              <Box>
+                <EditCourseForm
+                  defaultValues={{
+                    title: course.title,
+                    description: course.description,
+                    category_id: course.category.id,
+                    teacher_id: course.teacher.id,
+                    image: undefined,
+                  }}
+                />
+              </Box>
             </TabPanel>
             <TabPanel>
-              {course.lessons.length === 0 ? (
-                <Box textAlign='center' mt='10'>
-                  <Text>No lessons have been added to this course yet</Text>
-                  <Button mt='3' size='sm' colorScheme='blue' variant='outline'>
-                    Create new lesson
-                  </Button>
-                </Box>
-              ) : null}
+              <LessonList render={LessonItem} course={course} />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>
+              <StudentList render={StudentItem} students={course.students} />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Box>

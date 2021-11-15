@@ -69,6 +69,7 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
         </Flex>
         <Box>
           <IconButton
+            size='sm'
             disabled={isDisabledActions}
             onClick={() => onEdit(user)}
             aria-label='Edit'
@@ -77,6 +78,7 @@ const UserItem: React.FC<UserItemPropsType> = ({ user, onEdit, onDelete }) => {
             icon={<EditIcon />}
           />
           <IconButton
+            size='sm'
             disabled={isDisabledActions}
             onClick={() => onDelete(user)}
             colorScheme='red'

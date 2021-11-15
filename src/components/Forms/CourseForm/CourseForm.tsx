@@ -7,7 +7,7 @@ import { Controller, UseFormReturn } from 'react-hook-form';
 /**
  * Types
  */
-import { OptionType } from '@educt/types';
+import type { OptionType } from '@educt/types';
 import { UserRoleEnum } from '@educt/enums';
 
 /**
@@ -93,6 +93,7 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
   };
 
   const watchTitle = watch('title');
+  const watchDescription = watch('description');
 
   return (
     <form onSubmit={onSubmit}>
@@ -119,9 +120,14 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
         <FormControl isRequired id='description' isInvalid={!!errors.description}>
           <FormLabel>Description</FormLabel>
           <Textarea resize='none' minH='150px' placeholder='Course description...' {...register('description')} />
-          <Text as='small' color='red.500'>
-            {errors.description?.message}
-          </Text>
+          <Flex justifyContent='space-between'>
+            <Text as='small' color='red.500'>
+              {errors.description?.message}
+            </Text>
+            <Text as='small' color={!!errors.description || watchDescription?.length > 250 ? 'red.500' : 'gray.500'}>
+              {watchDescription?.length || 0}/250
+            </Text>
+          </Flex>
         </FormControl>
 
         <Flex justifyContent='space-between' flexDirection={{ base: 'column', lg: 'row' }}>

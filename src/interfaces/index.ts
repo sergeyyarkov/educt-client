@@ -23,10 +23,10 @@ export interface ICourse {
   title: string;
   description: string;
   status: CourseStatusEnum;
-  teacher: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
+  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>;
   category: ICategory;
   lessons: ILesson[];
-  students: Pick<IUser, 'id' | 'first_name' | 'last_name' | 'email'>;
+  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>>;
   students_count: string;
   likes_count: string;
   lessons_count: string;
@@ -39,6 +39,8 @@ export interface ILesson {
   course_id: string;
   title: string;
   description: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ICategory {
