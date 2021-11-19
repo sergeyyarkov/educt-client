@@ -28,6 +28,12 @@ export type OptionType = {
   label: string;
 };
 
+export type ColorType = {
+  id: number;
+  name: string;
+  hex: string;
+};
+
 export type ConfirmEmailContainerDataType = {
   newEmail: string;
   expired_seconds: number;

@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { AttachmentFileType, LinkType } from '@educt/types';
+import { AttachmentFileType, ColorType, LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -39,6 +39,8 @@ export interface ILesson {
   course_id: string;
   title: string;
   description: string;
+  duration: string;
+  color?: ColorType | undefined | null;
   created_at: string;
   updated_at: string;
 }

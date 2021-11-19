@@ -4,8 +4,9 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 import { Badge, Image, Link, IconButton, Icon } from '@chakra-ui/react';
 import { Flex, Box, Heading, Text } from '@chakra-ui/layout';
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
-import { MdNote, MdMoreHoriz, MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
-import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { MdMoreHoriz, MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 /**
  * Types
@@ -65,14 +66,17 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
                       return (
                         <MenuItem
                           onClick={() => onSetStatus(course.id, CourseStatusEnum.PUBLISHED)}
-                          icon={<CheckIcon />}
+                          icon={<AiOutlineEye />}
                         >
                           Publish
                         </MenuItem>
                       );
                     case CourseStatusEnum.PUBLISHED:
                       return (
-                        <MenuItem onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)} icon={<MdNote />}>
+                        <MenuItem
+                          onClick={() => onSetStatus(course.id, CourseStatusEnum.DRAFT)}
+                          icon={<AiOutlineEyeInvisible />}
+                        >
                           Mark as Draft
                         </MenuItem>
                       );
