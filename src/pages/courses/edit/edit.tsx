@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { Redirect } from 'react-router-dom';
 import { Box, Heading, Text, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
@@ -27,7 +27,7 @@ import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
  */
 const EditCoursePage: React.FC<IPageProps> = () => {
   const params = useParams<{ id: string }>();
-  const { data: course, loading, error } = useFetchCourseQuery(params.id);
+  const { data: course, error, isLoading } = useFetchCourseQuery(params.id);
 
   /**
    * Not Found
@@ -37,7 +37,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   /**
    * Loading
    */
-  if (loading || course === null) return <LoadingPage />;
+  if (isLoading || !course) return <LoadingPage />;
 
   return (
     <>

@@ -2,56 +2,38 @@
  * Types
  */
 import { ICourse } from '@educt/interfaces';
+import { useEffect } from 'react';
 
 /**
  * Hooks
  */
-import { useEffect, useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
-import useIsMountedRef from './useIsMountedRef';
+import useAsync from './useAsync';
 import { useRootStore } from './useRootStore';
 
-type CourseStateType = {
-  data: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | null;
-  error: any;
-  loading: boolean;
-  fetched: boolean;
-};
+type QueryResponseDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
 
 const useFetchCourseQuery = (id: string) => {
   const {
     courseStore: { courseService },
   } = useRootStore();
-  const [state, setState] = useState<CourseStateType>({ data: null, error: null, loading: false, fetched: false });
-  const isMountedRef = useIsMountedRef();
   const handleError = useErrorHandler();
 
-  /**
-   * Fetch course handler
-   */
+  const fetch = async (id: string) => {
+    try {
+      const result = await courseService.fetchById(id);
+      return result.data;
+    } catch (error: any) {
+      if (!error.response) {
+        handleError(error);
+      }
+    }
+  };
+
+  const { execute: fetchCourseById, ...state } = useAsync<QueryResponseDataType, Parameters<typeof fetch>>(fetch);
+
   useEffect(() => {
-    setState(s => ({ ...s, loading: true }));
-    courseService
-      .fetchById(id)
-      .then(data => {
-        if (isMountedRef.current) {
-          setState(s => ({ ...s, data: data.data }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          if (isMountedRef.current) {
-            setState(s => ({ ...s, error }));
-          }
-        } else {
-          handleError(error);
-        }
-      })
-      .finally(() => {
-        if (isMountedRef.current) {
-          setState(s => ({ ...s, loading: false, fetched: true }));
-        }
-      });
+    fetchCourseById(id);
   }, [id]);
 
   return { ...state };

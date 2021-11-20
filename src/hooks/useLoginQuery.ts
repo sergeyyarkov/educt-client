@@ -18,7 +18,7 @@ const useLoginQuery = () => {
         isClosable: true,
         status: 'success',
       });
-      return result;
+      return result.data;
     } catch (error: any) {
       if (error.response) {
         /**
@@ -41,7 +41,7 @@ const useLoginQuery = () => {
     }
   };
 
-  const { execute, ...state } = useAsync<IApiRespose<IToken> | undefined, Parameters<typeof login>>(login);
+  const { execute, ...state } = useAsync<IToken | undefined, Parameters<typeof login>>(login);
 
   return { login: execute, ...state };
 };

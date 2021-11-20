@@ -1,8 +1,7 @@
 import React from 'react';
-import { Box, Heading, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Grid } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 import { IPageProps } from '@educt/interfaces';
-import { observer } from 'mobx-react';
 
 /**
  * Main page

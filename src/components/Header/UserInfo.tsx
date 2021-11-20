@@ -18,6 +18,10 @@ import { observer } from 'mobx-react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { Link } from 'react-router-dom';
 import UserBadge from '@educt/components/UserBadge';
+
+/**
+ * Hooks
+ */
 import useLogoutQuery from '@educt/hooks/useLogoutQuery';
 
 const UserInfo: React.FC = () => {
