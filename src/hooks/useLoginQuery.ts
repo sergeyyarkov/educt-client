@@ -1,27 +1,16 @@
 import { useToast } from '@chakra-ui/react';
 import { IApiRespose, IToken } from '@educt/interfaces';
-import { useState } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
-import useIsMountedRef from './useIsMountedRef';
+import useAsync from './useAsync';
 import { useRootStore } from './useRootStore';
 
-type LoginStateType = {
-  result: IApiRespose<IToken> | null;
-  error: any;
-  loading: boolean;
-  fetched: boolean;
-};
-
 const useLoginQuery = () => {
-  const isMountedRef = useIsMountedRef();
   const { authStore } = useRootStore();
-  const [state, setState] = useState<LoginStateType>({ result: null, error: null, loading: false, fetched: false });
   const toast = useToast();
   const handleError = useErrorHandler();
 
   const login = async (login: string, password: string) => {
     try {
-      setState(s => ({ ...s, loading: true }));
       const result = await authStore.login(login, password);
       toast({
         title: `👋 Welcome back!`,
@@ -29,14 +18,8 @@ const useLoginQuery = () => {
         isClosable: true,
         status: 'success',
       });
-
-      if (isMountedRef.current) {
-        setState(s => ({ ...s, result }));
-      }
+      return result;
     } catch (error: any) {
-      if (isMountedRef.current) {
-        setState(s => ({ ...s, error }));
-      }
       if (error.response) {
         /**
          * Handle response error
@@ -44,26 +27,23 @@ const useLoginQuery = () => {
         switch (error.response.status) {
           case 404:
             toast({ title: 'User not found in a system.', status: 'error', duration: 2000 });
-            break;
+            throw error;
           case 401:
             toast({ title: 'Invalid password.', status: 'error', duration: 2000 });
-            break;
+            throw error;
           default:
             handleError(error);
             break;
         }
       } else {
-        console.error(error);
         handleError(error);
-      }
-    } finally {
-      if (isMountedRef.current) {
-        setState(s => ({ ...s, loading: false, fetched: true }));
       }
     }
   };
 
-  return { ...state, login };
+  const { execute, ...state } = useAsync<IApiRespose<IToken> | undefined, Parameters<typeof login>>(login);
+
+  return { login: execute, ...state };
 };
 
 export default useLoginQuery;

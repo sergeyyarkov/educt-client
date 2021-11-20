@@ -69,7 +69,7 @@ const LessonItem: React.FC<LessonItemPropsType> = ({ lesson }) => {
                   <Icon as={MdTimer} />
                 </Text>
                 <Text as='small' verticalAlign='middle'>
-                  ~{moment(lesson.duration, 'HH:mm:ss').minutes()}min
+                  ~{moment.duration(lesson.duration, 'minutes').humanize()}
                 </Text>
               </Text>
               <Text as='span' color='gray.500'>

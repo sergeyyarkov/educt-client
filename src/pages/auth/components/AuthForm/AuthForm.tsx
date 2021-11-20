@@ -44,14 +44,12 @@ const AuthForm: React.FC = () => {
   } = useForm<AuthInputType>({
     resolver: yupResolver(LoginSchema),
   });
-  const { login, loading } = useLoginQuery();
+  const { login, isLoading } = useLoginQuery();
 
   /**
    * Login handler
    */
-  const onSubmit: SubmitHandler<AuthInputType> = data => {
-    login(data.login, data.password).finally(() => reset());
-  };
+  const onSubmit: SubmitHandler<AuthInputType> = data => login(data.login, data.password).finally(() => reset());
 
   return (
     <Box flexBasis='500px' borderWidth='1px' borderRadius='lg' p='8'>
@@ -87,7 +85,7 @@ const AuthForm: React.FC = () => {
 
             <Button
               loadingText='Logging in...'
-              isLoading={loading}
+              isLoading={isLoading}
               type='submit'
               colorScheme='blue'
               variant='outline'

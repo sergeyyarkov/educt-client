@@ -23,7 +23,7 @@ import CourseStatusBadge from '@educt/components/CourseStatusBadge';
  * Hooks
  */
 import { useHistory } from 'react-router';
-import { useColorMode } from '@chakra-ui/color-mode';
+import { useColorMode, useColorModeValue } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 export type CourseItemPropsType = {
@@ -108,7 +108,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
         <Box
           position='relative'
           minHeight='200px'
-          backgroundColor={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
+          backgroundColor={course.color?.hex || useColorModeValue('gray.200', 'gray.700')}
           borderTopLeftRadius='lg'
           borderTopRightRadius='lg'
           p='10px'
