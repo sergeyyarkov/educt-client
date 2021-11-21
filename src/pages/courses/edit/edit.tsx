@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
+import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import { Box, Heading, Text, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 
@@ -13,7 +14,8 @@ import type { IPageProps } from '@educt/interfaces';
  */
 import LoadingPage from '@educt/components/LoadingPage';
 import { EditCourseForm } from '@educt/components/Forms/CourseForm';
-import { LessonList, LessonItem } from './components/LessonList';
+import SetCourseStatusButton from '@educt/components/SetCourseStatusButton';
+import LessonList from './components/LessonList';
 import { StudentList, StudentItem } from './components/StudentList';
 
 /**
@@ -44,12 +46,14 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       <Helmet>
         <title>Editing {course.title}</title>
       </Helmet>
-      <Flex>
-        <Box>
+      <Flex justifyContent='space-between' alignItems='center' flexWrap='wrap'>
+        <Box mr='3'>
           <Heading as='h1'>Course editor</Heading>
           <Text mt='2'>{course.title}</Text>
         </Box>
-        <Box></Box>
+        <Box ml='auto' alignSelf='flex-end' justifySelf='flex-end' mt={{ base: '7', md: '0' }}>
+          <SetCourseStatusButton courseId={course.id} currentStatus={course.status} />
+        </Box>
       </Flex>
       <Box>
         <Tabs isLazy mt='8'>
@@ -74,7 +78,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
               </Box>
             </TabPanel>
             <TabPanel>
-              <LessonList render={LessonItem} course={course} />
+              <LessonList course={course} />
             </TabPanel>
             <TabPanel>
               <StudentList render={StudentItem} students={course.students} />
@@ -86,4 +90,4 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   );
 };
 
-export default EditCoursePage;
+export default observer(EditCoursePage);

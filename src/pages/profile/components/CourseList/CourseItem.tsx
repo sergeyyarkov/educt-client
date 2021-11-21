@@ -30,7 +30,13 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
         </Box>
 
         <Box>
-          <Tag variant='subtle' colorScheme='green' borderRadius='full' alignSelf='flex-start'>
+          <Tag
+            color='white'
+            boxShadow={`inset 0 0 0px 1px ${course.category.color?.hex}`}
+            bg={course.category.color?.hex}
+            borderRadius='full'
+            alignSelf='flex-start'
+          >
             <TagLabel>{course.category.title}</TagLabel>
           </Tag>
         </Box>

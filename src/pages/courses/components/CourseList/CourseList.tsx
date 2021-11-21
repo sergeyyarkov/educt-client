@@ -20,13 +20,12 @@ import LoadingList from '@educt/components/LoadingList';
 import { useContext, useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
-import { useToast } from '@chakra-ui/toast';
-import { useErrorHandler } from 'react-error-boundary';
 
 /**
  * Contexts
  */
 import { CoursesPageContext } from '@educt/contexts';
+import useSetCourseStatusQuery from '@educt/hooks/useSetCourseStatusQuery';
 
 type CourseListPropsType = {
   render: React.FC<CourseItemPropsType>;
@@ -39,8 +38,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   } = useRootStore();
   const { selectedCategory, courseStatus, deletingCourse, setDeletingCourse } = useContext(CoursesPageContext);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
-  const handleError = useErrorHandler();
-  const toast = useToast();
+  const { setCourseStatus } = useSetCourseStatusQuery();
   const { courses, isLoading } = courseStore;
 
   /**
@@ -54,22 +52,6 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
       });
     }
   }, [courseStore, selectedCategory, courseStatus]);
-
-  /**
-   * Handle update course status
-   */
-  const onSetStatus = async (id: string, status: CourseStatusEnum) => {
-    try {
-      await courseStore.setCourseStatus(id, status);
-      toast({ title: 'Status updated.', status: 'info' });
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: error.message, status: 'error' });
-      } else {
-        handleError(error);
-      }
-    }
-  };
 
   if (courses === null || isLoading) return <LoadingList />;
 
@@ -88,7 +70,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
                 setDeletingCourse(course);
                 onOpenDeleteDialog();
               }}
-              onSetStatus={onSetStatus}
+              onSetStatus={setCourseStatus}
             />
           ))}
         </Grid>

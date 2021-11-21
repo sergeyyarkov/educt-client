@@ -22,6 +22,7 @@ export type CategoryItemPropsType = {
 
 const CategoryItem: React.FC<CategoryItemPropsType> = ({ category }) => {
   const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+  const isSelected = selectedCategory?.id === category.id;
 
   /**
    * Handle click on change category
@@ -31,10 +32,12 @@ const CategoryItem: React.FC<CategoryItemPropsType> = ({ category }) => {
   return (
     <Tag
       borderRadius='full'
-      variant={selectedCategory?.id === category.id ? 'solid' : 'outline'}
-      colorScheme='blue'
+      variant={isSelected ? 'solid' : 'outline'}
+      boxShadow={`inset 0 0 0px 1px ${category.color?.hex}`}
+      color={isSelected ? 'white' : category.color?.hex}
       cursor='pointer'
       transition='all .1s'
+      bg={isSelected ? `${category.color?.hex}` : 'none'}
       _hover={{ opacity: '.8' }}
       onClick={onCategoryChange}
     >

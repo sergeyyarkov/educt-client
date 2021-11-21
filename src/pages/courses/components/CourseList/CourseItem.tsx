@@ -13,6 +13,7 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
  */
 import { ICourse } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
+import { SetCourseStatusFnType } from '@educt/hooks/useSetCourseStatusQuery';
 
 /**
  * Components
@@ -29,7 +30,7 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 export type CourseItemPropsType = {
   course: Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
   onDelete: (course: Pick<ICourse, 'id' | 'title'>) => void;
-  onSetStatus: (id: string, status: CourseStatusEnum) => Promise<void>;
+  onSetStatus: SetCourseStatusFnType;
 };
 
 const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStatus }) => {
