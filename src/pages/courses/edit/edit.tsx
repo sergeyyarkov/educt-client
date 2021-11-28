@@ -34,7 +34,9 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   /**
    * Not Found
    */
-  if (error?.response?.status === 404) return <Redirect to='/404' />;
+  if (error?.response?.status === 404) {
+    return <Redirect to='/404' />;
+  }
 
   /**
    * Loading

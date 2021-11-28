@@ -69,3 +69,18 @@ export function transformBytes(bytes: number, decimals = 2): string {
 
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
+
+/**
+ *
+ * @param array Array
+ * @param from From index
+ * @param to To index
+ * @returns Reordered array
+ */
+export function arrayMove<T>(array: T[], from: number, to: number) {
+  const result = array.slice();
+  const [removed] = result.splice(from, 1);
+
+  result.splice(to, 0, removed);
+  return result;
+}

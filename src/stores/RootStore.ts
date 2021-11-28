@@ -14,6 +14,7 @@ import UserStore from './UserStore';
 import UIStore from './UIStore';
 import CategoryStore from './CategoryStore';
 import CourseStore from './CourseStore';
+import LessonService from '@educt/services/LessonService';
 
 export default class RootStore {
   public courseStore: CourseStore;
@@ -28,11 +29,15 @@ export default class RootStore {
 
   public apiService: ApiService;
 
+  public lessonService: LessonService;
+
   constructor() {
     /**
      * Api service
      */
     this.apiService = new ApiService(this, apiConfig);
+
+    this.lessonService = new LessonService(this.apiService.api);
 
     /**
      * Stores
