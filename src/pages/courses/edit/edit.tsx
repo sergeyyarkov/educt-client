@@ -1,6 +1,5 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import { Box, Heading, Text, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 
@@ -22,6 +21,7 @@ import { StudentList, StudentItem } from './components/StudentList';
  * Hooks
  */
 import { useParams } from 'react-router-dom';
+import { useRootStore } from '@educt/hooks/useRootStore';
 import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
 
 /**
@@ -29,7 +29,12 @@ import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
  */
 const EditCoursePage: React.FC<IPageProps> = () => {
   const params = useParams<{ id: string }>();
-  const { data: course, error, isLoading } = useFetchCourseQuery(params.id);
+  const {
+    pageStore: {
+      editCourseStore: { course },
+    },
+  } = useRootStore();
+  const { error, isLoading } = useFetchCourseQuery(params.id);
 
   /**
    * Not Found
@@ -41,7 +46,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   /**
    * Loading
    */
-  if (isLoading || !course) return <LoadingPage />;
+  if (!course || isLoading) return <LoadingPage />;
 
   return (
     <>
@@ -92,4 +97,4 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   );
 };
 
-export default observer(EditCoursePage);
+export default EditCoursePage;

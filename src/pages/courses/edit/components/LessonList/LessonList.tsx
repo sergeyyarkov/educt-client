@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 import { ItemProps, Virtuoso } from 'react-virtuoso';
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
-import moment from 'moment';
-import * as helpers from '@educt/helpers';
 import { Flex, Box, Text, IconButton, Icon, Button } from '@chakra-ui/react';
 import { DeleteIcon, DragHandleIcon } from '@chakra-ui/icons';
+import moment from 'moment';
 
 /**
  * Types
  */
 import type { ICourse, ILesson } from '@educt/interfaces';
+
+/**
+ * Components
+ */
+import DeleteLessonDialog from '@educt/components/Dialogs/DeleteLessonDialog';
 
 /**
  * Hooks
@@ -19,6 +24,12 @@ import { useColorMode } from '@chakra-ui/react';
 import { MdTimer, MdAttachment } from 'react-icons/md';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import useDidMountEffect from '@educt/hooks/useDidMountEffect';
+import { useDisclosure } from '@chakra-ui/hooks';
+
+/**
+ * Contexts
+ */
+import { useErrorHandler } from 'react-error-boundary';
 
 type LessonListPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
@@ -38,26 +49,40 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
 
 const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   const history = useHistory();
-  const { lessonService } = useRootStore();
-  const [lessons, setLessons] = useState<ILesson[]>(course.lessons);
+  const {
+    lessonService,
+    pageStore: { editCourseStore },
+  } = useRootStore();
+  const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
+  const handleError = useErrorHandler();
+  const lessons = course.lessons;
 
   const handleCreateLesson = (): void => history.push('/lessons/create');
   const handleEditLesson = (id: string): void => history.push(`/lessons/edit/${id}`);
-  const handleDeleteLesson = (id: string): void => undefined;
+  const handleDeleteLesson = (lesson: ILesson): void => {
+    editCourseStore.setDeletingLesson(lesson);
+    onOpenDeleteDialog();
+  };
+
   const handleChangeOrder = async (ids: string[]) => {
     try {
       const data = await lessonService.saveOrder(ids);
       return data;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response) {
+        console.error(error);
+      } else {
+        handleError(error);
+      }
     }
   };
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }
 
-    setLessons(helpers.arrayMove(lessons, result.source.index, result.destination.index));
+    editCourseStore.reorderLessons(result.source.index, result.destination.index);
   };
 
   const LessonItem = React.useMemo(() => {
@@ -117,7 +142,13 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
                     <Button size='md' p='0 60px' mr='1'>
                       Edit
                     </Button>
-                    <IconButton aria-label='Delete lesson' variant='ghost' colorScheme='red' icon={<DeleteIcon />} />
+                    <IconButton
+                      onClick={() => handleDeleteLesson(lesson)}
+                      aria-label='Delete lesson'
+                      variant='ghost'
+                      colorScheme='red'
+                      icon={<DeleteIcon />}
+                    />
                   </Flex>
                   <Flex justifyContent='flex-end' mt={{ base: '2' }}>
                     <Text as='span' color='gray.500' mr='3'>
@@ -165,6 +196,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     <Box style={{ overflow: 'auto' }}>
       {lessons.length !== 0 ? (
         <>
+          <DeleteLessonDialog isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
             <Text fontWeight='medium'>Total: ({lessons.length})</Text>
             <Button onClick={handleCreateLesson}>Create new</Button>
@@ -219,4 +251,4 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   );
 };
 
-export default LessonList;
+export default observer(LessonList);

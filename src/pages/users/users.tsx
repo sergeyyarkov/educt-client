@@ -21,7 +21,7 @@ import CreateUserForm from './components/CreateUserForm';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**
- * Context
+ * Context Providers
  */
 import { UsersPageContextProvider } from '@educt/providers';
 
