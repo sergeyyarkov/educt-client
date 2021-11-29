@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { IApiRespose, IToken } from '@educt/interfaces';
+import { IToken } from '@educt/interfaces';
 import { useErrorHandler } from 'react-error-boundary';
 import useAsync from './useAsync';
 import { useRootStore } from './useRootStore';

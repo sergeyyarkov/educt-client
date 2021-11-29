@@ -15,8 +15,11 @@ import UIStore from './UIStore';
 import CategoryStore from './CategoryStore';
 import CourseStore from './CourseStore';
 import LessonService from '@educt/services/LessonService';
+import PageStore from './PageStore';
 
 export default class RootStore {
+  public pageStore: PageStore;
+
   public courseStore: CourseStore;
 
   public categoryStore: CategoryStore;
@@ -33,15 +36,16 @@ export default class RootStore {
 
   constructor() {
     /**
-     * Api service
+     * Services
      */
+    // TODO add other services
     this.apiService = new ApiService(this, apiConfig);
-
     this.lessonService = new LessonService(this.apiService.api);
 
     /**
      * Stores
      */
+    this.pageStore = new PageStore(this, this.apiService.api);
     this.courseStore = new CourseStore(this, this.apiService.api);
     this.categoryStore = new CategoryStore(this, this.apiService.api);
     this.uiStore = new UIStore(this);

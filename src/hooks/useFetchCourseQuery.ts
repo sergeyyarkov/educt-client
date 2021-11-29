@@ -2,11 +2,11 @@
  * Types
  */
 import { ICourse } from '@educt/interfaces';
-import { useEffect } from 'react';
 
 /**
  * Hooks
  */
+import { useEffect } from 'react';
 import useAsync from './useAsync';
 import { useRootStore } from './useRootStore';
 
@@ -14,11 +14,11 @@ type QueryResponseDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'l
 
 const useFetchCourseQuery = (id: string) => {
   const {
-    courseStore: { courseService },
+    pageStore: { editCourseStore },
   } = useRootStore();
 
   const fetch = async (id: string) => {
-    const result = await courseService.fetchById(id);
+    const result = await editCourseStore.loadCourseById(id);
     return result.data;
   };
 
