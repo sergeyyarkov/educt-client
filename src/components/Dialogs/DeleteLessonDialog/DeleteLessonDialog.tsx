@@ -46,7 +46,7 @@ const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ isOpen, onC
       isLoading={isLoading}
       onClose={isConfirmed => handleDelete(isConfirmed)}
       title='Confirm deleting'
-      message={`Lesson with title will be removed from the course. Attached materials will also be removed.`}
+      message={`Lesson with will be removed from the course. Attached materials will also be removed.`}
       confirmMessage='Delete'
     />
   );
