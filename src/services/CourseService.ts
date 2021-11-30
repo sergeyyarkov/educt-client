@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
+import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
 import { IApiRespose, ICourse } from '@educt/interfaces';
-import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 import { CourseStatusEnum } from '@educt/enums';
+import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 
-export class CourseService {
+class CourseService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -96,3 +97,5 @@ export class CourseService {
     return result.data;
   }
 }
+
+export const CourseServiceInstance = new CourseService(ApiServiceInstance.api);

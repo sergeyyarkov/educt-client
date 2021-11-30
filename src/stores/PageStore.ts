@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { makeAutoObservable } from 'mobx';
 import EditCourseStore from './pages/EditCourseStore';
 import RootStore from './RootStore';
@@ -8,13 +7,13 @@ export default class PageStore {
 
   public editCourseStore: EditCourseStore;
 
-  constructor(root: RootStore, api: AxiosInstance) {
+  constructor(root: RootStore) {
     this.root = root;
 
     /**
      * Pages
      */
-    this.editCourseStore = new EditCourseStore(this, api);
+    this.editCourseStore = new EditCourseStore(this);
 
     makeAutoObservable(this);
   }

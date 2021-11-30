@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ICategory } from '@educt/interfaces';
+import { ApiServiceInstance } from '.';
 
-export default class CategoryService {
+class CategoryService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -18,3 +19,5 @@ export default class CategoryService {
     return result.data;
   }
 }
+
+export const CategoryServiceInstance = new CategoryService(ApiServiceInstance.api);

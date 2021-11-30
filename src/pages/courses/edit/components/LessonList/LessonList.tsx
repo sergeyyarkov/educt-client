@@ -31,6 +31,11 @@ import { useDisclosure } from '@chakra-ui/hooks';
  */
 import { useErrorHandler } from 'react-error-boundary';
 
+/**
+ * Services
+ */
+import { LessonServiceInstance } from '@educt/services';
+
 type LessonListPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
 };
@@ -50,7 +55,6 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
 const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   const history = useHistory();
   const {
-    lessonService,
     pageStore: { editCourseStore },
   } = useRootStore();
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
@@ -66,7 +70,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
 
   const handleChangeOrder = async (ids: string[]) => {
     try {
-      const data = await lessonService.saveOrder(ids);
+      const data = await LessonServiceInstance.saveOrder(ids);
       return data;
     } catch (error: any) {
       if (error.response) {

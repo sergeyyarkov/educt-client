@@ -20,8 +20,12 @@ import FileSelect from '@educt/components/FileSelect';
  * Hooks
  */
 import { useToast } from '@chakra-ui/toast';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
+
+/**
+ * Services
+ */
+import { CategoryServiceInstance, UserServiceInstance } from '@educt/services';
 
 export type InputFields = {
   title: string;
@@ -46,10 +50,6 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
     formState: { errors, isDirty },
   } = reactHookForm;
 
-  const {
-    userStore: { userService },
-    categoryStore: { categoryService },
-  } = useRootStore();
   const handleError = useErrorHandler();
   const toast = useToast();
 
@@ -58,7 +58,7 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
    */
   const loadUsersOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const users = await userService.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
+      const users = await UserServiceInstance.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
 
       return users.data.map(user => ({
         label: user.fullname,
@@ -78,7 +78,7 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
    */
   const loadCategoriesOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const categories = await categoryService.fetchAll();
+      const categories = await CategoryServiceInstance.fetchAll();
       return categories.data.map(category => ({
         label: category.title,
         value: category.id,

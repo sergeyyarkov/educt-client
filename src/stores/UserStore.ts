@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 import * as helpers from '@educt/helpers';
 
@@ -12,7 +11,7 @@ import { UserRoleEnum } from '@educt/enums';
 /**
  * Services
  */
-import UserService from '@educt/services/UserService';
+import { UserServiceInstance } from '@educt/services';
 
 /**
  * Stores
@@ -22,8 +21,6 @@ import RootStore from './RootStore';
 export default class UserStore {
   public root: RootStore;
 
-  public userService: UserService;
-
   public me: IMe | null = null;
 
   public users: IUser[] | null = null;
@@ -32,9 +29,8 @@ export default class UserStore {
 
   public isLoading: boolean = false;
 
-  constructor(root: RootStore, api: AxiosInstance) {
+  constructor(root: RootStore) {
     this.root = root;
-    this.userService = new UserService(api);
     makeAutoObservable(this);
   }
 
@@ -45,7 +41,7 @@ export default class UserStore {
   public async loadUsersData(params?: FetchUsersParamsType) {
     try {
       this.setLoading(true);
-      const result = await this.userService.fetchAll(params);
+      const result = await UserServiceInstance.fetchAll(params);
 
       runInAction(() => {
         this.users = result.data;
@@ -62,7 +58,7 @@ export default class UserStore {
 
   public async loadCurrentUserData() {
     try {
-      const result = await this.userService.fetchMe();
+      const result = await UserServiceInstance.fetchMe();
       const {
         data: { id, first_name, last_name, fullname, email, roles, contacts, courses },
       } = result;
@@ -91,7 +87,7 @@ export default class UserStore {
 
   public async createUser(data: CreateUserParamsType, paramsContext?: FetchUsersParamsType) {
     try {
-      const result = await this.userService.create(data);
+      const result = await UserServiceInstance.create(data);
 
       if (this.users !== null) {
         /**
@@ -108,7 +104,7 @@ export default class UserStore {
 
   public async updateUser(id: string, params: UpdateUserParamsType) {
     try {
-      const result = await this.userService.update(id, params);
+      const result = await UserServiceInstance.update(id, params);
 
       runInAction(() => {
         if (this.users !== null) {
@@ -134,7 +130,7 @@ export default class UserStore {
    */
   public async deleteUser(id: string, paramsContext?: FetchUsersParamsType) {
     try {
-      const result = await this.userService.delete(id);
+      const result = await UserServiceInstance.delete(id);
 
       if (this.users !== null) {
         /**
@@ -157,7 +153,7 @@ export default class UserStore {
    */
   public async updateCurrentUserContacts(data: IUserContacts) {
     try {
-      const result = await this.userService.updateContacts(data);
+      const result = await UserServiceInstance.updateContacts(data);
 
       runInAction(() => {
         if (this.me) {
@@ -180,7 +176,7 @@ export default class UserStore {
    */
   public async updateCurrentUserPassword(oldPassword: string, newPassword: string) {
     try {
-      const result = await this.userService.updatePassword(oldPassword, newPassword);
+      const result = await UserServiceInstance.updatePassword(oldPassword, newPassword);
       return result;
     } catch (error: any) {
       throw error;
@@ -195,7 +191,7 @@ export default class UserStore {
    */
   public async updateCurrentUserEmail(email: string) {
     try {
-      const result = await this.userService.updateEmail(email);
+      const result = await UserServiceInstance.updateEmail(email);
       return result;
     } catch (error: any) {
       throw error;
@@ -211,7 +207,7 @@ export default class UserStore {
    */
   public async updateCurrentUserEmailConfirm(email: string, confirmationCode: string) {
     try {
-      const result = await this.userService.updateEmailConfirm(email, confirmationCode);
+      const result = await UserServiceInstance.updateEmailConfirm(email, confirmationCode);
       runInAction(() => {
         if (this.me) {
           this.me.email = result.data.email;

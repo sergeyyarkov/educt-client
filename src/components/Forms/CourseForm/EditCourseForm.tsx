@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler } from 'react-hook-form';
 
 /**
  * Types
  */
 import { InputFields } from './CourseForm';
+import { SubmitHandler } from 'react-hook-form';
 
 /**
  * Components
@@ -19,9 +19,13 @@ import CourseForm from './CourseForm';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import { useToast } from '@chakra-ui/toast';
+
+/**
+ * Services
+ */
+import { CourseServiceInstance } from '@educt/services';
 
 /**
  * Schema
@@ -42,9 +46,6 @@ type EditFormCoursePropsType = {
 
 const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    courseStore: { courseService },
-  } = useRootStore();
   const form = useForm<InputFields>({
     resolver: yupResolver(CourseFormSchema),
     defaultValues: {
@@ -62,10 +63,11 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
   /**
    *  Submit handler
    */
+  // TODO move request to useUpdateCourse hook
   const onSubmit: SubmitHandler<InputFields> = async data => {
     try {
       setIsLoading(true);
-      const course = await courseService.update(id, {
+      const course = await CourseServiceInstance.update(id, {
         title: data.title,
         description: data.description,
         teacher_id: data.teacher_id,

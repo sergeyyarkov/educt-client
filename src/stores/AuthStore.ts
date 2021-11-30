@@ -1,11 +1,10 @@
 import { makeAutoObservable } from 'mobx';
-import { AxiosInstance } from 'axios';
 import Cookies from 'js-cookie';
 
 /**
  * Services
  */
-import AuthService from '@educt/services/AuthService';
+import { AuthServiceInstance } from '@educt/services';
 
 /**
  * Stores
@@ -15,13 +14,10 @@ import RootStore from './RootStore';
 export default class AuthStore {
   public root: RootStore;
 
-  public authService: AuthService;
-
   public isLoggedIn: boolean = !!Cookies.get('logged_in');
 
-  constructor(root: RootStore, api: AxiosInstance) {
+  constructor(root: RootStore) {
     this.root = root;
-    this.authService = new AuthService(api);
     makeAutoObservable(this);
   }
 
@@ -31,7 +27,7 @@ export default class AuthStore {
 
   public async login(login: string, password: string) {
     try {
-      const result = await this.authService.requestLogin(login, password);
+      const result = await AuthServiceInstance.requestLogin(login, password);
 
       this.setIsLoggedIn(true);
       Cookies.set('logged_in', 'true');
@@ -44,7 +40,7 @@ export default class AuthStore {
 
   public async logout() {
     try {
-      const result = await this.authService.requestLogout();
+      const result = await AuthServiceInstance.requestLogout();
 
       this.setIsLoggedIn(false);
       this.root.userStore.reset();

@@ -1,10 +1,9 @@
+import { makeAutoObservable, runInAction } from 'mobx';
 import * as helpers from '@educt/helpers';
 import { ICourse, ILesson } from '@educt/interfaces';
-import { CourseService } from '@educt/services/CourseService';
-import LessonService from '@educt/services/LessonService';
-import { AxiosInstance } from 'axios';
-import { makeAutoObservable, runInAction } from 'mobx';
 import PageStore from '../PageStore';
+
+import { CourseServiceInstance, LessonServiceInstance } from '@educt/services';
 
 export default class EditCourseStore {
   public pageStore: PageStore;
@@ -13,11 +12,8 @@ export default class EditCourseStore {
 
   public deletingLesson: ILesson | undefined;
 
-  private courseService: CourseService;
-
-  constructor(pageStore: PageStore, api: AxiosInstance) {
+  constructor(pageStore: PageStore) {
     this.pageStore = pageStore;
-    this.courseService = new CourseService(api);
 
     makeAutoObservable(this);
   }
@@ -30,7 +26,7 @@ export default class EditCourseStore {
    */
   public async loadCourseById(id: string) {
     try {
-      const result = await this.courseService.fetchById(id);
+      const result = await CourseServiceInstance.fetchById(id);
 
       runInAction(() => {
         this.course = result.data;
@@ -50,7 +46,7 @@ export default class EditCourseStore {
    */
   public async deleteLessonById(id: string) {
     try {
-      const result = await this.pageStore.root.lessonService.deleteLesson(id);
+      const result = await LessonServiceInstance.deleteLesson(id);
 
       runInAction(() => {
         if (this.course) {

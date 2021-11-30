@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
+import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
+import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
 import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
 
-export default class UserService {
+class UserService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -135,3 +136,5 @@ export default class UserService {
     return result.data;
   }
 }
+
+export const UserServiceInstance = new UserService(ApiServiceInstance.api);

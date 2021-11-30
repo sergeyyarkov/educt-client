@@ -1,7 +1,8 @@
-import { IApiRespose, ILesson } from '@educt/interfaces';
 import { AxiosInstance } from 'axios';
+import { IApiRespose, ILesson } from '@educt/interfaces';
+import { ApiServiceInstance } from './ApiService';
 
-export default class LessonService {
+class LessonService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -32,3 +33,5 @@ export default class LessonService {
     return result.data;
   }
 }
+
+export const LessonServiceInstance = new LessonService(ApiServiceInstance.api);
