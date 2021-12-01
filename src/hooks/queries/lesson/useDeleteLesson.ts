@@ -1,8 +1,10 @@
 import { useToast } from '@chakra-ui/toast';
 import { ILesson } from '@educt/interfaces';
 import { useErrorHandler } from 'react-error-boundary';
-import useAsync from '../useAsync';
-import { useRootStore } from '../useRootStore';
+import useAsync from '../../useAsync';
+import { useRootStore } from '../../useRootStore';
+
+type CreatedLessonDataType = ILesson | undefined;
 
 const useDeleteLesson = () => {
   const {
@@ -22,10 +24,12 @@ const useDeleteLesson = () => {
       } else {
         handleError(error);
       }
+
+      return Promise.reject(error);
     }
   };
 
-  const { execute, ...state } = useAsync<ILesson | undefined, Parameters<typeof deleteLesson>>(deleteLesson);
+  const { execute, ...state } = useAsync<CreatedLessonDataType, Parameters<typeof deleteLesson>>(deleteLesson);
 
   return { deleteLesson: execute, ...state };
 };

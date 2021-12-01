@@ -16,21 +16,14 @@ import CourseForm from './CourseForm';
 /**
  * Hooks
  */
-import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { useErrorHandler } from 'react-error-boundary';
-import { useToast } from '@chakra-ui/toast';
-
-/**
- * Services
- */
-import { CourseServiceInstance } from '@educt/services';
 
 /**
  * Schema
  */
 import CourseFormSchema from './CourseForm.validator';
+import { useUpdateCourse } from '@educt/hooks/queries';
 
 type EditFormCoursePropsType = {
   defaultValues?:
@@ -45,7 +38,6 @@ type EditFormCoursePropsType = {
 };
 
 const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<InputFields>({
     resolver: yupResolver(CourseFormSchema),
     defaultValues: {
@@ -56,44 +48,30 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
       image: undefined,
     },
   });
-  const toast = useToast();
-  const handleError = useErrorHandler();
+  const { updateCourse, isLoading } = useUpdateCourse();
   const { id } = useParams<{ id: string }>();
 
   /**
    *  Submit handler
    */
-  // TODO move request to useUpdateCourse hook
   const onSubmit: SubmitHandler<InputFields> = async data => {
     try {
-      setIsLoading(true);
-      const course = await CourseServiceInstance.update(id, {
-        title: data.title,
-        description: data.description,
-        teacher_id: data.teacher_id,
-        category_id: data.category_id,
-        image: data.image,
-      });
-      toast({ title: `Course updated.`, status: 'info' });
+      const updated = await updateCourse(id, data);
 
-      /**
-       * Update fields with new values
-       */
-      form.reset({
-        title: course.data.title,
-        description: course.data.description,
-        teacher_id: course.data.teacher.id,
-        category_id: course.data.category.id,
-        image: undefined,
-      });
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: `${error.message}`, status: 'error' });
-      } else {
-        handleError(error);
+      if (updated) {
+        /**
+         * Update fields with new values
+         */
+        form.reset({
+          title: updated.title,
+          description: updated.description,
+          teacher_id: updated.teacher.id,
+          category_id: updated.category.id,
+          image: undefined,
+        });
       }
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
     }
   };
 

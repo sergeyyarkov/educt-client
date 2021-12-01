@@ -38,7 +38,7 @@ type UpdateUserContactsFormPropsType = {
 const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ contacts }) => {
   const {
     register,
-    formState: { errors, isDirty },
+    formState: { errors, dirtyFields, isDirty },
     handleSubmit,
     reset,
   } = useForm<UpdateUserContactsInputType>({
