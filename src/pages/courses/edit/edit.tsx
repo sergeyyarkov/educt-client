@@ -22,7 +22,7 @@ import { StudentList, StudentItem } from './components/StudentList';
  */
 import { useParams } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import useFetchCourseQuery from '@educt/hooks/useFetchCourseQuery';
+import { useFetchCourse } from '@educt/hooks/queries';
 
 /**
  * Course editor
@@ -34,7 +34,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       editCourseStore: { course },
     },
   } = useRootStore();
-  const { error, isLoading } = useFetchCourseQuery(params.id);
+  const { error, isLoading } = useFetchCourse(params.id);
 
   /**
    * Not Found

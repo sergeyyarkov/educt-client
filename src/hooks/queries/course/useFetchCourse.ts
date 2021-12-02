@@ -7,12 +7,12 @@ import { ICourse } from '@educt/interfaces';
  * Hooks
  */
 import { useEffect } from 'react';
-import useAsync from './useAsync';
-import { useRootStore } from './useRootStore';
+import useAsync from '../../useAsync';
+import { useRootStore } from '../../useRootStore';
 
-type QueryResponseDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
+type CourseResultDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
 
-const useFetchCourseQuery = (id: string) => {
+const useFetchCourse = (id: string) => {
   const {
     pageStore: { editCourseStore },
   } = useRootStore();
@@ -22,7 +22,7 @@ const useFetchCourseQuery = (id: string) => {
     return result.data;
   };
 
-  const { execute: fetchCourseById, ...state } = useAsync<QueryResponseDataType, Parameters<typeof fetch>>(fetch);
+  const { execute: fetchCourseById, ...state } = useAsync<CourseResultDataType, Parameters<typeof fetch>>(fetch);
 
   useEffect(() => {
     fetchCourseById(id);
@@ -31,4 +31,4 @@ const useFetchCourseQuery = (id: string) => {
   return { ...state };
 };
 
-export default useFetchCourseQuery;
+export { useFetchCourse };

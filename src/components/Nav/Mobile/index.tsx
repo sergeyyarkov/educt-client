@@ -17,7 +17,7 @@ import NavList from '../NavList';
 /**
  * Hooks
  */
-import useLogoutQuery from '@educt/hooks/useLogoutQuery';
+import { useLogout } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useColorMode, useDisclosure } from '@chakra-ui/react';
 
@@ -27,7 +27,7 @@ const NavMobile: React.FC = () => {
   } = useRootStore();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { logout } = useLogoutQuery();
+  const { logout } = useLogout();
 
   return (
     <>

@@ -23,7 +23,7 @@ import type { SubmitHandler } from 'react-hook-form';
  * Hooks
  */
 import { useForm } from 'react-hook-form';
-import useLoginQuery from '@educt/hooks/useLoginQuery';
+import { useLogin } from '@educt/hooks/queries';
 
 /**
  * Schema
@@ -44,7 +44,7 @@ const AuthForm: React.FC = () => {
   } = useForm<AuthInputType>({
     resolver: yupResolver(LoginSchema),
   });
-  const { login, isLoading } = useLoginQuery();
+  const { login, isLoading } = useLogin();
 
   /**
    * Login handler

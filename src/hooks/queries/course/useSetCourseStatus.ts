@@ -3,17 +3,17 @@
  */
 import { CourseStatusEnum } from '@educt/enums';
 import { useErrorHandler } from 'react-error-boundary';
-import useAsync from './useAsync';
-import { useRootStore } from './useRootStore';
+import useAsync from '../../useAsync';
+import { useRootStore } from '../../useRootStore';
 import { useToast } from '@chakra-ui/toast';
 
-type QueryResponseDataType = {} | undefined;
+type SetCourseStatusResultDataType = {} | undefined;
 export type SetCourseStatusFnType = (
   id: string,
   newStatus: CourseStatusEnum
-) => Promise<QueryResponseDataType | undefined>;
+) => Promise<SetCourseStatusResultDataType | undefined>;
 
-const useSetCourseStatusQuery = () => {
+const useSetCourseStatus = () => {
   const { courseStore } = useRootStore();
   const toast = useToast();
   const handleError = useErrorHandler();
@@ -38,12 +38,16 @@ const useSetCourseStatusQuery = () => {
       } else {
         handleError(error);
       }
+
+      return Promise.reject(error);
     }
   };
 
-  const { execute, ...state } = useAsync<QueryResponseDataType, Parameters<SetCourseStatusFnType>>(setCourseStatus);
+  const { execute, ...state } = useAsync<SetCourseStatusResultDataType, Parameters<typeof setCourseStatus>>(
+    setCourseStatus
+  );
 
   return { setCourseStatus: execute, ...state };
 };
 
-export default useSetCourseStatusQuery;
+export { useSetCourseStatus };

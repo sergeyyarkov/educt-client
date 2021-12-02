@@ -28,10 +28,13 @@ const useCreateCourse = () => {
       return result.data;
     } catch (error: any) {
       if (error.response) {
-        if (error.response.status === 422) {
-          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
-        } else {
-          toast({ title: `${error.message}`, status: 'error' });
+        switch (error.response.status) {
+          case 422:
+            toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
+            break;
+          default:
+            toast({ title: `${error.message}`, status: 'error' });
+            break;
         }
       } else {
         handleError(error);

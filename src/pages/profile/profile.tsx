@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import {
   Avatar,
   Tabs,
@@ -35,7 +34,7 @@ import CourseList from '@educt/pages/profile/components/CourseList';
 import { useHistory } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import useLogoutQuery from '@educt/hooks/useLogoutQuery';
+import { useLogout } from '@educt/hooks/queries';
 
 /**
  * Profile page
@@ -45,7 +44,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
     userStore: { me },
   } = useRootStore();
   const history = useHistory();
-  const { logout } = useLogoutQuery();
+  const { logout } = useLogout();
   const { colorMode } = useColorMode();
 
   if (me === null) return <LoadingPage />;
@@ -139,7 +138,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
         </Tabs>
       </Box>
       <Box textAlign='center' mt='3'>
-        <Button onClick={logout} w={{ base: 'full', sm: '150px' }}>
+        <Button onClick={logout} size='sm' w={{ base: 'full', sm: '150px' }}>
           Sign Out
         </Button>
       </Box>

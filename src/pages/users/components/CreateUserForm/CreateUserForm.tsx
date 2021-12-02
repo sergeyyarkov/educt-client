@@ -84,6 +84,7 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
   /**
    * Submit handler
    */
+  // TODO: move to hook
   const onSubmit: SubmitHandler<CreateUserInputType> = async data => {
     try {
       setLoading(true);

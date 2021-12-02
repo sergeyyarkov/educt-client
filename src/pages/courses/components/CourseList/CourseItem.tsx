@@ -12,8 +12,8 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
  * Types
  */
 import { ICourse } from '@educt/interfaces';
+import type { SetCourseStatusFnType } from '@educt/hooks/queries/course/useSetCourseStatus';
 import { CourseStatusEnum } from '@educt/enums';
-import { SetCourseStatusFnType } from '@educt/hooks/useSetCourseStatusQuery';
 
 /**
  * Components

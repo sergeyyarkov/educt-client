@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@chakra-ui/react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { CourseStatusEnum } from '@educt/enums';
-import useSetCourseStatusQuery from '@educt/hooks/useSetCourseStatusQuery';
+import { useSetCourseStatus } from '@educt/hooks/queries';
 
 type SetCourseStatusButtonPropsType = {
   courseId: string;
@@ -16,7 +16,7 @@ const SetCourseStatusButton: React.FC<SetCourseStatusButtonPropsType> = ({
   loadingText = 'Wait a second...',
 }) => {
   const [status, setStatus] = useState<keyof typeof CourseStatusEnum>(currentStatus);
-  const { setCourseStatus, isLoading } = useSetCourseStatusQuery();
+  const { setCourseStatus, isLoading } = useSetCourseStatus();
 
   const handleChangeStatus = async (newStatus: CourseStatusEnum) => {
     await setCourseStatus(courseId, newStatus);

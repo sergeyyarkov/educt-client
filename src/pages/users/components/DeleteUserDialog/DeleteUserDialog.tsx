@@ -44,6 +44,7 @@ const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose
    * @param isConfirmed Is dialog confirmed
    * @param id User id
    */
+  // TODO: move to hook
   const deleteUserHandler = async (isConfirmed: boolean, id: string) => {
     if (isConfirmed) {
       try {

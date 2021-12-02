@@ -1,10 +1,12 @@
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
-import { useRootStore } from './useRootStore';
+import { useRootStore } from '../../useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
-import useAsync from './useAsync';
+import useAsync from '../../useAsync';
 
-const useLogoutQuery = () => {
+type LogoutResultDataType = {};
+
+const useLogout = () => {
   const { authStore } = useRootStore();
   const history = useHistory();
   const toast = useToast();
@@ -12,17 +14,19 @@ const useLogoutQuery = () => {
 
   const logout = async () => {
     try {
-      await authStore.logout();
+      const result = await authStore.logout();
       history.push('/auth');
       toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
-    } catch (error) {
+      return result.data;
+    } catch (error: any) {
       handleError(error);
+      return Promise.reject(error);
     }
   };
 
-  const { execute, ...state } = useAsync<void, Parameters<typeof logout>>(logout);
+  const { execute, ...state } = useAsync<LogoutResultDataType, Parameters<typeof logout>>(logout);
 
   return { logout: execute, ...state };
 };
 
-export default useLogoutQuery;
+export { useLogout };

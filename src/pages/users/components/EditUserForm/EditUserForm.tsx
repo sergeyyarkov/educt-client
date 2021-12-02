@@ -94,6 +94,7 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
   /**
    * Submit handler
    */
+  // TODO: move to hook
   const onSubmit: SubmitHandler<UpdateUserInputType> = async data => {
     try {
       setIsLoading(true);

@@ -18,6 +18,7 @@ import LoadingList from '@educt/components/LoadingList';
  * Hooks
  */
 import { useContext, useEffect } from 'react';
+import { useSetCourseStatus } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 
@@ -25,7 +26,6 @@ import { useDisclosure } from '@chakra-ui/hooks';
  * Contexts
  */
 import { CoursesPageContext } from '@educt/contexts';
-import useSetCourseStatusQuery from '@educt/hooks/useSetCourseStatusQuery';
 
 type CourseListPropsType = {
   render: React.FC<CourseItemPropsType>;
@@ -38,7 +38,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   } = useRootStore();
   const { selectedCategory, courseStatus, deletingCourse, setDeletingCourse } = useContext(CoursesPageContext);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
-  const { setCourseStatus } = useSetCourseStatusQuery();
+  const { setCourseStatus } = useSetCourseStatus();
   const { courses, isLoading } = courseStore;
 
   /**

@@ -28,7 +28,7 @@ class AuthService implements AuthServiceImpl {
    * @param password User password
    * @returns Token result data
    */
-  public async requestLogin(login: string, password: string) {
+  public async requestLogin(login: string, password: string): Promise<IApiRespose<IToken>> {
     const result = await this.api.post('v1/auth/login', {
       login,
       password,
@@ -41,7 +41,7 @@ class AuthService implements AuthServiceImpl {
    *
    * @returns Empty obj
    */
-  public async requestLogout() {
+  public async requestLogout(): Promise<IApiRespose<{}>> {
     const result = await this.api.post('v1/auth/logout');
     return result.data;
   }

@@ -22,11 +22,11 @@ import UserBadge from '@educt/components/UserBadge';
 /**
  * Hooks
  */
-import useLogoutQuery from '@educt/hooks/useLogoutQuery';
+import { useLogout } from '@educt/hooks/queries';
 
 const UserInfo: React.FC = () => {
   const { userStore } = useRootStore();
-  const { logout } = useLogoutQuery();
+  const { logout } = useLogout();
 
   if (userStore.me === null) {
     return <Skeleton width='260px' height='40px' borderRadius='md' />;
