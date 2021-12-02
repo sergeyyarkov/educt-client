@@ -4,7 +4,7 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import useAsync from '@educt/hooks/useAsync';
 
-type DeletedCourseDataType = Omit<ICourse, 'teacher' | 'students' | 'lessons'> | undefined;
+type DeletedCourseDataType = Omit<ICourse, 'teacher' | 'students' | 'lessons'>;
 
 const useDeleteCourse = () => {
   const { courseStore } = useRootStore();

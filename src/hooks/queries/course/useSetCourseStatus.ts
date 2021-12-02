@@ -7,11 +7,8 @@ import useAsync from '../../useAsync';
 import { useRootStore } from '../../useRootStore';
 import { useToast } from '@chakra-ui/toast';
 
-type SetCourseStatusResultDataType = {} | undefined;
-export type SetCourseStatusFnType = (
-  id: string,
-  newStatus: CourseStatusEnum
-) => Promise<SetCourseStatusResultDataType | undefined>;
+type SetCourseStatusResultDataType = {};
+export type SetCourseStatusFnType = (id: string, newStatus: CourseStatusEnum) => Promise<SetCourseStatusResultDataType>;
 
 const useSetCourseStatus = () => {
   const { courseStore } = useRootStore();

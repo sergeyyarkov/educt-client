@@ -8,7 +8,7 @@ import { CourseServiceInstance, LessonServiceInstance } from '@educt/services';
 export default class EditCourseStore {
   public pageStore: PageStore;
 
-  public course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
+  public course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | null = null;
 
   public deletingLesson: ILesson | undefined;
 

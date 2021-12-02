@@ -4,7 +4,7 @@ import { useErrorHandler } from 'react-error-boundary';
 import useAsync from '../../useAsync';
 import { useRootStore } from '../../useRootStore';
 
-type LoginResultDataType = IToken | undefined;
+type LoginResultDataType = IToken;
 
 const useLogin = () => {
   const { authStore } = useRootStore();

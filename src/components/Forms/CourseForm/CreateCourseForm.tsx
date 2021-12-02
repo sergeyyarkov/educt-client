@@ -47,7 +47,7 @@ const CreateFormCourse: React.FC<CreateFormCoursePropsType> = () => {
         status: CourseStatusEnum.DRAFT,
       });
 
-      if (course) history.push(`/courses/edit/${course.id}`);
+      history.push(`/courses/edit/${course.id}`);
     } catch (error) {
       console.error(error);
     }

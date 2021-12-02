@@ -20,6 +20,9 @@ import { useSetCourseStatus } from './course/useSetCourseStatus';
 /**
  * User
  */
+import { useCreateUser } from './user/useCreateUser';
+import { useDeleteUser } from './user/useDeleteUser';
+import { useUpdateUser } from './user/useUpdateUser';
 import { useUpdateUserEmail } from './user/useUpdateUserEmail';
 
 export {
@@ -30,5 +33,8 @@ export {
   useFetchCourse,
   useSetCourseStatus,
   useDeleteLesson,
+  useCreateUser,
+  useDeleteUser,
+  useUpdateUser,
   useUpdateUserEmail,
 };

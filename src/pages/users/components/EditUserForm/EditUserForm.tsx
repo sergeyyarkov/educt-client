@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
+import * as helpers from '@educt/helpers';
 import {
   Modal,
   ModalOverlay,
@@ -25,7 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 /**
  * Types
  */
-import { IMe, IUser } from '@educt/interfaces';
+import { IUser } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -34,9 +35,6 @@ import { SubmitHandler } from 'react-hook-form';
  */
 import { useForm } from 'react-hook-form';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { useErrorHandler } from 'react-error-boundary';
-import { useToast } from '@chakra-ui/react';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 /**
  * Contexts
@@ -47,6 +45,7 @@ import { UsersPageContext } from '@educt/contexts';
  * Schema
  */
 import UpdateUserSchema from './EditUserForm.validator';
+import { useUpdateUser } from '@educt/hooks/queries';
 
 type UpdateUserFormPropsType = {
   user: IUser;
@@ -66,7 +65,7 @@ type UpdateUserInputType = {
 const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOpen }) => {
   const { userStore } = useRootStore();
   const { setEditingUser } = useContext(UsersPageContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { updateUser, isLoading } = useUpdateUser();
   const {
     register,
     handleSubmit,
@@ -83,9 +82,6 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
       password: '',
     },
   });
-  const isMountedRef = useIsMountedRef();
-  const toast = useToast();
-  const handleError = useErrorHandler();
 
   const { me } = userStore;
 
@@ -94,28 +90,13 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
   /**
    * Submit handler
    */
-  // TODO: move to hook
   const onSubmit: SubmitHandler<UpdateUserInputType> = async data => {
     try {
-      setIsLoading(true);
-      const params = Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof UpdateUserInputType]]));
-      await userStore.updateUser(user.id, params);
-      toast({ title: 'User updated.', status: 'info' });
+      const params = helpers.getDirtyFields<UpdateUserInputType>(dirtyFields, data);
+      await updateUser(user.id, params);
       onCloseModal();
     } catch (error: any) {
-      if (error.response) {
-        if (error.response.status === 422) {
-          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
-        } else {
-          toast({ title: `${error.message}`, status: 'error' });
-        }
-      } else {
-        handleError(error);
-      }
-    } finally {
-      if (isMountedRef.current) {
-        setIsLoading(false);
-      }
+      console.error(error);
     }
   };
 

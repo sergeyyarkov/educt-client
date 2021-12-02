@@ -5,7 +5,7 @@ import { UpdateCourseParamsType } from '@educt/types';
 import useAsync from '../../useAsync';
 import { ICourse } from '@educt/interfaces';
 
-type UpdatedCourseDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
+type UpdatedCourseDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
 
 const useUpdateCourse = () => {
   const toast = useToast();

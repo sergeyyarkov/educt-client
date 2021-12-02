@@ -84,3 +84,7 @@ export function arrayMove<T>(array: T[], from: number, to: number) {
   result.splice(to, 0, removed);
   return result;
 }
+
+export function getDirtyFields<T>(dirtyFields: { [key: string]: boolean | undefined }, data: T) {
+  return Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof T]]));
+}

@@ -32,9 +32,13 @@ const DeleteCourseDialog: React.FC<DeleteCourseDialogPropsType> = ({ onClose, is
 
   const handleDelete = async (isConfirmed: boolean, id: string) => {
     if (isConfirmed) {
-      await deleteCourse(id)
-        .catch(error => console.error(error))
-        .finally(() => setDeletingCourse(undefined));
+      try {
+        await deleteCourse(id);
+      } catch (error: any) {
+        console.error(error);
+      } finally {
+        setDeletingCourse(undefined);
+      }
     }
 
     /**

@@ -3,7 +3,7 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import useAsync from '@educt/hooks/useAsync';
 
-type ConfirmationResultDataType = { expired_seconds: number } | null;
+type ConfirmationResultDataType = { expired_seconds: number };
 
 const useUpdateUserEmail = () => {
   const { userStore } = useRootStore();

@@ -6,9 +6,7 @@ import { CreateCourseParamsType } from '@educt/types';
 import { useErrorHandler } from 'react-error-boundary';
 import useAsync from '../../useAsync';
 
-type CreatedCourseDataType =
-  | Pick<ICourse, 'id' | 'title' | 'description' | 'status' | 'created_at' | 'updated_at'>
-  | undefined;
+type CreatedCourseDataType = Pick<ICourse, 'id' | 'title' | 'description' | 'status' | 'created_at' | 'updated_at'>;
 
 const useCreateCourse = () => {
   const toast = useToast();

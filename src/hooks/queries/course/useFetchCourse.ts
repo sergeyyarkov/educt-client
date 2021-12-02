@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import useAsync from '../../useAsync';
 import { useRootStore } from '../../useRootStore';
 
-type CourseResultDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | undefined;
+type CourseResultDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
 
 const useFetchCourse = (id: string) => {
   const {

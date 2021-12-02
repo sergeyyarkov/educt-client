@@ -93,13 +93,12 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
 
   const resendCodeHandler = async () => {
     const result = await sendConfirmationCode(data.newEmail);
-    if (result !== null) {
-      /**
-       * Reset timer state
-       */
-      const { expired_seconds } = result;
-      setExpired(v => (v = expired_seconds));
-    }
+
+    /**
+     * Reset timer state
+     */
+    const { expired_seconds } = result;
+    setExpired(v => (v = expired_seconds));
   };
 
   return (

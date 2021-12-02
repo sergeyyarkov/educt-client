@@ -4,7 +4,7 @@ import { useErrorHandler } from 'react-error-boundary';
 import useAsync from '../../useAsync';
 import { useRootStore } from '../../useRootStore';
 
-type CreatedLessonDataType = ILesson | undefined;
+type CreatedLessonDataType = ILesson;
 
 const useDeleteLesson = () => {
   const {

@@ -58,18 +58,16 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
     try {
       const updated = await updateCourse(id, data);
 
-      if (updated) {
-        /**
-         * Update fields with new values
-         */
-        form.reset({
-          title: updated.title,
-          description: updated.description,
-          teacher_id: updated.teacher.id,
-          category_id: updated.category.id,
-          image: undefined,
-        });
-      }
+      /**
+       * Update fields with new values
+       */
+      form.reset({
+        title: updated.title,
+        description: updated.description,
+        teacher_id: updated.teacher.id,
+        category_id: updated.category.id,
+        image: undefined,
+      });
     } catch (error) {
       console.error(error);
     }

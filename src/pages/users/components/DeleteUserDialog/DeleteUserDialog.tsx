@@ -18,10 +18,9 @@ import { UsersPageContext } from '@educt/contexts';
 /**
  * Hooks
  */
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { useToast } from '@chakra-ui/react';
-import { useErrorHandler } from 'react-error-boundary';
+import { useDeleteUser } from '@educt/hooks/queries';
 
 type DeleteUserDialogPropsType = {
   user: IUser;
@@ -32,9 +31,7 @@ type DeleteUserDialogPropsType = {
 const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose, user }) => {
   const { userStore } = useRootStore();
   const { setDeletingUser, searchingRole, searchingPage, search } = useContext(UsersPageContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleError = useErrorHandler();
-  const toast = useToast();
+  const { deleteUser, isLoading } = useDeleteUser();
 
   const { pagination } = userStore;
 
@@ -44,26 +41,18 @@ const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose
    * @param isConfirmed Is dialog confirmed
    * @param id User id
    */
-  // TODO: move to hook
   const deleteUserHandler = async (isConfirmed: boolean, id: string) => {
     if (isConfirmed) {
       try {
-        setIsLoading(true);
-        await userStore.deleteUser(id, {
+        await deleteUser(id, {
           page: searchingPage,
           limit: pagination?.per_page,
           role: searchingRole,
           search,
         });
-        toast({ title: 'User deleted.', status: 'info' });
       } catch (error: any) {
-        if (error.response) {
-          toast({ title: error.message, status: 'error' });
-        } else {
-          handleError(error);
-        }
+        console.error(error);
       } finally {
-        setIsLoading(false);
         setDeletingUser(undefined);
       }
     }
