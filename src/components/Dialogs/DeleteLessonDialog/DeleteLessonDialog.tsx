@@ -21,6 +21,7 @@ type DeleteLessonDialogPropsType = {
   onClose: () => void;
 };
 
+//TODO pass lesson by prop
 const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ isOpen, onClose }) => {
   const {
     pageStore: {
@@ -31,7 +32,11 @@ const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ isOpen, onC
 
   const handleDelete = async (isConfirmed: boolean) => {
     if (isConfirmed && deletingLesson) {
-      await deleteLesson(deletingLesson.id);
+      try {
+        await deleteLesson(deletingLesson.id);
+      } catch (error: any) {
+        console.error(error);
+      }
     }
 
     /**

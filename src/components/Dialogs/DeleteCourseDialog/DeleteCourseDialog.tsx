@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 /**
  * Types
@@ -11,14 +11,11 @@ import { ICourse } from '@educt/interfaces';
 import ConfirmDialog from '@educt/components/ConfirmDialog/ConfirmDialog';
 
 /**
- * Contexts
- */
-import { CoursesPageContext } from '@educt/contexts';
-
-/**
  * Hooks
  */
 import { useDeleteCourse } from '@educt/hooks/queries/course/useDeleteCourse';
+import { useHistory, useLocation } from 'react-router';
+import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 type DeleteCourseDialogPropsType = {
   course: Pick<ICourse, 'id' | 'title'>;
@@ -27,24 +24,29 @@ type DeleteCourseDialogPropsType = {
 };
 
 const DeleteCourseDialog: React.FC<DeleteCourseDialogPropsType> = ({ onClose, isOpen, course }) => {
-  const { setDeletingCourse } = useContext(CoursesPageContext);
   const { deleteCourse, isLoading } = useDeleteCourse();
+  const isMountedRef = useIsMountedRef();
+  const history = useHistory();
+  const location = useLocation();
 
   const handleDelete = async (isConfirmed: boolean, id: string) => {
     if (isConfirmed) {
       try {
         await deleteCourse(id);
+        if (isMountedRef.current && location.pathname !== '/courses') {
+          history.push('/courses');
+        }
       } catch (error: any) {
         console.error(error);
-      } finally {
-        setDeletingCourse(undefined);
       }
     }
 
-    /**
-     * Close dialog
-     */
-    onClose();
+    if (isMountedRef.current) {
+      /**
+       * Close dialog
+       */
+      onClose();
+    }
   };
 
   return (

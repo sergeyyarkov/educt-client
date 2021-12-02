@@ -10,6 +10,10 @@ export default class EditCourseStore {
 
   public course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | null = null;
 
+  public isDeleting: boolean = false;
+
+  public deletingCourse: Pick<ICourse, 'id' | 'title'> | undefined;
+
   public deletingLesson: ILesson | undefined;
 
   constructor(pageStore: PageStore) {
@@ -72,7 +76,11 @@ export default class EditCourseStore {
     }
   }
 
-  setDeletingLesson(lesson: ILesson) {
+  public setDeletingLesson(lesson: ILesson) {
     this.deletingLesson = lesson;
+  }
+
+  public setDeletingCourse(course: Pick<ICourse, 'id' | 'title'> | undefined) {
+    this.deletingCourse = course;
   }
 }

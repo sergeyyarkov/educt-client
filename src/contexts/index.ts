@@ -29,6 +29,8 @@ export const CoursesPageContext = createContext<CoursesPageContextType>({
   setSelectedCategory: () => {},
   courseStatus: undefined,
   setCourseStatus: () => {},
+
+  //TODO: remove
   deletingCourse: undefined,
   setDeletingCourse: () => {},
 });

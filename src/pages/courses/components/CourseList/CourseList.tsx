@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { Box, Grid, Text } from '@chakra-ui/react';
 
@@ -11,7 +11,7 @@ import { CourseItemPropsType } from './CourseItem';
 /**
  * Components
  */
-import DeleteCourseDialog from '../DeleteCourseDialog';
+import DeleteCourseDialog from '@educt/components/Dialogs/DeleteCourseDialog';
 import LoadingList from '@educt/components/LoadingList';
 
 /**
@@ -26,6 +26,7 @@ import { useDisclosure } from '@chakra-ui/hooks';
  * Contexts
  */
 import { CoursesPageContext } from '@educt/contexts';
+import { ICourse } from '@educt/interfaces';
 
 type CourseListPropsType = {
   render: React.FC<CourseItemPropsType>;
@@ -36,10 +37,16 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
     userStore: { me },
     courseStore,
   } = useRootStore();
-  const { selectedCategory, courseStatus, deletingCourse, setDeletingCourse } = useContext(CoursesPageContext);
+  const [deleting, setDeleting] = useState<Pick<ICourse, 'id' | 'title'> | null>(null);
+  const { selectedCategory, courseStatus } = useContext(CoursesPageContext);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
   const { setCourseStatus } = useSetCourseStatus();
   const { courses, isLoading } = courseStore;
+
+  const deleteHandler = (course: Pick<ICourse, 'id' | 'title'>) => {
+    setDeleting(course);
+    onOpenDeleteDialog();
+  };
 
   /**
    * Fetch courses handler
@@ -57,19 +64,14 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
 
   return (
     <Box>
-      {deletingCourse && (
-        <DeleteCourseDialog course={deletingCourse} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />
-      )}
+      {deleting && <DeleteCourseDialog course={deleting} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />}
       {courses.length !== 0 ? (
         <Grid templateColumns={{ sm: 'repeat(auto-fill, minmax(400px, 1fr))' }} gap='4'>
           {courses.map(course => (
             <Item
               key={course.id}
               course={course}
-              onDelete={() => {
-                setDeletingCourse(course);
-                onOpenDeleteDialog();
-              }}
+              onDelete={() => deleteHandler({ id: course.id, title: course.title })}
               onSetStatus={setCourseStatus}
             />
           ))}
