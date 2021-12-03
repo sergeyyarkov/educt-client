@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import * as helpers from '@educt/helpers';
-import { ICourse, ILesson } from '@educt/interfaces';
+import { ICourse } from '@educt/interfaces';
 import PageStore from '../PageStore';
 
 import { CourseServiceInstance, LessonServiceInstance } from '@educt/services';
@@ -9,12 +9,6 @@ export default class EditCourseStore {
   public pageStore: PageStore;
 
   public course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'> | null = null;
-
-  public isDeleting: boolean = false;
-
-  public deletingCourse: Pick<ICourse, 'id' | 'title'> | undefined;
-
-  public deletingLesson: ILesson | undefined;
 
   constructor(pageStore: PageStore) {
     this.pageStore = pageStore;
@@ -74,13 +68,5 @@ export default class EditCourseStore {
     if (this.course) {
       this.course.lessons = helpers.arrayMove(this.course.lessons, oldIndex, newIndex);
     }
-  }
-
-  public setDeletingLesson(lesson: ILesson) {
-    this.deletingLesson = lesson;
-  }
-
-  public setDeletingCourse(course: Pick<ICourse, 'id' | 'title'> | undefined) {
-    this.deletingCourse = course;
   }
 }

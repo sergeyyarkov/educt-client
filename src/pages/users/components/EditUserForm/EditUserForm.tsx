@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import * as helpers from '@educt/helpers';
 import {
   Modal,
@@ -33,19 +33,15 @@ import { SubmitHandler } from 'react-hook-form';
 /**
  * Hooks
  */
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRootStore } from '@educt/hooks/useRootStore';
-
-/**
- * Contexts
- */
-import { UsersPageContext } from '@educt/contexts';
+import { useUpdateUser } from '@educt/hooks/queries';
 
 /**
  * Schema
  */
 import UpdateUserSchema from './EditUserForm.validator';
-import { useUpdateUser } from '@educt/hooks/queries';
 
 type UpdateUserFormPropsType = {
   user: IUser;
@@ -62,9 +58,11 @@ type UpdateUserInputType = {
   password: string | null;
 };
 
-const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOpen }) => {
-  const { userStore } = useRootStore();
-  const { setEditingUser } = useContext(UsersPageContext);
+const UpdateUserForm: React.FC<UpdateUserFormPropsType> = props => {
+  const { user, onClose, isOpen } = props;
+  const {
+    userStore: { me },
+  } = useRootStore();
   const { updateUser, isLoading } = useUpdateUser();
   const {
     register,
@@ -73,17 +71,10 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
     formState: { errors, isDirty, dirtyFields },
   } = useForm<UpdateUserInputType>({
     resolver: yupResolver(UpdateUserSchema),
-    defaultValues: {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
-      role: user.roles[0].slug,
-      login: '',
-      password: '',
-    },
+    defaultValues: useMemo(() => {
+      return props.user;
+    }, [props]),
   });
-
-  const { me } = userStore;
 
   if (me === null) return null;
 
@@ -94,20 +85,18 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
     try {
       const params = helpers.getDirtyFields<UpdateUserInputType>(dirtyFields, data);
       await updateUser(user.id, params);
-      onCloseModal();
+      onClose();
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  const onCloseModal = () => {
-    reset({});
-    setEditingUser(undefined);
-    onClose();
-  };
+  useEffect(() => {
+    reset(props.user);
+  }, [props.user]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onCloseModal}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -187,7 +176,7 @@ const UpdateUserForm: React.FC<UpdateUserFormPropsType> = ({ user, onClose, isOp
             >
               Save
             </Button>
-            <Button onClick={onCloseModal}>Cancel</Button>
+            <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </form>
       </ModalContent>

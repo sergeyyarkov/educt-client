@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { ItemProps, Virtuoso } from 'react-virtuoso';
 import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
+import moment from 'moment';
 import { Flex, Box, Text, IconButton, Icon, Button } from '@chakra-ui/react';
 import { DeleteIcon, DragHandleIcon } from '@chakra-ui/icons';
-import moment from 'moment';
 
 /**
  * Types
@@ -58,13 +58,14 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     pageStore: { editCourseStore },
   } = useRootStore();
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
+  const [deleting, setDeleting] = useState<Pick<ILesson, 'id' | 'title'> | null>(null);
   const handleError = useErrorHandler();
   const lessons = course.lessons;
 
   const handleCreateLesson = (): void => history.push('/lessons/create');
   const handleEditLesson = (id: string): void => history.push(`/lessons/edit/${id}`);
   const handleDeleteLesson = (lesson: ILesson): void => {
-    editCourseStore.setDeletingLesson(lesson);
+    setDeleting({ id: lesson.id, title: lesson.title });
     onOpenDeleteDialog();
   };
 
@@ -143,7 +144,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
               <Box>
                 <Flex flexDirection='column' alignItems={{ base: 'center' }} mt={{ base: '4' }}>
                   <Flex flexDirection={{ base: 'column', md: 'row' }}>
-                    <Button size='md' p='0 60px' mr='1'>
+                    <Button onClick={() => handleEditLesson(lesson.id)} size='md' p='0 60px' mr='1'>
                       Edit
                     </Button>
                     <IconButton
@@ -200,7 +201,9 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     <Box style={{ overflow: 'auto' }}>
       {lessons.length !== 0 ? (
         <>
-          <DeleteLessonDialog isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
+          {deleting && (
+            <DeleteLessonDialog lesson={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
+          )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
             <Text fontWeight='medium'>Total: ({lessons.length})</Text>
             <Button onClick={handleCreateLesson}>Create new</Button>

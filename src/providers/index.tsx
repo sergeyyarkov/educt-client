@@ -35,8 +35,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
   const [searchingRole, setSearchingRole] = useState<SearchingRoleStateType>(undefined);
   const [searchingPage, setSearchingPage] = useState<number>(1);
   const [search, setSearch] = useState<string | undefined>(undefined);
-  const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
-  const [deletingUser, setDeletingUser] = useState<IUser | undefined>(undefined);
 
   return (
     <UsersPageContext.Provider
@@ -47,10 +45,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
         setSearchingPage,
         search,
         setSearch,
-        editingUser,
-        setEditingUser,
-        deletingUser,
-        setDeletingUser,
       }}
     >
       {children}
@@ -64,7 +58,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
 export const CoursesPageContextProvider: React.FC = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(undefined);
   const [courseStatus, setCourseStatus] = useState<CourseStatusEnum | undefined>(undefined);
-  const [deletingCourse, setDeletingCourse] = useState<Pick<ICourse, 'id' | 'title'> | undefined>(undefined);
 
   const context = React.useMemo(
     () => ({
@@ -72,10 +65,8 @@ export const CoursesPageContextProvider: React.FC = ({ children }) => {
       setCourseStatus,
       selectedCategory,
       setSelectedCategory,
-      deletingCourse,
-      setDeletingCourse,
     }),
-    [courseStatus, setCourseStatus, selectedCategory, setSelectedCategory, deletingCourse, setDeletingCourse]
+    [courseStatus, setCourseStatus, selectedCategory, setSelectedCategory]
   );
 
   return <CoursesPageContext.Provider value={context}>{children}</CoursesPageContext.Provider>;

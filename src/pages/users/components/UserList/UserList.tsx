@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Flex, Box, Stack, Text } from '@chakra-ui/layout';
@@ -9,7 +9,7 @@ import { Button } from '@chakra-ui/button';
  */
 import LoadingList from '@educt/components/LoadingList';
 import EditUserForm from '../EditUserForm';
-import DeleteUserDialog from '../DeleteUserDialog';
+import DeleteUserDialog from '@educt/components/Dialogs/DeleteUserDialog';
 
 /**
  * Types
@@ -29,25 +29,28 @@ import { useEffect, useContext } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { IUser } from '@educt/interfaces';
 
 type UserListPropsType = { render: React.FC<UserItemPropsType>; limit?: number };
 
 const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
   const { userStore } = useRootStore();
-  const {
-    searchingRole,
-    search,
-    searchingPage,
-    setSearchingPage,
-    editingUser,
-    setEditingUser,
-    deletingUser,
-    setDeletingUser,
-  } = useContext<UsersPageContextType>(UsersPageContext);
+  const { searchingRole, search, searchingPage, setSearchingPage } = useContext<UsersPageContextType>(UsersPageContext);
   const handleError = useErrorHandler();
+  const [deleting, setDeleting] = useState<Pick<IUser, 'id' | 'fullname'> | null>(null);
+  const [editing, setEditing] = useState<IUser | null>(null);
   const { onOpen: onOpenEditModal, onClose: onCloseEditModal, isOpen: isOpenEditModal } = useDisclosure();
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
   const { users, pagination, me, isLoading } = userStore;
+
+  const handleEditUser = (user: IUser) => {
+    setEditing(user);
+    onOpenEditModal();
+  };
+  const handleDeleteUser = (user: Pick<IUser, 'id' | 'fullname'>) => {
+    setDeleting(user);
+    onOpenDeleteDialog();
+  };
 
   /**
    * Fetch users handler
@@ -69,10 +72,8 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
 
   return (
     <Box>
-      {editingUser && <EditUserForm user={editingUser} isOpen={isOpenEditModal} onClose={onCloseEditModal} />}
-      {deletingUser && (
-        <DeleteUserDialog user={deletingUser} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
-      )}
+      {editing && <EditUserForm user={editing} isOpen={isOpenEditModal} onClose={onCloseEditModal} />}
+      {deleting && <DeleteUserDialog user={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />}
       {users.length !== 0 ? (
         <>
           <Box>
@@ -86,14 +87,8 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
                   <Item
                     key={user.id}
                     user={user}
-                    onEdit={user => {
-                      setEditingUser(user);
-                      onOpenEditModal();
-                    }}
-                    onDelete={user => {
-                      setDeletingUser(user);
-                      onOpenDeleteDialog();
-                    }}
+                    onEdit={user => handleEditUser(user)}
+                    onDelete={user => handleDeleteUser({ id: user.id, fullname: user.fullname })}
                   />
                 ))}
               </Stack>

@@ -14,26 +14,20 @@ import ConfirmDialog from '@educt/components/ConfirmDialog/ConfirmDialog';
  * Hooks
  */
 import { useDeleteLesson } from '@educt/hooks/queries';
-import { useRootStore } from '@educt/hooks/useRootStore';
 
 type DeleteLessonDialogPropsType = {
+  lesson: Pick<ILesson, 'id' | 'title'>;
   isOpen: boolean;
   onClose: () => void;
 };
 
-//TODO pass lesson by prop
-const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ isOpen, onClose }) => {
-  const {
-    pageStore: {
-      editCourseStore: { deletingLesson },
-    },
-  } = useRootStore();
+const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ lesson, isOpen, onClose }) => {
   const { deleteLesson, isLoading } = useDeleteLesson();
 
   const handleDelete = async (isConfirmed: boolean) => {
-    if (isConfirmed && deletingLesson) {
+    if (isConfirmed) {
       try {
-        await deleteLesson(deletingLesson.id);
+        await deleteLesson(lesson.id);
       } catch (error: any) {
         console.error(error);
       }

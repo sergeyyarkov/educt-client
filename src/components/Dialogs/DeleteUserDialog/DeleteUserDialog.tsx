@@ -23,14 +23,14 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDeleteUser } from '@educt/hooks/queries';
 
 type DeleteUserDialogPropsType = {
-  user: IUser;
+  user: Pick<IUser, 'id' | 'fullname'>;
   isOpen: boolean;
   onClose: () => void;
 };
 
 const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose, user }) => {
   const { userStore } = useRootStore();
-  const { setDeletingUser, searchingRole, searchingPage, search } = useContext(UsersPageContext);
+  const { searchingRole, searchingPage, search } = useContext(UsersPageContext);
   const { deleteUser, isLoading } = useDeleteUser();
 
   const { pagination } = userStore;
@@ -52,8 +52,6 @@ const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose
         });
       } catch (error: any) {
         console.error(error);
-      } finally {
-        setDeletingUser(undefined);
       }
     }
 

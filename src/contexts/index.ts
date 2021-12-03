@@ -18,10 +18,6 @@ export const UsersPageContext = createContext<UsersPageContextType>({
   setSearchingPage: () => {},
   search: undefined,
   setSearch: () => {},
-  editingUser: undefined,
-  setEditingUser: () => {},
-  deletingUser: undefined,
-  setDeletingUser: () => {},
 });
 
 export const CoursesPageContext = createContext<CoursesPageContextType>({
@@ -29,8 +25,4 @@ export const CoursesPageContext = createContext<CoursesPageContextType>({
   setSelectedCategory: () => {},
   courseStatus: undefined,
   setCourseStatus: () => {},
-
-  //TODO: remove
-  deletingCourse: undefined,
-  setDeletingCourse: () => {},
 });

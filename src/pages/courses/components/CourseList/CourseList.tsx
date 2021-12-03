@@ -43,7 +43,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   const { setCourseStatus } = useSetCourseStatus();
   const { courses, isLoading } = courseStore;
 
-  const deleteHandler = (course: Pick<ICourse, 'id' | 'title'>) => {
+  const handleDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
     setDeleting(course);
     onOpenDeleteDialog();
   };
@@ -71,7 +71,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
             <Item
               key={course.id}
               course={course}
-              onDelete={() => deleteHandler({ id: course.id, title: course.title })}
+              onDelete={() => handleDeleteCourse({ id: course.id, title: course.title })}
               onSetStatus={setCourseStatus}
             />
           ))}

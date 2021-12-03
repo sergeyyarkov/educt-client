@@ -72,22 +72,10 @@ export type UsersPageContextType = {
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
 
   /**
-   * Set editing user state when press on edit button
-   */
-  editingUser: IUser | undefined;
-  setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
-
-  /**
    * Search users by page
    */
   searchingPage: number;
   setSearchingPage: React.Dispatch<React.SetStateAction<number>>;
-
-  /**
-   * Set deleting user state when press on delete button
-   */
-  deletingUser: IUser | undefined;
-  setDeletingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 };
 
 export type CoursesPageContextType = {
@@ -102,12 +90,6 @@ export type CoursesPageContextType = {
    */
   courseStatus: CourseStatusEnum | undefined;
   setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
-
-  /**
-   * Set deleting course state when press on delete button
-   */
-  deletingCourse: Pick<ICourse, 'id' | 'title'> | undefined;
-  setDeletingCourse: React.Dispatch<React.SetStateAction<Pick<ICourse, 'id' | 'title'> | undefined>>;
 };
 export type FetchCoursesParams = {
   /**
