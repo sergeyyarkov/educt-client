@@ -13,16 +13,14 @@ import {
 import { useDisclosure, Divider } from '@chakra-ui/react';
 import { MdGroup } from 'react-icons/md';
 
-type AddStudentsModalPropsType = {};
+type AddStudentsModalPropsType = {
+  isOpen: boolean;
+  onClose: () => void;
+};
 
-const AddStudentsModal: React.FC<AddStudentsModalPropsType> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({ isOpen, onClose }) => {
   return (
     <>
-      <Button onClick={onOpen} mt='3' size='sm' colorScheme='blue' variant='outline'>
-        Add students
-      </Button>
       <Modal isOpen={isOpen} onClose={onClose} size='md'>
         <ModalOverlay />
         <ModalContent>

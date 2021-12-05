@@ -46,7 +46,7 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
   const handleCreateLesson = (): void => history.push(`${id}/create-lesson`);
 
   return (
-    <Button onClick={handleCreateLesson} size='sm' colorScheme='blue' variant='outline'>
+    <Button onClick={handleCreateLesson} mt='2' size='sm' colorScheme='blue' variant='outline'>
       Create new lesson
     </Button>
   );
@@ -206,7 +206,9 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
           )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
             <Text fontWeight='medium'>Total: ({lessons.length})</Text>
-            <Button onClick={handleCreateLesson}>Create new</Button>
+            <Button onClick={handleCreateLesson} variant='outline' colorScheme='blue'>
+              Add new
+            </Button>
           </Flex>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable
@@ -249,9 +251,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       ) : (
         <Box mt='10' textAlign='center'>
           <Text>No lessons have been added to this course yet</Text>
-          <Box p='10px 0'>
-            <CreateLessonButton id={course.id} />
-          </Box>
+          <CreateLessonButton id={course.id} />
         </Box>
       )}
     </Box>

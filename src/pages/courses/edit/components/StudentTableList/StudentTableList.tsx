@@ -1,11 +1,9 @@
 import React from 'react';
-import { Table, Tbody, Button, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import { Flex, Box, Text } from '@chakra-ui/react';
-import { DeleteIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { MdSearch, MdImportExport, MdRemove } from 'react-icons/md';
+import { Table, Tbody, Button, Input, InputGroup, InputLeftElement, Flex, Box, Text } from '@chakra-ui/react';
+import { MdSearch } from 'react-icons/md';
 
 import AddStudentsModal from '@educt/components/Modals/AddStudentsModal';
+import BulkActionsMenu from './BulkActionsMenu';
 import StudentTableHead from './StudentTableHead';
 
 /**
@@ -18,7 +16,7 @@ import type { ICourse } from '@educt/interfaces';
  * Hooks
  */
 import { useCallback, useState } from 'react';
-import BulkActionsMenu from './BulkActionsMenu';
+import { useDisclosure } from '@chakra-ui/react';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -29,6 +27,11 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
   const [rows, setRows] = useState<ICourse['students']>(students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
+  const {
+    isOpen: isOpenAddStudentModal,
+    onOpen: onOpenAddStudentModal,
+    onClose: onCloseAddStudentModal,
+  } = useDisclosure();
 
   /**
    * Search for a student by input
@@ -68,15 +71,21 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
 
   if (rows.length === 0) {
     return (
-      <Box textAlign='center' mt='10'>
-        <Text>There are no students in the course yet</Text>
-        <AddStudentsModal />
-      </Box>
+      <>
+        <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} />
+        <Box textAlign='center' mt='10'>
+          <Text>There are no students in the course yet</Text>
+          <Button mt='2' onClick={onOpenAddStudentModal} size='sm' colorScheme='blue' variant='outline'>
+            Add student
+          </Button>
+        </Box>
+      </>
     );
   }
 
   return (
     <Box>
+      <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2'>
           <InputGroup mr='2'>
@@ -94,12 +103,12 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
               <BulkActionsMenu selected={selected} rows={rows} setRows={setRows} />
             </>
           )}
-          <Button variant='outline' colorScheme='blue'>
+          <Button onClick={onOpenAddStudentModal} variant='outline' colorScheme='blue'>
             Add new
           </Button>
         </Flex>
       </Flex>
-      <Table overflowX='hidden' borderRadius='lg' mt='2'>
+      <Table overflow='hidden' borderRadius='lg' mt='2'>
         <StudentTableHead onSelectAll={handleSelectAll} />
         <Tbody>
           {rows.map(student => (
