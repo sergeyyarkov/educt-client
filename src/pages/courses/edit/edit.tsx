@@ -15,9 +15,9 @@ import type { IPageProps } from '@educt/interfaces';
 import LoadingPage from '@educt/components/LoadingPage';
 import { EditCourseForm } from '@educt/components/Forms/CourseForm';
 import SetCourseStatusButton from '@educt/components/SetCourseStatusButton';
-import LessonList from './components/LessonList';
-import { StudentList, StudentItem } from './components/StudentList';
 import DeleteCourseDialog from '@educt/components/Dialogs/DeleteCourseDialog';
+import { StudentTableList, StudentTableRow } from './components/StudentTableList';
+import LessonList from './components/LessonList';
 
 /**
  * Hooks
@@ -96,7 +96,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
               <LessonList course={course} />
             </TabPanel>
             <TabPanel>
-              <StudentList render={StudentItem} students={course.students} />
+              <StudentTableList render={StudentTableRow} students={course.students} />
             </TabPanel>
           </TabPanels>
         </Tabs>

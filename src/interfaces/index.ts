@@ -23,10 +23,10 @@ export interface ICourse {
   title: string;
   description: string;
   status: CourseStatusEnum;
-  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>;
+  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;
   lessons: ILesson[];
-  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>>;
+  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>>;
   color: ColorType | null;
   students_count: string;
   likes_count: string;
@@ -92,6 +92,8 @@ export interface IUser {
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
