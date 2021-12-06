@@ -8,10 +8,10 @@ import {
   Button,
   Icon,
   Text,
-  Flex,
+  Stack,
   Box,
 } from '@chakra-ui/react';
-import { MdAccountCircle, MdSchool, MdVpnKey } from 'react-icons/md';
+import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /**
@@ -29,6 +29,7 @@ import { useLogin } from '@educt/hooks/queries';
  * Schema
  */
 import LoginSchema from './AuthForm.validator';
+import { PasswordField } from '@educt/components/Fields/PasswordField';
 
 type AuthInputType = {
   login: string;
@@ -52,52 +53,40 @@ const AuthForm: React.FC = () => {
   const onSubmit: SubmitHandler<AuthInputType> = data => login(data.login, data.password).finally(() => reset());
 
   return (
-    <Box flexBasis='500px' borderWidth='1px' borderRadius='lg' p='8'>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex justifyContent='center' alignItems='center'>
-          <Box w='full'>
-            <Box textAlign='center'>
-              <Flex justifyContent='center'>
-                <Box as={MdSchool} color='blue.500' size='64px' />
-              </Flex>
-            </Box>
-            <FormControl>
-              <FormLabel>Login</FormLabel>
-              <InputGroup>
-                <InputLeftElement children={<Icon as={MdAccountCircle} />} />
-                <Input type='text' placeholder='Login' {...register('login')} isInvalid={!!errors.login} />
-              </InputGroup>
-              <Text as='small' color='red.500'>
-                {errors.login?.message}
-              </Text>
-            </FormControl>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing='6'>
+        <FormControl id='login'>
+          <FormLabel>Login</FormLabel>
+          <InputGroup>
+            <InputLeftElement children={<Icon as={MdAccountCircle} />} />
+            <Input type='text' placeholder='Login' {...register('login')} isInvalid={!!errors.login} />
+          </InputGroup>
+          <Text as='small' color='red.500'>
+            {errors.login?.message}
+          </Text>
+        </FormControl>
 
-            <FormControl mt={5}>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <InputLeftElement children={<Icon as={MdVpnKey} />} />
-                <Input type='password' placeholder='******' {...register('password')} isInvalid={!!errors.password} />
-              </InputGroup>
-              <Text as='small' color='red.500'>
-                {errors.password?.message}
-              </Text>
-            </FormControl>
+        <PasswordField
+          {...register('password')}
+          placeholder='******'
+          isInvalid={!!errors.password}
+          errorMessage={errors.password?.message}
+        />
 
-            <Button
-              loadingText='Logging in...'
-              isLoading={isLoading}
-              type='submit'
-              colorScheme='blue'
-              variant='outline'
-              width='full'
-              mt={4}
-            >
-              Log in
-            </Button>
-          </Box>
-        </Flex>
-      </form>
-    </Box>
+        <Button
+          type='submit'
+          colorScheme='blue'
+          size='lg'
+          fontSize='md'
+          loadingText='Logging in...'
+          isLoading={isLoading}
+          width='full'
+          mt={4}
+        >
+          Log in
+        </Button>
+      </Stack>
+    </form>
   );
 };
 
