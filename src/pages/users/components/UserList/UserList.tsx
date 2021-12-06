@@ -77,7 +77,7 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
       {users.length !== 0 ? (
         <>
           <Box>
-            <Flex mt='7' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
+            <Flex mt='5' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
               <Text>Total: ({pagination.total})</Text>
               <Text>Actions</Text>
             </Flex>
@@ -98,7 +98,9 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
           </Box>
           <Flex margin='2rem 0' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
             <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
-              Page <b>{pagination.current_page}</b> of {pagesCount}
+              <Text fontSize='sm'>
+                Page <b>{pagination.current_page}</b> of {pagesCount}
+              </Text>
             </Box>
             <Flex ml='auto' mr='auto' justifyContent='center' flexWrap='wrap' alignItems='center' sx={{ gap: '30px' }}>
               <Button

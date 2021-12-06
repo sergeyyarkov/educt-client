@@ -50,6 +50,7 @@ import { UsersPageContext } from '@educt/contexts';
  * Schema
  */
 import CreateUserSchema from './CreateUserForm.validator';
+import { CreateButton } from '@educt/components/Buttons';
 
 type CreateUserFormPropsType = {};
 
@@ -108,9 +109,7 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
 
   return (
     <>
-      <Button onClick={onOpen} variant='outline' colorScheme='blue' leftIcon={<AddIcon />}>
-        Create new
-      </Button>
+      <CreateButton onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

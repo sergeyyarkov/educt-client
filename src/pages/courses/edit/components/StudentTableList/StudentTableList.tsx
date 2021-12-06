@@ -17,6 +17,7 @@ import type { ICourse } from '@educt/interfaces';
  */
 import { useCallback, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -90,7 +91,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
         <Flex mb='2'>
           <InputGroup mr='2'>
             <InputLeftElement pointerEvents='none' children={<MdSearch color='gray.300' />} />
-            <Input value={search} onChange={handleSearch} type='text' placeholder='Search for student...' />
+            <Input value={search} size='sm' onChange={handleSearch} type='text' placeholder='Search for student...' />
           </InputGroup>
         </Flex>
 
@@ -103,7 +104,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
               <BulkActionsMenu selected={selected} rows={rows} setRows={setRows} />
             </>
           )}
-          <Button onClick={onOpenAddStudentModal} variant='outline' colorScheme='blue'>
+          <Button onClick={onOpenAddStudentModal} leftIcon={<AddIcon />} size='sm' variant='outline'>
             Add new
           </Button>
         </Flex>
@@ -121,6 +122,9 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
           ))}
         </Tbody>
       </Table>
+      <Text mt='4' fontSize='sm' color='gray.500'>
+        {students.length} students
+      </Text>
     </Box>
   );
 };

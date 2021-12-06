@@ -27,6 +27,7 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router';
 import CategoryItem from './components/CategoryList/CategoryItem';
 import CourseItem from './components/CourseList/CourseItem';
+import { CreateButton } from '@educt/components/Buttons';
 
 /**
  * Courses page
@@ -47,16 +48,7 @@ const CoursesPage: React.FC<IPageProps> = () => {
             <Heading as='h1'>Courses</Heading>
             <Text mt='2'>List of all courses.</Text>
           </Box>
-          {(me.isAdmin || me.isTeacher) && (
-            <Button
-              onClick={() => history.push('/courses/create')}
-              variant='outline'
-              colorScheme='blue'
-              leftIcon={<AddIcon />}
-            >
-              Create new
-            </Button>
-          )}
+          {(me.isAdmin || me.isTeacher) && <CreateButton onClick={() => history.push('/courses/create')} />}
         </Flex>
         <Box mt='7'>
           {(me.isAdmin || me.isTeacher) && <CourseStatusTabs />}

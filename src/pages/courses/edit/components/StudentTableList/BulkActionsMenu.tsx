@@ -24,7 +24,7 @@ const BulkActionsMenu: React.FC<BulkActionsMenuPropsType> = ({ selected, rows, s
 
   return (
     <Menu isLazy>
-      <MenuButton as={Button} mr='3' ml='auto' rightIcon={<ChevronDownIcon />}>
+      <MenuButton as={Button} size='sm' variant='outline' mr='3' ml='auto' rightIcon={<ChevronDownIcon />}>
         Bulk Actions
       </MenuButton>
       <MenuList>
