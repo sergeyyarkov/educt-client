@@ -7,6 +7,7 @@ export interface IAppConfig {
     appName: string;
     appDescription: string;
     appVersion: string;
+    appGithubLink: string;
   };
   links: LinkType[];
 }

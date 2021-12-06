@@ -13,6 +13,7 @@ import config from '@educt/config';
  * Components
  */
 import NavList from '../NavList';
+import Logo from '@educt/components/Logo';
 
 /**
  * Hooks
@@ -37,7 +38,10 @@ const NavMobile: React.FC = () => {
         <DrawerContent backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}>
           <DrawerBody>
             <Flex flexDirection='column' height='100%'>
-              <Flex as='nav' flexDirection='column' alignItems='flex-start' textDecoration='none' mb='20px'>
+              <Box mt='2'>
+                <Logo h='10' ml='2' />
+              </Box>
+              <Flex flexDir='column' mt='3' w='full'>
                 <NavList links={config.links} onCloseDrawer={onClose} />
               </Flex>
               {me !== null ? (

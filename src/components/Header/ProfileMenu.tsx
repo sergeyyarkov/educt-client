@@ -24,7 +24,7 @@ import UserBadge from '@educt/components/UserBadge';
  */
 import { useLogout } from '@educt/hooks/queries';
 
-const UserInfo: React.FC = () => {
+const ProfileMenu: React.FC = () => {
   const { userStore } = useRootStore();
   const { logout } = useLogout();
 
@@ -64,4 +64,4 @@ const UserInfo: React.FC = () => {
   );
 };
 
-export default observer(UserInfo);
+export default observer(ProfileMenu);
