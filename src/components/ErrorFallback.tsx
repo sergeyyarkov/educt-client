@@ -1,6 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Flex, Box, Heading, Text } from '@chakra-ui/react';
+import { Redirect } from 'react-router';
+import { Icon, Box, Heading, Text } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
 
 /**
@@ -9,7 +10,6 @@ import { MdError } from 'react-icons/md';
 import { useEffect } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { Redirect } from 'react-router';
 
 const ErrorFallback: React.FC<{ error: any }> = props => {
   const { userStore, authStore } = useRootStore();
@@ -30,9 +30,7 @@ const ErrorFallback: React.FC<{ error: any }> = props => {
 
   return (
     <Box textAlign='center' mt={40}>
-      <Flex justifyContent='center'>
-        <MdError size='64px' />
-      </Flex>
+      <Icon as={MdError} w='16' h='16' />
       <Heading display='block' as='h1' fontSize='6xl'>
         Something went wrong
       </Heading>

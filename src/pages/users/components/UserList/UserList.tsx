@@ -30,6 +30,8 @@ import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { IUser } from '@educt/interfaces';
+import UserSearch from '../UserSearch';
+import CreateUserForm from '../CreateUserForm';
 
 type UserListPropsType = { render: React.FC<UserItemPropsType>; limit?: number };
 
@@ -76,6 +78,10 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
       {deleting && <DeleteUserDialog user={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />}
       {users.length !== 0 ? (
         <>
+          <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
+            <UserSearch />
+            <CreateUserForm />
+          </Flex>
           <Box>
             <Flex mt='5' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
               <Text>Total: ({pagination.total})</Text>

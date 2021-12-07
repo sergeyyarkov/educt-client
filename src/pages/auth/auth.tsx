@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
-import { Box, Heading, Text, Link } from '@chakra-ui/react';
+import { observer } from 'mobx-react';
+import { Box, Heading } from '@chakra-ui/react';
 
 /**
  * Types

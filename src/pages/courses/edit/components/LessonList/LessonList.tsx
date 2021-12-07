@@ -35,6 +35,7 @@ import { useErrorHandler } from 'react-error-boundary';
  * Services
  */
 import { LessonServiceInstance } from '@educt/services';
+import { CreateButton } from '@educt/components/Buttons';
 
 type LessonListPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
@@ -169,7 +170,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
                         <Icon as={MdAttachment} />
                       </Text>
                       <Text as='small' verticalAlign='middle'>
-                        4 attachments
+                        {lesson.materials_count} attachments
                       </Text>
                     </Text>
                   </Flex>
@@ -205,10 +206,10 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
             <DeleteLessonDialog lesson={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
           )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
-            <Text fontWeight='medium'>Total: ({lessons.length})</Text>
-            <Button onClick={handleCreateLesson} variant='outline' colorScheme='blue'>
-              Add new
-            </Button>
+            <Text fontSize='sm' color='gray.500'>
+              {lessons.length} lessons
+            </Text>
+            <CreateButton onClick={handleCreateLesson} />
           </Flex>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable

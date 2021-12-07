@@ -43,6 +43,7 @@ export interface ILesson {
   description: string;
   duration: string;
   color?: ColorType | undefined | null;
+  materials_count?: string | undefined;
   created_at: string;
   updated_at: string;
 }

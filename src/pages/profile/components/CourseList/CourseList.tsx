@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Flex, Stack } from '@chakra-ui/layout';
+import { Box, Text, Stack } from '@chakra-ui/layout';
 
 /**
  * Types

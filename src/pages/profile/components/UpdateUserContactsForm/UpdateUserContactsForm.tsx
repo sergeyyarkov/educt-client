@@ -23,6 +23,7 @@ import { useErrorHandler } from 'react-error-boundary';
  * Schema
  */
 import UpdateUserContactsSchema from './UpdateUserContactsForm.validator';
+import { SaveButton } from '@educt/components/Buttons';
 
 type UpdateUserContactsInputType = {
   phone_number: string | null;
@@ -152,19 +153,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
             </FormControl>
           </Stack>
         </Box>
-        <Button
-          colorScheme='blue'
-          mt='4'
-          type='submit'
-          size='md'
-          variant='outline'
-          isLoading={isLoading}
-          loadingText='Saving...'
-          rightIcon={<MdSave />}
-          isDisabled={!isDirty}
-        >
-          Save
-        </Button>
+        <SaveButton type='submit' mt='4' isLoading={isLoading} rightIcon={<MdSave />} isDisabled={!isDirty} />
       </form>
     </Box>
   );

@@ -60,7 +60,7 @@ export default class UserStore {
     try {
       const result = await UserServiceInstance.fetchMe();
       const {
-        data: { id, first_name, last_name, fullname, email, roles, contacts, courses },
+        data: { id, first_name, last_name, fullname, email, roles, contacts, courses, created_at, updated_at },
       } = result;
 
       runInAction(() => {
@@ -76,6 +76,8 @@ export default class UserStore {
           isAdmin: helpers.userContainRoles(roles, [UserRoleEnum.ADMIN]),
           isTeacher: helpers.userContainRoles(roles, [UserRoleEnum.TEACHER]),
           isStudent: helpers.userContainRoles(roles, [UserRoleEnum.STUDENT]),
+          created_at,
+          updated_at,
         };
       });
 

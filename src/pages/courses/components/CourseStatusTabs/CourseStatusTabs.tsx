@@ -23,7 +23,7 @@ const CourseStatusTabs: React.FC<CourseStatusTabsProps> = () => {
   const handleChangeStatus = (status: CourseStatusEnum | undefined) => setCourseStatus(status);
 
   return (
-    <Tabs>
+    <Tabs variant='solid-rounded'>
       <TabList justifyContent='center'>
         <Tab onClick={() => handleChangeStatus(undefined)}>All</Tab>
         <Tab onClick={() => handleChangeStatus(CourseStatusEnum.PUBLISHED)}>Published</Tab>

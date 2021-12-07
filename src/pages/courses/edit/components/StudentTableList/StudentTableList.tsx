@@ -18,6 +18,7 @@ import type { ICourse } from '@educt/interfaces';
 import { useCallback, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { CreateButton } from '@educt/components/Buttons';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -89,7 +90,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
       <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2'>
-          <InputGroup mr='2'>
+          <InputGroup mr='2' borderRadius='lg'>
             <InputLeftElement pointerEvents='none' children={<MdSearch color='gray.300' />} />
             <Input value={search} size='sm' onChange={handleSearch} type='text' placeholder='Search for student...' />
           </InputGroup>
@@ -104,9 +105,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
               <BulkActionsMenu selected={selected} rows={rows} setRows={setRows} />
             </>
           )}
-          <Button onClick={onOpenAddStudentModal} leftIcon={<AddIcon />} size='sm' variant='outline'>
-            Add new
-          </Button>
+          <CreateButton onClick={onOpenAddStudentModal} />
         </Flex>
       </Flex>
       <Table overflow='hidden' borderRadius='lg' mt='2'>

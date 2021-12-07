@@ -1,3 +1,4 @@
 import CourseList from './CourseList';
+import CourseItem from './CourseItem';
 
-export default CourseList;
+export { CourseList, CourseItem };

@@ -13,7 +13,7 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react';
-import { Box, Flex, Heading, Text, Stack } from '@chakra-ui/layout';
+import { Box, Stack } from '@chakra-ui/layout';
 
 /**
  * Types
@@ -23,18 +23,16 @@ import { IPageProps } from '@educt/interfaces';
 /**
  *  Components
  */
-import LoadingPage from './components/LoadingPage';
-import UserBadge from '@educt/components/UserBadge';
+import { PageHeading, PageContent, PageWrapper, PageFooter } from '@educt/components/PageElements';
+import { ProfileAvatar, ProfileBaseInfo, ProfileDescription, ProfileLoading, ProfileSignOutButton } from './components';
+import { CourseList } from './components/CourseList';
 import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserContactsForm';
-import CourseList from '@educt/pages/profile/components/CourseList';
 
 /**
  * Hooks
  */
 import { useHistory } from 'react-router-dom';
-import { useColorMode } from '@chakra-ui/color-mode';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { useLogout } from '@educt/hooks/queries';
 
 /**
  * Profile page
@@ -44,35 +42,17 @@ const ProfilePage: React.FC<IPageProps> = () => {
     userStore: { me },
   } = useRootStore();
   const history = useHistory();
-  const { logout } = useLogout();
-  const { colorMode } = useColorMode();
 
-  if (me === null) return <LoadingPage />;
+  if (me === null) return <ProfileLoading />;
 
   return (
-    <Box maxW='900px'>
-      <Heading as='h1'>My account</Heading>
-      <Text mt='2'>Update you contacts information or password here.</Text>
-      <Flex
-        alignItems='center'
-        flexDir={{ base: 'column', md: 'row' }}
-        textAlign={{ base: 'center', md: 'left' }}
-        mt='20'
-      >
-        <Box>
-          <Avatar border={`4px solid ${colorMode === 'dark' ? '#2D3748' : '#E2E8F0'}`} size='2xl' name={me.fullname} />
-        </Box>
-        <Flex ml={{ md: '50' }} mt={{ base: '2', md: '0' }} flexDirection='column'>
-          <Heading as='h2'>{me.fullname}</Heading>
-          <Flex alignItems='center' flexDir={{ base: 'column', md: 'row' }}>
-            <Text mr='10px' mb={{ base: '2', md: '0' }}>
-              {me.email}
-            </Text>
-            <UserBadge roles={me.roles} />
-          </Flex>
-        </Flex>
-      </Flex>
-      <Box mt='10'>
+    <PageWrapper maxW='900px'>
+      <PageHeading heading='My account' description='Update you contacts information or password here.' />
+      <ProfileBaseInfo mt='20'>
+        <ProfileAvatar name={me.fullname} />
+        <ProfileDescription fullname={me.fullname} email={me.email} roles={me.roles} />
+      </ProfileBaseInfo>
+      <PageContent>
         <Tabs>
           <TabList>
             <Tab>Account information</Tab>
@@ -82,7 +62,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
           <TabPanels mt='2'>
             <TabPanel>
               <form>
-                <Box borderRadius='lg' borderWidth='1px' padding='5'>
+                <Box borderRadius='md' borderWidth='1px' padding='5'>
                   <Stack spacing='5px'>
                     <FormControl isDisabled>
                       <FormHelperText color='gray.500'>First name</FormHelperText>
@@ -136,13 +116,11 @@ const ProfilePage: React.FC<IPageProps> = () => {
             )}
           </TabPanels>
         </Tabs>
-      </Box>
-      <Box textAlign='center' mt='3'>
-        <Button onClick={logout} size='sm' w={{ base: 'full', sm: '150px' }}>
-          Sign Out
-        </Button>
-      </Box>
-    </Box>
+      </PageContent>
+      <PageFooter textAlign='center'>
+        <ProfileSignOutButton />
+      </PageFooter>
+    </PageWrapper>
   );
 };
 
