@@ -29,8 +29,10 @@ type CategoryListPropsType = {
 };
 
 const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
-  const { categoryStore } = useRootStore();
-  const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+  const {
+    categoryStore,
+    pageStore: { coursesStore },
+  } = useRootStore();
   const handleError = useErrorHandler();
   const { categories, isLoading } = categoryStore;
 
@@ -51,11 +53,11 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
       <Flex sx={{ columnGap: '7px', rowGap: '5px' }} flexWrap='wrap'>
         <Tag
           borderRadius='full'
-          variant={selectedCategory === undefined ? 'solid' : 'outline'}
+          variant={coursesStore.selectedCategory === null ? 'solid' : 'outline'}
           cursor='pointer'
           transition='all .1s'
           _hover={{ opacity: '.8' }}
-          onClick={() => setSelectedCategory(undefined)}
+          onClick={() => coursesStore.setSelectedCategory(null)}
         >
           <TagLabel>All categories</TagLabel>
         </Tag>

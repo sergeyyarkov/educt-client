@@ -36,12 +36,12 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   const {
     userStore: { me },
     courseStore,
+    pageStore: { coursesStore },
   } = useRootStore();
   const [deleting, setDeleting] = useState<Pick<ICourse, 'id' | 'title'> | null>(null);
-  const { selectedCategory, courseStatus } = useContext(CoursesPageContext);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
   const { setCourseStatus } = useSetCourseStatus();
-  const { courses, isLoading } = courseStore;
+  const { courses, isLoading, loadCourses } = courseStore;
 
   const handleDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
     setDeleting(course);
@@ -54,11 +54,11 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   useEffect(() => {
     if (me !== null) {
       courseStore.loadCourses({
-        category_id: selectedCategory?.id,
-        status: me.isAdmin || me.isTeacher ? courseStatus : CourseStatusEnum.PUBLISHED,
+        category_id: coursesStore.selectedCategory?.id,
+        status: me.isAdmin || me.isTeacher ? coursesStore.showedStatus : CourseStatusEnum.PUBLISHED,
       });
     }
-  }, [courseStore, selectedCategory, courseStatus]);
+  }, [courseStore, coursesStore.selectedCategory, coursesStore.showedStatus]);
 
   if (courses === null || isLoading) return <LoadingList />;
 
@@ -80,9 +80,9 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
         <Box textAlign='center' mt='10' userSelect='none'>
           <Text color='gray.500'>
             There are no courses&nbsp;
-            {!selectedCategory && !courseStatus
+            {!coursesStore.selectedCategory && !coursesStore.showedStatus
               ? 'in the system yet'
-              : `in this category${courseStatus ? ' or with this status' : ''}`}
+              : `in this category${coursesStore.showedStatus ? ' or with this status' : ''}`}
             .
           </Text>
         </Box>

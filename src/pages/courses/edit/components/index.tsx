@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { Button } from '@chakra-ui/react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import React from 'react';
+import { ButtonProps, Button } from '@chakra-ui/button';
 import { CourseStatusEnum } from '@educt/enums';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+
+/**
+ * Hooks
+ */
+import { useState } from 'react';
 import { useSetCourseStatus } from '@educt/hooks/queries';
 
-type SetCourseStatusButtonPropsType = {
+interface IStatusButtonProps extends ButtonProps {
   courseId: string;
   currentStatus: CourseStatusEnum;
   loadingText?: string | undefined;
-};
-
-const SetCourseStatusButton: React.FC<SetCourseStatusButtonPropsType> = ({
-  courseId,
-  currentStatus,
-  loadingText = 'Wait a second...',
-}) => {
+}
+export const StatusButton: React.FC<IStatusButtonProps> = props => {
+  const { courseId, currentStatus, loadingText, ...btnProps } = props;
   const [status, setStatus] = useState<keyof typeof CourseStatusEnum>(currentStatus);
   const { setCourseStatus, isLoading } = useSetCourseStatus();
 
@@ -28,8 +29,11 @@ const SetCourseStatusButton: React.FC<SetCourseStatusButtonPropsType> = ({
       <Button
         onClick={() => handleChangeStatus(CourseStatusEnum.DRAFT)}
         isLoading={isLoading}
-        loadingText={loadingText}
+        loadingText={loadingText || 'Saving...'}
         leftIcon={<AiOutlineEyeInvisible />}
+        size='sm'
+        variant='outline'
+        {...btnProps}
       >
         Mark as Draft
       </Button>
@@ -38,8 +42,11 @@ const SetCourseStatusButton: React.FC<SetCourseStatusButtonPropsType> = ({
       <Button
         onClick={() => handleChangeStatus(CourseStatusEnum.PUBLISHED)}
         isLoading={isLoading}
-        loadingText={loadingText}
+        loadingText={loadingText || 'Saving...'}
         leftIcon={<AiOutlineEye />}
+        size='sm'
+        variant='outline'
+        {...btnProps}
       >
         Publish course
       </Button>
@@ -48,5 +55,3 @@ const SetCourseStatusButton: React.FC<SetCourseStatusButtonPropsType> = ({
 
   return Components[status];
 };
-
-export default SetCourseStatusButton;
