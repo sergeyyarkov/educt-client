@@ -24,7 +24,7 @@ import { useParams } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useDisclosure } from '@chakra-ui/hooks';
-import { PageContent, PageWrapper } from '@educt/components/PageElements';
+import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
 import { DeleteButton } from '@educt/components/Buttons';
 import { StatusButton } from './components';
 
@@ -60,18 +60,12 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       </Helmet>
 
       <DeleteCourseDialog course={course} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />
-
-      <Flex justifyContent='space-between' alignItems='center' flexWrap='wrap'>
-        <Box mr='3'>
-          <Heading as='h1'>Course editor</Heading>
-          <Text mt='2'>{course.title}</Text>
-        </Box>
-        <Box ml='auto' alignSelf='flex-end' justifySelf='flex-end' mt={{ base: '7', md: '0' }}>
+      <PageHeading heading='Course editor' description={course.title}>
+        <Flex mt='5' justifyContent='flex-end'>
           <StatusButton courseId={course.id} currentStatus={course.status} />
           <DeleteButton onClick={onOpenDeleteDialog} ml='2' />
-        </Box>
-      </Flex>
-
+        </Flex>
+      </PageHeading>
       <PageContent>
         <Box>
           <Tabs isLazy mt='8'>

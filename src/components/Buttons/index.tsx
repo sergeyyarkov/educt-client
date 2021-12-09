@@ -9,14 +9,20 @@ export const CreateButton: React.FC<ButtonProps> = props => (
   </Button>
 );
 
+export const AddButton: React.FC<ButtonProps> = props => (
+  <Button variant='outline' size='sm' loadingText='Adding...' leftIcon={<AddIcon />} {...props}>
+    Add new
+  </Button>
+);
+
 export const DeleteButton: React.FC<ButtonProps> = props => (
-  <Button variant='outline' leftIcon={<DeleteIcon />} colorScheme='red' size='sm' {...props}>
+  <Button variant='outline' leftIcon={<DeleteIcon />} loadingText='Deleting...' colorScheme='red' size='sm' {...props}>
     Delete
   </Button>
 );
 
 export const EditButton: React.FC<ButtonProps> = props => (
-  <Button leftIcon={<EditIcon />} variant='outline' size='sm' {...props}>
+  <Button leftIcon={<EditIcon />} variant='outline' loadingText='Saving...' size='sm' {...props}>
     Edit
   </Button>
 );

@@ -3,6 +3,7 @@ import { Table, Tbody, Button, Input, InputGroup, InputLeftElement, Flex, Box, T
 import { MdSearch } from 'react-icons/md';
 
 import AddStudentsModal from '@educt/components/Modals/AddStudentsModal';
+import { AddButton } from '@educt/components/Buttons';
 import BulkActionsMenu from './BulkActionsMenu';
 import StudentTableHead from './StudentTableHead';
 
@@ -17,8 +18,6 @@ import type { ICourse } from '@educt/interfaces';
  */
 import { useCallback, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
-import { CreateButton } from '@educt/components/Buttons';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -105,7 +104,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
               <BulkActionsMenu selected={selected} rows={rows} setRows={setRows} />
             </>
           )}
-          <CreateButton onClick={onOpenAddStudentModal} />
+          <AddButton onClick={onOpenAddStudentModal} />
         </Flex>
       </Flex>
       <Table overflow='hidden' borderRadius='lg' mt='2'>
