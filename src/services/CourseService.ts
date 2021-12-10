@@ -96,6 +96,14 @@ class CourseService {
     const result = await this.api.delete(`/v1/courses/${id}`);
     return result.data;
   }
+
+  public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<{}>> {
+    const result = await this.api.post(
+      `/v1/courses/${courseId}/attach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
+    return result.data;
+  }
 }
 
 export const CourseServiceInstance = new CourseService(ApiServiceInstance.api);

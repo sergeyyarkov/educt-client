@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect } from 'react-router-dom';
-import { Box, Heading, Text, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Box, Tab, TabList, Flex, Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 
 /**
  * Types
@@ -93,7 +93,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
                 <LessonList course={course} />
               </TabPanel>
               <TabPanel>
-                <StudentTableList render={StudentTableRow} students={course.students} />
+                <StudentTableList render={StudentTableRow} course={course} />
               </TabPanel>
             </TabPanels>
           </Tabs>

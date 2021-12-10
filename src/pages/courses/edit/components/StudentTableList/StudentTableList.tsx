@@ -21,10 +21,13 @@ import { useDisclosure } from '@chakra-ui/react';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
-  students: ICourse['students'];
+  course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
 };
 
-const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, students }) => {
+const StudentTableList: React.FC<StudentTableListPropsType> = props => {
+  const { render: Row, course } = props;
+  const { students } = course;
+
   const [rows, setRows] = useState<ICourse['students']>(students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
@@ -73,7 +76,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
   if (rows.length === 0) {
     return (
       <>
-        <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} />
+        <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} courseId={course.id} />
         <Box textAlign='center' mt='10'>
           <Text>There are no students in the course yet</Text>
           <Button mt='2' onClick={onOpenAddStudentModal} size='sm' colorScheme='blue' variant='outline'>
@@ -86,7 +89,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
 
   return (
     <Box>
-      <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} />
+      <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} courseId={course.id} />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2'>
           <InputGroup mr='2' borderRadius='lg'>
@@ -121,7 +124,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = ({ render: Row, st
         </Tbody>
       </Table>
       <Text mt='4' fontSize='sm' color='gray.500'>
-        {students.length} students
+        {students.length} student(s)
       </Text>
     </Box>
   );
