@@ -93,7 +93,9 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2'>
           <InputGroup mr='2' borderRadius='lg'>
-            <InputLeftElement pointerEvents='none' children={<MdSearch color='gray.300' />} />
+            <InputLeftElement pointerEvents='none'>
+              <MdSearch color='gray.300' />
+            </InputLeftElement>
             <Input value={search} size='sm' onChange={handleSearch} type='text' placeholder='Search for student...' />
           </InputGroup>
         </Flex>

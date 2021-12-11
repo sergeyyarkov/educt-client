@@ -52,8 +52,6 @@ import { UsersPageContext } from '@educt/contexts';
 import CreateUserSchema from './CreateUserForm.validator';
 import { CreateButton } from '@educt/components/Buttons';
 
-type CreateUserFormPropsType = {};
-
 type CreateUserInputType = {
   first_name: string;
   last_name: string;
@@ -63,7 +61,7 @@ type CreateUserInputType = {
   password: string;
 };
 
-const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
+const CreateUserModal: React.FC = () => {
   const { userStore } = useRootStore();
   const { searchingRole, search } = useContext(UsersPageContext);
   const { createUser, isLoading } = useCreateUser();

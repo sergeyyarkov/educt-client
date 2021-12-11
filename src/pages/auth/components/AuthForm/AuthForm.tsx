@@ -9,9 +9,8 @@ import {
   Icon,
   Text,
   Stack,
-  Box,
 } from '@chakra-ui/react';
-import { MdAccountCircle, MdVpnKey } from 'react-icons/md';
+import { MdAccountCircle } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /**
@@ -58,7 +57,9 @@ const AuthForm: React.FC = () => {
         <FormControl id='login'>
           <FormLabel>Login</FormLabel>
           <InputGroup>
-            <InputLeftElement children={<Icon as={MdAccountCircle} />} />
+            <InputLeftElement>
+              <Icon as={MdAccountCircle} />
+            </InputLeftElement>
             <Input type='text' placeholder='Login' {...register('login')} isInvalid={!!errors.login} />
           </InputGroup>
           <Text as='small' color='red.500'>

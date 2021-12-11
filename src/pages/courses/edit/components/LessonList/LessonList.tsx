@@ -74,12 +74,8 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     try {
       const data = await LessonServiceInstance.saveOrder(ids);
       return data;
-    } catch (error: any) {
-      if (error.response) {
-        console.error(error);
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 

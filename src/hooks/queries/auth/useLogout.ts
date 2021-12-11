@@ -4,7 +4,7 @@ import { useRootStore } from '../../useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 import useAsync from '../../useAsync';
 
-type LogoutResultDataType = {};
+type LogoutResultDataType = Record<string, never>;
 
 const useLogout = () => {
   const { authStore } = useRootStore();
@@ -18,7 +18,7 @@ const useLogout = () => {
       history.push('/auth');
       toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
       return result.data;
-    } catch (error: any) {
+    } catch (error) {
       handleError(error);
       return Promise.reject(error);
     }

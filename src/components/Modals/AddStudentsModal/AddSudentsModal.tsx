@@ -29,10 +29,10 @@ const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({ isOpen, onClose
         const ids = students.map(s => s.id);
         await CourseServiceInstance.attachStudentsList(courseId, ids);
 
-        toast({ title: 'Students successfully attached.', status: 'success' });
+        toast({ title: 'Students successfully added.', status: 'success' });
         onClose();
-      } catch (error: any) {
-        throw error;
+      } catch (error) {
+        console.error(error);
       } finally {
         if (isMountedRef.current) setIsLoading(false);
       }

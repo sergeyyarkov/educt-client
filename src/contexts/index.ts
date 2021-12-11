@@ -6,23 +6,23 @@ export const StoreContext = createContext<RootStore | undefined>(undefined);
 
 export const ChangeEmailPageContext = createContext<ChangeEmailPageContextType>({
   isCodeSent: false,
-  setIsCodeSent: () => {},
+  setIsCodeSent: () => null,
   confirmEmailData: undefined,
-  setConfirmEmailData: () => {},
+  setConfirmEmailData: () => null,
 });
 
 export const UsersPageContext = createContext<UsersPageContextType>({
   searchingRole: undefined,
-  setSearchingRole: () => {},
+  setSearchingRole: () => null,
   searchingPage: 1,
-  setSearchingPage: () => {},
+  setSearchingPage: () => null,
   search: undefined,
-  setSearch: () => {},
+  setSearch: () => null,
 });
 
 export const CoursesPageContext = createContext<CoursesPageContextType>({
   selectedCategory: undefined,
-  setSelectedCategory: () => {},
+  setSelectedCategory: () => null,
   courseStatus: undefined,
-  setCourseStatus: () => {},
+  setCourseStatus: () => null,
 });

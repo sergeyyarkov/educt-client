@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import axios, { AxiosError } from 'axios';
 import { Redirect } from 'react-router';
 import { Icon, Box, Heading, Text } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
@@ -11,7 +12,7 @@ import { useEffect } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
-const ErrorFallback: React.FC<{ error: any }> = props => {
+const ErrorFallback: React.FC<{ error: Error | AxiosError }> = props => {
   const { userStore, authStore } = useRootStore();
   const { error } = props;
   const toast = useToast();
@@ -20,12 +21,14 @@ const ErrorFallback: React.FC<{ error: any }> = props => {
     toast({ title: `${error.message}`, duration: 10000, isClosable: true, status: 'error' });
   });
 
-  if (error.response) {
-    if (error.response.status === 401) {
-      userStore.me = null;
-      authStore.setIsLoggedIn(false);
-      Cookies.remove('logged_in');
-    } else if (error.response.status === 404) return <Redirect to='/404' />;
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      if (error.response.status === 401) {
+        userStore.me = null;
+        authStore.setIsLoggedIn(false);
+        Cookies.remove('logged_in');
+      } else if (error.response.status === 404) return <Redirect to='/404' />;
+    }
   }
 
   return (

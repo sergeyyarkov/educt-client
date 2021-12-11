@@ -19,8 +19,8 @@ const BulkActionsMenu: React.FC<BulkActionsMenuPropsType> = ({ selected, rows, s
     );
     setRows(rows.filter(r => selected.every(s => s.id !== r.id)));
   };
-  const handleDelete = async () => {};
-  const handleExport = async () => {};
+  const handleDelete = async () => undefined;
+  const handleExport = async () => undefined;
 
   return (
     <Menu isLazy>

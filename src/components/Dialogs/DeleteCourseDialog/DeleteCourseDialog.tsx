@@ -36,7 +36,7 @@ const DeleteCourseDialog: React.FC<DeleteCourseDialogPropsType> = ({ onClose, is
         if (isMountedRef.current && location.pathname !== '/courses') {
           history.push('/courses');
         }
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
       }
     }

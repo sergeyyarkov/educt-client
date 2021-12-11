@@ -47,7 +47,9 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
         <FormLabel>Password</FormLabel>
       </Flex>
       <InputGroup>
-        <InputLeftElement children={<Icon as={MdVpnKey} />} />
+        <InputLeftElement>
+          <Icon as={MdVpnKey} />
+        </InputLeftElement>
         <InputRightElement>
           <IconButton
             bg='transparent !important'
@@ -74,3 +76,5 @@ export const PasswordField = React.forwardRef<HTMLInputElement, PasswordFieldPro
     </FormControl>
   );
 });
+
+PasswordField.displayName = 'PasswordField';

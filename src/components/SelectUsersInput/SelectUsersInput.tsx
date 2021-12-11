@@ -42,7 +42,7 @@ const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({ placeholder, se
       setIsLoading(true);
       const { data } = await UserServiceInstance.fetchAll({ search, ...params });
       setUsers(data);
-    } catch (error: any) {
+    } catch (error) {
       handleError(error);
     } finally {
       setIsLoading(false);
@@ -58,6 +58,7 @@ const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({ placeholder, se
       return updated;
     });
   };
+
   const handleRemoveSelected = (id: IUser['id']) => () => {
     setSelected(prev => {
       const updated = prev.filter(u => u.id !== id);
@@ -91,7 +92,9 @@ const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({ placeholder, se
           type='text'
           placeholder={placeholder || 'Search for users...'}
         />
-        <InputRightElement pointerEvents='none' children={<SearchIcon color='gray.300' />} />
+        <InputRightElement pointerEvents='none'>
+          <SearchIcon color='gray.300' />
+        </InputRightElement>
       </InputGroup>
 
       {isLoading && (

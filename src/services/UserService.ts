@@ -99,7 +99,7 @@ class UserService {
    * @param newPassword New password
    * @returns Empty object
    */
-  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<{}>> {
+  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.patch('v1/me/password', {
       oldPassword,
       newPassword,

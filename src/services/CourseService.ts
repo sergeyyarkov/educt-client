@@ -49,7 +49,7 @@ class CourseService {
    * @param status Course status
    * @returns Empty data
    */
-  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<{}>> {
+  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post(`/v1/courses/${id}/set-status`, {
       status,
     });
@@ -97,7 +97,7 @@ class CourseService {
     return result.data;
   }
 
-  public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<{}>> {
+  public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post(
       `/v1/courses/${courseId}/attach-student-list`,
       helpers.transformToFormData({ students: ids })

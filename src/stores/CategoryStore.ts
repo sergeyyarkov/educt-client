@@ -20,7 +20,7 @@ export default class CategoryStore {
 
   public categories: ICategory[] | null = null;
 
-  public isLoading: boolean = false;
+  public isLoading = false;
 
   constructor(root: RootStore) {
     this.root = root;
@@ -41,8 +41,6 @@ export default class CategoryStore {
       });
 
       return result;
-    } catch (error: any) {
-      throw error;
     } finally {
       this.setLoading(false);
     }

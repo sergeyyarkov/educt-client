@@ -1,4 +1,4 @@
-import { BadgeProps, Badge, Box } from '@chakra-ui/react';
+import { BadgeProps, Badge } from '@chakra-ui/react';
 import React from 'react';
 import { UserRoleEnum } from '@educt/enums';
 import { IUserRole } from '@educt/interfaces';

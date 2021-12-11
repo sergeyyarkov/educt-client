@@ -1,6 +1,6 @@
 import React from 'react';
 import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
-import { ICategory, ICourse, IUser } from '@educt/interfaces';
+import { ICategory } from '@educt/interfaces';
 import { IconType } from 'react-icons/lib';
 
 export type LinkType = {

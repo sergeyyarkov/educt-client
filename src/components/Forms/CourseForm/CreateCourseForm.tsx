@@ -26,9 +26,7 @@ import { useCreateCourse } from '@educt/hooks/queries';
  */
 import CourseFormSchema from './CourseForm.validator';
 
-type CreateFormCoursePropsType = {};
-
-const CreateFormCourse: React.FC<CreateFormCoursePropsType> = () => {
+const CreateFormCourse: React.FC = () => {
   const form = useForm<InputFields>({ resolver: yupResolver(CourseFormSchema) });
   const { createCourse, isLoading } = useCreateCourse();
   const history = useHistory();
