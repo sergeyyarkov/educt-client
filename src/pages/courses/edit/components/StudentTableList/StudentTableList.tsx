@@ -18,7 +18,7 @@ import type { ICourse } from '@educt/interfaces';
  */
 import { useCallback, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
-import { UserServiceInstance } from '@educt/services';
+import { CourseServiceInstance, UserServiceInstance } from '@educt/services';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -107,8 +107,17 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
    * Remove from course student handler
    */
   const handleRemove = (id: string) => {
-    return () => {
-      console.log(`removing id: ${id}`);
+    return async () => {
+      try {
+        setIsLoading(true);
+        await CourseServiceInstance.detachStudentsList(course.id, [id]);
+        toast({ title: 'Student removed.', status: 'info' });
+        setRows(prev => prev.filter(s => s.id !== id));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
   };
 

@@ -97,9 +97,24 @@ class CourseService {
     return result.data;
   }
 
+  /**
+   * Attach students to course by id
+   *
+   * @param courseId Course id
+   * @param ids List ids of students
+   * @returns Empty data
+   */
   public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post(
       `/v1/courses/${courseId}/attach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
+    return result.data;
+  }
+
+  public async detachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.patch(
+      `/v1/courses/${courseId}/detach-student-list`,
       helpers.transformToFormData({ students: ids })
     );
     return result.data;
