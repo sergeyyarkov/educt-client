@@ -47,12 +47,14 @@ export function transformToFormData(data: object): FormData {
    * Append value to form-data format
    */
   Object.entries(data).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
-      return;
-    }
+    if (value) {
+      if (Array.isArray(value)) {
+        value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
+        return;
+      }
 
-    formData.append(key, value);
+      formData.append(key, value);
+    }
   });
 
   return formData;

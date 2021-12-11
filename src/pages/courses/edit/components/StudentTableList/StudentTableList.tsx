@@ -151,35 +151,43 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
         onAdded={users => setRows(prev => [...prev, ...users])}
       />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
-        <Flex mb='2'>
-          <InputGroup mr='2' borderRadius='lg'>
-            <InputLeftElement pointerEvents='none'>
-              <MdSearch color='gray.300' />
-            </InputLeftElement>
-            <Input value={search} size='sm' onChange={handleSearch} type='text' placeholder='Search for student...' />
-          </InputGroup>
+        <Flex mb='2' alignItems='center'>
+          <Box>
+            <InputGroup mr='2' borderRadius='lg' h='full'>
+              <InputLeftElement pointerEvents='none'>
+                <MdSearch color='gray.300' />
+              </InputLeftElement>
+              <Input value={search} size='sm' onChange={handleSearch} type='text' placeholder='Search for student...' />
+            </InputGroup>
+          </Box>
+          {isLoading && (
+            <Flex alignItems='center'>
+              <Text fontSize='sm' ml='3' mr='3' mt='2' mb='2'>
+                Loading...
+              </Text>
+              <BeatLoader size={4} color='gray' />
+            </Flex>
+          )}
         </Flex>
-
         <Flex alignItems='center' justifyContent='space-between' pr={{ base: '8px', lg: '0' }}>
           {selected.length !== 0 && (
             <>
               <Text mr='4'>
                 You have selected <b>{selected.length}</b> student(s).
               </Text>
-              <BulkActionsMenu selected={selected} rows={rows} setRows={setRows} />
+              <BulkActionsMenu
+                courseId={course.id}
+                selected={selected}
+                rows={rows}
+                setRows={setRows}
+                setIsLoading={setIsLoading}
+                onRemoved={removed => setSelected(prev => prev.filter(s => removed.every(r => s.id !== r.id)))}
+              />
             </>
           )}
           <AddButton onClick={onOpenAddStudentModal} />
         </Flex>
       </Flex>
-      {isLoading && (
-        <Flex alignItems='center' justifyContent={'flex-end'}>
-          <BeatLoader size={6} color='gray' />
-          <Text fontSize='sm' ml='3' mt='2' mb='2'>
-            Loading...
-          </Text>
-        </Flex>
-      )}
       <Table overflow='hidden' borderRadius='lg' mt='2'>
         <StudentTableHead onSelectAll={handleSelectAll} />
         <Tbody>
