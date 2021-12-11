@@ -3,19 +3,27 @@ import React, { useState } from 'react';
 import BaseModal from '@educt/components/Modal';
 import { MdGroup } from 'react-icons/md';
 import { UserRoleEnum } from '@educt/enums';
-import SelectUsersInput from '@educt/components/SelectUsersInput';
-import { IUser } from '@educt/interfaces';
+import SelectStudentsInput from '@educt/components/SelectStudentsInput';
+import { ICourse, IUser } from '@educt/interfaces';
 import { CourseServiceInstance } from '@educt/services';
 import { useToast } from '@chakra-ui/react';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 
 type AddStudentsModalPropsType = {
+  course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
+  currentStudents: ICourse['students'];
   isOpen: boolean;
   onClose: () => void;
-  courseId: string;
+  onAdded: (users: Array<IUser>) => void;
 };
 
-const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({ isOpen, onClose, courseId }) => {
+const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({
+  isOpen,
+  onClose,
+  onAdded,
+  currentStudents,
+  course,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isMountedRef = useIsMountedRef();
   const [students, setStudents] = useState<Array<IUser>>([]);
@@ -27,9 +35,10 @@ const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({ isOpen, onClose
       try {
         setIsLoading(true);
         const ids = students.map(s => s.id);
-        await CourseServiceInstance.attachStudentsList(courseId, ids);
+        await CourseServiceInstance.attachStudentsList(course.id, ids);
 
-        toast({ title: 'Students successfully added.', status: 'success' });
+        toast({ title: 'Students added.', status: 'info' });
+        onAdded(students);
         onClose();
       } catch (error) {
         console.error(error);
@@ -51,7 +60,8 @@ const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({ isOpen, onClose
       isLoading={isLoading}
       loadingText='Saving...'
     >
-      <SelectUsersInput
+      <SelectStudentsInput
+        currentStudents={currentStudents}
         onSelect={selected => handleSelectStudents(selected)}
         placeholder='Search for students...'
         searchParams={{ role: UserRoleEnum.STUDENT }}

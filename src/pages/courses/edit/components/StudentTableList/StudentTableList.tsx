@@ -1,8 +1,8 @@
 import React from 'react';
-import { Table, Tbody, Button, Input, InputGroup, InputLeftElement, Flex, Box, Text } from '@chakra-ui/react';
+import { Table, Tbody, Button, Input, InputGroup, InputLeftElement, Flex, Box, Text, useToast } from '@chakra-ui/react';
 import { MdSearch } from 'react-icons/md';
-
 import AddStudentsModal from '@educt/components/Modals/AddStudentsModal';
+import { BeatLoader } from 'react-spinners';
 import { AddButton } from '@educt/components/Buttons';
 import BulkActionsMenu from './BulkActionsMenu';
 import StudentTableHead from './StudentTableHead';
@@ -18,6 +18,7 @@ import type { ICourse } from '@educt/interfaces';
  */
 import { useCallback, useState } from 'react';
 import { useDisclosure } from '@chakra-ui/react';
+import { UserServiceInstance } from '@educt/services';
 
 type StudentTableListPropsType = {
   render: React.FC<StudentTableRowPropsType>;
@@ -28,6 +29,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   const { render: Row, course } = props;
   const { students } = course;
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rows, setRows] = useState<ICourse['students']>(students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
@@ -36,6 +38,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
     onOpen: onOpenAddStudentModal,
     onClose: onCloseAddStudentModal,
   } = useDisclosure();
+  const toast = useToast();
 
   /**
    * Search for a student by input
@@ -73,10 +76,52 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
     setSelected(prev => prev.filter(s => s.id !== student.id));
   }, []);
 
+  /**
+   * Delete student handler
+   */
+  const handleDelete = (id: string) => {
+    return async () => {
+      try {
+        setIsLoading(true);
+        const { data } = await UserServiceInstance.delete(id);
+        toast({ title: 'Student deleted', status: 'info' });
+        setRows(prev => prev.filter(s => s.id !== data.id));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  };
+
+  /**
+   * Edit student handler
+   */
+  const handleEdit = (id: string) => {
+    return () => {
+      console.log(`editing id: ${id}`);
+    };
+  };
+
+  /**
+   * Remove from course student handler
+   */
+  const handleRemove = (id: string) => {
+    return () => {
+      console.log(`removing id: ${id}`);
+    };
+  };
+
   if (rows.length === 0) {
     return (
       <>
-        <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} courseId={course.id} />
+        <AddStudentsModal
+          isOpen={isOpenAddStudentModal}
+          onClose={onCloseAddStudentModal}
+          course={course}
+          currentStudents={rows}
+          onAdded={users => setRows(prev => [...prev, ...users])}
+        />
         <Box textAlign='center' mt='10'>
           <Text>There are no students in the course yet</Text>
           <Button mt='2' onClick={onOpenAddStudentModal} size='sm' colorScheme='blue' variant='outline'>
@@ -89,7 +134,13 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
 
   return (
     <Box>
-      <AddStudentsModal isOpen={isOpenAddStudentModal} onClose={onCloseAddStudentModal} courseId={course.id} />
+      <AddStudentsModal
+        isOpen={isOpenAddStudentModal}
+        onClose={onCloseAddStudentModal}
+        course={course}
+        currentStudents={rows}
+        onAdded={users => setRows(prev => [...prev, ...users])}
+      />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2'>
           <InputGroup mr='2' borderRadius='lg'>
@@ -112,6 +163,14 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
           <AddButton onClick={onOpenAddStudentModal} />
         </Flex>
       </Flex>
+      {isLoading && (
+        <Flex alignItems='center' justifyContent={'flex-end'}>
+          <BeatLoader size={6} color='gray' />
+          <Text fontSize='sm' ml='3' mt='2' mb='2'>
+            Loading...
+          </Text>
+        </Flex>
+      )}
       <Table overflow='hidden' borderRadius='lg' mt='2'>
         <StudentTableHead onSelectAll={handleSelectAll} />
         <Tbody>
@@ -121,6 +180,11 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
               student={student}
               isSelected={!!selected.find(s => s.id === student.id)}
               onSelect={handleSelect}
+              actions={{
+                onDelete: handleDelete,
+                onEdit: handleEdit,
+                onRemove: handleRemove,
+              }}
             />
           ))}
         </Tbody>

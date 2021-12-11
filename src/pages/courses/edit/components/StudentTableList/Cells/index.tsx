@@ -51,15 +51,23 @@ export const RegisteredCell: React.FC<RegisteredCellPropsType> = memo(({ registe
   <Td>{new Date(registered).toLocaleDateString()}</Td>
 ));
 
-type ActionsCellPropsType = Pick<IUser, 'id'>;
-export const ActionsCell: React.FC<ActionsCellPropsType> = memo(({ id }) => (
+type ActionsCellPropsType = {
+  onEdit: () => void;
+  onRemove: () => void;
+  onDelete: () => void;
+};
+export const ActionsCell: React.FC<ActionsCellPropsType> = memo(({ onEdit, onRemove, onDelete }) => (
   <Td textAlign='center'>
     <Menu isLazy>
       <MenuButton as={IconButton} aria-label='Actions' icon={<MdMoreHoriz />} variant='ghost' />
       <MenuList>
-        <MenuItem icon={<MdEdit />}>Edit</MenuItem>
-        <MenuItem icon={<MdRemove />}>Remove from course</MenuItem>
-        <MenuItem icon={<DeleteIcon />} color='red.400'>
+        <MenuItem onClick={onEdit} icon={<MdEdit />}>
+          Edit
+        </MenuItem>
+        <MenuItem onClick={onRemove} icon={<MdRemove />}>
+          Remove from course
+        </MenuItem>
+        <MenuItem onClick={onDelete} icon={<DeleteIcon />} color='red.400'>
           Delete
         </MenuItem>
       </MenuList>

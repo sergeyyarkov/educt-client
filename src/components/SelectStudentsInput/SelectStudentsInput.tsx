@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, SearchIcon } from '@chakra-ui/icons';
 import { UserServiceInstance } from '@educt/services';
-import { IUser } from '@educt/interfaces';
+import { ICourse, IUser } from '@educt/interfaces';
 import { useErrorHandler } from 'react-error-boundary';
 import { BeatLoader } from 'react-spinners';
 import { Virtuoso } from 'react-virtuoso';
@@ -26,14 +26,22 @@ type SelectUsersInputPropsType = {
   placeholder?: string | undefined;
   searchParams?: FetchUsersParamsType | undefined;
   onSelect: (selected: Array<IUser>) => void;
+  currentStudents: ICourse['students'];
 };
 
-const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({ placeholder, searchParams: params, onSelect }) => {
+const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({
+  placeholder,
+  searchParams: params,
+  onSelect,
+  currentStudents,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
   const [selected, setSelected] = useState<Array<IUser>>([]);
   const [users, setUsers] = useState<Array<IUser>>([]);
-  const filtered = users.filter(u => selected.every(s => s.id !== u.id));
+  const filtered = users
+    .filter(u => selected.every(s => s.id !== u.id))
+    .filter(u => currentStudents.every(s => s.id !== u.id));
   const handleError = useErrorHandler();
   const isEmpty = filtered.length === 0;
 
