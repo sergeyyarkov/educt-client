@@ -1,25 +1,24 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Flex, Box, Heading, useColorMode } from '@chakra-ui/react';
-import { MdSchool } from 'react-icons/md';
-import config from '@educt/config';
+import { Flex, Box } from '@chakra-ui/react';
 
 /**
  * Components
  */
+import Logo from '@educt/components/Logo';
 import NavMobile from '@educt/components/Nav/Mobile';
 import ColorModeSwitcher from '@educt/components/ColorModeSwitcher';
-import UserInfo from './UserInfo';
-import UserNotifications from './UserNotifications';
+import ProfileMenu from './ProfileMenu';
+import NotificationsMenu from './NotificationsMenu';
 
 /**
  * Hooks
  */
 import { useMediaQuery } from '@chakra-ui/media-query';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const Header: React.FC = () => {
   const [isDesktop] = useMediaQuery('(min-width: 992px)');
-  const { colorMode } = useColorMode();
 
   return (
     <Box
@@ -28,10 +27,8 @@ const Header: React.FC = () => {
       top={0}
       left={0}
       right={0}
-      // borderBottomWidth={1}
-      // h='43px'
-      boxShadow='md'
-      backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}
+      borderBottomWidth='1px'
+      backgroundColor={useColorModeValue('white', 'gray.800')}
       zIndex={4}
     >
       <Flex
@@ -41,25 +38,15 @@ const Header: React.FC = () => {
         alignItems='center'
         padding='5px 1.5rem 5px 1.5rem'
       >
-        <Flex alignItems='center'>
-          <Box mr='4'>
-            <Box as={MdSchool} color='blue.500' size='36px' />
-          </Box>
-          <Box>
-            <Heading as='p' fontSize='2xl' lineHeight='1'>
-              {config.metaData.appName}
-            </Heading>
-          </Box>
-        </Flex>
-        {isDesktop ? (
+        <Logo h='10' />
+        {isDesktop && (
           <Flex>
             <ColorModeSwitcher />
-            <UserNotifications />
-            <UserInfo />
+            <NotificationsMenu />
+            <ProfileMenu />
           </Flex>
-        ) : (
-          <NavMobile />
         )}
+        {!isDesktop && <NavMobile />}
       </Flex>
     </Box>
   );

@@ -50,7 +50,7 @@ const DeleteUserDialog: React.FC<DeleteUserDialogPropsType> = ({ isOpen, onClose
           role: searchingRole,
           search,
         });
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
       }
     }

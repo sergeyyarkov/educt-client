@@ -35,6 +35,7 @@ import { useErrorHandler } from 'react-error-boundary';
  * Services
  */
 import { LessonServiceInstance } from '@educt/services';
+import { CreateButton } from '@educt/components/Buttons';
 
 type LessonListPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
@@ -46,7 +47,7 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
   const handleCreateLesson = (): void => history.push(`${id}/create-lesson`);
 
   return (
-    <Button onClick={handleCreateLesson} size='sm' colorScheme='blue' variant='outline'>
+    <Button onClick={handleCreateLesson} mt='2' size='sm' colorScheme='blue' variant='outline'>
       Create new lesson
     </Button>
   );
@@ -73,12 +74,8 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     try {
       const data = await LessonServiceInstance.saveOrder(ids);
       return data;
-    } catch (error: any) {
-      if (error.response) {
-        console.error(error);
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 
@@ -169,7 +166,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
                         <Icon as={MdAttachment} />
                       </Text>
                       <Text as='small' verticalAlign='middle'>
-                        4 attachments
+                        {lesson.materials_count} attachments
                       </Text>
                     </Text>
                   </Flex>
@@ -205,8 +202,10 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
             <DeleteLessonDialog lesson={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
           )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
-            <Text fontWeight='medium'>Total: ({lessons.length})</Text>
-            <Button onClick={handleCreateLesson}>Create new</Button>
+            <Text fontSize='sm' color='gray.500'>
+              {lessons.length} lessons
+            </Text>
+            <CreateButton onClick={handleCreateLesson} />
           </Flex>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable
@@ -249,9 +248,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       ) : (
         <Box mt='10' textAlign='center'>
           <Text>No lessons have been added to this course yet</Text>
-          <Box p='10px 0'>
-            <CreateLessonButton id={course.id} />
-          </Box>
+          <CreateLessonButton id={course.id} />
         </Box>
       )}
     </Box>

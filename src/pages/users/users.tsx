@@ -1,19 +1,16 @@
 import React from 'react';
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 
 /**
  * Types
  */
-import { IPageProps } from '@educt/interfaces';
+import type { IPageProps } from '@educt/interfaces';
 
 /**
  * Components
  */
+import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { UserList, UserItem } from './components/UserList';
 import LoadingPage from '@educt/components/LoadingPage';
-import UserSearch from './components/UserSearch';
-import UserList from './components/UserList';
-import UserItem from './components/UserList/UserItem';
-import CreateUserForm from './components/CreateUserForm';
 
 /**
  * Hooks
@@ -36,18 +33,14 @@ const UsersPage: React.FC<IPageProps> = () => {
   if (me === null) return <LoadingPage />;
 
   return (
+    // TODO: delete page context for better performance
     <UsersPageContextProvider>
-      <Box>
-        <Heading as='h1'>User management</Heading>
-        <Text mt='2'>You can add or delete users on this page.</Text>
-        <Flex mt='5' flexDir='column' h='full'>
-          <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
-            <UserSearch />
-            <CreateUserForm />
-          </Flex>
+      <PageWrapper>
+        <PageHeading heading='User management' description='You can add or delete users on this page.' />
+        <PageContent mt='5'>
           <UserList render={UserItem} limit={6} />
-        </Flex>
-      </Box>
+        </PageContent>
+      </PageWrapper>
     </UsersPageContextProvider>
   );
 };

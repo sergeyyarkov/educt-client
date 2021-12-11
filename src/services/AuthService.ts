@@ -11,7 +11,7 @@ export interface AuthServiceImpl {
   /**
    * Logout user
    */
-  requestLogout(): Promise<IApiRespose<{}>>;
+  requestLogout(): Promise<IApiRespose<Record<string, never>>>;
 }
 
 class AuthService implements AuthServiceImpl {
@@ -41,7 +41,7 @@ class AuthService implements AuthServiceImpl {
    *
    * @returns Empty obj
    */
-  public async requestLogout(): Promise<IApiRespose<{}>> {
+  public async requestLogout(): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post('v1/auth/logout');
     return result.data;
   }

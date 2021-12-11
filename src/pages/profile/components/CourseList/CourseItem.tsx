@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Tag, TagLabel, LinkBox, Text, LinkOverlay, Icon, Link } from '@chakra-ui/react';
+import { Tag, TagLabel, LinkBox, Text, LinkOverlay, Icon } from '@chakra-ui/react';
 import { Box, Flex } from '@chakra-ui/layout';
 
 /**
@@ -14,6 +14,7 @@ import { TimeIcon } from '@chakra-ui/icons';
  * Hooks
  */
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { MdOutlineVideoLibrary } from 'react-icons/md';
 
 type CourseItemPropsType = {
   course: UserCourseType;
@@ -22,30 +23,11 @@ type CourseItemPropsType = {
 const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
   return (
     <LinkBox as='div' p='3' borderBottomWidth='1px' borderRadius='lg' bg={useColorModeValue('gray.50', 'gray.700')}>
-      <Flex justifyContent='space-between'>
-        <Box>
-          <Tag variant='outline' borderRadius='full' alignSelf='flex-start'>
-            <TagLabel>{course.lessons_count} lessons</TagLabel>
-          </Tag>
-        </Box>
-
-        <Box>
-          <Tag
-            color='white'
-            boxShadow={`inset 0 0 0px 1px ${course.category.color?.hex}`}
-            bg={course.category.color?.hex}
-            borderRadius='full'
-            alignSelf='flex-start'
-          >
-            <TagLabel>{course.category.title}</TagLabel>
-          </Tag>
-        </Box>
-      </Flex>
       <Flex justifyContent='space-between' mt='2'>
         <Text>
           <LinkOverlay
             as={ReactRouterLink}
-            fontSize='xl'
+            fontSize='md'
             fontWeight='medium'
             to={`/course/${course.id}`}
             overflowWrap='anywhere'
@@ -53,9 +35,22 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
             {course.title}
           </LinkOverlay>
         </Text>
+        <Box>
+          <Tag
+            color='white'
+            boxShadow={`inset 0 0 0px 1px ${course.category.color?.hex}`}
+            bg={course.category.color?.hex}
+            alignSelf='flex-start'
+            variant='outline'
+          >
+            <TagLabel>{course.category.title}</TagLabel>
+          </Tag>
+        </Box>
       </Flex>
 
-      <Flex mt='2' alignItems='center' sx={{ gap: '9px' }}>
+      <Flex mt='2' alignItems='center' fontSize='sm' sx={{ gap: '9px' }}>
+        <Icon as={MdOutlineVideoLibrary} w='14px' h='14px' />
+        <Text mr='1'>{course.lessons_count} lessons</Text>
         <Icon as={TimeIcon} w='14px' h='14px' />
         <Box
           as='time'

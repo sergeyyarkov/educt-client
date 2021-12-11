@@ -23,17 +23,13 @@ export default class EditCourseStore {
    * @returns Course response
    */
   public async loadCourseById(id: string) {
-    try {
-      const result = await CourseServiceInstance.fetchById(id);
+    const result = await CourseServiceInstance.fetchById(id);
 
-      runInAction(() => {
-        this.course = result.data;
-      });
+    runInAction(() => {
+      this.course = result.data;
+    });
 
-      return result;
-    } catch (error: any) {
-      throw error;
-    }
+    return result;
   }
 
   /**
@@ -43,19 +39,15 @@ export default class EditCourseStore {
    * @returns Deleted lesson response
    */
   public async deleteLessonById(id: string) {
-    try {
-      const result = await LessonServiceInstance.deleteLesson(id);
+    const result = await LessonServiceInstance.deleteLesson(id);
 
-      runInAction(() => {
-        if (this.course) {
-          this.course.lessons = this.course.lessons.filter(lesson => lesson.id !== result.data.id);
-        }
-      });
+    runInAction(() => {
+      if (this.course) {
+        this.course.lessons = this.course.lessons.filter(lesson => lesson.id !== result.data.id);
+      }
+    });
 
-      return result;
-    } catch (error) {
-      throw error;
-    }
+    return result;
   }
 
   /**

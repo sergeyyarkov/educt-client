@@ -6,7 +6,7 @@ import { MdNotifications } from 'react-icons/md';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { observer } from 'mobx-react';
 
-const UserNotifications: React.FC = () => {
+const NotificationsMenu: React.FC = () => {
   const { userStore } = useRootStore();
 
   if (userStore.me === null) {
@@ -39,4 +39,4 @@ const UserNotifications: React.FC = () => {
   );
 };
 
-export default observer(UserNotifications);
+export default observer(NotificationsMenu);

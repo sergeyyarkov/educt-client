@@ -49,7 +49,7 @@ class CourseService {
    * @param status Course status
    * @returns Empty data
    */
-  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<{}>> {
+  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post(`/v1/courses/${id}/set-status`, {
       status,
     });
@@ -94,6 +94,29 @@ class CourseService {
    */
   public async delete(id: string): Promise<IApiRespose<Omit<ICourse, 'teacher' | 'students' | 'lessons'>>> {
     const result = await this.api.delete(`/v1/courses/${id}`);
+    return result.data;
+  }
+
+  /**
+   * Attach students to course by id
+   *
+   * @param courseId Course id
+   * @param ids List ids of students
+   * @returns Empty data
+   */
+  public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.post(
+      `/v1/courses/${courseId}/attach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
+    return result.data;
+  }
+
+  public async detachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.patch(
+      `/v1/courses/${courseId}/detach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
     return result.data;
   }
 }

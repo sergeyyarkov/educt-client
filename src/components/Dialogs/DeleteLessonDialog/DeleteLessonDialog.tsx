@@ -28,7 +28,7 @@ const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ lesson, isO
     if (isConfirmed) {
       try {
         await deleteLesson(lesson.id);
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
       }
     }

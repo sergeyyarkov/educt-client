@@ -1,9 +1,12 @@
 import { makeAutoObservable } from 'mobx';
+import CoursesStore from './pages/CoursesStore';
 import EditCourseStore from './pages/EditCourseStore';
 import RootStore from './RootStore';
 
 export default class PageStore {
   public root: RootStore;
+
+  public coursesStore: CoursesStore;
 
   public editCourseStore: EditCourseStore;
 
@@ -13,6 +16,7 @@ export default class PageStore {
     /**
      * Pages
      */
+    this.coursesStore = new CoursesStore(this);
     this.editCourseStore = new EditCourseStore(this);
 
     makeAutoObservable(this);

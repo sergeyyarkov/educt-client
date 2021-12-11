@@ -19,7 +19,6 @@ import FileSelect from '@educt/components/FileSelect';
 /**
  * Hooks
  */
-import { useToast } from '@chakra-ui/toast';
 import { useErrorHandler } from 'react-error-boundary';
 
 /**
@@ -51,7 +50,6 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
   } = reactHookForm;
 
   const handleError = useErrorHandler();
-  const toast = useToast();
 
   /**
    *  Load users into select field
@@ -64,12 +62,8 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
         label: user.fullname,
         value: user.id,
       }));
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: 'Error' });
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 
@@ -83,12 +77,8 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
         label: category.title,
         value: category.id,
       }));
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: 'Error' });
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 
@@ -102,14 +92,11 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
           <FormLabel>Name</FormLabel>
           <InputGroup>
             <Input pr='60px' size='md' placeholder='Course name' type='text' {...register('title')} />
-            <InputRightElement
-              mr='2'
-              children={
-                <Text as='small' color={!!errors.title || watchTitle?.length > 90 ? 'red.500' : 'gray.500'}>
-                  {watchTitle?.length || 0}/90
-                </Text>
-              }
-            />
+            <InputRightElement mr='2'>
+              <Text as='small' color={!!errors.title || watchTitle?.length > 90 ? 'red.500' : 'gray.500'}>
+                {watchTitle?.length || 0}/90
+              </Text>
+            </InputRightElement>
           </InputGroup>
           <FormHelperText>e.g Web Development in Javascript</FormHelperText>
           <Text as='small' color='red.500'>

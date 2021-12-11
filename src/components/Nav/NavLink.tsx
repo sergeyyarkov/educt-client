@@ -1,62 +1,67 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { userContainRoles } from '@educt/helpers';
-import { Box, useColorMode } from '@chakra-ui/react';
+import * as helpers from '@educt/helpers';
+import { Flex, Box, Icon, Text } from '@chakra-ui/react';
+
+/**
+ * Types
+ */
 import type { LinkType } from '@educt/types';
 
 /**
  * Hooks
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { useColorMode } from '@chakra-ui/react';
 
 type NavLinkPropsType = {
   link: LinkType;
   onClickLink: (link: LinkType) => void;
 };
 
-/**
- * Returns the link component for navigation.
- */
 const NavLink: React.FC<NavLinkPropsType> = ({ link, onClickLink }) => {
   const { uiStore, userStore } = useRootStore();
   const { colorMode } = useColorMode();
+  const isActive = uiStore.location === link.location;
   const onClick = () => onClickLink(link);
 
   if (!link.public && link.roles !== undefined) {
     const { me } = userStore;
     if (me === null) return null;
-    if (!userContainRoles(me.roles, link.roles)) return null;
+    if (!helpers.userContainRoles(me.roles, link.roles)) return null;
   }
 
   return (
     <Box
       as='a'
       onClick={onClick}
-      display='flex'
-      margin='3px 0'
-      width='100%'
-      border='none'
+      display='block'
       aria-label={link.title}
-      role='link'
+      fontWeight='medium'
+      borderRadius='md'
+      mt='0.5rem'
+      pt='2'
+      pb='2'
+      paddingInlineStart='3'
+      paddingInlineEnd='3'
+      transition='all 0.3s ease 0s'
+      lineHeight='1.5rem'
+      textDecoration='none'
       cursor='pointer'
+      outline='transparent solid 2px'
+      outlineOffset='2px'
+      color={isActive ? 'white' : ''}
+      backgroundColor={isActive ? `${colorMode === 'dark' ? 'gray.700' : 'blue.500'}` : ''}
+      _hover={{
+        bg: `${colorMode === 'dark' ? 'gray.700' : `${!isActive ? 'gray.100' : ''}`}`,
+      }}
     >
-      <Box
-        color={uiStore.location === link.location ? 'blue.400' : ''}
-        backgroundColor={uiStore.location === link.location ? `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}` : ''}
-        alignItems='center'
-        borderRadius='3xl'
-        display='flex'
-        padding='10px 15px'
-        fontWeight='500'
-        transition='all .1s'
-        _hover={{
-          bg: `${colorMode === 'dark' ? 'gray.700' : 'gray.100'}`,
-          color: `blue.400`,
-        }}
-      >
-        <Box as={link.icon} boxSize='26px' mr={3} />
-        {link.title}
-      </Box>
+      <Flex flexDir='row' alignItems='center'>
+        <Icon as={link.icon} boxSize='21px' />
+        <Text as='span' ml='16px'>
+          {link.title}
+        </Text>
+      </Flex>
     </Box>
   );
 };

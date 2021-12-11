@@ -28,7 +28,7 @@ class UserService {
    * @returns Array of users
    */
   public async fetchAll(params?: FetchUsersParamsType): Promise<IApiRespose<IUser[]>> {
-    const { page = 1, limit = 6, role, search } = params || {};
+    const { page, limit, role, search } = params || {};
     const result = await this.api.get('/v1/users', {
       params: {
         page,
@@ -99,7 +99,7 @@ class UserService {
    * @param newPassword New password
    * @returns Empty object
    */
-  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<{}>> {
+  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.patch('v1/me/password', {
       oldPassword,
       newPassword,

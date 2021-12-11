@@ -7,6 +7,7 @@ export interface IAppConfig {
     appName: string;
     appDescription: string;
     appVersion: string;
+    appGithubLink: string;
   };
   links: LinkType[];
 }
@@ -23,10 +24,10 @@ export interface ICourse {
   title: string;
   description: string;
   status: CourseStatusEnum;
-  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>;
+  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;
   lessons: ILesson[];
-  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>>;
+  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>>;
   color: ColorType | null;
   students_count: string;
   likes_count: string;
@@ -42,6 +43,7 @@ export interface ILesson {
   description: string;
   duration: string;
   color?: ColorType | undefined | null;
+  materials_count?: string | undefined;
   created_at: string;
   updated_at: string;
 }
@@ -92,6 +94,8 @@ export interface IUser {
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**

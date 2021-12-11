@@ -22,7 +22,7 @@ export default class CourseStore {
 
   public courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null = null;
 
-  public isLoading: boolean = false;
+  public isLoading = false;
 
   constructor(root: RootStore) {
     this.root = root;
@@ -46,30 +46,24 @@ export default class CourseStore {
       });
 
       return result;
-    } catch (error: any) {
-      throw error;
     } finally {
       this.setLoading(false);
     }
   }
 
   public async deleteCourse(id: string) {
-    try {
-      const result = await CourseServiceInstance.delete(id);
+    const result = await CourseServiceInstance.delete(id);
 
-      /**
-       * Remove deleted course form store
-       */
-      runInAction(() => {
-        if (this.courses !== null) {
-          this.courses = this.courses.filter(course => course.id !== id);
-        }
-      });
+    /**
+     * Remove deleted course form store
+     */
+    runInAction(() => {
+      if (this.courses !== null) {
+        this.courses = this.courses.filter(course => course.id !== id);
+      }
+    });
 
-      return result;
-    } catch (error: any) {
-      throw error;
-    }
+    return result;
   }
 
   public async setCourseStatus(id: string, status: CourseStatusEnum) {
@@ -95,7 +89,7 @@ export default class CourseStore {
        */
       const result = await CourseServiceInstance.setStatus(id, status);
       return result;
-    } catch (error: any) {
+    } catch (error) {
       /**
        * Resume status if there was an error on request
        */

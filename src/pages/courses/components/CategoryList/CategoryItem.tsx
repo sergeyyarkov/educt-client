@@ -15,19 +15,23 @@ import { CoursesPageContext } from '@educt/contexts';
  * Hooks
  */
 import { useContext } from 'react';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 export type CategoryItemPropsType = {
   category: ICategory;
 };
 
 const CategoryItem: React.FC<CategoryItemPropsType> = ({ category }) => {
-  const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
-  const isSelected = selectedCategory?.id === category.id;
+  const {
+    pageStore: { coursesStore },
+  } = useRootStore();
+
+  const isSelected = coursesStore.selectedCategory?.id === category.id;
 
   /**
    * Handle click on change category
    */
-  const onCategoryChange = () => setSelectedCategory(category);
+  const onCategoryChange = () => coursesStore.setSelectedCategory(category);
 
   return (
     <Tag

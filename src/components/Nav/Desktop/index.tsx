@@ -37,17 +37,10 @@ const Nav: React.FC = () => {
         zIndex='1'
         backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}
       >
-        <Flex
-          as='nav'
-          flexDirection='column'
-          alignItems='flex-start'
-          textDecoration='none'
-          pt='4rem'
-          pr='5'
-          pl='5'
-          pb='5'
-        >
-          <NavList links={config.links} />
+        <Flex as='nav' flexDirection='column' alignItems='flex-start' textDecoration='none' p='32px 24px'>
+          <Flex flexDir='column' pt='3rem' w='full'>
+            <NavList links={config.links} />
+          </Flex>
         </Flex>
         <Box textAlign='center' mt='auto' mb='5'>
           <Text fontSize='xs' color='gray.500' lineHeight='1.6'>
@@ -55,7 +48,7 @@ const Nav: React.FC = () => {
           </Text>
           <Box textAlign='center' mt='2'>
             <IconButton variant='link' aria-label='GitHub repository'>
-              <Link isExternal href='https://github.com/sergeyyarkov/educt-client'>
+              <Link isExternal href={config.metaData.appGithubLink}>
                 <Box as={FaGithub} />
               </Link>
             </IconButton>
