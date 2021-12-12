@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-
-import BaseModal from '@educt/components/Modal';
+import React from 'react';
 import { MdGroup } from 'react-icons/md';
-import { UserRoleEnum } from '@educt/enums';
+import BaseModal from '@educt/components/Modal';
 import SelectStudentsInput from '@educt/components/SelectStudentsInput';
+import { UserRoleEnum } from '@educt/enums';
+
+/**
+ * Types
+ */
 import { ICourse, IUser } from '@educt/interfaces';
-import { CourseServiceInstance } from '@educt/services';
-import { useToast } from '@chakra-ui/react';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+
+/**
+ * Hooks
+ */
+import { useState } from 'react';
+import { useAttachStudents } from '@educt/hooks/queries';
 
 type AddStudentsModalPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
@@ -24,26 +30,19 @@ const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({
   currentStudents,
   course,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const isMountedRef = useIsMountedRef();
-  const [students, setStudents] = useState<Array<IUser>>([]);
-  const toast = useToast();
+  const { attachStudents, isLoading } = useAttachStudents();
+  const [selected, setSelected] = useState<Array<IUser>>([]);
 
-  const handleSelectStudents = (students: Array<IUser>) => setStudents(students);
+  const handleSelectStudents = (students: Array<IUser>) => setSelected(students);
   const handleAttachStudents = async () => {
-    if (students.length !== 0) {
+    if (selected.length !== 0) {
       try {
-        setIsLoading(true);
-        const ids = students.map(s => s.id);
-        await CourseServiceInstance.attachStudentsList(course.id, ids);
-
-        toast({ title: 'Students added.', status: 'info' });
-        onAdded(students);
+        const ids = selected.map(s => s.id);
+        await attachStudents(course.id, ids);
+        onAdded(selected);
         onClose();
       } catch (error) {
         console.error(error);
-      } finally {
-        if (isMountedRef.current) setIsLoading(false);
       }
     }
   };

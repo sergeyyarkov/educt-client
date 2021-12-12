@@ -32,6 +32,8 @@ export default class EditCourseStore {
     return result;
   }
 
+  // TODO update stor on detaching, attaching, deleting students
+
   /**
    * Remove lesson from store
    *

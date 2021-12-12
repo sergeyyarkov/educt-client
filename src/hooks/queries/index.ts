@@ -16,6 +16,8 @@ import { useCreateCourse } from './course/useCreateCourse';
 import { useUpdateCourse } from './course/useUpdateCourse';
 import { useFetchCourse } from './course/useFetchCourse';
 import { useSetCourseStatus } from './course/useSetCourseStatus';
+import { useAttachStudents } from './course/useAttachStudents';
+import { useDetachStudents } from './course/useDetachStudents';
 
 /**
  * User
@@ -32,6 +34,8 @@ export {
   useUpdateCourse,
   useFetchCourse,
   useSetCourseStatus,
+  useAttachStudents,
+  useDetachStudents,
   useDeleteLesson,
   useCreateUser,
   useDeleteUser,
