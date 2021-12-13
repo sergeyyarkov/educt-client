@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { observer } from 'mobx-react';
+import React from 'react';
 import { ItemProps, Virtuoso } from 'react-virtuoso';
-import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
 import moment from 'moment';
+import * as helpers from '@educt/helpers';
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Flex, Box, Text, IconButton, Icon, Button } from '@chakra-ui/react';
 import { DeleteIcon, DragHandleIcon } from '@chakra-ui/icons';
+import { MdTimer, MdAttachment } from 'react-icons/md';
 
 /**
  * Types
@@ -19,12 +20,11 @@ import DeleteLessonDialog from '@educt/components/Dialogs/DeleteLessonDialog';
 /**
  * Hooks
  */
+import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useColorMode } from '@chakra-ui/react';
-import { MdTimer, MdAttachment } from 'react-icons/md';
-import { useRootStore } from '@educt/hooks/useRootStore';
-import useDidMountEffect from '@educt/hooks/useDidMountEffect';
 import { useDisclosure } from '@chakra-ui/hooks';
+import useDidMountEffect from '@educt/hooks/useDidMountEffect';
 
 /**
  * Contexts
@@ -55,19 +55,16 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
 
 const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   const history = useHistory();
-  const {
-    pageStore: { editCourseStore },
-  } = useRootStore();
-  const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
+  const { onOpen: onOpenDelDialog, onClose: onCloseDelDialog, isOpen: isOpenDelDialog } = useDisclosure();
+  const [lessons, setLessons] = useState<Array<ILesson>>(course.lessons);
   const [deleting, setDeleting] = useState<Pick<ILesson, 'id' | 'title'> | null>(null);
   const handleError = useErrorHandler();
-  const lessons = course.lessons;
 
   const handleCreateLesson = (): void => history.push('/lessons/create');
   const handleEditLesson = (id: string): void => history.push(`/lessons/edit/${id}`);
   const handleDeleteLesson = (lesson: ILesson): void => {
     setDeleting({ id: lesson.id, title: lesson.title });
-    onOpenDeleteDialog();
+    onOpenDelDialog();
   };
 
   const handleChangeOrder = async (ids: string[]) => {
@@ -84,8 +81,10 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       return;
     }
 
-    editCourseStore.reorderLessons(result.source.index, result.destination.index);
+    setLessons(helpers.arrayMove(lessons, result.source.index, result.destination.index));
   };
+
+  const onDeleted = (id: string) => setLessons(prev => prev.filter(l => l.id !== id));
 
   const LessonItem = React.useMemo(() => {
     return ({
@@ -199,7 +198,12 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       {lessons.length !== 0 ? (
         <>
           {deleting && (
-            <DeleteLessonDialog lesson={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />
+            <DeleteLessonDialog
+              lesson={deleting}
+              isOpen={isOpenDelDialog}
+              onClose={onCloseDelDialog}
+              onConfirmed={onDeleted}
+            />
           )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
             <Text fontSize='sm' color='gray.500'>
@@ -255,4 +259,4 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   );
 };
 
-export default observer(LessonList);
+export default LessonList;

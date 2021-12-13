@@ -19,15 +19,17 @@ type DeleteLessonDialogPropsType = {
   lesson: Pick<ILesson, 'id' | 'title'>;
   isOpen: boolean;
   onClose: () => void;
+  onConfirmed?: (id: string) => void | undefined;
 };
 
-const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ lesson, isOpen, onClose }) => {
+const DeleteLessonDialog: React.FC<DeleteLessonDialogPropsType> = ({ lesson, isOpen, onConfirmed, onClose }) => {
   const { deleteLesson, isLoading } = useDeleteLesson();
 
   const handleDelete = async (isConfirmed: boolean) => {
     if (isConfirmed) {
       try {
         await deleteLesson(lesson.id);
+        onConfirmed && onConfirmed(lesson.id);
       } catch (error) {
         console.error(error);
       }

@@ -76,63 +76,61 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
     <Box>
       {editing && <EditUserForm user={editing} isOpen={isOpenEditModal} onClose={onCloseEditModal} />}
       {deleting && <DeleteUserDialog user={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />}
-      {users.length !== 0 ? (
-        <>
-          <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
-            <UserSearch />
-            <CreateUserForm />
-          </Flex>
-          <Box>
-            <Flex mt='5' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
-              <Text>Total: ({pagination.total})</Text>
-              <Text>Actions</Text>
-            </Flex>
-            {!isLoading ? (
-              <Stack mt='4' spacing='2'>
-                {users.map(user => (
-                  <Item
-                    key={user.id}
-                    user={user}
-                    onEdit={user => handleEditUser(user)}
-                    onDelete={user => handleDeleteUser({ id: user.id, fullname: user.fullname })}
-                  />
-                ))}
-              </Stack>
-            ) : (
-              <LoadingList />
-            )}
-          </Box>
-          <Flex margin='2rem 0' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
-            <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
-              <Text fontSize='sm'>
-                Page <b>{pagination.current_page}</b> of {pagesCount}
-              </Text>
-            </Box>
-            <Flex ml='auto' mr='auto' justifyContent='center' flexWrap='wrap' alignItems='center' sx={{ gap: '30px' }}>
-              <Button
-                onClick={() => setSearchingPage(prevP => prevP - 1)}
-                disabled={pagination.current_page <= 1}
-                variant='link'
-                leftIcon={<ChevronLeftIcon />}
-              >
-                Previous page
-              </Button>
-              <Button
-                onClick={() => setSearchingPage(prevP => prevP + 1)}
-                disabled={pagination.current_page === pagesCount}
-                variant='link'
-                rightIcon={<ChevronRightIcon />}
-              >
-                Next page
-              </Button>
-            </Flex>
-          </Flex>
-        </>
-      ) : (
-        <Box textAlign='center' mt='10' userSelect='none'>
+
+      <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>
+        <UserSearch />
+        <CreateUserForm />
+      </Flex>
+      <Box>
+        <Flex mt='5' p='0 10px' fontWeight='bold' alignItems='center' justifyContent='space-between'>
+          <Text>Total: ({pagination.total})</Text>
+          <Text>Actions</Text>
+        </Flex>
+        {!isLoading ? (
+          <Stack mt='4' spacing='2'>
+            {users.map(user => (
+              <Item
+                key={user.id}
+                user={user}
+                onEdit={user => handleEditUser(user)}
+                onDelete={user => handleDeleteUser({ id: user.id, fullname: user.fullname })}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <LoadingList />
+        )}
+      </Box>
+      {users.length === 0 && (
+        <Box textAlign='center' userSelect='none'>
           <Text color='gray.500'>Cannot find any users.</Text>
         </Box>
       )}
+      <Flex margin='2rem 0' flexDirection={{ base: 'column', sm: 'column', md: 'row' }}>
+        <Box textAlign={{ base: 'center', sm: 'center', md: 'left' }} mb={{ base: '2', md: '0' }}>
+          <Text fontSize='sm'>
+            Page <b>{pagination.current_page}</b> of {pagesCount}
+          </Text>
+        </Box>
+        <Flex ml='auto' mr='auto' justifyContent='center' flexWrap='wrap' alignItems='center' sx={{ gap: '30px' }}>
+          <Button
+            onClick={() => setSearchingPage(prevP => prevP - 1)}
+            disabled={pagination.current_page <= 1}
+            variant='link'
+            leftIcon={<ChevronLeftIcon />}
+          >
+            Previous page
+          </Button>
+          <Button
+            onClick={() => setSearchingPage(prevP => prevP + 1)}
+            disabled={pagination.current_page === pagesCount}
+            variant='link'
+            rightIcon={<ChevronRightIcon />}
+          >
+            Next page
+          </Button>
+        </Flex>
+      </Flex>
     </Box>
   );
 };

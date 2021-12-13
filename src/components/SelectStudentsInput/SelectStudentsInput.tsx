@@ -22,14 +22,14 @@ import { BeatLoader } from 'react-spinners';
 import { Virtuoso } from 'react-virtuoso';
 import { FetchUsersParamsType } from '@educt/types';
 
-type SelectUsersInputPropsType = {
+type SelectStudentsInputPropsType = {
   placeholder?: string | undefined;
   searchParams?: FetchUsersParamsType | undefined;
   onSelect: (selected: Array<IUser>) => void;
   currentStudents: ICourse['students'];
 };
 
-const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({
+const SelectStudentsInput: React.FC<SelectStudentsInputPropsType> = ({
   placeholder,
   searchParams: params,
   onSelect,
@@ -151,4 +151,4 @@ const SelectUsersInput: React.FC<SelectUsersInputPropsType> = ({
   );
 };
 
-export default SelectUsersInput;
+export default SelectStudentsInput;

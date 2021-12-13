@@ -1,17 +1,16 @@
 import React from 'react';
-import { Table, Tbody, Button, Input, InputGroup, InputLeftElement, Flex, Box, Text } from '@chakra-ui/react';
+import { Table, Tbody, Input, InputGroup, InputLeftElement, Flex, Box, Text } from '@chakra-ui/react';
 import { MdSearch } from 'react-icons/md';
 import AddStudentsModal from '@educt/components/Modals/AddStudentsModal';
 import { AddButton } from '@educt/components/Buttons';
 import BulkActionsMenu from './BulkActionsMenu';
 import StudentTableHead from './StudentTableHead';
-import { AddIcon } from '@chakra-ui/icons';
 
 /**
  * Types
  */
 import type { StudentTableRowPropsType } from './StudentTableRow';
-import type { ICourse } from '@educt/interfaces';
+import type { ICourse, IUser } from '@educt/interfaces';
 
 /**
  * Hooks
@@ -28,9 +27,8 @@ type StudentTableListPropsType = {
 
 const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   const { render: Row, course } = props;
-  const { students } = course;
 
-  const [rows, setRows] = useState<ICourse['students']>(students);
+  const [rows, setRows] = useState<ICourse['students']>(props.course.students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
   const {
@@ -50,18 +48,19 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
    */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    setRows([
-      ...students.filter(
+    setRows(
+      props.course.students.filter(
         s => s.fullname.toLowerCase().includes(e.target.value) || s.email.toLowerCase().includes(e.target.value)
-      ),
-    ]);
+      )
+    );
   };
 
-  /**
-   * Delete student from state after removing
-   */
   const onRemoved = (removedStudents: ICourse['students']) => {
     setSelected(prev => prev.filter(s => removedStudents.every(r => s.id !== r.id)));
+  };
+
+  const onAdded = (users: IUser[]) => {
+    setRows(prev => [...prev, ...users]);
   };
 
   /**
@@ -133,7 +132,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
         onClose={onCloseAddStudentModal}
         course={course}
         currentStudents={rows}
-        onAdded={users => setRows(prev => [...prev, ...users])}
+        onAdded={onAdded}
       />
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2' alignItems='center'>
@@ -164,7 +163,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
           <AddButton onClick={onOpenAddStudentModal} />
         </Flex>
       </Flex>
-      <Table overflow='hidden' borderRadius='lg' mt='2'>
+      <Table borderRadius='lg' mt='2'>
         <StudentTableHead onSelectAll={handleSelectAll} />
         <Tbody>
           {rows.map(student => (
@@ -184,7 +183,9 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
       </Table>
       {isEmptyRows && (
         <Box textAlign='center' m='6'>
-          <Text color='gray.500'>Cannot find any user.</Text>
+          <Text color='gray.500' userSelect='none'>
+            Cannot find any user.
+          </Text>
         </Box>
       )}
       <Text mt='4' fontSize='sm' color='gray.500'>

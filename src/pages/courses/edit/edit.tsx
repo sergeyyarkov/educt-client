@@ -21,7 +21,6 @@ import LessonList from './components/LessonList';
  * Hooks
  */
 import { useParams } from 'react-router-dom';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
@@ -33,12 +32,7 @@ import { StatusButton } from './components';
  */
 const EditCoursePage: React.FC<IPageProps> = () => {
   const params = useParams<{ id: string }>();
-  const {
-    pageStore: {
-      editCourseStore: { course },
-    },
-  } = useRootStore();
-  const { error, isLoading } = useFetchCourse(params.id);
+  const { error, data: course, isLoading } = useFetchCourse(params.id);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
 
   /**
@@ -68,13 +62,12 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       </PageHeading>
       <PageContent>
         <Box>
-          <Tabs isLazy mt='8'>
+          <Tabs mt='8'>
             <TabList>
               <Tab>Info</Tab>
               <Tab>Lessons</Tab>
               <Tab>Students</Tab>
             </TabList>
-
             <TabPanels>
               <TabPanel>
                 <Box>
