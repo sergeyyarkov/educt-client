@@ -12,7 +12,7 @@ export type StudentTableRowPropsType = {
   student: ICourse['students'][number];
   onSelect: (e: React.ChangeEvent<HTMLInputElement>, student: ICourse['students'][number]) => void;
   actions: {
-    onEdit: (id: string) => () => void;
+    onEdit: (student: ICourse['students'][number]) => () => void;
     onRemove: (id: string) => () => void;
     onDelete: (id: string) => () => void;
   };
@@ -25,7 +25,7 @@ const StudentTableItem: React.FC<StudentTableRowPropsType> = ({ student, isSelec
       <InfoCell id={student.id} fullname={student.fullname} email={student.email} />
       <RegisteredCell registered={student.created_at} />
       <ActionsCell
-        onEdit={actions.onEdit(student.id)}
+        onEdit={actions.onEdit(student)}
         onRemove={actions.onRemove(student.id)}
         onDelete={actions.onDelete(student.id)}
       />

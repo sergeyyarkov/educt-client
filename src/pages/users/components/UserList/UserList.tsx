@@ -8,7 +8,7 @@ import { Button } from '@chakra-ui/button';
  * Components
  */
 import LoadingList from '@educt/components/LoadingList';
-import EditUserForm from '../EditUserForm';
+import EditUserModal from '@educt/components/Modals/EditUserModal';
 import DeleteUserDialog from '@educt/components/Dialogs/DeleteUserDialog';
 
 /**
@@ -74,7 +74,7 @@ const UserList: React.FC<UserListPropsType> = ({ render: Item, limit }) => {
 
   return (
     <Box>
-      {editing && <EditUserForm user={editing} isOpen={isOpenEditModal} onClose={onCloseEditModal} />}
+      {editing && <EditUserModal user={editing} isOpen={isOpenEditModal} onClose={onCloseEditModal} />}
       {deleting && <DeleteUserDialog user={deleting} isOpen={isOpenDeleteDialog} onClose={onCloseDeleteDialog} />}
 
       <Flex justifyContent='space-between' sx={{ gap: '10px' }} flexWrap='wrap'>

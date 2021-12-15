@@ -16,8 +16,9 @@ import { IconType } from 'react-icons';
 
 export interface IBaseModalProps extends ModalProps {
   isOpen: boolean;
+  isDisabled: boolean;
   onClose: () => void;
-  onProceed: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onProceed?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   heading: string;
   icon?: IconType;
   description?: string;
@@ -27,8 +28,19 @@ export interface IBaseModalProps extends ModalProps {
 }
 
 const BaseModal: React.FC<IBaseModalProps> = props => {
-  const { heading, description, isOpen, onClose, onProceed, confirmText, icon, isLoading, loadingText, ...modalProps } =
-    props;
+  const {
+    heading,
+    description,
+    isOpen,
+    onClose,
+    onProceed,
+    confirmText,
+    icon,
+    isLoading,
+    isDisabled,
+    loadingText,
+    ...modalProps
+  } = props;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...modalProps}>
@@ -61,6 +73,7 @@ const BaseModal: React.FC<IBaseModalProps> = props => {
           <Button
             onClick={onProceed}
             isLoading={isLoading}
+            isDisabled={isDisabled}
             loadingText={loadingText || 'Loading...'}
             borderRadius='md'
             variant='outline'

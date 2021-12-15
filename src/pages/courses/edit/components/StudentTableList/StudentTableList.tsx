@@ -1,7 +1,12 @@
 import React from 'react';
 import { Table, Tbody, Input, InputGroup, InputLeftElement, Flex, Box, Text } from '@chakra-ui/react';
 import { MdSearch } from 'react-icons/md';
+
+/**
+ * Components
+ */
 import AddStudentsModal from '@educt/components/Modals/AddStudentsModal';
+import EditUserModal from '@educt/components/Modals/EditUserModal';
 import { AddButton } from '@educt/components/Buttons';
 import BulkActionsMenu from './BulkActionsMenu';
 import StudentTableHead from './StudentTableHead';
@@ -31,10 +36,16 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   const [rows, setRows] = useState<ICourse['students']>(props.course.students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
+  const [editing, setEditing] = useState<ICourse['students'][number] | null>(null);
   const {
     isOpen: isOpenAddStudentModal,
     onOpen: onOpenAddStudentModal,
     onClose: onCloseAddStudentModal,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenEditStudentModal,
+    onOpen: onOpenEditStudentModal,
+    onClose: onCloseEditStudentModal,
   } = useDisclosure();
   const { deleteUser } = useDeleteUser();
   const { detachStudents } = useDetachStudents();
@@ -61,6 +72,10 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
 
   const onAdded = (users: IUser[]) => {
     setRows(prev => [...prev, ...users]);
+  };
+
+  const onEdited = (user: IUser) => {
+    setRows(prev => prev.map(u => (u.id === user.id ? { ...user } : u)));
   };
 
   /**
@@ -104,10 +119,10 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   /**
    * Edit student handler
    */
-  const handleEdit = (id: string) => {
+  const handleEdit = (student: ICourse['students'][number]) => {
     return () => {
-      // TODO open the edit user modal
-      console.log(`editing id: ${id}`);
+      setEditing(student);
+      onOpenEditStudentModal();
     };
   };
 
@@ -134,6 +149,14 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
         currentStudents={rows}
         onAdded={onAdded}
       />
+      {editing && (
+        <EditUserModal
+          user={editing}
+          isOpen={isOpenEditStudentModal}
+          onClose={onCloseEditStudentModal}
+          onEdited={onEdited}
+        />
+      )}
       <Flex justifyContent='space-between' flexDir={{ base: 'column', lg: 'row' }}>
         <Flex mb='2' alignItems='center'>
           <Box>

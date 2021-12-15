@@ -27,7 +27,7 @@ export interface ICourse {
   teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;
   lessons: ILesson[];
-  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>>;
+  students: IUser[];
   color: ColorType | null;
   students_count: string;
   likes_count: string;
