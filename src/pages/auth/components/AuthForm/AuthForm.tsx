@@ -60,7 +60,13 @@ const AuthForm: React.FC = () => {
             <InputLeftElement>
               <Icon as={MdAccountCircle} />
             </InputLeftElement>
-            <Input type='text' placeholder='Login' {...register('login')} isInvalid={!!errors.login} />
+            <Input
+              type='text'
+              placeholder='Login'
+              {...register('login')}
+              autoComplete='login'
+              isInvalid={!!errors.login}
+            />
           </InputGroup>
           <Text as='small' color='red.500'>
             {errors.login?.message}
@@ -72,6 +78,7 @@ const AuthForm: React.FC = () => {
           placeholder='******'
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
+          autoComplete='current-password'
         />
 
         <Button

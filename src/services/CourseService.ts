@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
-import { IApiRespose, ICourse } from '@educt/interfaces';
+import { IApiRespose, ICourse, IUser } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
 import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 
@@ -117,6 +117,11 @@ class CourseService {
       `/v1/courses/${courseId}/detach-student-list`,
       helpers.transformToFormData({ students: ids })
     );
+    return result.data;
+  }
+
+  public async fetchStudentsById(courseId: string): Promise<IApiRespose<Array<IUser>>> {
+    const result = await this.api.get(`/v1/courses/${courseId}/students`);
     return result.data;
   }
 }

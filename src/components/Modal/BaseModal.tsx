@@ -16,7 +16,7 @@ import { IconType } from 'react-icons';
 
 export interface IBaseModalProps extends ModalProps {
   isOpen: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean | undefined;
   onClose: () => void;
   onProceed?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   heading: string;

@@ -32,16 +32,26 @@ type StudentTableListPropsType = {
 
 const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   const { render: Row, course } = props;
-
   const [rows, setRows] = useState<ICourse['students']>(props.course.students);
   const [selected, setSelected] = useState<ICourse['students']>([]);
   const [search, setSearch] = useState<string>('');
   const [editing, setEditing] = useState<ICourse['students'][number] | null>(null);
+  const filteredRows = !search
+    ? rows
+    : rows.filter(s => s.fullname.toLowerCase().includes(search) || s.email.toLowerCase().includes(search));
+
+  /**
+   * Add students modal
+   */
   const {
     isOpen: isOpenAddStudentModal,
     onOpen: onOpenAddStudentModal,
     onClose: onCloseAddStudentModal,
   } = useDisclosure();
+
+  /**
+   * Edit student modal
+   */
   const {
     isOpen: isOpenEditStudentModal,
     onOpen: onOpenEditStudentModal,
@@ -50,39 +60,18 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
   const { deleteUser } = useDeleteUser();
   const { detachStudents } = useDetachStudents();
 
-  const isEmptyRows = rows.length === 0;
+  const isEmptyRows = rows.length === 0 || filteredRows.length === 0;
   const isEmptySelected = selected.length === 0;
-  const isRowSelected = (student: ICourse['students'][number]) => !!selected.find(s => s.id === student.id);
-
-  /**
-   * Search for a student by input
-   */
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setRows(
-      props.course.students.filter(
-        s => s.fullname.toLowerCase().includes(e.target.value) || s.email.toLowerCase().includes(e.target.value)
-      )
-    );
+  const isRowSelected = (student: ICourse['students'][number]) => {
+    return !!selected.find(selected => selected.id === student.id);
   };
 
-  const onRemoved = (removedStudents: ICourse['students']) => {
-    setSelected(prev => prev.filter(s => removedStudents.every(r => s.id !== r.id)));
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
   };
 
-  const onAdded = (users: IUser[]) => {
-    setRows(prev => [...prev, ...users]);
-  };
-
-  const onEdited = (user: IUser) => {
-    setRows(prev => prev.map(u => (u.id === user.id ? { ...user } : u)));
-  };
-
-  /**
-   * Select all students in a table
-   */
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
       setSelected(rows);
       return;
     }
@@ -90,35 +79,30 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
     setSelected([]);
   };
 
-  /**
-   * Select a student with checkbox
-   */
-  const handleSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>, student: ICourse['students'][number]) => {
-    if (e.target.checked) {
-      setSelected(prev => [...prev, student]);
-      return;
-    }
+  const handleSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, student: ICourse['students'][number]) => {
+      if (event.target.checked) {
+        setSelected(prev => [...prev, student]);
+        return;
+      }
 
-    setSelected(prev => prev.filter(s => s.id !== student.id));
-  }, []);
+      setSelected(prev => prev.filter(selected => selected.id !== student.id));
+    },
+    []
+  );
 
-  /**
-   * Delete student handler
-   */
   const handleDelete = (id: string) => {
     return async () => {
       try {
-        const deleted = await deleteUser(id);
-        setRows(prev => prev.filter(s => s.id !== deleted.id));
+        const deletedStudent = await deleteUser(id);
+        setRows(prev => prev.filter(student => student.id !== deletedStudent.id));
+        setSelected(prev => prev.filter(selected => selected.id !== id));
       } catch (error) {
         console.error(error);
       }
     };
   };
 
-  /**
-   * Edit student handler
-   */
   const handleEdit = (student: ICourse['students'][number]) => {
     return () => {
       setEditing(student);
@@ -126,18 +110,30 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
     };
   };
 
-  /**
-   * Remove from course student handler
-   */
   const handleRemove = (id: string) => {
     return async () => {
       try {
         await detachStudents(course.id, [id]);
-        setRows(prev => prev.filter(s => s.id !== id));
+        setRows(prev => prev.filter(student => student.id !== id));
+        setSelected(prev => prev.filter(selected => selected.id !== id));
       } catch (error) {
         console.error(error);
       }
     };
+  };
+
+  const onRemoved = (removedStudents: ICourse['students']) => {
+    setSelected(prev =>
+      prev.filter(selected => removedStudents.every(removedStudent => selected.id !== removedStudent.id))
+    );
+  };
+
+  const onAdded = (users: IUser[]) => {
+    setRows(prev => [...prev, ...users]);
+  };
+
+  const onEdited = (editedUser: IUser) => {
+    setRows(prev => prev.map(student => (student.id === editedUser.id ? { ...editedUser } : student)));
   };
 
   return (
@@ -189,7 +185,7 @@ const StudentTableList: React.FC<StudentTableListPropsType> = props => {
       <Table borderRadius='lg' mt='2'>
         <StudentTableHead onSelectAll={handleSelectAll} />
         <Tbody>
-          {rows.map(student => (
+          {filteredRows.map(student => (
             <Row
               key={student.id}
               student={student}

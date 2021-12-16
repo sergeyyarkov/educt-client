@@ -34,6 +34,7 @@ const AddStudentsModal: React.FC<AddStudentsModalPropsType> = ({
   const [selected, setSelected] = useState<Array<IUser>>([]);
 
   const handleSelectStudents = (students: Array<IUser>) => setSelected(students);
+
   const handleAttachStudents = async () => {
     if (selected.length !== 0) {
       try {
