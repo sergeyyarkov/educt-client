@@ -51,7 +51,7 @@ export const ProfileDescription: React.FC<IProfileDescriptionProps> = props => {
   const { fullname, email, roles, ...boxProps } = props;
   return (
     <Box w='full' ml={{ md: '50' }} mt={{ base: '2', md: '3' }} {...boxProps}>
-      <Flex alignItems='center' justifyContent='space-between'>
+      <Flex alignItems='center' justifyContent={{ base: 'center', md: 'space-between' }}>
         <Box>
           <Heading lineHeight='1.5rem' fontWeight='bold' fontSize='24px'>
             {fullname}

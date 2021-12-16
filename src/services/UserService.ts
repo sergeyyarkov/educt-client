@@ -2,7 +2,12 @@ import { AxiosInstance } from 'axios';
 import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
 import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
-import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
+import {
+  CreateUserParamsType,
+  FetchUsersParamsType,
+  UpdateUserParamsType,
+  UpdateUserContactsParamsType,
+} from '@educt/types';
 
 class UserService {
   public api: AxiosInstance;
@@ -87,8 +92,8 @@ class UserService {
    * @param data New values for contacts
    * @returns Updated contacts
    */
-  public async updateContacts(data: IUserContacts): Promise<IApiRespose<IUserContacts>> {
-    const result = await this.api.put('v1/me/contacts', helpers.removeEmptyValues(data));
+  public async updateContacts(data: UpdateUserContactsParamsType): Promise<IApiRespose<IUserContacts>> {
+    const result = await this.api.patch('v1/me/contacts', data);
     return result.data;
   }
 

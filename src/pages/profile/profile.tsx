@@ -53,7 +53,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
         <ProfileDescription fullname={me.fullname} email={me.email} roles={me.roles} />
       </ProfileBaseInfo>
       <PageContent>
-        <Tabs>
+        <Tabs mt='7'>
           <TabList>
             <Tab>Account information</Tab>
             <Tab>My contacts</Tab>

@@ -4,8 +4,13 @@ import * as helpers from '@educt/helpers';
 /**
  * Types
  */
-import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
-import { IUser, IUserContacts, IMe, IPaginationMeta } from '@educt/interfaces';
+import {
+  CreateUserParamsType,
+  FetchUsersParamsType,
+  UpdateUserContactsParamsType,
+  UpdateUserParamsType,
+} from '@educt/types';
+import { IUser, IMe, IPaginationMeta } from '@educt/interfaces';
 import { UserRoleEnum } from '@educt/enums';
 
 /**
@@ -135,7 +140,7 @@ export default class UserStore {
    * @param data New contacts
    * @returns Updated user contacts
    */
-  public async updateCurrentUserContacts(data: IUserContacts) {
+  public async updateCurrentUserContacts(data: UpdateUserContactsParamsType) {
     const result = await UserServiceInstance.updateContacts(data);
 
     runInAction(() => {

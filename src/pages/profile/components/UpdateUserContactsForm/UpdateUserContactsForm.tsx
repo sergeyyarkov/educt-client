@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import * as helpers from '@educt/helpers';
 import { observer } from 'mobx-react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
-import { Text, Input, Button } from '@chakra-ui/react';
+import { Text, Input } from '@chakra-ui/react';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormHelperText } from '@chakra-ui/form-control';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,6 +16,7 @@ import { IUserContacts } from '@educt/interfaces';
 /**
  * Hooks
  */
+import { useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
@@ -62,7 +64,8 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
   const onSubmit: SubmitHandler<UpdateUserContactsInputType> = async data => {
     try {
       setIsLoading(true);
-      await userStore.updateCurrentUserContacts(data);
+      const updatedFields = helpers.getDirtyFields(dirtyFields, data);
+      await userStore.updateCurrentUserContacts(updatedFields);
       toast({ title: 'Contacts saved!', status: 'info' });
       reset({
         phone_number: data.phone_number ?? '',
@@ -113,7 +116,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 type='text'
                 size='md'
                 variant='flushed'
-                placeholder='@tw_username'
+                placeholder='@username'
                 isInvalid={errors.twitter_id ? true : false}
                 {...register('twitter_id')}
               />
@@ -128,7 +131,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 type='text'
                 size='md'
                 variant='flushed'
-                placeholder='@tg_username'
+                placeholder='@username'
                 isInvalid={errors.telegram_id ? true : false}
                 {...register('telegram_id')}
               />
@@ -143,7 +146,7 @@ const UpdateUserContactsForm: React.FC<UpdateUserContactsFormPropsType> = ({ con
                 type='text'
                 size='md'
                 variant='flushed'
-                placeholder='VKontakte id'
+                placeholder='username'
                 isInvalid={errors.vk_id ? true : false}
                 {...register('vk_id')}
               />

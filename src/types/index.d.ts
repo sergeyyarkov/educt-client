@@ -117,6 +117,12 @@ export type CreateUserParamsType = {
   password: string;
 };
 export type UpdateUserParamsType = { first_name?: string; last_name?: string; email?: string };
+export type UpdateUserContactsParamsType = {
+  phone_number?: string | null | undefined;
+  twitter_id?: string | null | undefined;
+  telegram_id?: string | null | undefined;
+  vk_id?: string | null | undefined;
+};
 
 export type CreateCourseParamsType = {
   title: string;
