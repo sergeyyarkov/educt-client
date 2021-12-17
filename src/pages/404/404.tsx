@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { Flex, Heading, Text, Link, Icon } from '@chakra-ui/react';
+import { Heading, Text, Link, Icon } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
 
 /**

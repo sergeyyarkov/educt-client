@@ -1,5 +1,5 @@
 import { UserRoleEnum } from '@educt/enums';
-import { IUserRole } from '@educt/interfaces';
+import { ICourse, IUserRole, UserCourseType } from '@educt/interfaces';
 
 export function userHasRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boolean {
   for (let i = 0; i < roles.length; i += 1) {
@@ -96,4 +96,9 @@ export function arrayMove<T>(array: T[], from: number, to: number) {
 
 export function getDirtyFields<T>(dirtyFields: { [key: string]: boolean | undefined }, data: T) {
   return Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof T]]));
+}
+
+export function userHasCourse(findingCourse: ICourse, userCourses?: Array<UserCourseType> | undefined) {
+  if (!userCourses) return true;
+  return userCourses.some(course => course.id === findingCourse.id);
 }
