@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import moment from 'moment';
 import * as helpers from '@educt/helpers';
 import { Link as ReactRouterLink } from 'react-router-dom';
@@ -76,9 +76,11 @@ interface ICourseInfoProps extends BoxProps {
 }
 export const CourseInfo: React.FC<ICourseInfoProps> = props => {
   const { id, lessonsCount, studentsCount, likesCount, ...boxProps } = props;
+  const [likes, setLikes] = useState<number>(Number.parseInt(likesCount, 10));
 
   const handleLikeCourse = (id: string) => () => {
     // TODO set like request
+    setLikes(likes => likes + 1);
     console.log(`like course: ${id}`);
   };
 
@@ -96,7 +98,7 @@ export const CourseInfo: React.FC<ICourseInfoProps> = props => {
         </Text>
 
         <Button onClick={handleLikeCourse(id)} leftIcon={<MdThumbUpOffAlt />} variant='ghost'>
-          {likesCount}
+          {likes}
         </Button>
       </Flex>
     </Box>
