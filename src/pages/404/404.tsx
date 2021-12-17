@@ -21,7 +21,7 @@ const NotFoundPage: React.FC<IPageProps> = ({ title }) => {
 
   useEffect(() => {
     toast({ title: `Page not found`, duration: 10000, isClosable: true, status: 'warning' });
-  });
+  }, []);
 
   return (
     <>

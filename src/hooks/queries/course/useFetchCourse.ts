@@ -10,15 +10,13 @@ import { CourseServiceInstance } from '@educt/services';
 import { useEffect } from 'react';
 import useAsync from '../../useAsync';
 
-type CourseResultDataType = Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
-
 const useFetchCourse = (id: string) => {
   const fetch = async (id: string) => {
     const { data } = await CourseServiceInstance.fetchById(id);
     return data;
   };
 
-  const { execute: fetchCourseById, ...state } = useAsync<CourseResultDataType, Parameters<typeof fetch>>(fetch);
+  const { execute: fetchCourseById, ...state } = useAsync<ICourse, Parameters<typeof fetch>>(fetch);
 
   useEffect(() => {
     fetchCourseById(id);

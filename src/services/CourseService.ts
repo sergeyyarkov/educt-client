@@ -35,9 +35,7 @@ class CourseService {
    * @param id Course id
    * @returns Course
    */
-  public async fetchById(
-    id: string
-  ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
+  public async fetchById(id: string): Promise<IApiRespose<ICourse>> {
     const result = await this.api.get(`/v1/courses/${id}`);
     return result.data;
   }

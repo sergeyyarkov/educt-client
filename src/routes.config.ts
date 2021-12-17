@@ -8,6 +8,7 @@ import AuthPage from '@educt/pages/auth/auth';
 import NotFoundPage from '@educt/pages/404/404';
 import CreateCoursePage from '@educt/pages/courses/create/create';
 import CreateLessonPage from '@educt/pages/courses/create-lesson/create-lesson';
+import CoursePage from '@educt/pages/course/course';
 import EditCoursePage from '@educt/pages/courses/edit/edit';
 import ChangePasswordPage from '@educt/pages/profile/change-password/change-password';
 import ChangeEmailPage from '@educt/pages/profile/change-email/change-email';
@@ -31,6 +32,13 @@ export const routes: IRouteOption[] = [
     component: MainPage,
     exact: true,
     isPrivate: true,
+  },
+  {
+    path: '/course/:id',
+    title: 'Course',
+    component: CoursePage,
+    isPrivate: true,
+    exact: true,
   },
   {
     path: '/courses',
