@@ -38,6 +38,8 @@ import type { ICourse, ILesson } from '@educt/interfaces';
  */
 import { useColorModeValue } from '@chakra-ui/react';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { CourseServiceInstance } from '@educt/services';
+import { runInAction } from 'mobx';
 
 export const CourseHeader: React.FC<FlexProps> = props => (
   <Flex justifyContent='space-between' flexDir={{ base: 'column', xl: 'row' }} {...props}>
@@ -75,13 +77,36 @@ interface ICourseInfoProps extends BoxProps {
   likesCount: string;
 }
 export const CourseInfo: React.FC<ICourseInfoProps> = props => {
+  const { userStore } = useRootStore();
+  const { me } = userStore;
   const { id, lessonsCount, studentsCount, likesCount, ...boxProps } = props;
+  const [isLoading, setIsLoading] = useState(false);
   const [likes, setLikes] = useState<number>(Number.parseInt(likesCount, 10));
 
-  const handleLikeCourse = (id: string) => () => {
-    // TODO set like request
-    setLikes(likes => likes + 1);
-    console.log(`like course: ${id}`);
+  const handleLikeCourse = (id: string) => async () => {
+    if (isLoading || me === null) {
+      return;
+    }
+
+    try {
+      const isCourseLiked = me.likes.some(course => course.id === id);
+      const setCourseLike = () => me.likes.push({ id });
+      const unsetCourseLike = () => (me.likes = me.likes.filter(course => course.id !== id));
+
+      if (!isCourseLiked) {
+        setIsLoading(true);
+        setLikes(likes => likes + 1);
+        await CourseServiceInstance.setLike(id);
+        runInAction(setCourseLike);
+      } else {
+        setIsLoading(true);
+        setLikes(likes => likes - 1);
+        await CourseServiceInstance.unsetLike(id);
+        runInAction(unsetCourseLike);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

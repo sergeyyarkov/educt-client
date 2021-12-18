@@ -1,11 +1,9 @@
 import React from 'react';
-import BaseModal from '@educt/components/Modal';
-
 import * as helpers from '@educt/helpers';
 import { FormControl, FormLabel, FormHelperText, Input, Select, Stack } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
 import { MdModeEdit } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
+import BaseModal from '@educt/components/Modal';
 
 /**
  * Types
@@ -49,6 +47,14 @@ const EditUserModal: React.FC<EditUserModalPropsType> = props => {
     userStore: { me },
   } = useRootStore();
   const { updateUser, isLoading } = useUpdateUser();
+  const defaultValues = {
+    login: null,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    role: user.roles[0].slug,
+    password: null,
+  };
   const {
     register,
     handleSubmit,
@@ -57,7 +63,7 @@ const EditUserModal: React.FC<EditUserModalPropsType> = props => {
   } = useForm<UpdateUserInputType>({
     resolver: yupResolver(EditUserSchema),
     defaultValues: useMemo(() => {
-      return props.user;
+      return defaultValues;
     }, [props]),
   });
 
@@ -78,7 +84,7 @@ const EditUserModal: React.FC<EditUserModalPropsType> = props => {
   };
 
   useEffect(() => {
-    reset(props.user);
+    reset(defaultValues);
   }, [props.user]);
 
   return (
