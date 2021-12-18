@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
+import { runInAction } from 'mobx';
 import moment from 'moment';
 import * as helpers from '@educt/helpers';
 import { Link as ReactRouterLink } from 'react-router-dom';
@@ -31,15 +32,15 @@ import {
 /**
  * Types
  */
-import type { ICourse, ILesson } from '@educt/interfaces';
+import type { ICourse } from '@educt/interfaces';
 
 /**
  * Hooks
  */
+import { useState } from 'react';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { CourseServiceInstance } from '@educt/services';
-import { runInAction } from 'mobx';
 
 export const CourseHeader: React.FC<FlexProps> = props => (
   <Flex justifyContent='space-between' flexDir={{ base: 'column', xl: 'row' }} {...props}>

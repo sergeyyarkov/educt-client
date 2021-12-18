@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import * as helpres from '@educt/helpers';
 import { Redirect } from 'react-router-dom';
 import { Flex, Box, Text, Heading, Button, Grid, GridItem, Divider, AvatarGroup, Avatar } from '@chakra-ui/react';
@@ -8,7 +9,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 /**
  * Types
  */
-import { IPageProps } from '@educt/interfaces';
+import type { IPageProps } from '@educt/interfaces';
 
 /**
  * Components
@@ -23,7 +24,6 @@ import LoadingPage from '@educt/components/LoadingPage';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { observer } from 'mobx-react';
 
 const CoursePage: React.FC<IPageProps> = () => {
   const {
