@@ -32,6 +32,7 @@ type EditFormCoursePropsType = {
         image?: File | undefined;
         category_id?: string | undefined;
         description?: string | undefined;
+        education_description?: string | null | undefined;
         teacher_id?: string | undefined;
       }
     | undefined;
@@ -43,6 +44,7 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
     defaultValues: {
       title: defaultValues?.title || '',
       description: defaultValues?.description || '',
+      education_description: defaultValues?.education_description || '',
       category_id: defaultValues?.category_id || '',
       teacher_id: defaultValues?.teacher_id || '',
       image: undefined,
@@ -56,16 +58,17 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
    */
   const onSubmit: SubmitHandler<InputFields> = async data => {
     try {
-      const updated = await updateCourse(id, data);
+      const updatedCourse = await updateCourse(id, data);
 
       /**
        * Update fields with new values
        */
       form.reset({
-        title: updated.title,
-        description: updated.description,
-        teacher_id: updated.teacher.id,
-        category_id: updated.category.id,
+        title: updatedCourse.title,
+        description: updatedCourse.description,
+        education_description: updatedCourse.education_description,
+        teacher_id: updatedCourse.teacher.id,
+        category_id: updatedCourse.category.id,
         image: undefined,
       });
     } catch (error) {

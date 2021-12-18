@@ -75,6 +75,7 @@ const EditCoursePage: React.FC<IPageProps> = () => {
                     defaultValues={{
                       title: course.title,
                       description: course.description,
+                      education_description: course.education_description,
                       category_id: course.category.id,
                       teacher_id: course.teacher.id,
                       image: undefined,

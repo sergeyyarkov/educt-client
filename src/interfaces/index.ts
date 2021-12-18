@@ -23,6 +23,7 @@ export interface ICourse {
   image: AttachmentFileType | null;
   title: string;
   description: string;
+  education_description: string | null;
   status: CourseStatusEnum;
   teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;

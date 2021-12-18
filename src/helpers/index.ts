@@ -31,6 +31,7 @@ export function userContainRoles(userRoles: IUserRole[], roles: UserRoleEnum[]):
  * @returns Clean object that don't have null values
  */
 export function removeEmptyValues(obj: object) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== null));
 }
 
@@ -47,7 +48,7 @@ export function transformToFormData(data: object): FormData {
    * Append value to form-data format
    */
   Object.entries(data).forEach(([key, value]) => {
-    if (value) {
+    if (value !== undefined) {
       if (Array.isArray(value)) {
         value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
         return;

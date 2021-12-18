@@ -39,6 +39,7 @@ const CreateFormCourse: React.FC = () => {
       const course = await createCourse({
         title: data.title,
         description: data.description,
+        education_description: data.education_description,
         teacher_id: data.teacher_id,
         category_id: data.category_id,
         image: data.image,

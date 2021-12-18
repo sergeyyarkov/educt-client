@@ -127,6 +127,7 @@ export type UpdateUserContactsParamsType = {
 export type CreateCourseParamsType = {
   title: string;
   description: string;
+  education_description: string | null;
   teacher_id: string;
   category_id: string;
   image?: File | undefined;
@@ -136,6 +137,7 @@ export type CreateCourseParamsType = {
 export type UpdateCourseParamsType = {
   title?: string | undefined;
   description?: string | undefined;
+  education_description?: string | null | undefined;
   teacher_id?: string | undefined;
   category_id?: string | undefined;
   image?: File | undefined;

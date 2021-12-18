@@ -114,14 +114,13 @@ const CoursePage: React.FC<IPageProps> = () => {
 
             <Divider mt='5' />
           </GridItem>
-          <GridItem borderRadius={'lg'} minWidth={'290px'} h='550px'>
+          <GridItem borderRadius={'lg'} minWidth={'290px'} h='550px' p={{ base: '4', xl: '0px' }}>
             <Box>
               <Text fontSize={'2xl'} fontWeight={'medium'}>
                 What you&apos;ll learn.
               </Text>
               <Text fontSize={'sm'} mt='2'>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste temporibus harum eos praesentium hic,
-                sunt corporis deserunt impedit natus consequuntur?
+                {course.education_description}
               </Text>
             </Box>
 

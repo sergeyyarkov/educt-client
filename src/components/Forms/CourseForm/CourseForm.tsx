@@ -31,6 +31,7 @@ export type InputFields = {
   image?: File | undefined;
   category_id: string;
   description: string;
+  education_description: string | null;
   teacher_id: string;
 };
 
@@ -84,6 +85,7 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
 
   const watchTitle = watch('title');
   const watchDescription = watch('description');
+  const watchEducationDescription = watch('education_description');
 
   return (
     <form onSubmit={onSubmit}>
@@ -114,6 +116,26 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
             <Text as='small' color={!!errors.description || watchDescription?.length > 250 ? 'red.500' : 'gray.500'}>
               {watchDescription?.length || 0}/250
             </Text>
+          </Flex>
+        </FormControl>
+
+        <FormControl id='education_description' isInvalid={!!errors.education_description}>
+          <FormLabel>What you&apos;ll learn section</FormLabel>
+          <Textarea resize='none' minH='80px' {...register('education_description')} />
+          <Flex justifyContent='space-between'>
+            <Text as='small' color='red.500'>
+              {errors.education_description?.message}
+            </Text>
+            {watchEducationDescription && (
+              <Text
+                as='small'
+                color={
+                  !!errors.education_description || watchEducationDescription.length > 250 ? 'red.500' : 'gray.500'
+                }
+              >
+                {watchEducationDescription.length || 0}/250
+              </Text>
+            )}
           </Flex>
         </FormControl>
 

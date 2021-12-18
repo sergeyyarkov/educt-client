@@ -17,6 +17,7 @@ const useCreateCourse = () => {
       const result = await CourseServiceInstance.create({
         title: data.title,
         description: data.description,
+        education_description: data.education_description,
         teacher_id: data.teacher_id,
         category_id: data.category_id,
         image: data.image,

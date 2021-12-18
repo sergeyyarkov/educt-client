@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Link } from 'react-router-dom';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { IconButton, Skeleton } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
-import { Flex, Box, Text } from '@chakra-ui/layout';
+import { Flex, Box, Text, Link } from '@chakra-ui/layout';
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/modal';
 import { MdExitToApp } from 'react-icons/md';
 import { HamburgerIcon } from '@chakra-ui/icons';
@@ -55,20 +55,20 @@ const NavMobile: React.FC = () => {
                   <Flex alignItems='center'>
                     <Avatar size='sm' name={me.fullname} marginRight={3} />
                     <Flex flexDirection='column'>
-                      <Text as='span' mr={2} lineHeight='1.2'>
+                      <Text as='span' fontWeight={'semibold'} fontSize={'sm'} mr={2} lineHeight='1.2'>
                         {me.fullname}
                       </Text>
-                      <Link to={`/profile`} style={{ fontSize: '13px', textDecoration: 'underline' }} onClick={onClose}>
+                      <Link
+                        as={ReactRouterLink}
+                        fontSize={'sm'}
+                        to={`/profile`}
+                        style={{ fontSize: '13px', textDecoration: 'underline' }}
+                        onClick={onClose}
+                      >
                         View profile
                       </Link>
                     </Flex>
-                    <IconButton
-                      onClick={logout}
-                      aria-label='Logout'
-                      backgroundColor={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
-                      marginLeft='auto'
-                      icon={<MdExitToApp />}
-                    />
+                    <IconButton onClick={logout} aria-label='Logout' marginLeft='auto' icon={<MdExitToApp />} />
                   </Flex>
                 </Box>
               ) : (
