@@ -107,6 +107,7 @@ export interface IMe extends IUser {
    * does not have the STUDENT role
    */
   courses?: UserCourseType[];
+  likes: Array<Pick<ICourse, 'id'>>;
   isAdmin: boolean;
   isTeacher: boolean;
   isStudent: boolean;

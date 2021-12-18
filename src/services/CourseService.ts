@@ -35,9 +35,7 @@ class CourseService {
    * @param id Course id
    * @returns Course
    */
-  public async fetchById(
-    id: string
-  ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
+  public async fetchById(id: string): Promise<IApiRespose<ICourse>> {
     const result = await this.api.get(`/v1/courses/${id}`);
     return result.data;
   }
@@ -53,6 +51,28 @@ class CourseService {
     const result = await this.api.post(`/v1/courses/${id}/set-status`, {
       status,
     });
+    return result.data;
+  }
+
+  /**
+   * Set course like
+   *
+   * @param id Course id
+   * @returns Empty data
+   */
+  public async setLike(id: string): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.put(`/v1/courses/${id}/likes`);
+    return result.data;
+  }
+
+  /**
+   * Unset course like
+   *
+   * @param id Course id
+   * @returns Empty data
+   */
+  public async unsetLike(id: string): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.delete(`/v1/courses/${id}/likes`);
     return result.data;
   }
 

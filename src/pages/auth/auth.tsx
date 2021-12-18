@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Redirect } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Box, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 /**
  * Types
@@ -41,11 +41,8 @@ const AuthPage: React.FC<IPageProps> = ({ title }) => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <Box maxW='md' mx='auto'>
-        <Logo mx='auto' h='14' mb={{ base: '10', md: '20' }} />
-        <Heading mb='8' textAlign='center' size='xl' fontWeight='extrabold'>
-          Login to your account
-        </Heading>
+      <Box maxW='md' mx='auto' mt='20'>
+        <Logo mx='auto' h='14' mb={{ base: '10', md: '10' }} />
         <Card>
           <AuthForm />
         </Card>

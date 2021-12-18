@@ -84,7 +84,7 @@ const AuthForm: React.FC = () => {
         <Button
           type='submit'
           colorScheme='blue'
-          size='lg'
+          size='md'
           fontSize='md'
           loadingText='Logging in...'
           isLoading={isLoading}
