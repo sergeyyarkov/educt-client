@@ -22,7 +22,11 @@ export const PageHeading: React.FC<IPageHeadingProps> = props => {
   );
 };
 
-export const PageContent: React.FC<BoxProps> = props => <Box {...props}>{props.children}</Box>;
+export const PageContent: React.FC<BoxProps> = props => (
+  <Box mt='4' {...props}>
+    {props.children}
+  </Box>
+);
 
 export const PageFooter: React.FC<BoxProps> = props => (
   <Box mt='4' {...props}>

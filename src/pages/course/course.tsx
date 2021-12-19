@@ -124,9 +124,9 @@ const CoursePage: React.FC<IPageProps> = () => {
               </Text>
             </Box>
 
-            <Divider mt='5' />
+            <Divider mt='5' mb='5' />
 
-            <Box mt='4'>
+            <Box>
               <Flex alignItems={'center'} justifyContent={'space-between'}>
                 <Text fontSize={'2xl'} fontWeight={'medium'}>
                   Content

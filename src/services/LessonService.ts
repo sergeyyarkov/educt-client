@@ -10,6 +10,17 @@ class LessonService {
   }
 
   /**
+   * Get lesson by id
+   *
+   * @param id Lesson id
+   * @returns Lesson
+   */
+  public async fetchLessonById(id: string): Promise<IApiRespose<ILesson>> {
+    const result = await this.api.get(`/v1/lessons/${id}`);
+    return result.data;
+  }
+
+  /**
    * Delete lesson by id
    *
    * @param id Lesson id

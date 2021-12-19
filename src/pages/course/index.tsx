@@ -188,10 +188,7 @@ export const LessonItem: React.FC<ILessonItemProps> = props => {
       display={'flex'}
       fontSize={'sm'}
       justifyContent={'space-between'}
-      pl='5'
-      pr='5'
-      pb='5'
-      pt='5'
+      p='5'
       minH='85px'
       borderRadius={'xl'}
       transition={'ease-in-out .1s'}
