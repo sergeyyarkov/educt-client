@@ -24,6 +24,7 @@ import LoadingPage from '@educt/components/LoadingPage';
 import { useHistory, useParams } from 'react-router-dom';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { Helmet } from 'react-helmet';
 
 const CoursePage: React.FC<IPageProps> = () => {
   const {
@@ -47,6 +48,9 @@ const CoursePage: React.FC<IPageProps> = () => {
 
   return (
     <PageWrapper maxW='1200px'>
+      <Helmet>
+        <title>{course.title}</title>
+      </Helmet>
       <CourseHeader>
         <CourseHeading title={course.title} teacher={course.teacher} category={course.category} />
         <CourseInfo

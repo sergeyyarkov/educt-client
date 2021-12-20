@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
-import { IApiRespose, ICourse, IUser } from '@educt/interfaces';
+import { IApiRespose, ICourse, ILesson, IUser } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
 import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 
@@ -37,6 +37,17 @@ class CourseService {
    */
   public async fetchById(id: string): Promise<IApiRespose<ICourse>> {
     const result = await this.api.get(`/v1/courses/${id}`);
+    return result.data;
+  }
+
+  /**
+   * Fetch lessons by course id
+   *
+   * @param id Course id
+   * @returns Array of lessons
+   */
+  public async fetchLessonsById(id: string): Promise<IApiRespose<Array<ILesson>>> {
+    const result = await this.api.get(`/v1/courses/${id}/lessons`);
     return result.data;
   }
 
