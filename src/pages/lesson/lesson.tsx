@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import moment from 'moment';
+import * as helpres from '@educt/helpers';
 import { Link as ReactRouterLink, useHistory } from 'react-router-dom';
 import {
   Flex,
@@ -15,14 +16,13 @@ import {
   Stack,
   Icon,
   IconButton,
-  useToast,
   useColorModeValue,
 } from '@chakra-ui/react';
 
 /**
  * Types
  */
-import { ILesson, IPageProps } from '@educt/interfaces';
+import { ILesson, ILessonMaterial, IPageProps } from '@educt/interfaces';
 
 /**
  * Hooks
@@ -32,40 +32,22 @@ import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageEle
 import { useFetchLesson } from '@educt/hooks/queries/lesson/useFetchLesson';
 import LoadingPage from '@educt/components/LoadingPage';
 import { MdOutlineCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { Helmet } from 'react-helmet';
 import { useFetchCourseLessons } from '@educt/hooks/queries/course/useFetchCourseLessons';
+import { LessonServiceInstance } from '@educt/services';
 
 /**
  * Lesson Page
  */
 const LessonPage: React.FC<IPageProps> = () => {
-  const {
-    userStore: { me },
-  } = useRootStore();
   const { id } = useParams<{ id: string }>();
   const { error, data: lesson, isLoading } = useFetchLesson(id);
   const { fetchCourseLessons, data: lessons } = useFetchCourseLessons();
-  const toast = useToast();
   const history = useHistory();
   const [nextLesson, setNextLesson] = useState<ILesson | null>(null);
   const [prevLesson, setPrevLesson] = useState<ILesson | null>(null);
-  const [isPageAvailable, setIsPageAvailable] = useState<boolean>(true);
   const currentLessonRef = useRef<HTMLDivElement | null>(null);
   const bg = useColorModeValue('gray.50', 'gray.700');
-
-  useEffect(() => {
-    /**
-     * Сheck if the user has access to the lesson
-     */
-    if (me === null || lesson === null) return;
-    const isHasAccess = me.courses?.some(course => course.id === lesson.course_id) ?? true;
-
-    if (!isHasAccess) {
-      toast({ title: 'You are not able to view this lesson.', status: 'warning' });
-      setIsPageAvailable(false);
-    }
-  }, []);
 
   useEffect(() => {
     currentLessonRef.current?.scrollIntoView({ block: 'center' });
@@ -88,16 +70,38 @@ const LessonPage: React.FC<IPageProps> = () => {
     }
   }, [lesson]);
 
+  /**
+   * Lesson not found
+   */
   if (error?.response?.status === 404) {
     return <Redirect to='/404' />;
   }
 
+  /**
+   * Unavailable lesson for authorized user
+   */
+  if (error?.response?.status === 403) {
+    return <Redirect to={`/courses`} />;
+  }
+
   if (!lesson || !lessons || isLoading) return <LoadingPage />;
 
-  if (!isPageAvailable) return <Redirect to={`/course/${lesson.course_id}`} />;
-
   const handleNextLesson = () => nextLesson && history.push(`/lesson/${nextLesson.id}`);
+
   const handlePrevLesson = () => prevLesson && history.push(`/lesson/${prevLesson.id}`);
+
+  const handleDownloadMaterial =
+    ({ name, client_name }: ILessonMaterial) =>
+    async () => {
+      const blob = await LessonServiceInstance.fetchMaterial(name);
+      if (blob instanceof Blob) {
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${client_name}`;
+        link.click();
+        window.URL.revokeObjectURL(link.href);
+      }
+    };
 
   return (
     <PageWrapper>
@@ -177,17 +181,41 @@ const LessonPage: React.FC<IPageProps> = () => {
                 <Text fontSize={'2xl'} fontWeight={'medium'}>
                   Materials
                 </Text>
-                <Stack>
-                  {[1, 2, 3].map(n => (
-                    <Flex key={n} alignItems={'center'} mt='5' p='3' bg={bg} borderRadius={'lg'}>
-                      <Icon as={MdOutlineFilePresent} mr='2' h={4} w={4} />
-                      <Text fontSize={'sm'} fontWeight={'medium'} lineHeight={'1rem'}>
-                        lesson-1_sourse-code.zip <br />
-                        <Text as='small'>190kB</Text>
-                      </Text>
-                    </Flex>
-                  ))}
-                </Stack>
+                {lesson.materials.length !== 0 ? (
+                  <Stack>
+                    {lesson.materials.map(material => (
+                      <Flex
+                        key={material.id}
+                        alignItems={'center'}
+                        mt='5'
+                        p='3'
+                        bg={bg}
+                        borderRadius={'lg'}
+                        _hover={{ textDecor: 'underline' }}
+                      >
+                        <Icon as={MdOutlineFilePresent} mr='2' h={4} w={4} />
+                        <Text
+                          onClick={handleDownloadMaterial(material)}
+                          cursor={'pointer'}
+                          overflow={'hidden'}
+                          fontSize={'sm'}
+                          fontWeight={'medium'}
+                          lineHeight={'1rem'}
+                        >
+                          {material.client_name}
+                          <br />
+                          <Text as='small'>{helpres.transformBytes(material.size)}</Text>
+                        </Text>
+                      </Flex>
+                    ))}
+                  </Stack>
+                ) : (
+                  <Box textAlign={'center'} mt='3'>
+                    <Text color='gray.500' fontSize={'sm'}>
+                      There are no materials
+                    </Text>
+                  </Box>
+                )}
               </Box>
             </Box>
           </GridItem>

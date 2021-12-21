@@ -60,7 +60,9 @@ export const ProfileDescription: React.FC<IProfileDescriptionProps> = props => {
               {email}
             </Text>
           </Heading>
-          <UserBadge mt='2' roles={roles} />
+          <Box>
+            <UserBadge mt='2' roles={roles} />
+          </Box>
         </Box>
       </Flex>
     </Box>

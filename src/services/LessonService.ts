@@ -21,6 +21,17 @@ class LessonService {
   }
 
   /**
+   * Download material file by file name
+   *
+   * @param fileName File name
+   * @returns Blob
+   */
+  public async fetchMaterial(fileName: string): Promise<Blob> {
+    const result = await this.api.get(`/v1/lessons/materials/${fileName}`, { responseType: 'blob' });
+    return result.data;
+  }
+
+  /**
    * Delete lesson by id
    *
    * @param id Lesson id
