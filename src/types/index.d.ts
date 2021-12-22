@@ -34,6 +34,12 @@ export type ColorType = {
   hex: string;
 };
 
+export type LessonProgress = {
+  progress: {
+    is_watched: boolean;
+  } | null;
+};
+
 export type ConfirmEmailContainerDataType = {
   newEmail: string;
   expired_seconds: number;

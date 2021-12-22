@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ILesson } from '@educt/interfaces';
 import { ApiServiceInstance } from './ApiService';
+import type { LessonProgress } from '@educt/types';
 
 class LessonService {
   public api: AxiosInstance;
@@ -28,6 +29,17 @@ class LessonService {
    */
   public async fetchMaterial(fileName: string): Promise<Blob> {
     const result = await this.api.get(`/v1/lessons/materials/${fileName}`, { responseType: 'blob' });
+    return result.data;
+  }
+
+  /**
+   * Get progress about lesson
+   *
+   * @param id Lesson id
+   * @returns Progress info
+   */
+  public async fetchProgress(id: string): Promise<IApiRespose<LessonProgress>> {
+    const result = await this.api.get(`/v1/lessons/${id}/progress`);
     return result.data;
   }
 

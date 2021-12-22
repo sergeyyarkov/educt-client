@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import * as helpres from '@educt/helpers';
-import { Link as ReactRouterLink, useHistory } from 'react-router-dom';
+import { Link as ReactRouterLink, Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import {
   Flex,
   Box,
@@ -18,6 +19,9 @@ import {
   IconButton,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { MdOutlineCircle, MdCheckCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import LoadingPage from '@educt/components/LoadingPage';
+import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
 
 /**
  * Types
@@ -27,13 +31,15 @@ import { ILesson, ILessonMaterial, IPageProps } from '@educt/interfaces';
 /**
  * Hooks
  */
-import { Redirect, useParams } from 'react-router-dom';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { useEffect, useRef, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useFetchLesson } from '@educt/hooks/queries/lesson/useFetchLesson';
-import LoadingPage from '@educt/components/LoadingPage';
-import { MdOutlineCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { Helmet } from 'react-helmet';
 import { useFetchCourseLessons } from '@educt/hooks/queries/course/useFetchCourseLessons';
+import { useFetchLessonProgress } from '@educt/hooks/queries/lesson/useFetchLessonProgress';
+
+/**
+ * Services
+ */
 import { LessonServiceInstance } from '@educt/services';
 
 /**
@@ -43,6 +49,7 @@ const LessonPage: React.FC<IPageProps> = () => {
   const { id } = useParams<{ id: string }>();
   const { error, data: lesson, isLoading } = useFetchLesson(id);
   const { fetchCourseLessons, data: lessons } = useFetchCourseLessons();
+  const { fetchLessonProgress } = useFetchLessonProgress();
   const history = useHistory();
   const [nextLesson, setNextLesson] = useState<ILesson | null>(null);
   const [prevLesson, setPrevLesson] = useState<ILesson | null>(null);
@@ -66,7 +73,10 @@ const LessonPage: React.FC<IPageProps> = () => {
 
   useEffect(() => {
     if (lesson !== null) {
-      fetchCourseLessons(lesson.course_id);
+      (async () => {
+        await fetchCourseLessons(lesson.course_id);
+        await fetchLessonProgress(lesson.id);
+      })();
     }
   }, [lesson]);
 
@@ -154,15 +164,20 @@ const LessonPage: React.FC<IPageProps> = () => {
                     ref={lesson.id === id ? currentLessonRef : undefined}
                     as='div'
                     display={'flex'}
+                    minH='100'
                     key={lesson.id}
                     bg={lesson.id === id ? bg : ''}
                     p='4'
                     alignItems={'center'}
-                    _hover={{
-                      bg,
-                    }}
+                    _hover={{ bg }}
                   >
-                    <Icon as={MdOutlineCircle} color='gray.500' w={6} h={6} mr='2' />
+                    <Icon
+                      as={lesson.progress ? MdCheckCircle : MdOutlineCircle}
+                      color={lesson.progress ? 'green.500' : 'gray.500'}
+                      w={6}
+                      h={6}
+                      mr='2'
+                    />
                     <Box>
                       <Text as='small' color='gray.500'>
                         Lesson {i + 1}
@@ -204,7 +219,9 @@ const LessonPage: React.FC<IPageProps> = () => {
                         >
                           {material.client_name}
                           <br />
-                          <Text as='small'>{helpres.transformBytes(material.size)}</Text>
+                          <Text as='small' color='gray.500'>
+                            {helpres.transformBytes(material.size)}
+                          </Text>
                         </Text>
                       </Flex>
                     ))}
