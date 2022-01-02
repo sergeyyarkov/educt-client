@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { AttachmentFileType, ColorType, LinkType } from '@educt/types';
+import { AttachmentFileType, ColorType, LessonProgress, LessonVideoType, LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -27,7 +27,7 @@ export interface ICourse {
   status: CourseStatusEnum;
   teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;
-  lessons: ILesson[];
+  lessons: Omit<ILesson, 'materials' | 'content' | 'progress'>[];
   students: IUser[];
   color: ColorType | null;
   students_count: string;
@@ -45,8 +45,29 @@ export interface ILesson {
   duration: string;
   color?: ColorType | undefined | null;
   materials_count?: string | undefined;
+  materials: Array<ILessonMaterial>;
+  progress: LessonProgress;
+  content: ILessonContent;
+  video?: LessonVideoType | undefined | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ILessonMaterial {
+  id: number;
+  lesson_id: string;
+  name: string;
+  client_name: string;
+  size: number;
+  ext: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ILessonContent {
+  id: number;
+  lesson_id: string;
+  video_url: string;
 }
 
 export interface ICategory {

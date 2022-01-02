@@ -37,6 +37,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course }) => {
         </Text>
         <Box>
           <Tag
+            size='sm'
             color='white'
             boxShadow={`inset 0 0 0px 1px ${course.category.color?.hex}`}
             bg={course.category.color?.hex}

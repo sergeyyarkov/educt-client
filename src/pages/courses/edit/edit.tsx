@@ -14,6 +14,10 @@ import type { IPageProps } from '@educt/interfaces';
 import LoadingPage from '@educt/components/LoadingPage';
 import { EditCourseForm } from '@educt/components/Forms/CourseForm';
 import DeleteCourseDialog from '@educt/components/Dialogs/DeleteCourseDialog';
+import PrevPageButton from '@educt/components/PrevPageButton';
+import { DeleteButton } from '@educt/components/Buttons';
+import { StatusButton } from './components';
+import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
 import { StudentTableList, StudentTableRow } from './components/StudentTableList';
 import LessonList from './components/LessonList';
 
@@ -23,9 +27,6 @@ import LessonList from './components/LessonList';
 import { useParams } from 'react-router-dom';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useDisclosure } from '@chakra-ui/hooks';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
-import { DeleteButton } from '@educt/components/Buttons';
-import { StatusButton } from './components';
 
 /**
  * Course editor
@@ -54,7 +55,11 @@ const EditCoursePage: React.FC<IPageProps> = () => {
       </Helmet>
 
       <DeleteCourseDialog course={course} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />
-      <PageHeading heading='Course editor' description={course.title}>
+      <PageHeading
+        headingPrefix={<PrevPageButton prevPage='/courses' />}
+        heading='Course editor'
+        description={course.title}
+      >
         <Flex mt='5' justifyContent='flex-end'>
           <StatusButton courseId={course.id} currentStatus={course.status} />
           <DeleteButton onClick={onOpenDeleteDialog} ml='2' />
