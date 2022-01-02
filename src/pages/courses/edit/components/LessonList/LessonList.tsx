@@ -60,7 +60,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   const [deleting, setDeleting] = useState<Pick<ILesson, 'id' | 'title'> | null>(null);
   const handleError = useErrorHandler();
 
-  const handleCreateLesson = (): void => history.push('/lessons/create');
+  const handleCreateLesson = (): void => history.push(`/courses/edit/${course.id}/create-lesson`);
   const handleEditLesson = (id: string): void => history.push(`/lessons/edit/${id}`);
   const handleDeleteLesson = (lesson: ICourse['lessons'][number]): void => {
     setDeleting({ id: lesson.id, title: lesson.title });

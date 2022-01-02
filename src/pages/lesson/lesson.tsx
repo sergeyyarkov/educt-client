@@ -3,6 +3,7 @@ import moment from 'moment';
 import * as helpres from '@educt/helpers';
 import { Link as ReactRouterLink, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import axios from 'axios';
 import {
   Flex,
   Box,
@@ -17,11 +18,12 @@ import {
   Stack,
   Icon,
   IconButton,
-  useColorModeValue,
 } from '@chakra-ui/react';
+import ReactPlayer from 'react-player';
 import { MdOutlineCircle, MdCheckCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import LoadingPage from '@educt/components/LoadingPage';
 import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { EditIcon } from '@chakra-ui/icons';
 
 /**
  * Types
@@ -33,6 +35,8 @@ import { ILesson, ILessonMaterial, IPageProps } from '@educt/interfaces';
  */
 import { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { useColorModeValue, useToast } from '@chakra-ui/react';
 import { useFetchLesson } from '@educt/hooks/queries/lesson/useFetchLesson';
 import { useFetchCourseLessons } from '@educt/hooks/queries/course/useFetchCourseLessons';
 import { useFetchLessonProgress } from '@educt/hooks/queries/lesson/useFetchLessonProgress';
@@ -47,10 +51,14 @@ import { LessonServiceInstance } from '@educt/services';
  */
 const LessonPage: React.FC<IPageProps> = () => {
   const { id } = useParams<{ id: string }>();
+  const {
+    userStore: { me },
+  } = useRootStore();
   const { error, data: lesson, isLoading } = useFetchLesson(id);
   const { fetchCourseLessons, data: lessons } = useFetchCourseLessons();
   const { fetchLessonProgress } = useFetchLessonProgress();
   const history = useHistory();
+  const toast = useToast();
   const [nextLesson, setNextLesson] = useState<ILesson | null>(null);
   const [prevLesson, setPrevLesson] = useState<ILesson | null>(null);
   const currentLessonRef = useRef<HTMLDivElement | null>(null);
@@ -75,7 +83,7 @@ const LessonPage: React.FC<IPageProps> = () => {
     if (lesson !== null) {
       (async () => {
         await fetchCourseLessons(lesson.course_id);
-        await fetchLessonProgress(lesson.id);
+        lesson.video && (await fetchLessonProgress(lesson.id));
       })();
     }
   }, [lesson]);
@@ -100,18 +108,34 @@ const LessonPage: React.FC<IPageProps> = () => {
 
   const handlePrevLesson = () => prevLesson && history.push(`/lesson/${prevLesson.id}`);
 
+  const handleEditLesson = () => history.push(`/lessons/edit/${id}`);
+
   const handleDownloadMaterial =
     ({ name, client_name }: ILessonMaterial) =>
     async () => {
-      const blob = await LessonServiceInstance.fetchMaterial(name);
-      if (blob instanceof Blob) {
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `${client_name}`;
-        link.click();
-        window.URL.revokeObjectURL(link.href);
+      try {
+        const blob = await LessonServiceInstance.fetchMaterial(name);
+        if (blob instanceof Blob) {
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `${client_name}`;
+          link.click();
+          window.URL.revokeObjectURL(link.href);
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              toast({ title: 'File not found.', status: 'error' });
+            }
+          }
+        } else {
+          console.error(error);
+        }
       }
     };
+
+  if (me === null) return <LoadingPage />;
 
   return (
     <PageWrapper>
@@ -119,15 +143,27 @@ const LessonPage: React.FC<IPageProps> = () => {
         <title>{lesson.title}</title>
       </Helmet>
       <PageHeading heading={lesson.title}>
-        <Box mt='3'>
+        <Flex mt='3' alignItems={'center'} justifyContent={'space-between'}>
           <Text fontSize={'sm'}>~{moment.duration(lesson.duration, 'minutes').humanize()}</Text>
-        </Box>
+          {(me.isAdmin || me.isTeacher) && (
+            <Button onClick={handleEditLesson} leftIcon={<EditIcon />} variant={'outline'} size='sm'>
+              Edit
+            </Button>
+          )}
+        </Flex>
       </PageHeading>
       <PageContent>
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
             <Box>
-              <Box bg={lesson.color?.hex} h={{ base: '200px', sm: '350px', lg: '400px', xl: '500' }} />
+              <ReactPlayer width={'100%'} height={'100%'} controls url={lesson.video?.url} />
+              {!lesson.video && (
+                <Flex h='500px' justifyContent={'center'} alignItems={'center'}>
+                  <Text color='gray.500' userSelect={'none'}>
+                    Video has not been uploaded yet.
+                  </Text>
+                </Flex>
+              )}
             </Box>
 
             <Flex justifyContent={'flex-end'} mt='3'>

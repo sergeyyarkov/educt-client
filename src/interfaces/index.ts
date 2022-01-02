@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { AttachmentFileType, ColorType, LessonProgress, LinkType } from '@educt/types';
+import { AttachmentFileType, ColorType, LessonProgress, LessonVideoType, LinkType } from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -48,6 +48,7 @@ export interface ILesson {
   materials: Array<ILessonMaterial>;
   progress: LessonProgress;
   content: ILessonContent;
+  video?: LessonVideoType | undefined | null;
   created_at: string;
   updated_at: string;
 }
@@ -58,7 +59,6 @@ export interface ILessonMaterial {
   name: string;
   client_name: string;
   size: number;
-  url: string;
   ext: string;
   created_at: string;
   updated_at: string;

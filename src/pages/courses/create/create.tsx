@@ -11,24 +11,23 @@ import { IPageProps } from '@educt/interfaces';
  */
 import PrevPageButton from '@educt/components/PrevPageButton';
 import { CreateCourseForm } from '@educt/components/Forms/CourseForm';
+import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
 
 /**
  * Create course page
  */
 const CreateCoursePage: React.FC<IPageProps> = () => {
   return (
-    <Box>
-      <Box>
-        <Flex alignItems='center'>
-          <PrevPageButton prevPage='/courses' />
-          <Heading as='h1'>Course creation</Heading>
-        </Flex>
-        <Text mt='3'>Fill in the required fields to create a course</Text>
-      </Box>
-      <Box mt='5'>
+    <PageWrapper>
+      <PageHeading
+        headingPrefix={<PrevPageButton prevPage='/courses' />}
+        heading='Course Creation'
+        description='Fill in the required fields to create a new course'
+      />
+      <PageContent>
         <CreateCourseForm />
-      </Box>
-    </Box>
+      </PageContent>
+    </PageWrapper>
   );
 };
 

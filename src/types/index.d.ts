@@ -40,6 +40,17 @@ export type LessonProgress = {
   } | null;
 };
 
+export type LessonVideoType = {
+  id: number;
+  client_name: string;
+  ext: string;
+  name: string;
+  size: number;
+  url: string;
+  created_at: '2022-01-02T21:39:08.481+03:00';
+  updated_at: string;
+};
+
 export type ConfirmEmailContainerDataType = {
   newEmail: string;
   expired_seconds: number;
