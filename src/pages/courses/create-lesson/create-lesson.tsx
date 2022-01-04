@@ -22,7 +22,7 @@ const CreateLessonPage: React.FC<IPageProps> = () => {
 
   return (
     <PageWrapper>
-      <PageHeading heading='Lesson Creation' description='Create new lesson ' />
+      <PageHeading heading='Lesson Creation' description='Create new lesson' />
       <PageContent>
         <CreateLessonForm />
       </PageContent>

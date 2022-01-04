@@ -10,6 +10,7 @@ const CreateLessonForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<InputFields> = async data => {
     console.log('creating...');
+    console.log(data);
   };
 
   return (
