@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as helpres from '@educt/helpers';
 import { Stack, Flex, Box, Icon, Text, Input, IconButton, Button } from '@chakra-ui/react';
 import { MdOutlineFilePresent } from 'react-icons/md';
@@ -12,12 +12,11 @@ import { FileSupportedFormatsEnum } from '@educt/enums';
 
 type FilesUploaderPropsType = {
   onChange: (files: File[]) => void;
-  files?: Array<File> | undefined;
+  files?: File[] | undefined;
 };
 
 const FilesUploader: React.FC<FilesUploaderPropsType> = ({ onChange, files }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]);
 
   const onSelectFileHandler = () => {
     if (fileInputRef.current) {
@@ -28,12 +27,9 @@ const FilesUploader: React.FC<FilesUploaderPropsType> = ({ onChange, files }) =>
   /**
    * Detach file
    */
-  const onRemoveSelectedFileHandler = (selectedFile: File) => () =>
-    setSelectedFiles(selectedFiles => {
-      const updated = selectedFiles.filter(file => file.name !== selectedFile.name);
-      onChange(updated);
-      return updated;
-    });
+  const onRemoveSelectedFileHandler = (selectedFile: File) => () => {
+    onChange([...Array.from(files?.filter(file => file.name !== selectedFile.name) || [])]);
+  };
 
   /**
    * Attach file
@@ -41,20 +37,13 @@ const FilesUploader: React.FC<FilesUploaderPropsType> = ({ onChange, files }) =>
   const onChangeFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    const { files } = e.target;
-
-    if (files && files.length !== 0) {
-      const isAlreadySelected = selectedFiles.find(selectedFile =>
-        Array.from(files).some(file => file.name === selectedFile.name)
+    if (e.target.files && e.target.files.length !== 0) {
+      const isAlreadySelected = (files || []).find(selectedFile =>
+        Array.from(e.target.files || []).some(file => file.name === selectedFile.name)
       );
 
       if (isAlreadySelected) return;
-
-      setSelectedFiles(selectedFiles => {
-        const updated = [...selectedFiles, ...Array.from(files)];
-        onChange(updated);
-        return updated;
-      });
+      onChange([...Array.from(files || []), ...e.target.files]);
     }
   };
 
@@ -72,7 +61,7 @@ const FilesUploader: React.FC<FilesUploaderPropsType> = ({ onChange, files }) =>
       />
       {files && (
         <Stack>
-          {selectedFiles.map((file, index) => (
+          {files.map((file, index) => (
             <Flex
               key={index}
               alignItems={'center'}

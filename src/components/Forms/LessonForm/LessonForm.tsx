@@ -37,7 +37,6 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
   const {
     control,
     register,
-    watch,
     formState: { errors, isDirty },
   } = reactHookForm;
 
@@ -104,7 +103,7 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
             )}
           />
           <Text as='small' color='red.500'>
-            {errors.materials?.map(m => m.message)}
+            {errors.materials?.message}
           </Text>
           <FormHelperText>
             Supported formats:{' '}

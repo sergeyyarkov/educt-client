@@ -19,7 +19,7 @@ export enum VideoSupportedFormatsEnum {
 
 export enum FileSupportedFormatsEnum {
   PDF = 'application/pdf',
-  ZIP = 'application/zip',
+  ZIP = 'application/x-zip-compressed',
   RAR = 'application/x-rar-compressed',
   DOC = 'application/msword',
   DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
