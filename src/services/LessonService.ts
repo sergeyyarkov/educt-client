@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import * as helpers from '@educt/helpers';
 import { IApiRespose, ILesson } from '@educt/interfaces';
 import { ApiServiceInstance } from './ApiService';
 import type { CreateLessonParamsType, LessonProgress } from '@educt/types';
@@ -49,7 +50,8 @@ class LessonService {
    * @param data Lesson data for creating
    */
   public async create(data: CreateLessonParamsType): Promise<IApiRespose<ILesson>> {
-    console.log(data);
+    const result = await this.api.post(`/v1/lessons`, helpers.transformToFormData(data));
+    return result.data;
   }
 
   /**

@@ -23,7 +23,7 @@ export type InputFields = {
   description: string;
   duration: string;
   video: File;
-  materials?: File[] | undefined;
+  materials?: FileList | undefined;
 };
 
 export type LessonFormPropsType = {
@@ -99,7 +99,7 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
             control={control}
             name='materials'
             render={({ field: { onChange, value: files } }) => (
-              <FilesUploader onChange={files => onChange(files)} files={files} />
+              <FilesUploader onChange={files => onChange(files)} files={Array.from(files || [])} />
             )}
           />
           <Text as='small' color='red.500'>
