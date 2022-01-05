@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Flex, Box, Icon, Text, Button, Input, AspectRatio, useColorModeValue } from '@chakra-ui/react';
 import { MdUpload } from 'react-icons/md';
 import { VideoSupportedFormatsEnum } from '@educt/enums';
@@ -10,6 +10,8 @@ type VideoUploaderPropsType = {
 
 const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoObjectUrl, setVideoObjectUrl] = useState<string | undefined>(undefined);
 
   const onSelectFileHandler = () => {
     if (fileInputRef.current) {
@@ -25,25 +27,30 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
     if (files && files.length !== 0) {
       const file = files[0];
 
-      file.type.match('video.*') && onChange(file);
+      if (file.type.match('video.*')) {
+        onChange(file);
+        setVideoObjectUrl(prevUrl => {
+          prevUrl && URL.revokeObjectURL(prevUrl);
+          const newUrl = URL.createObjectURL(file);
+          return newUrl;
+        });
+      }
     }
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [videoObjectUrl]);
+
   return (
     <Box>
-      <Input
-        type='file'
-        ref={fileInputRef}
-        onChange={onChangeFileHandler}
-        display='none'
-        accept={Object.keys(VideoSupportedFormatsEnum)
-          .map(ext => `.${ext.toLowerCase()}`)
-          .join(', ')}
-      />
-      {file ? (
+      {file && videoObjectUrl ? (
         <Box>
           <AspectRatio maxH='lg' mt='2'>
-            <video controls style={{ borderRadius: '5px' }}>
-              <source src={URL.createObjectURL(file)} />
+            <video ref={videoRef} controls style={{ borderRadius: '5px' }}>
+              <source src={videoObjectUrl} />
             </video>
           </AspectRatio>
           <Button
@@ -59,7 +66,7 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
         </Box>
       ) : (
         <Flex
-          p='40px 0'
+          p='40px 10px'
           textAlign={'center'}
           borderRadius={'md'}
           flexDir={'column'}
@@ -83,6 +90,20 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
           </Button>
         </Flex>
       )}
+      <Input
+        type='file'
+        ref={fileInputRef}
+        onChange={onChangeFileHandler}
+        maxW={'0'}
+        h='0'
+        display={'block'}
+        opacity={'0'}
+        ml='auto'
+        mr='auto'
+        accept={Object.keys(VideoSupportedFormatsEnum)
+          .map(ext => `.${ext.toLowerCase()}`)
+          .join(', ')}
+      />
     </Box>
   );
 };

@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ILesson } from '@educt/interfaces';
 import { ApiServiceInstance } from './ApiService';
-import type { LessonProgress } from '@educt/types';
+import type { CreateLessonParamsType, LessonProgress } from '@educt/types';
 
 class LessonService {
   public api: AxiosInstance;
@@ -41,6 +41,15 @@ class LessonService {
   public async fetchProgress(id: string): Promise<IApiRespose<LessonProgress>> {
     const result = await this.api.get(`/v1/lessons/${id}/progress`);
     return result.data;
+  }
+
+  /**
+   * Create new lesson
+   *
+   * @param data Lesson data for creating
+   */
+  public async create(data: CreateLessonParamsType): Promise<IApiRespose<ILesson>> {
+    console.log(data);
   }
 
   /**

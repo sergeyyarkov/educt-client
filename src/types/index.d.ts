@@ -160,3 +160,12 @@ export type UpdateCourseParamsType = {
   image?: File | undefined;
   status?: CourseStatusEnum | undefined;
 };
+
+export type CreateLessonParamsType = {
+  title: string;
+  description: string;
+  duration: string;
+  course_id: string;
+  video: File;
+  materials?: File[] | undefined;
+};

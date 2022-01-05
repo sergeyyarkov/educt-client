@@ -48,10 +48,10 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
           <InputGroup>
             <Input placeholder='Lesson name' type='text' {...register('title')} />
           </InputGroup>
-          <FormHelperText>e.g Introduction</FormHelperText>
           <Text as='small' color='red.500'>
             {errors.title?.message}
           </Text>
+          <FormHelperText>e.g Introduction</FormHelperText>
         </FormControl>
 
         <FormControl isRequired id='description' isInvalid={!!errors.description}>
