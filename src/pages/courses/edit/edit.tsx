@@ -36,16 +36,10 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   const { error, data: course, isLoading } = useFetchCourse(params.id);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
 
-  /**
-   * Not Found
-   */
   if (error?.response?.status === 404) {
     return <Redirect to='/404' />;
   }
 
-  /**
-   * Loading
-   */
   if (!course || isLoading) return <LoadingPage />;
 
   return (

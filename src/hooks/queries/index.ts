@@ -7,6 +7,7 @@ import { useLogout } from './auth/useLogout';
 /**
  * Lesson
  */
+import { useCreateLesson } from './lesson/useCreateLesson';
 import { useDeleteLesson } from './lesson/useDeleteLesson';
 
 /**
@@ -36,6 +37,7 @@ export {
   useSetCourseStatus,
   useAttachStudents,
   useDetachStudents,
+  useCreateLesson,
   useDeleteLesson,
   useCreateUser,
   useDeleteUser,

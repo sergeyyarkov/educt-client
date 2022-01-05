@@ -67,7 +67,7 @@ export interface ILessonMaterial {
 export interface ILessonContent {
   id: number;
   lesson_id: string;
-  video_url: string;
+  body: string;
 }
 
 export interface ICategory {

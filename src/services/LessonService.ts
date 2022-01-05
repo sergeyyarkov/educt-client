@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
+import * as helpers from '@educt/helpers';
 import { IApiRespose, ILesson } from '@educt/interfaces';
 import { ApiServiceInstance } from './ApiService';
-import type { LessonProgress } from '@educt/types';
+import type { CreateLessonParamsType, LessonProgress } from '@educt/types';
 
 class LessonService {
   public api: AxiosInstance;
@@ -44,6 +45,16 @@ class LessonService {
   }
 
   /**
+   * Create new lesson
+   *
+   * @param data Lesson data for creating
+   */
+  public async create(data: CreateLessonParamsType): Promise<IApiRespose<ILesson>> {
+    const result = await this.api.post(`/v1/lessons`, helpers.transformToFormData(data));
+    return result.data;
+  }
+
+  /**
    * Delete lesson by id
    *
    * @param id Lesson id
@@ -60,7 +71,7 @@ class LessonService {
    * @param ids Ordered ids of lessons
    * @returns Empty data
    */
-  public async saveOrder(ids: string[]): Promise<IApiRespose<any>> {
+  public async saveOrder(ids: string[]): Promise<IApiRespose<Record<string, unknown>>> {
     const result = await this.api.post('/v1/lessons/save-order', {
       ids,
     });
