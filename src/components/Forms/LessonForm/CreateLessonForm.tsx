@@ -1,9 +1,17 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LessonForm } from '.';
 import type { InputFields } from './LessonForm';
+import { LessonForm } from '.';
+
+/**
+ * Validator
+ */
 import LessonFormSchema from './LessonForm.validator';
+
+/**
+ * Hooks
+ */
 import { useCreateLesson } from '@educt/hooks/queries';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -14,7 +22,7 @@ const CreateLessonForm: React.FC = () => {
   const history = useHistory();
 
   const onSubmit: SubmitHandler<InputFields> = async data => {
-    const lesson = await createLesson({
+    await createLesson({
       title: data.title,
       description: data.description,
       duration: data.duration,
@@ -22,7 +30,6 @@ const CreateLessonForm: React.FC = () => {
       materials: Array.from(data.materials || []),
       course_id,
     });
-    console.log(`created: ${lesson}`);
     history.push(`/courses/edit/${course_id}`);
   };
 

@@ -71,7 +71,7 @@ class LessonService {
    * @param ids Ordered ids of lessons
    * @returns Empty data
    */
-  public async saveOrder(ids: string[]): Promise<IApiRespose<any>> {
+  public async saveOrder(ids: string[]): Promise<IApiRespose<Record<string, unknown>>> {
     const result = await this.api.post('/v1/lessons/save-order', {
       ids,
     });
