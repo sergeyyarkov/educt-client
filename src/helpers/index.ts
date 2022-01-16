@@ -80,6 +80,11 @@ export function transformBytes(bytes: number, decimals = 2): string {
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
 
+export function transformBlobToFile(blob: Blob, fileName: string) {
+  const file = new File([blob], fileName, { type: blob.type });
+  return file;
+}
+
 /**
  *
  * @param array Array

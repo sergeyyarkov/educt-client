@@ -7,7 +7,7 @@ import { LessonForm } from '.';
 /**
  * Validator
  */
-import LessonFormSchema from './LessonForm.validator';
+import { CreateLessonFormSchema } from './LessonForm.validator';
 
 /**
  * Hooks
@@ -16,7 +16,7 @@ import { useCreateLesson } from '@educt/hooks/queries';
 import { useHistory, useParams } from 'react-router-dom';
 
 const CreateLessonForm: React.FC = () => {
-  const form = useForm<InputFields>({ resolver: yupResolver(LessonFormSchema) });
+  const form = useForm<InputFields>({ resolver: yupResolver(CreateLessonFormSchema) });
   const { createLesson, isLoading } = useCreateLesson();
   const { id: course_id } = useParams<{ id: string }>();
   const history = useHistory();

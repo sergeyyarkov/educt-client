@@ -2,16 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Flex, Box, Icon, Text, Button, Input, AspectRatio, useColorModeValue } from '@chakra-ui/react';
 import { MdUpload } from 'react-icons/md';
 import { VideoSupportedFormatsEnum } from '@educt/enums';
+import { LessonVideoType } from '@educt/types';
 
 type VideoUploaderPropsType = {
   onChange: (file: File) => void;
-  file?: File | undefined;
+  file?: File | LessonVideoType | undefined;
+  preloadedVideoUrl?: string | undefined;
 };
 
-const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => {
+const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file, preloadedVideoUrl }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoObjectUrl, setVideoObjectUrl] = useState<string | undefined>(undefined);
+  const isPreloadedVideo = preloadedVideoUrl !== undefined;
 
   const onSelectFileHandler = () => {
     if (fileInputRef.current) {
@@ -38,11 +41,23 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
     }
   };
 
+  const ChangeVideoButton = () => (
+    <Button onClick={onSelectFileHandler} leftIcon={<MdUpload />} variant={'outline'} size='sm' mt='2' float='right'>
+      Change video
+    </Button>
+  );
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
     }
   }, [videoObjectUrl]);
+
+  useEffect(() => {
+    if (file && file instanceof File) {
+      setVideoObjectUrl(URL.createObjectURL(file));
+    }
+  }, []);
 
   return (
     <Box>
@@ -53,18 +68,9 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
               <source src={videoObjectUrl} />
             </video>
           </AspectRatio>
-          <Button
-            onClick={onSelectFileHandler}
-            leftIcon={<MdUpload />}
-            variant={'outline'}
-            size='sm'
-            mt='2'
-            float='right'
-          >
-            Change video
-          </Button>
+          <ChangeVideoButton />
         </Box>
-      ) : (
+      ) : !isPreloadedVideo ? (
         <Flex
           p='40px 10px'
           textAlign={'center'}
@@ -89,6 +95,15 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
             Select file
           </Button>
         </Flex>
+      ) : (
+        <Box>
+          <AspectRatio maxH='lg' mt='2'>
+            <video controls style={{ borderRadius: '5px' }}>
+              <source src={preloadedVideoUrl} />
+            </video>
+          </AspectRatio>
+          <ChangeVideoButton />
+        </Box>
       )}
       <Input
         type='file'
@@ -97,6 +112,7 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file }) => 
         maxW={'0'}
         h='0'
         display={'block'}
+        required={false}
         opacity={'0'}
         ml='auto'
         mr='auto'

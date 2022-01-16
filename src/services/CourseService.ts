@@ -88,6 +88,7 @@ class CourseService {
   }
 
   /**
+   * Create new course
    *
    * @param data Data for creating course
    * @returns
@@ -104,6 +105,13 @@ class CourseService {
     return result.data;
   }
 
+  /**
+   * Update course
+   *
+   * @param id Course id
+   * @param data Data to update
+   * @returns Updated course
+   */
   public async update(
     id: string,
     data: UpdateCourseParamsType

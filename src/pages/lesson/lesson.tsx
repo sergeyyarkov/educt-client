@@ -156,8 +156,9 @@ const LessonPage: React.FC<IPageProps> = () => {
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
             <Box>
-              <ReactPlayer width={'100%'} height={'100%'} controls url={lesson.video?.url} />
-              {!lesson.video && (
+              {lesson.video ? (
+                <ReactPlayer width={'100%'} height={'100%'} controls url={lesson.video?.url} />
+              ) : (
                 <Flex h='500px' justifyContent={'center'} alignItems={'center'}>
                   <Text color='gray.500' userSelect={'none'}>
                     Video has not been uploaded yet.

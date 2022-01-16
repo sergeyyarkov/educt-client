@@ -6,6 +6,7 @@ import { CourseStatusEnum } from '@educt/enums';
 /**
  * Hooks
  */
+import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 export const CoursesTabs: React.FC<BoxProps> = props => {
@@ -13,6 +14,10 @@ export const CoursesTabs: React.FC<BoxProps> = props => {
     userStore: { me },
     pageStore: { coursesStore },
   } = useRootStore();
+
+  useEffect(() => {
+    coursesStore.setShowedStatus(undefined);
+  }, []);
 
   return (
     me &&

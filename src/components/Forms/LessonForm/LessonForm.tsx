@@ -17,6 +17,7 @@ import { Controller, UseFormReturn } from 'react-hook-form';
 import VideoUploader from '@educt/components/VideoUploader';
 import FilesUploader from '@educt/components/FilesUploader';
 import { FileSupportedFormatsEnum, VideoSupportedFormatsEnum } from '@educt/enums';
+import type { AttachmentFileType, LessonVideoType } from '@educt/types';
 
 export type InputFields = {
   title: string;
@@ -31,9 +32,18 @@ export type LessonFormPropsType = {
   buttonLabel: string;
   isLoading: boolean;
   reactHookForm: UseFormReturn<InputFields>;
+  preloadedVideo?: LessonVideoType | undefined;
+  preloadedMaterials?: AttachmentFileType[] | undefined;
 };
 
-const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLoading, reactHookForm }) => {
+const LessonForm: React.FC<LessonFormPropsType> = ({
+  onSubmit,
+  buttonLabel,
+  isLoading,
+  reactHookForm,
+  preloadedVideo,
+  preloadedMaterials,
+}) => {
   const {
     control,
     register,
@@ -70,7 +80,7 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
             control={control}
             name='video'
             render={({ field: { onChange, value: file } }) => (
-              <VideoUploader onChange={file => onChange(file)} file={file} />
+              <VideoUploader onChange={file => onChange(file)} file={file} preloadedVideoUrl={preloadedVideo?.url} />
             )}
           />
           <Text as='small' color='red.500'>
@@ -99,7 +109,11 @@ const LessonForm: React.FC<LessonFormPropsType> = ({ onSubmit, buttonLabel, isLo
             control={control}
             name='materials'
             render={({ field: { onChange, value: files } }) => (
-              <FilesUploader onChange={files => onChange(files)} files={Array.from(files || [])} />
+              <FilesUploader
+                onChange={files => onChange(files)}
+                files={Array.from(files || [])}
+                preloadedFiles={preloadedMaterials}
+              />
             )}
           />
           <Text as='small' color='red.500'>
