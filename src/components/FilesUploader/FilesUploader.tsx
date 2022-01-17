@@ -88,7 +88,7 @@ const FilesUploader: React.FC<FilesUploaderPropsType> = ({ onChange, files, prel
               <FileContent name={file.name} size={file.size} />
               <IconButton
                 onClick={() => {
-                  setPreloaded(prev => prev.filter(file => file.size !== file.size));
+                  setPreloaded(prev => prev.filter(prevFile => prevFile.size !== file.size));
                   onChange([]);
                 }}
                 aria-label='remove'

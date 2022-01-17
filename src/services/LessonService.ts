@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import * as helpers from '@educt/helpers';
 import { IApiRespose, ILesson } from '@educt/interfaces';
 import { ApiServiceInstance } from './ApiService';
-import type { CreateLessonParamsType, LessonProgress } from '@educt/types';
+import type { CreateLessonParamsType, LessonProgress, UpdateLessonParamsType } from '@educt/types';
 
 class LessonService {
   public api: AxiosInstance;
@@ -62,6 +62,18 @@ class LessonService {
    */
   public async deleteLesson(id: string): Promise<IApiRespose<ILesson>> {
     const result = await this.api.delete(`/v1/lessons/${id}`);
+    return result.data;
+  }
+
+  /**
+   * Update lesson by id
+   *
+   * @param id Lesson ud
+   * @param data New data
+   * @returns Updated lesson
+   */
+  public async update(id: string, data: UpdateLessonParamsType): Promise<IApiRespose<ILesson>> {
+    const result = await this.api.patch(`/v1/lessons/${id}`, helpers.transformToFormData(data));
     return result.data;
   }
 

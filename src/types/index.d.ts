@@ -169,3 +169,12 @@ export type CreateLessonParamsType = {
   video: File;
   materials?: File[] | undefined;
 };
+
+export type UpdateLessonParamsType = {
+  title?: string | undefined;
+  description?: string | undefined;
+  duration?: string | undefined;
+  course_id?: string | undefined;
+  video?: File | undefined;
+  materials?: File[] | undefined | null;
+};

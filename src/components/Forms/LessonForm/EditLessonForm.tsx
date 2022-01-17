@@ -1,5 +1,4 @@
 import React from 'react';
-import * as helpers from '@educt/helpers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import type { InputFields } from './LessonForm';
@@ -13,8 +12,9 @@ import { EditLessonFormSchema } from './LessonForm.validator';
 /**
  * Hooks
  */
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ILesson } from '@educt/interfaces';
+import { useUpdateLesson } from '@educt/hooks/queries';
 
 type EditLessonFormPropsType = {
   lesson: ILesson;
@@ -31,17 +31,22 @@ const EditLessonForm: React.FC<EditLessonFormPropsType> = ({ lesson }) => {
       materials: undefined,
     },
   });
-  const { id: lesson_id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const { updateLesson, isLoading } = useUpdateLesson();
+  const { id } = useParams<{ id: string }>();
 
   const onSubmit: SubmitHandler<InputFields> = async data => {
-    const updatedFields = helpers.getDirtyFields(form.formState.dirtyFields, data);
-    console.log(updatedFields);
+    await updateLesson(id, {
+      title: data.title,
+      description: data.description,
+      video: data.video,
+      duration: data.duration,
+      materials: data.materials?.length !== 0 ? Array.from(data.materials || []) : null,
+    });
   };
 
   return (
     <LessonForm
-      isLoading={false}
+      isLoading={isLoading}
       reactHookForm={{ ...form }}
       onSubmit={form.handleSubmit(onSubmit)}
       buttonLabel='Save'

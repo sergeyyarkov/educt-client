@@ -54,6 +54,11 @@ export function transformToFormData(data: object): FormData {
         return;
       }
 
+      if (value === null) {
+        formData.append(key, '');
+        return;
+      }
+
       formData.append(key, value);
     }
   });
