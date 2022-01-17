@@ -2,6 +2,7 @@ import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import type { InputFields } from './LessonForm';
+import { ILesson } from '@educt/interfaces';
 import { LessonForm } from '.';
 
 /**
@@ -12,8 +13,7 @@ import { EditLessonFormSchema } from './LessonForm.validator';
 /**
  * Hooks
  */
-import { useParams } from 'react-router-dom';
-import { ILesson } from '@educt/interfaces';
+import { useHistory, useParams } from 'react-router-dom';
 import { useUpdateLesson } from '@educt/hooks/queries';
 
 type EditLessonFormPropsType = {
@@ -33,6 +33,7 @@ const EditLessonForm: React.FC<EditLessonFormPropsType> = ({ lesson }) => {
   });
   const { updateLesson, isLoading } = useUpdateLesson();
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const onSubmit: SubmitHandler<InputFields> = async data => {
     await updateLesson(id, {
@@ -42,6 +43,8 @@ const EditLessonForm: React.FC<EditLessonFormPropsType> = ({ lesson }) => {
       duration: data.duration,
       materials: data.materials?.length !== 0 ? Array.from(data.materials || []) : null,
     });
+
+    history.push(`/lesson/${id}`);
   };
 
   return (
