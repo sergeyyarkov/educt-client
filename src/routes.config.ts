@@ -9,6 +9,7 @@ import NotFoundPage from '@educt/pages/404/404';
 import CreateCoursePage from '@educt/pages/courses/create/create';
 import CreateLessonPage from '@educt/pages/courses/create-lesson/create-lesson';
 import EditLessonPage from './pages/lessons/edit-lesson/edit-lesson';
+import CategoriesPage from './pages/categories/categories';
 import CoursePage from '@educt/pages/course/course';
 import EditCoursePage from '@educt/pages/courses/edit/edit';
 import ChangePasswordPage from '@educt/pages/profile/change-password/change-password';
@@ -47,6 +48,14 @@ export const routes: IRouteOption[] = [
     component: CoursesPage,
     exact: true,
     isPrivate: true,
+  },
+  {
+    path: '/categories',
+    title: 'Categories',
+    component: CategoriesPage,
+    exact: true,
+    isPrivate: true,
+    roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {
     path: '/courses/create',

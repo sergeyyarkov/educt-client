@@ -17,7 +17,7 @@ import LoadingList from '@educt/components/LoadingList';
 /**
  * Hooks
  */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSetCourseStatus } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useDisclosure } from '@chakra-ui/hooks';
@@ -25,7 +25,6 @@ import { useDisclosure } from '@chakra-ui/hooks';
 /**
  * Contexts
  */
-import { CoursesPageContext } from '@educt/contexts';
 import { ICourse } from '@educt/interfaces';
 
 type CourseListPropsType = {
@@ -41,7 +40,7 @@ const CourseList: React.FC<CourseListPropsType> = ({ render: Item }) => {
   const [deleting, setDeleting] = useState<Pick<ICourse, 'id' | 'title'> | null>(null);
   const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
   const { setCourseStatus } = useSetCourseStatus();
-  const { courses, isLoading, loadCourses } = courseStore;
+  const { courses, isLoading } = courseStore;
 
   const handleDeleteCourse = (course: Pick<ICourse, 'id' | 'title'>) => {
     setDeleting(course);

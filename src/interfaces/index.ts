@@ -75,6 +75,8 @@ export interface ICategory {
   title: string;
   description: string;
   color?: ColorType | undefined | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**

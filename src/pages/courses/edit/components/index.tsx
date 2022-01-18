@@ -24,7 +24,7 @@ export const StatusButton: React.FC<IStatusButtonProps> = props => {
     setStatus(newStatus);
   };
 
-  const Components: { [k in keyof typeof CourseStatusEnum]: any } = {
+  const Components: { [k in keyof typeof CourseStatusEnum]: React.ReactElement } = {
     PUBLISHED: (
       <Button
         onClick={() => handleChangeStatus(CourseStatusEnum.DRAFT)}

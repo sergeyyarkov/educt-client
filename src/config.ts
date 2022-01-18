@@ -6,6 +6,7 @@ import {
   MdOutlineVideoLibrary,
   MdOutlineGroup,
   MdOutlineAccountCircle,
+  MdOutlineCategory,
 } from 'react-icons/md';
 import { IAppConfig } from './interfaces';
 import packageJson from '../package.json';
@@ -32,6 +33,13 @@ const config: IAppConfig = {
       public: false,
       icon: MdOutlineVideoLibrary,
       roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+    },
+    {
+      location: '/categories',
+      title: 'Categories',
+      public: false,
+      roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+      icon: MdOutlineCategory,
     },
     { location: '/messages', title: 'Messages', public: true, icon: MdOutlineMessage },
     { location: '/profile', title: 'Profile', public: true, icon: MdOutlineAccountCircle },
