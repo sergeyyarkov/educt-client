@@ -178,3 +178,8 @@ export type UpdateLessonParamsType = {
   video?: File | undefined;
   materials?: File[] | undefined | null;
 };
+
+export type CreateCategoryParamsType = {
+  title: string;
+  description?: string | undefined;
+};

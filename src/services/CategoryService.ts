@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ICategory } from '@educt/interfaces';
 import { ApiServiceInstance } from '.';
+import { CreateCategoryParamsType } from '@educt/types';
 
 class CategoryService {
   public api: AxiosInstance;
@@ -16,6 +17,16 @@ class CategoryService {
    */
   public async fetchAll(): Promise<IApiRespose<ICategory[]>> {
     const result = await this.api.get('/v1/categories');
+    return result.data;
+  }
+
+  /**
+   * Create category
+   *
+   * @returns Created category
+   */
+  public async create(data: CreateCategoryParamsType): Promise<IApiRespose<ICategory>> {
+    const result = await this.api.post('/v1/categories', data);
     return result.data;
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text, Table, Tbody } from '@chakra-ui/react';
+import { Flex, Box, Text, Table, Tbody, useDisclosure } from '@chakra-ui/react';
 import { CreateButton } from '@educt/components/Buttons';
 import { ICategory } from '@educt/interfaces';
 import CategoryTableHead from './CategoryTableHead';
@@ -9,6 +9,7 @@ import { CategoryTableRowPropsType } from './CategoryTableRow';
  * Hooks
  */
 import { useState } from 'react';
+import AddCategoryModal from '@educt/components/Modals/AddCategoryModal';
 
 type CategoryTableListPropsType = {
   render: React.FC<CategoryTableRowPropsType>;
@@ -18,8 +19,11 @@ type CategoryTableListPropsType = {
 const CategoryTableList: React.FC<CategoryTableListPropsType> = props => {
   const { render: Row, categories } = props;
   const [rows, setRows] = useState<ICategory[]>(categories);
+  const { onOpen: onOpenCategoryModal, onClose: onCloseCategoryModal, isOpen: isOpenCategoryModal } = useDisclosure();
 
   const isEmptyRows = rows.length === 0;
+
+  const handleAddCategory = (category: ICategory) => setRows(prev => [...prev, category]);
 
   // TODO make delete query
   const handleDelete = () => () => undefined;
@@ -29,8 +33,13 @@ const CategoryTableList: React.FC<CategoryTableListPropsType> = props => {
 
   return (
     <Box>
+      <AddCategoryModal
+        isOpen={isOpenCategoryModal}
+        onClose={onCloseCategoryModal}
+        onAdded={category => handleAddCategory(category)}
+      />
       <Flex justifyContent={'flex-end'}>
-        <CreateButton />
+        <CreateButton onClick={onOpenCategoryModal} />
       </Flex>
       <Table borderRadius='lg' mt='2'>
         <CategoryTableHead />

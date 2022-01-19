@@ -33,6 +33,7 @@ import { useUpdateUserEmail } from './user/useUpdateUserEmail';
  * Category
  */
 import { useFetchCategories } from './category/useFetchCategories';
+import { useCreateCategory } from './category/useCreateCategory';
 
 export {
   useLogin,
@@ -50,5 +51,6 @@ export {
   useDeleteUser,
   useUpdateUser,
   useUpdateUserEmail,
+  useCreateCategory,
   useFetchCategories,
 };
