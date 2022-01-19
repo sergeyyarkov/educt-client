@@ -10,6 +10,7 @@ import { CategoryTableRowPropsType } from './CategoryTableRow';
  */
 import { useState } from 'react';
 import AddCategoryModal from '@educt/components/Modals/AddCategoryModal';
+import DeleteCategoryDialog from '@educt/components/Dialogs/DeleteCategoryDialog';
 
 type CategoryTableListPropsType = {
   render: React.FC<CategoryTableRowPropsType>;
@@ -19,14 +20,18 @@ type CategoryTableListPropsType = {
 const CategoryTableList: React.FC<CategoryTableListPropsType> = props => {
   const { render: Row, categories } = props;
   const [rows, setRows] = useState<ICategory[]>(categories);
+  const [deleting, setDeleting] = useState<ICategory | null>(null);
   const { onOpen: onOpenCategoryModal, onClose: onCloseCategoryModal, isOpen: isOpenCategoryModal } = useDisclosure();
+  const { onOpen: onOpenDeleteDialog, onClose: onCloseDeleteDialog, isOpen: isOpenDeleteDialog } = useDisclosure();
 
   const isEmptyRows = rows.length === 0;
 
   const handleAddCategory = (category: ICategory) => setRows(prev => [...prev, category]);
 
-  // TODO make delete query
-  const handleDelete = () => () => undefined;
+  const handleDelete = (category: ICategory) => () => {
+    setDeleting(category);
+    onOpenDeleteDialog();
+  };
 
   // TODO make edit query
   const handleEdit = () => () => undefined;
@@ -38,6 +43,14 @@ const CategoryTableList: React.FC<CategoryTableListPropsType> = props => {
         onClose={onCloseCategoryModal}
         onAdded={category => handleAddCategory(category)}
       />
+      {deleting && (
+        <DeleteCategoryDialog
+          category={deleting}
+          isOpen={isOpenDeleteDialog}
+          onClose={onCloseDeleteDialog}
+          onDeleted={deleted => setRows(prev => prev.filter(category => category.id !== deleted.id))}
+        />
+      )}
       <Flex justifyContent={'flex-end'}>
         <CreateButton onClick={onOpenCategoryModal} />
       </Flex>

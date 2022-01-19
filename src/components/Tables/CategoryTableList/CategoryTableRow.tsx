@@ -7,7 +7,7 @@ export type CategoryTableRowPropsType = {
   category: ICategory;
   actions: {
     onEdit: (category: ICategory) => () => void;
-    onDelete: (id: string) => () => void;
+    onDelete: (category: ICategory) => () => void;
   };
 };
 
@@ -18,7 +18,7 @@ const CategoryTableRow: React.FC<CategoryTableRowPropsType> = ({ category, actio
       <NameCell name={category.title} />
       <CreatedCell created={category.created_at} />
       <UpdatedCell updated={category.updated_at} />
-      <ActionsCell onEdit={actions.onEdit(category)} onDelete={actions.onDelete(category.id)} />
+      <ActionsCell onEdit={actions.onEdit(category)} onDelete={actions.onDelete(category)} />
     </Tr>
   );
 };

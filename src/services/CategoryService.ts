@@ -29,6 +29,17 @@ class CategoryService {
     const result = await this.api.post('/v1/categories', data);
     return result.data;
   }
+
+  /**
+   * Delete category by id
+   *
+   * @param id Category id
+   * @returns Deleted category
+   */
+  public async delete(id: string): Promise<IApiRespose<ICategory>> {
+    const result = await this.api.delete(`/v1/categories/${id}`);
+    return result.data;
+  }
 }
 
 export const CategoryServiceInstance = new CategoryService(ApiServiceInstance.api);
