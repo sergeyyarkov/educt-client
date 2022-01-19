@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { IApiRespose, ICategory } from '@educt/interfaces';
 import { ApiServiceInstance } from '.';
-import { CreateCategoryParamsType } from '@educt/types';
+import { CreateCategoryParamsType, UpdateCategoryParamsType } from '@educt/types';
 
 class CategoryService {
   public api: AxiosInstance;
@@ -39,6 +39,18 @@ class CategoryService {
   public async delete(id: string): Promise<IApiRespose<ICategory>> {
     const result = await this.api.delete(`/v1/categories/${id}`);
     return result.data;
+  }
+
+  /**
+   * Update category by id
+   *
+   * @param id Category id
+   * @param data Field to update
+   * @returns Updated category
+   */
+  public async update(id: string, data: UpdateCategoryParamsType): Promise<IApiRespose<ICategory>> {
+    const reuslt = await this.api.patch(`/v1/categories/${id}`, data);
+    return reuslt.data;
   }
 }
 
