@@ -28,13 +28,6 @@ const config: IAppConfig = {
     { location: '/', title: 'Main', public: true, icon: MdOutlineHome },
     { location: '/courses', title: 'Courses', public: true, icon: MdOutlineCollectionsBookmark },
     {
-      location: '/lessons',
-      title: 'Lessons',
-      public: false,
-      icon: MdOutlineVideoLibrary,
-      roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
-    },
-    {
       location: '/categories',
       title: 'Categories',
       public: false,
