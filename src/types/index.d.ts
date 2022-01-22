@@ -186,5 +186,5 @@ export type CreateCategoryParamsType = {
 
 export type UpdateCategoryParamsType = {
   title?: string | undefined;
-  description?: string | undefined;
+  description?: string | null | undefined;
 };

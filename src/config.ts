@@ -3,7 +3,6 @@ import {
   MdOutlineHome,
   MdOutlineMessage,
   MdOutlineCollectionsBookmark,
-  MdOutlineVideoLibrary,
   MdOutlineGroup,
   MdOutlineAccountCircle,
   MdOutlineCategory,

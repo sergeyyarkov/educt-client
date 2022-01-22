@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'immutability-helper';
 import { Flex, Box, Text, Table, Tbody } from '@chakra-ui/react';
 import { CreateButton } from '@educt/components/Buttons';
 import { ICategory } from '@educt/interfaces';
@@ -30,12 +31,19 @@ const CategoryTableList: React.FC<CategoryTableListPropsType> = props => {
 
   const isEmptyRows = rows.length === 0;
 
-  const handleAddRow = (category: ICategory) => setRows(prev => [...prev, category]);
+  const handleAddRow = (category: ICategory) => setRows(rows => [...rows, category]);
 
-  const handleRemoveRow = (removed: ICategory) => setRows(prev => prev.filter(category => category.id !== removed.id));
+  const handleRemoveRow = (removed: ICategory) => setRows(rows => rows.filter(category => category.id !== removed.id));
 
   const handleEditRow = (edited: ICategory) => {
-    console.log(edited);
+    const index = rows.findIndex(row => row.id === edited.id);
+    const updated = update(rows, {
+      [index]: {
+        title: { $set: edited.title },
+        description: { $set: edited.description },
+      },
+    });
+    setRows(updated);
   };
 
   const handleDelete = (category: ICategory) => () => {

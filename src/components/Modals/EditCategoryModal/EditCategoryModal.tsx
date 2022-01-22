@@ -1,4 +1,5 @@
 import React from 'react';
+import * as helpers from '@educt/helpers';
 import BaseModal from '@educt/components/Modal';
 import { ICategory } from '@educt/interfaces';
 import { MdModeEdit } from 'react-icons/md';
@@ -27,7 +28,7 @@ type EditCategoryModalPropsType = {
 
 type UpdateCategoryInputType = {
   title?: string | undefined;
-  description?: string | undefined;
+  description?: string | null | undefined;
 };
 
 const EditCategoryModal: React.FC<EditCategoryModalPropsType> = props => {
@@ -40,7 +41,7 @@ const EditCategoryModal: React.FC<EditCategoryModalPropsType> = props => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields },
   } = useForm<UpdateCategoryInputType>({
     resolver: yupResolver(EditCategorySchema),
     defaultValues: useMemo(() => {
@@ -51,7 +52,7 @@ const EditCategoryModal: React.FC<EditCategoryModalPropsType> = props => {
 
   const onSubmit = async (data: UpdateCategoryParamsType) => {
     try {
-      const updated = await updateCategory(category.id, data);
+      const updated = await updateCategory(category.id, helpers.getDirtyFields(dirtyFields, data));
       onClose();
       onEdited && onEdited(updated);
     } catch (error) {
