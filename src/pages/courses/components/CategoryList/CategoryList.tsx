@@ -13,14 +13,9 @@ import { CategoryItemPropsType } from './CategoryItem';
 import CategoryListLoading from './CategoryListLoading';
 
 /**
- * Contexts
- */
-import { CoursesPageContext } from '@educt/contexts';
-
-/**
  * Hooks
  */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 
@@ -42,6 +37,8 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
   useEffect(() => {
     categoryStore.loadCategories().catch(error => handleError(error));
   }, [categoryStore, handleError]);
+
+  useEffect(() => coursesStore.setSelectedCategory(null), []);
 
   /**
    * Loading
