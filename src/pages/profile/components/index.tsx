@@ -69,7 +69,7 @@ export const ProfileDescription: React.FC<IProfileDescriptionProps> = props => {
   );
 };
 
-export const ProfileSignOutButton: React.FC<ButtonProps> = props => {
+export const ProfileSignOutButton: React.FC<ButtonProps> = () => {
   const { logout } = useLogout();
 
   return (

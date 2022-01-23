@@ -13,6 +13,7 @@ const useUpdateCategory = () => {
   const update = async (id: string, data: UpdateCategoryParamsType) => {
     try {
       const result = await CategoryServiceInstance.update(id, data);
+      toast({ title: 'Category updated.', status: 'info' });
       return result.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
