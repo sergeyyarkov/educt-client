@@ -20,6 +20,8 @@ import {
   CourseCardStat,
   CourseCardList,
 } from './components';
+import { observer } from 'mobx-react';
+import { useFetchCourses } from '@educt/hooks/queries';
 
 /**
  * Main page
@@ -28,8 +30,9 @@ const MainPage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
   } = useRootStore();
+  const { data: courses } = useFetchCourses({ limit: 3 });
 
-  if (me === null) return <LoadingPage />;
+  if (me === null || courses === null) return <LoadingPage />;
 
   return (
     <PageWrapper>
@@ -39,7 +42,11 @@ const MainPage: React.FC<IPageProps> = () => {
           <Stat>
             <StatLabel>Unread messages</StatLabel>
             <StatContent>
-              <StatNumber>3</StatNumber>
+              <StatNumber>
+                <Link as={ReactRouterLink} to='/messages'>
+                  3
+                </Link>
+              </StatNumber>
               <StatIcon icon={MdOutlineMessage} />
             </StatContent>
           </Stat>
@@ -76,22 +83,24 @@ const MainPage: React.FC<IPageProps> = () => {
             </Link>
           </Flex>
           <CourseCardList>
-            <CourseCard>
-              <CourseCardHeading>
-                <CourseCardTitle>Javascript in a nutshell</CourseCardTitle>
-                <CourseCardCategory>Web Developing</CourseCardCategory>
-              </CourseCardHeading>
+            {courses.map(course => (
+              <CourseCard key={course.id}>
+                <CourseCardHeading borderColor={course.color?.hex}>
+                  <CourseCardTitle>{course.title}</CourseCardTitle>
+                  <CourseCardCategory>{course.category.title}</CourseCardCategory>
+                </CourseCardHeading>
 
-              <CourseCardContent>
-                <CourseCardCreated created='29 Nov 2022' />
-                <CourseCardLessons count={26} />
-              </CourseCardContent>
+                <CourseCardContent>
+                  <CourseCardCreated created={course.created_at} />
+                  <CourseCardLessons count={course.lessons_count} />
+                </CourseCardContent>
 
-              <CourseCardFooter>
-                <CourseCardStat students={24} likes={14} />
-                <CourseCardWatch id='123' />
-              </CourseCardFooter>
-            </CourseCard>
+                <CourseCardFooter>
+                  <CourseCardStat students={course.students_count} likes={course.likes_count} />
+                  <CourseCardWatch id={course.id} />
+                </CourseCardFooter>
+              </CourseCard>
+            ))}
           </CourseCardList>
         </Box>
         <Divider />
@@ -100,4 +109,4 @@ const MainPage: React.FC<IPageProps> = () => {
   );
 };
 
-export default MainPage;
+export default observer(MainPage);

@@ -14,6 +14,7 @@ import { useUpdateLesson } from './lesson/useUpdateLesson';
 /**
  * Course
  */
+import { useFetchCourses } from './course/useFetchCourses';
 import { useCreateCourse } from './course/useCreateCourse';
 import { useUpdateCourse } from './course/useUpdateCourse';
 import { useFetchCourse } from './course/useFetchCourse';
@@ -40,6 +41,7 @@ import { useUpdateCategory } from './category/useUpdateCategory';
 export {
   useLogin,
   useLogout,
+  useFetchCourses,
   useCreateCourse,
   useUpdateCourse,
   useFetchCourse,

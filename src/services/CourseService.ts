@@ -24,6 +24,7 @@ class CourseService {
       params: {
         status: params?.status,
         category_id: params?.category_id,
+        limit: params?.limit,
       },
     });
     return result.data;

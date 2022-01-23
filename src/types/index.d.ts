@@ -109,15 +109,9 @@ export type CoursesPageContextType = {
   setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
 };
 export type FetchCoursesParams = {
-  /**
-   * Get courses by status
-   */
   status?: CourseStatusEnum;
-
-  /**
-   * Get courses with category by id
-   */
   category_id?: string;
+  limit?: number;
 };
 export type FetchUsersParamsType = {
   page?: number;

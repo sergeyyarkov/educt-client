@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {
   Box,
   BoxProps,
@@ -48,7 +49,7 @@ export const CourseCardCreated: React.FC<{ created: string }> = props => (
       Created
     </Text>
     <Box as='time' verticalAlign='middle' dateTime={props.created}>
-      {props.created}
+      {moment(props.created).format('ll')}
     </Box>
   </Box>
 );
@@ -86,7 +87,7 @@ export const CourseCardWatch: React.FC<{ id: string }> = props => {
 
   return (
     <Box>
-      <Button onClick={() => history.push(`/courses/${props.id}`)} leftIcon={<MdOutlinePlayCircle />} size='sm'>
+      <Button onClick={() => history.push(`/course/${props.id}`)} leftIcon={<MdOutlinePlayCircle />} size='sm'>
         Watch
       </Button>
     </Box>
