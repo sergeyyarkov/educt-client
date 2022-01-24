@@ -38,6 +38,11 @@ import { useCreateCategory } from './category/useCreateCategory';
 import { useDeleteCategory } from './category/useDeleteCategory';
 import { useUpdateCategory } from './category/useUpdateCategory';
 
+/**
+ * Stat
+ */
+import { useFetchStat } from './stat/useFetchStat';
+
 export {
   useLogin,
   useLogout,
@@ -59,4 +64,5 @@ export {
   useDeleteCategory,
   useUpdateCategory,
   useFetchCategories,
+  useFetchStat,
 };

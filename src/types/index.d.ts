@@ -40,6 +40,11 @@ export type LessonProgress = {
   } | null;
 };
 
+export type StatInfoType = {
+  courses_count: string;
+  lessons_count: string;
+};
+
 export type LessonVideoType = {
   id: number;
   client_name: string;

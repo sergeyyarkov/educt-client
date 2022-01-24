@@ -21,7 +21,7 @@ import {
   CourseCardList,
 } from './components';
 import { observer } from 'mobx-react';
-import { useFetchCourses } from '@educt/hooks/queries';
+import { useFetchCourses, useFetchStat } from '@educt/hooks/queries';
 
 /**
  * Main page
@@ -31,8 +31,9 @@ const MainPage: React.FC<IPageProps> = () => {
     userStore: { me },
   } = useRootStore();
   const { data: courses } = useFetchCourses({ limit: 3 });
+  const { data: stat } = useFetchStat();
 
-  if (me === null || courses === null) return <LoadingPage />;
+  if (me === null || courses === null || stat === null) return <LoadingPage />;
 
   return (
     <PageWrapper>
@@ -40,19 +41,7 @@ const MainPage: React.FC<IPageProps> = () => {
       <PageContent>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing='6'>
           <Stat>
-            <StatLabel>Unread messages</StatLabel>
-            <StatContent>
-              <StatNumber>
-                <Link as={ReactRouterLink} to='/messages'>
-                  3
-                </Link>
-              </StatNumber>
-              <StatIcon icon={MdOutlineMessage} />
-            </StatContent>
-          </Stat>
-
-          <Stat>
-            <StatLabel>Registered students</StatLabel>
+            <StatLabel>Online</StatLabel>
             <StatContent>
               <StatNumber>24</StatNumber>
               <StatIcon icon={MdOutlineGroup} />
@@ -60,9 +49,21 @@ const MainPage: React.FC<IPageProps> = () => {
           </Stat>
 
           <Stat>
+            <StatLabel>Unread messages</StatLabel>
+            <StatContent>
+              <StatNumber>
+                <Link as={ReactRouterLink} to='/messages'>
+                  1
+                </Link>
+              </StatNumber>
+              <StatIcon icon={MdOutlineMessage} />
+            </StatContent>
+          </Stat>
+
+          <Stat>
             <StatLabel>Courses</StatLabel>
             <StatContent>
-              <StatNumber>7</StatNumber>
+              <StatNumber>{stat.courses_count}</StatNumber>
               <StatIcon icon={MdOutlineCollectionsBookmark} />
             </StatContent>
           </Stat>
@@ -70,7 +71,7 @@ const MainPage: React.FC<IPageProps> = () => {
           <Stat>
             <StatLabel>Lessons</StatLabel>
             <StatContent>
-              <StatNumber>42</StatNumber>
+              <StatNumber>{stat.lessons_count}</StatNumber>
               <StatIcon icon={MdOutlineVideoLibrary} />
             </StatContent>
           </Stat>
