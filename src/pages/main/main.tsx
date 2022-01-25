@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Box, Text, Link, SimpleGrid, Divider } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { IPageProps } from '@educt/interfaces';
@@ -32,6 +32,20 @@ const MainPage: React.FC<IPageProps> = () => {
   } = useRootStore();
   const { data: courses } = useFetchCourses({ limit: 3 });
   const { data: stat } = useFetchStat();
+  const [online, setOnline] = useState<number>(0);
+
+  // useEffect(() => {
+  //   const onUpdateOnline = users => {
+  //     console.log(users);
+  //     setOnline(users.length);
+  //   };
+
+  //   socket.on('user:online', onUpdateOnline);
+
+  //   return () => {
+  //     socket.off('user:online', onUpdateOnline);
+  //   };
+  // }, [setOnline, socket]);
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 
@@ -43,7 +57,7 @@ const MainPage: React.FC<IPageProps> = () => {
           <Stat>
             <StatLabel>Online</StatLabel>
             <StatContent>
-              <StatNumber>24</StatNumber>
+              <StatNumber>{online}</StatNumber>
               <StatIcon icon={MdOutlineGroup} />
             </StatContent>
           </Stat>

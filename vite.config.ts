@@ -33,6 +33,10 @@ export default defineConfig({
         target: constants.BACKEND_URL,
         changeOrigin: true,
       },
+      '/socket.io': {
+        target: constants.BACKEND_URL,
+        changeOrigin: true,
+      },
     },
   },
   resolve: {

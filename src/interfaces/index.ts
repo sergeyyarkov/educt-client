@@ -13,6 +13,7 @@ export interface IAppConfig {
 }
 
 export interface IToken {
+  userId: string;
   token: string;
   type: string;
   expires_at: string;
