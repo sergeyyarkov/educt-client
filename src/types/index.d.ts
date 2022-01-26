@@ -43,6 +43,7 @@ export type LessonProgress = {
 export type StatInfoType = {
   courses_count: string;
   lessons_count: string;
+  online: number;
 };
 
 export type LessonVideoType = {

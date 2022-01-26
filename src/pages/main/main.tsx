@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Flex, Box, Text, Link, SimpleGrid, Divider } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { IPageProps } from '@educt/interfaces';
@@ -22,6 +22,8 @@ import {
 } from './components';
 import { observer } from 'mobx-react';
 import { useFetchCourses, useFetchStat } from '@educt/hooks/queries';
+import { useSocketEvent } from '@educt/hooks/useSocketEvent';
+import { useEffect } from 'react';
 
 /**
  * Main page
@@ -34,18 +36,20 @@ const MainPage: React.FC<IPageProps> = () => {
   const { data: stat } = useFetchStat();
   const [online, setOnline] = useState<number>(0);
 
-  // useEffect(() => {
-  //   const onUpdateOnline = users => {
-  //     console.log(users);
-  //     setOnline(users.length);
-  //   };
+  /**
+   * Update online state on socket event
+   */
+  useSocketEvent('user:online', online => setOnline(online));
 
-  //   socket.on('user:online', onUpdateOnline);
+  useSocketEvent('user:connected', user => {
+    console.table(user);
+  });
 
-  //   return () => {
-  //     socket.off('user:online', onUpdateOnline);
-  //   };
-  // }, [setOnline, socket]);
+  useEffect(() => {
+    if (stat) {
+      setOnline(stat.online);
+    }
+  }, [stat?.online]);
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 

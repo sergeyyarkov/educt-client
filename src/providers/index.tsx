@@ -25,7 +25,7 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
  * Socket context provider
  */
 export const SocketContextProvider: React.FC = ({ children }) => {
-  const socket = useSocket('');
+  const socket = useSocket('ws://localhost:3333');
 
   return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
