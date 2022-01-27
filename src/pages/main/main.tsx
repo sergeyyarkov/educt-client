@@ -41,9 +41,7 @@ const MainPage: React.FC<IPageProps> = () => {
    */
   useSocketEvent('user:online', online => setOnline(online));
 
-  useSocketEvent('user:connected', user => {
-    console.table(user);
-  });
+  useSocketEvent('user:connected', user => console.table(user));
 
   useEffect(() => {
     if (stat) {

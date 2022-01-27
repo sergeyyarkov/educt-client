@@ -24,6 +24,7 @@ const useLogout = () => {
       const result = await authStore.logout();
       history.push('/auth');
       toast({ title: 'You are logged out.', isClosable: true, status: 'info' });
+      // window.localStorage.removeItem('sessionId');
       socket?.disconnect();
       return result.data;
     } catch (error) {

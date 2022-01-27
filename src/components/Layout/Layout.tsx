@@ -50,7 +50,13 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
    */
   useEffect(() => {
     if (!socket?.connected) {
-      socket?.connect();
+      if (socket) {
+        const sessionId = window.localStorage.getItem('sessionId');
+        if (sessionId) {
+          socket.auth = { sessionId };
+        }
+        socket.connect();
+      }
     }
   }, [socket]);
 
