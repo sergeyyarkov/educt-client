@@ -47,7 +47,7 @@ const MainPage: React.FC<IPageProps> = () => {
     if (stat) {
       setOnline(stat.online);
     }
-  }, [stat?.online]);
+  }, [stat]);
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 
