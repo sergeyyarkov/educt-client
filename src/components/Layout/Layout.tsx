@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useContext } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router';
 import { useErrorHandler } from 'react-error-boundary';
@@ -23,6 +23,11 @@ import NavDesktop from '@educt/components/Nav/Desktop';
 import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
+/**
+ * Contexts
+ */
+import { SocketContext } from '@educt/contexts';
+
 type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
 
 /**
@@ -30,6 +35,7 @@ type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
  */
 const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   const { userStore } = useRootStore();
+  const { socket } = useContext(SocketContext);
   const handleError = useErrorHandler();
 
   /**
@@ -38,6 +44,21 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
   useEffect(() => {
     userStore.loadCurrentUserData().catch(error => handleError(error));
   }, [handleError, userStore]);
+
+  /**
+   * Connect to websocket server
+   */
+  useEffect(() => {
+    if (!socket?.connected) {
+      if (socket) {
+        const sessionId = window.localStorage.getItem('sessionId');
+        if (sessionId) {
+          socket.auth = { sessionId };
+        }
+        socket.connect();
+      }
+    }
+  }, [socket]);
 
   return (
     <>

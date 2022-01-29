@@ -1,9 +1,16 @@
 import React, { useState, ReactNode } from 'react';
-import { ChangeEmailPageContext, CoursesPageContext, StoreContext, UsersPageContext } from '@educt/contexts';
+import {
+  ChangeEmailPageContext,
+  CoursesPageContext,
+  SocketContext,
+  StoreContext,
+  UsersPageContext,
+} from '@educt/contexts';
 import { ConfirmEmailDataType, SearchingRoleStateType } from '@educt/types';
 import RootStore from '@educt/stores/RootStore';
-import { ICategory, ICourse, IUser } from '@educt/interfaces';
+import { ICategory } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
+import { useSocket } from '@educt/hooks/useSocket';
 
 /**
  * Root store context provider
@@ -12,6 +19,15 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
   const store = new RootStore();
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+};
+
+/**
+ * Socket context provider
+ */
+export const SocketContextProvider: React.FC = ({ children }) => {
+  const socket = useSocket('ws://localhost:3333');
+
+  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
 
 /**

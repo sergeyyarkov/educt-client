@@ -1,5 +1,7 @@
 import { useToast } from '@chakra-ui/react';
+import { SocketContext } from '@educt/contexts';
 import { IToken } from '@educt/interfaces';
+import { useContext } from 'react';
 import { useErrorHandler } from 'react-error-boundary';
 import useAsync from '../../useAsync';
 import { useRootStore } from '../../useRootStore';
@@ -8,6 +10,7 @@ type LoginResultDataType = IToken;
 
 const useLogin = () => {
   const { authStore } = useRootStore();
+  const { socket } = useContext(SocketContext);
   const toast = useToast();
   const handleError = useErrorHandler();
 
@@ -20,6 +23,7 @@ const useLogin = () => {
         isClosable: true,
         status: 'success',
       });
+      socket?.connect();
       return result.data;
     } catch (error: any) {
       if (error.response) {

@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import App from './App';
 import { theme } from './theme';
-import { RootStoreProvider } from './providers';
+import { RootStoreProvider, SocketContextProvider } from './providers';
 
 ReactDOM.render(
   <>
     <ColorModeScript />
     <RootStoreProvider>
       <ChakraProvider theme={theme}>
-        <App />
+        <SocketContextProvider>
+          <App />
+        </SocketContextProvider>
       </ChakraProvider>
     </RootStoreProvider>
   </>,

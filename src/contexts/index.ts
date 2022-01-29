@@ -1,8 +1,13 @@
 import { createContext } from 'react';
 import { ChangeEmailPageContextType, CoursesPageContextType, UsersPageContextType } from '@educt/types';
 import RootStore from '../stores/RootStore';
+import { Socket } from 'socket.io-client';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
+
+export const SocketContext = createContext<{ socket: Socket | null }>({
+  socket: null,
+});
 
 export const ChangeEmailPageContext = createContext<ChangeEmailPageContextType>({
   isCodeSent: false,

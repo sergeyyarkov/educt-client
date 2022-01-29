@@ -40,6 +40,12 @@ export type LessonProgress = {
   } | null;
 };
 
+export type StatInfoType = {
+  courses_count: string;
+  lessons_count: string;
+  online: number;
+};
+
 export type LessonVideoType = {
   id: number;
   client_name: string;
@@ -109,15 +115,9 @@ export type CoursesPageContextType = {
   setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
 };
 export type FetchCoursesParams = {
-  /**
-   * Get courses by status
-   */
   status?: CourseStatusEnum;
-
-  /**
-   * Get courses with category by id
-   */
   category_id?: string;
+  limit?: number;
 };
 export type FetchUsersParamsType = {
   page?: number;

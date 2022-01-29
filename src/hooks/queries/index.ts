@@ -14,6 +14,7 @@ import { useUpdateLesson } from './lesson/useUpdateLesson';
 /**
  * Course
  */
+import { useFetchCourses } from './course/useFetchCourses';
 import { useCreateCourse } from './course/useCreateCourse';
 import { useUpdateCourse } from './course/useUpdateCourse';
 import { useFetchCourse } from './course/useFetchCourse';
@@ -37,9 +38,15 @@ import { useCreateCategory } from './category/useCreateCategory';
 import { useDeleteCategory } from './category/useDeleteCategory';
 import { useUpdateCategory } from './category/useUpdateCategory';
 
+/**
+ * Stat
+ */
+import { useFetchStat } from './stat/useFetchStat';
+
 export {
   useLogin,
   useLogout,
+  useFetchCourses,
   useCreateCourse,
   useUpdateCourse,
   useFetchCourse,
@@ -57,4 +64,5 @@ export {
   useDeleteCategory,
   useUpdateCategory,
   useFetchCategories,
+  useFetchStat,
 };
