@@ -46,6 +46,17 @@ class UserService {
   }
 
   /**
+   * Fetch user by id
+   *
+   * @param id User id
+   * @returns Users
+   */
+  public async fetchUserById(id: string): Promise<IApiRespose<IUser>> {
+    const result = await this.api.get(`/v1/users/${id}`);
+    return result.data;
+  }
+
+  /**
    * Create new user
    *
    * @param data Data for creating user
