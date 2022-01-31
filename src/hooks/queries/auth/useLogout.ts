@@ -13,10 +13,7 @@ import { SocketContext } from '@educt/contexts';
 type LogoutResultDataType = Record<string, never>;
 
 const useLogout = () => {
-  const {
-    authStore,
-    userStore: { me },
-  } = useRootStore();
+  const { authStore } = useRootStore();
   const { socket } = useContext(SocketContext);
   const history = useHistory();
   const toast = useToast();
@@ -24,7 +21,6 @@ const useLogout = () => {
 
   const logout = async () => {
     try {
-      const sessionId = window.localStorage.getItem('sessionId');
       const result = await authStore.logout();
 
       history.push('/auth');
@@ -33,13 +29,12 @@ const useLogout = () => {
       /**
        * Destroy session
        */
-      if (sessionId) {
-        if (socket) {
-          socket.auth = { sessionId: undefined };
-          // socket.emit('user:logout', { sessionId });
-          socket.disconnect();
-        }
+      if (socket) {
         window.localStorage.removeItem('sessionId');
+
+        socket.auth = { sessionId: undefined };
+        socket.emit('user:logout');
+        socket.disconnect();
       }
 
       return result.data;

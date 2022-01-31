@@ -41,6 +41,7 @@ import { useState } from 'react';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { CourseServiceInstance } from '@educt/services';
+import { EditButton } from '@educt/components/Buttons';
 
 export const CourseHeader: React.FC<FlexProps> = props => (
   <Flex justifyContent='space-between' flexDir={{ base: 'column', xl: 'row' }} {...props}>
@@ -62,7 +63,10 @@ export const CourseHeading: React.FC<ICourseHeadingProps> = props => {
         {title}
       </Heading>
       <Flex mt='3' alignItems={'center'}>
-        <Text fontSize='sm'>{teacher.fullname}</Text>&nbsp;&bull;&nbsp;
+        <Text fontSize='sm'>
+          {teacher.fullname}
+          &nbsp;&bull;&nbsp;
+        </Text>
         <Tag size='sm' variant='solid' bg={category.color?.hex}>
           {category.title}
         </Tag>

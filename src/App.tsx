@@ -25,11 +25,11 @@ const App = () => {
   useSocketEvent('disconnect', () => console.info('[WebSocket]: Disconnected.'));
   useSocketEvent('connect_error', err => console.error(err));
   useSocketEvent('user:session', data => {
-    console.log(data);
     if (socket) {
       const { sessionId, userId } = data;
       socket.auth = { sessionId };
       window.localStorage.setItem('sessionId', sessionId);
+      // TODO fix types
       socket.userId = userId;
     }
   });

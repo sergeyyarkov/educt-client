@@ -41,7 +41,7 @@ const MainPage: React.FC<IPageProps> = () => {
    */
   useSocketEvent('user:online', online => setOnline(online));
 
-  useSocketEvent('user:connected', user => console.table(user));
+  // useSocketEvent('user:connected', user => console.table(user));
 
   useEffect(() => {
     if (stat) {
@@ -69,7 +69,7 @@ const MainPage: React.FC<IPageProps> = () => {
             <StatContent>
               <StatNumber>
                 <Link as={ReactRouterLink} to='/messages'>
-                  1
+                  0
                 </Link>
               </StatNumber>
               <StatIcon icon={MdOutlineMessage} />

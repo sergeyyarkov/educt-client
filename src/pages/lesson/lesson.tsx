@@ -23,7 +23,6 @@ import ReactPlayer from 'react-player';
 import { MdOutlineCircle, MdCheckCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import LoadingPage from '@educt/components/LoadingPage';
 import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
-import { EditIcon } from '@chakra-ui/icons';
 
 /**
  * Types
@@ -45,6 +44,7 @@ import { useFetchLessonProgress } from '@educt/hooks/queries/lesson/useFetchLess
  * Services
  */
 import { LessonServiceInstance } from '@educt/services';
+import { EditButton } from '@educt/components/Buttons';
 
 /**
  * Lesson Page
@@ -145,11 +145,7 @@ const LessonPage: React.FC<IPageProps> = () => {
       <PageHeading heading={lesson.title}>
         <Flex mt='3' alignItems={'center'} justifyContent={'space-between'}>
           <Text fontSize={'sm'}>~{moment.duration(lesson.duration, 'minutes').humanize()}</Text>
-          {(me.isAdmin || me.isTeacher) && (
-            <Button onClick={handleEditLesson} leftIcon={<EditIcon />} variant={'outline'} size='sm'>
-              Edit
-            </Button>
-          )}
+          {(me.isAdmin || me.isTeacher) && <EditButton onClick={handleEditLesson} />}
         </Flex>
       </PageHeading>
       <PageContent>

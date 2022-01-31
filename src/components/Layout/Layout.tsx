@@ -60,6 +60,13 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
     }
   }, [socket]);
 
+  /**
+   * Emit online status of user
+   */
+  useEffect(() => {
+    socket?.emit('user:status');
+  }, []);
+
   return (
     <>
       <Header />

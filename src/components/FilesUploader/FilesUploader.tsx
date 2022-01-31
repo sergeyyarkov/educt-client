@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as helpers from '@educt/helpers';
-import { Stack, Flex, Box, Icon, Text, Input, IconButton, Button } from '@chakra-ui/react';
+import { Stack, Flex, Box, Icon, Text, Input, IconButton, Button, useColorModeValue } from '@chakra-ui/react';
 import { MdAttachFile, MdOutlineFilePresent } from 'react-icons/md';
 import { CloseIcon } from '@chakra-ui/icons';
 
@@ -31,7 +31,13 @@ const FileContent: React.FC<{ name: string; size: number }> = ({ name, size }) =
 );
 
 const FileWrapper: React.FC = ({ children }) => (
-  <Flex alignItems={'center'} justifyContent={'space-between'} p='3' bg={'gray.50'} borderRadius={'lg'}>
+  <Flex
+    alignItems={'center'}
+    justifyContent={'space-between'}
+    p='3'
+    bg={useColorModeValue('gray.50', 'gray.700')}
+    borderRadius={'lg'}
+  >
     {children}
   </Flex>
 );

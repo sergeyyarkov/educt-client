@@ -40,6 +40,8 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
   const { colorMode } = useColorMode();
   const history = useHistory();
 
+  const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
+
   if (me === null) return null;
 
   return (
@@ -58,7 +60,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
                 _active={{ backgroundColor: colorMode === 'dark' ? 'gray.600' : 'gray.200' }}
               />
               <MenuList>
-                <MenuItem onClick={() => history.push(`/courses/edit/${course.id}`)} icon={<EditIcon />}>
+                <MenuItem onClick={handleEditCourse} icon={<EditIcon />}>
                   Edit
                 </MenuItem>
                 {(() => {

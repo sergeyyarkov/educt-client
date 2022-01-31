@@ -25,6 +25,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useFetchCourse } from '@educt/hooks/queries';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { Helmet } from 'react-helmet';
+import { EditButton } from '@educt/components/Buttons';
 
 const CoursePage: React.FC<IPageProps> = () => {
   const {
@@ -45,6 +46,8 @@ const CoursePage: React.FC<IPageProps> = () => {
   const isEmptyStudents = course.students.length === 0;
 
   const handleWatchCourse = () => history.push(`/lesson/${course.lessons[0].id}`);
+
+  const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
 
   return (
     <PageWrapper maxW='1200px'>
@@ -67,15 +70,18 @@ const CoursePage: React.FC<IPageProps> = () => {
             <Box>
               <Flex justifyContent={'space-between'} alignItems={'center'} mb='2'>
                 <Text fontSize={'sm'}>Last update: {new Date(course.updated_at).toLocaleDateString()}</Text>
-                <Button
-                  isDisabled={!isCourseAvailable}
-                  onClick={handleWatchCourse}
-                  leftIcon={<MdPlayCircleOutline />}
-                  size='sm'
-                  variant={'outline'}
-                >
-                  Watch
-                </Button>
+                <Box>
+                  {(me.isAdmin || me.isTeacher) && <EditButton onClick={handleEditCourse} mr='2' />}
+                  <Button
+                    isDisabled={!isCourseAvailable}
+                    onClick={handleWatchCourse}
+                    leftIcon={<MdPlayCircleOutline />}
+                    size='sm'
+                    variant={'outline'}
+                  >
+                    Watch
+                  </Button>
+                </Box>
               </Flex>
               <CourseBackgroundImage bg={course.color?.hex} src={course.image?.url} />
             </Box>
