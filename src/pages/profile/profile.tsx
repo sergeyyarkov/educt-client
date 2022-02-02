@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  Button,
-  FormControl,
-  FormHelperText,
-  Input,
   InputGroup,
   InputRightElement,
+  Flex,
+  Switch,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  FormHelperText,
+  Select,
+  Button,
 } from '@chakra-ui/react';
 import { Box, Stack } from '@chakra-ui/layout';
 
@@ -25,15 +25,13 @@ import { IPageProps } from '@educt/interfaces';
 import { Page } from '@educt/components/PageElements';
 import { ProfileLoading } from './components';
 import { UserProfile } from '@educt/components/UserProfile';
-import { CourseList } from './components/CourseList';
-import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserContactsForm';
 
 /**
  * Hooks
  */
-import { useHistory } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { observer } from 'mobx-react';
+import { MdOutlineSave } from 'react-icons/md';
 
 /**
  * Profile page
@@ -42,7 +40,6 @@ const ProfilePage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
   } = useRootStore();
-  const history = useHistory();
 
   if (me === null) return <ProfileLoading />;
 
@@ -51,76 +48,119 @@ const ProfilePage: React.FC<IPageProps> = () => {
       <Page.Heading heading='My account' description='Update you contacts information or password here.' />
       <Page.Content>
         <UserProfile mt='14'>
-          <UserProfile.Avatar name={me.fullname} />
-          <UserProfile.Info>
-            <UserProfile.Heading fullname={me.fullname} roles={me.roles} />
-            <UserProfile.Details registered={me.created_at} lastLogin={me.last_login} />
-            <UserProfile.About about={me.about} />
-          </UserProfile.Info>
-        </UserProfile>
-        <Tabs mt='7'>
-          <TabList>
-            <Tab>Account information</Tab>
-            <Tab>My contacts</Tab>
-            {me.isStudent && <Tab>Available courses</Tab>}
-          </TabList>
-          <TabPanels mt='2'>
-            <TabPanel>
-              <form>
-                <Box borderRadius='md' borderWidth='1px' padding='5'>
-                  <Stack spacing='5px'>
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>First name</FormHelperText>
-                      <Input type='text' value={me.first_name} size='md' variant='flushed' />
-                    </FormControl>
+          <UserProfile.Base>
+            <UserProfile.Avatar name={me.fullname} />
+            <UserProfile.Info>
+              <UserProfile.Heading fullname={me.fullname} roles={me.roles} />
+              <UserProfile.Details registered={me.created_at} lastLogin={me.last_login} />
+              <UserProfile.About about={me.about} />
+            </UserProfile.Info>
+          </UserProfile.Base>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Last name</FormHelperText>
-                      <Input type='text' value={me.last_name} size='md' variant='flushed' />
-                    </FormControl>
+          <UserProfile.Settings>
+            {/* Personal Info */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title={'Personal Info'} />
+              <UserProfile.Settings.EntryContent>
+                <Stack spacing={'6'}>
+                  <FormControl>
+                    <FormLabel>Fullname</FormLabel>
+                    <Input />
+                  </FormControl>
+                  <FormControl isReadOnly>
+                    <FormLabel>Email</FormLabel>
+                    <InputGroup size='md'>
+                      <Input defaultValue={'serzh.yarkov@gmail.com'} />
+                      <InputRightElement width='4.5rem' pr='0.5rem'>
+                        <Button h='1.75rem' size='sm'>
+                          Change
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>About</FormLabel>
+                    <Textarea minH='130px' maxH='500px' />
+                    <FormHelperText>Write description for your profile.</FormHelperText>
+                  </FormControl>
+                </Stack>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Email</FormHelperText>
-                      <InputGroup>
-                        <Input type='text' value={me.email} size='md' variant='flushed' />
-                        <InputRightElement width='4rem'>
-                          <Button size='sm' h='1.90rem' w='full' onClick={() => history.push('/profile/change-email')}>
-                            Edit
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
+            {/* Contacts */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title={'Contacts'} />
+              <UserProfile.Settings.EntryContent>
+                <Stack spacing={'6'}>
+                  <FormControl>
+                    <FormLabel>Phone</FormLabel>
+                    <Input placeholder='+1 (234) 555-1234' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Twitter</FormLabel>
+                    <Input placeholder='@sergeyyarkov' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Telegram</FormLabel>
+                    <Input placeholder='@sergeyyarkov' />
+                  </FormControl>
+                </Stack>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Password</FormHelperText>
-                      <InputGroup>
-                        <Input type='text' value='**********' size='md' variant='flushed' />
-                        <InputRightElement width='5rem'>
-                          <Button
-                            size='sm'
-                            h='1.90rem'
-                            w='full'
-                            onClick={() => history.push('/profile/change-password')}
-                          >
-                            Change
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
-                  </Stack>
+            {/* Security */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Security' />
+              <UserProfile.Settings.EntryContent>
+                <FormControl isReadOnly>
+                  <FormLabel>Password</FormLabel>
+                  <InputGroup size='md'>
+                    <Input defaultValue={'**********'} />
+                    <InputRightElement width='4.5rem' pr='0.5rem'>
+                      <Button h='1.75rem' size='sm'>
+                        Change
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            {/* Language */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Language' />
+              <UserProfile.Settings.EntryContent>
+                <FormControl>
+                  <FormLabel>Display Language</FormLabel>
+                  <Select>
+                    <option value='en'>English</option>
+                  </Select>
+                </FormControl>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            {/* Night Theme */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Night Theme' />
+              <UserProfile.Settings.EntryContent>
+                <Flex mt={{ base: '6', md: '0' }}>
+                  <Switch size='lg' />
+                </Flex>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title />
+              <UserProfile.Settings.EntryContent>
+                <Box>
+                  <Button variant={'outline'} leftIcon={<MdOutlineSave />}>
+                    Save
+                  </Button>
                 </Box>
-              </form>
-            </TabPanel>
-            <TabPanel>
-              <UpdateUserContactsForm contacts={me.contacts} />
-            </TabPanel>
-            {me.isStudent && (
-              <TabPanel>
-                <CourseList courses={me.courses} />
-              </TabPanel>
-            )}
-          </TabPanels>
-        </Tabs>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+          </UserProfile.Settings>
+        </UserProfile>
       </Page.Content>
     </Page>
   );

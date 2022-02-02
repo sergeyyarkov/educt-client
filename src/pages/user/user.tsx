@@ -33,14 +33,16 @@ const UserPage: React.FC<IPageProps> = () => {
     <Page>
       <Page.Content maxW={'900px'}>
         <UserProfile>
-          <UserProfile.Avatar name={user.fullname} isOnline>
-            <UserProfile.ChatButton userid={user.id} />
-          </UserProfile.Avatar>
-          <UserProfile.Info>
-            <UserProfile.Heading fullname={user.fullname} roles={user.roles} />
-            <UserProfile.Details registered={user.created_at} lastLogin={user.last_login} />
-            <UserProfile.About about={user.about} />
-          </UserProfile.Info>
+          <UserProfile.Base>
+            <UserProfile.Avatar name={user.fullname} isOnline>
+              <UserProfile.ChatButton userid={user.id} />
+            </UserProfile.Avatar>
+            <UserProfile.Info>
+              <UserProfile.Heading fullname={user.fullname} roles={user.roles} />
+              <UserProfile.Details registered={user.created_at} lastLogin={user.last_login} />
+              <UserProfile.About about={user.about} />
+            </UserProfile.Info>
+          </UserProfile.Base>
         </UserProfile>
       </Page.Content>
     </Page>
