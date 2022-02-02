@@ -28,12 +28,8 @@ const UserPage: React.FC<IPageProps> = () => {
           </UserProfile.Avatar>
           <UserProfile.Info>
             <UserProfile.Heading fullname={user.fullname} roles={user.roles} />
-            <UserProfile.Details registered={user.created_at} lastLogin='3 days ago' />
-            <UserProfile.About
-              about={
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla asperiores consectetur quasi minima veritatis id quisquam natus in nostrum quam?'
-              }
-            />
+            <UserProfile.Details registered={user.created_at} lastLogin={user.last_login} />
+            <UserProfile.About about={user.about} />
           </UserProfile.Info>
         </UserProfile>
       </PageContent>

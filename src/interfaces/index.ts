@@ -116,6 +116,8 @@ export interface IUser {
   first_name: string;
   last_name: string;
   fullname: string;
+  about: string | null;
+  last_login: string | null;
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;

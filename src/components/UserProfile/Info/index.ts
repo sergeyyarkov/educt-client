@@ -11,11 +11,11 @@ export interface IHeadingProps {
 
 export interface IDetailsProps {
   registered: string;
-  lastLogin: string;
+  lastLogin: IUser['last_login'];
 }
 
 export interface IAboutProps {
-  about: string;
+  about: IUser['about'];
 }
 
 export { Info, Heading, Details, About };
