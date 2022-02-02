@@ -1,7 +1,8 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
 import LoadingPage from '@educt/components/LoadingPage';
-import { PageContent, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import { UserProfile } from '@educt/components/UserProfile';
 import type { IPageProps } from '@educt/interfaces';
 
@@ -10,18 +11,27 @@ import type { IPageProps } from '@educt/interfaces';
  */
 import { useParams } from 'react-router-dom';
 import { useFetchUser } from '@educt/hooks/queries/user/useFetchUser';
+import { useRootStore } from '@educt/hooks/useRootStore';
 
 const UserPage: React.FC<IPageProps> = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data: user, error, isLoading } = useFetchUser(id);
+  const params = useParams<{ id: string }>();
+  const {
+    userStore: { me },
+  } = useRootStore();
+  const { data: user, error, isLoading } = useFetchUser(params.id);
 
   if (error?.response?.status === 404) return <Redirect to='/404' />;
 
-  if (user === null || isLoading) return <LoadingPage />;
+  if (user === null || me === null || isLoading) return <LoadingPage />;
+
+  /**
+   * Redirect to profile page
+   */
+  if (me.id === params.id) return <Redirect to='/profile' />;
 
   return (
-    <PageWrapper maxW='800px'>
-      <PageContent>
+    <Page>
+      <Page.Content maxW={'900px'}>
         <UserProfile>
           <UserProfile.Avatar name={user.fullname} isOnline>
             <UserProfile.ChatButton userid={user.id} />
@@ -32,9 +42,9 @@ const UserPage: React.FC<IPageProps> = () => {
             <UserProfile.About about={user.about} />
           </UserProfile.Info>
         </UserProfile>
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 
-export default UserPage;
+export default observer(UserPage);

@@ -1,6 +1,5 @@
-import React, { createContext } from 'react';
-import { BoxProps, Flex } from '@chakra-ui/react';
-import { IUser } from '@educt/interfaces';
+import React from 'react';
+import { BoxProps, Flex, FlexProps } from '@chakra-ui/react';
 import { Avatar, ChatButton, IAvatarProps, IChatButtonProps } from './Avatar';
 import { About, Details, Heading, IAboutProps, IDetailsProps, IHeadingProps, Info } from './Info';
 
@@ -13,10 +12,12 @@ interface IUserProfileComposition {
   About: React.FC<IAboutProps>;
 }
 
-export const UserProfileContext = createContext<IUser | undefined>(undefined);
-
-const UserProfile: React.FC & IUserProfileComposition = props => {
-  return <Flex flexDir={{ base: 'column', md: 'row' }}>{props.children}</Flex>;
+const UserProfile: React.FC<FlexProps> & IUserProfileComposition = props => {
+  return (
+    <Flex flexDir={{ base: 'column', md: 'row' }} {...props}>
+      {props.children}
+    </Flex>
+  );
 };
 
 UserProfile.Avatar = Avatar;

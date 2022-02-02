@@ -8,7 +8,7 @@ import type { IPageProps } from '@educt/interfaces';
 /**
  * Components
  */
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import { UserList, UserItem } from './components/UserList';
 import LoadingPage from '@educt/components/LoadingPage';
 
@@ -35,12 +35,12 @@ const UsersPage: React.FC<IPageProps> = () => {
   return (
     // TODO: delete page context for better performance
     <UsersPageContextProvider>
-      <PageWrapper>
-        <PageHeading heading='User management' description='You can add or delete users on this page.' />
-        <PageContent mt='5'>
+      <Page>
+        <Page.Heading heading='User management' description='You can add or delete users on this page.' />
+        <Page.Content mt='5'>
           <UserList render={UserItem} limit={6} />
-        </PageContent>
-      </PageWrapper>
+        </Page.Content>
+      </Page>
     </UsersPageContextProvider>
   );
 };

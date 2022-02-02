@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Avatar,
   Tabs,
   TabList,
   Tab,
@@ -23,8 +22,9 @@ import { IPageProps } from '@educt/interfaces';
 /**
  *  Components
  */
-import { PageHeading, PageContent, PageWrapper, PageFooter } from '@educt/components/PageElements';
-import { ProfileAvatar, ProfileBaseInfo, ProfileDescription, ProfileLoading, ProfileSignOutButton } from './components';
+import { Page } from '@educt/components/PageElements';
+import { ProfileLoading } from './components';
+import { UserProfile } from '@educt/components/UserProfile';
 import { CourseList } from './components/CourseList';
 import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserContactsForm';
 
@@ -33,6 +33,7 @@ import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserCo
  */
 import { useHistory } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { observer } from 'mobx-react';
 
 /**
  * Profile page
@@ -46,13 +47,17 @@ const ProfilePage: React.FC<IPageProps> = () => {
   if (me === null) return <ProfileLoading />;
 
   return (
-    <PageWrapper maxW='900px'>
-      <PageHeading heading='My account' description='Update you contacts information or password here.' />
-      <ProfileBaseInfo mt='20'>
-        <ProfileAvatar name={me.fullname} />
-        <ProfileDescription fullname={me.fullname} email={me.email} roles={me.roles} />
-      </ProfileBaseInfo>
-      <PageContent>
+    <Page maxW={'900px'}>
+      <Page.Heading heading='My account' description='Update you contacts information or password here.' />
+      <Page.Content>
+        <UserProfile mt='14'>
+          <UserProfile.Avatar name={me.fullname} />
+          <UserProfile.Info>
+            <UserProfile.Heading fullname={me.fullname} roles={me.roles} />
+            <UserProfile.Details registered={me.created_at} lastLogin={me.last_login} />
+            <UserProfile.About about={me.about} />
+          </UserProfile.Info>
+        </UserProfile>
         <Tabs mt='7'>
           <TabList>
             <Tab>Account information</Tab>
@@ -116,12 +121,9 @@ const ProfilePage: React.FC<IPageProps> = () => {
             )}
           </TabPanels>
         </Tabs>
-      </PageContent>
-      <PageFooter textAlign='center'>
-        <ProfileSignOutButton />
-      </PageFooter>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 
-export default ProfilePage;
+export default observer(ProfilePage);

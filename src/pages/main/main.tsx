@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Flex, Box, Text, Link, SimpleGrid, Divider } from '@chakra-ui/react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { IPageProps } from '@educt/interfaces';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import { Stat, StatContent, StatIcon, StatLabel, StatNumber } from '@educt/components/Stat';
 import { MdOutlineCollectionsBookmark, MdOutlineGroup, MdOutlineMessage, MdOutlineVideoLibrary } from 'react-icons/md';
 import { useRootStore } from '@educt/hooks/useRootStore';
@@ -21,9 +21,13 @@ import {
   CourseCardList,
 } from './components';
 import { observer } from 'mobx-react';
+
+/**
+ * Hooks
+ */
+import { useEffect, useState } from 'react';
 import { useFetchCourses, useFetchStat } from '@educt/hooks/queries';
 import { useSocketEvent } from '@educt/hooks/useSocketEvent';
-import { useEffect } from 'react';
 
 /**
  * Main page
@@ -52,9 +56,9 @@ const MainPage: React.FC<IPageProps> = () => {
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 
   return (
-    <PageWrapper>
-      <PageHeading heading={`👋 Hello ${me.first_name},`} description="This what we've got today for you." />
-      <PageContent>
+    <Page>
+      <Page.Heading heading={`👋 Hello ${me.first_name},`} description="This what we've got today for you." />
+      <Page.Content>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing='6'>
           <Stat>
             <StatLabel>Online</StatLabel>
@@ -121,8 +125,8 @@ const MainPage: React.FC<IPageProps> = () => {
           </CourseCardList>
         </Box>
         <Divider />
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 

@@ -17,7 +17,7 @@ import DeleteCourseDialog from '@educt/components/Dialogs/DeleteCourseDialog';
 import PrevPageButton from '@educt/components/PrevPageButton';
 import { DeleteButton } from '@educt/components/Buttons';
 import { StatusButton } from './components';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import { StudentTableList, StudentTableRow } from './components/StudentTableList';
 import LessonList from './components/LessonList';
 
@@ -43,13 +43,13 @@ const EditCoursePage: React.FC<IPageProps> = () => {
   if (!course || isLoading) return <LoadingPage />;
 
   return (
-    <PageWrapper>
+    <Page>
       <Helmet>
         <title>Editing {course.title}</title>
       </Helmet>
 
       <DeleteCourseDialog course={course} onClose={onCloseDeleteDialog} isOpen={isOpenDeleteDialog} />
-      <PageHeading
+      <Page.Heading
         headingPrefix={<PrevPageButton prevPage='/courses' />}
         heading='Course editor'
         description={course.title}
@@ -58,8 +58,8 @@ const EditCoursePage: React.FC<IPageProps> = () => {
           <StatusButton courseId={course.id} currentStatus={course.status} />
           <DeleteButton onClick={onOpenDeleteDialog} ml='2' />
         </Flex>
-      </PageHeading>
-      <PageContent>
+      </Page.Heading>
+      <Page.Content>
         <Box>
           <Tabs mt='8'>
             <TabList>
@@ -91,8 +91,8 @@ const EditCoursePage: React.FC<IPageProps> = () => {
             </TabPanels>
           </Tabs>
         </Box>
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 

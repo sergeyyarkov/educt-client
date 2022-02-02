@@ -34,7 +34,7 @@ export const CourseCard: React.FC<BoxProps> = props => <Card py='5' px='6' {...p
 export const CourseCardHeading: React.FC<BoxProps> = props => (
   <Box borderLeftWidth={'5px'} borderColor={'blue.500'} pl='2' {...props} />
 );
-export const CourseCardTitle: React.FC<TextProps> = props => <Text fontSize={'2xl'} fontWeight={'bold'} {...props} />;
+export const CourseCardTitle: React.FC<TextProps> = props => <Text fontSize={'2xl'} fontWeight={'medium'} {...props} />;
 export const CourseCardCategory: React.FC = props => (
   <Flex mt='2'>
     <Tag size='sm' borderRadius='full' variant={'solid'}>

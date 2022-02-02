@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IPageProps } from '@educt/interfaces';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import CreateLessonForm from '@educt/components/Forms/LessonForm/CreateLessonForm';
 import { Redirect, useParams } from 'react-router-dom';
 import { useFetchCourse } from '@educt/hooks/queries';
@@ -21,12 +21,12 @@ const CreateLessonPage: React.FC<IPageProps> = () => {
   if (!course || isLoading) return <LoadingPage />;
 
   return (
-    <PageWrapper>
-      <PageHeading heading='Lesson Creation' description='Create new lesson' />
-      <PageContent>
+    <Page>
+      <Page.Heading heading='Lesson Creation' description='Create new lesson' />
+      <Page.Content>
         <CreateLessonForm />
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 

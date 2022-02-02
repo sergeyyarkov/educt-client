@@ -3,7 +3,7 @@ import { ChatButton } from './ChatButton';
 
 export interface IAvatarProps {
   name: string;
-  isOnline: boolean;
+  isOnline?: boolean | undefined;
 }
 
 export interface IChatButtonProps {

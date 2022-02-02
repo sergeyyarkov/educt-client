@@ -22,7 +22,7 @@ import {
 import ReactPlayer from 'react-player';
 import { MdOutlineCircle, MdCheckCircle, MdOutlineFilePresent, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import LoadingPage from '@educt/components/LoadingPage';
-import { PageContent, PageHeading, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 
 /**
  * Types
@@ -138,17 +138,17 @@ const LessonPage: React.FC<IPageProps> = () => {
   if (me === null) return <LoadingPage />;
 
   return (
-    <PageWrapper>
+    <Page>
       <Helmet>
         <title>{lesson.title}</title>
       </Helmet>
-      <PageHeading heading={lesson.title}>
+      <Page.Heading heading={lesson.title}>
         <Flex mt='3' alignItems={'center'} justifyContent={'space-between'}>
           <Text fontSize={'sm'}>~{moment.duration(lesson.duration, 'minutes').humanize()}</Text>
           {(me.isAdmin || me.isTeacher) && <EditButton onClick={handleEditLesson} />}
         </Flex>
-      </PageHeading>
-      <PageContent>
+      </Page.Heading>
+      <Page.Content>
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
             <Box>
@@ -270,8 +270,8 @@ const LessonPage: React.FC<IPageProps> = () => {
             </Box>
           </GridItem>
         </Grid>
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 

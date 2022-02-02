@@ -8,7 +8,7 @@ import { MdError } from 'react-icons/md';
  * Types
  */
 import { IPageProps } from '@educt/interfaces';
-import { PageContent, PageWrapper } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 
 /**
  * Hooks
@@ -28,8 +28,8 @@ const NotFoundPage: React.FC<IPageProps> = ({ title }) => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <PageWrapper textAlign='center' mt={40}>
-        <PageContent>
+      <Page textAlign='center' mt={40}>
+        <Page.Content>
           <Icon as={MdError} w='16' h='16' />
           <Heading display='block' as='h1' fontSize='6xl'>
             Page not found
@@ -38,8 +38,8 @@ const NotFoundPage: React.FC<IPageProps> = ({ title }) => {
           <Link as={ReactRouterLink} to='/' color='blue.500'>
             Return to main page
           </Link>
-        </PageContent>
-      </PageWrapper>
+        </Page.Content>
+      </Page>
     </>
   );
 };

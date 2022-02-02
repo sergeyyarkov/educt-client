@@ -62,10 +62,25 @@ export default class UserStore {
   public async loadCurrentUserData() {
     const result = await UserServiceInstance.fetchMe();
     const {
-      data: { id, first_name, last_name, fullname, email, roles, likes, contacts, courses, created_at, updated_at },
+      data: {
+        id,
+        first_name,
+        last_name,
+        fullname,
+        about,
+        last_login,
+        email,
+        roles,
+        likes,
+        contacts,
+        courses,
+        created_at,
+        updated_at,
+      },
     } = result;
 
     runInAction(() => {
+      // TODO Fix this
       this.me = {
         id,
         first_name,
@@ -73,6 +88,8 @@ export default class UserStore {
         email,
         roles,
         fullname,
+        about,
+        last_login,
         likes,
         contacts,
         courses,

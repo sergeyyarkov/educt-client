@@ -69,16 +69,6 @@ export const ProfileDescription: React.FC<IProfileDescriptionProps> = props => {
   );
 };
 
-export const ProfileSignOutButton: React.FC<ButtonProps> = () => {
-  const { logout } = useLogout();
-
-  return (
-    <Button onClick={logout} size='sm' w={{ base: 'full', sm: '150px' }}>
-      Sign Out
-    </Button>
-  );
-};
-
 export const ProfileLoading: React.FC<BoxProps> = props => {
   return (
     <Box maxW='900px' {...props}>
