@@ -147,6 +147,10 @@ export interface IUserContacts {
   vk_id: string | null;
 }
 
+export interface IUserInfo extends IUserContacts {
+  about: string | null;
+}
+
 export interface IUserRole {
   id: number;
   name: string;
