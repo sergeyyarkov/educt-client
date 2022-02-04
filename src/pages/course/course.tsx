@@ -15,7 +15,7 @@ import type { IPageProps } from '@educt/interfaces';
  * Components
  */
 import { CourseBackgroundImage, CourseHeader, CourseHeading, CourseInfo, LessonItem, LessonList } from '.';
-import { PageWrapper, PageContent } from '@educt/components/PageElements';
+import { Page } from '@educt/components/PageElements';
 import LoadingPage from '@educt/components/LoadingPage';
 
 /**
@@ -50,7 +50,7 @@ const CoursePage: React.FC<IPageProps> = () => {
   const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
 
   return (
-    <PageWrapper maxW='1200px'>
+    <Page maxW='1200px'>
       <Helmet>
         <title>{course.title}</title>
       </Helmet>
@@ -64,7 +64,7 @@ const CoursePage: React.FC<IPageProps> = () => {
         />
       </CourseHeader>
 
-      <PageContent mt={{ base: '5', sm: '2' }}>
+      <Page.Content mt={{ base: '5', sm: '2' }}>
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }} gap={'7'}>
           <GridItem>
             <Box>
@@ -158,8 +158,8 @@ const CoursePage: React.FC<IPageProps> = () => {
             </Box>
           </GridItem>
         </Grid>
-      </PageContent>
-    </PageWrapper>
+      </Page.Content>
+    </Page>
   );
 };
 

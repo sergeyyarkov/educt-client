@@ -1,12 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
-import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
+import { IApiRespose, IMe, IUser, IUserContacts, IUserInfo } from '@educt/interfaces';
 import {
   CreateUserParamsType,
   FetchUsersParamsType,
   UpdateUserParamsType,
   UpdateUserContactsParamsType,
+  UpdateUserInfoParamsType,
 } from '@educt/types';
 
 class UserService {
@@ -42,6 +43,17 @@ class UserService {
         search: search || undefined,
       },
     });
+    return result.data;
+  }
+
+  /**
+   * Fetch user by id
+   *
+   * @param id User id
+   * @returns Users
+   */
+  public async fetchUserById(id: string): Promise<IApiRespose<IUser>> {
+    const result = await this.api.get(`/v1/users/${id}`);
     return result.data;
   }
 
@@ -94,6 +106,17 @@ class UserService {
    */
   public async updateContacts(data: UpdateUserContactsParamsType): Promise<IApiRespose<IUserContacts>> {
     const result = await this.api.patch('v1/me/contacts', data);
+    return result.data;
+  }
+
+  /**
+   * Update user info
+   *
+   * @param data Fields to update
+   * @returns Updated fields
+   */
+  public async updateInfo(data: UpdateUserInfoParamsType): Promise<IApiRespose<Partial<IUserInfo>>> {
+    const result = await this.api.patch('v1/me/info', data);
     return result.data;
   }
 

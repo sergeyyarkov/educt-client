@@ -1,37 +1,22 @@
 import React from 'react';
-import {
-  Avatar,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  Button,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputGroup,
-  InputRightElement,
-} from '@chakra-ui/react';
-import { Box, Stack } from '@chakra-ui/layout';
+import { observer } from 'mobx-react';
+import { Stack } from '@chakra-ui/layout';
 
 /**
  * Types
  */
-import { IPageProps } from '@educt/interfaces';
+import type { IPageProps } from '@educt/interfaces';
 
 /**
  *  Components
  */
-import { PageHeading, PageContent, PageWrapper, PageFooter } from '@educt/components/PageElements';
-import { ProfileAvatar, ProfileBaseInfo, ProfileDescription, ProfileLoading, ProfileSignOutButton } from './components';
-import { CourseList } from './components/CourseList';
-import UpdateUserContactsForm from '@educt/pages/profile/components/UpdateUserContactsForm';
+import { Page } from '@educt/components/PageElements';
+import { UserProfile } from '@educt/components/UserProfile';
+import LoadingPage from '@educt/components/LoadingPage';
 
 /**
  * Hooks
  */
-import { useHistory } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**
@@ -41,87 +26,84 @@ const ProfilePage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
   } = useRootStore();
-  const history = useHistory();
 
-  if (me === null) return <ProfileLoading />;
+  if (me === null) return <LoadingPage />;
 
   return (
-    <PageWrapper maxW='900px'>
-      <PageHeading heading='My account' description='Update you contacts information or password here.' />
-      <ProfileBaseInfo mt='20'>
-        <ProfileAvatar name={me.fullname} />
-        <ProfileDescription fullname={me.fullname} email={me.email} roles={me.roles} />
-      </ProfileBaseInfo>
-      <PageContent>
-        <Tabs mt='7'>
-          <TabList>
-            <Tab>Account information</Tab>
-            <Tab>My contacts</Tab>
-            {me.isStudent && <Tab>Available courses</Tab>}
-          </TabList>
-          <TabPanels mt='2'>
-            <TabPanel>
-              <form>
-                <Box borderRadius='md' borderWidth='1px' padding='5'>
-                  <Stack spacing='5px'>
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>First name</FormHelperText>
-                      <Input type='text' value={me.first_name} size='md' variant='flushed' />
-                    </FormControl>
+    <Page maxW={'900px'}>
+      <Page.Heading heading='My account' description='Update your profile information or password here.' />
+      <Page.Content>
+        <UserProfile mt='14'>
+          <UserProfile.Base>
+            <UserProfile.Avatar name={me.fullname} />
+            <UserProfile.Info>
+              <UserProfile.Heading fullname={me.fullname} roles={me.roles} />
+              <UserProfile.Details registered={me.created_at} lastLogin={me.last_login} />
+              <UserProfile.About about={me.about} />
+            </UserProfile.Info>
+          </UserProfile.Base>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Last name</FormHelperText>
-                      <Input type='text' value={me.last_name} size='md' variant='flushed' />
-                    </FormControl>
+          <UserProfile.Settings>
+            {/* Personal Info */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title={'Personal Info'} />
+              <UserProfile.Settings.EntryContent>
+                <Stack spacing={'6'}>
+                  <UserProfile.Settings.FullnameInput defaultValue={me.fullname} />
+                  <UserProfile.Settings.EmailInput defaultValue={me.email} />
+                  <UserProfile.Settings.AboutInput />
+                </Stack>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Email</FormHelperText>
-                      <InputGroup>
-                        <Input type='text' value={me.email} size='md' variant='flushed' />
-                        <InputRightElement width='4rem'>
-                          <Button size='sm' h='1.90rem' w='full' onClick={() => history.push('/profile/change-email')}>
-                            Edit
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
+            {/* Contacts */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title={'Contacts'} />
+              <UserProfile.Settings.EntryContent>
+                <Stack spacing={'6'}>
+                  <UserProfile.Settings.PhoneInput />
+                  <UserProfile.Settings.TwitterInput />
+                  <UserProfile.Settings.TelegramInput />
+                </Stack>
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
 
-                    <FormControl isDisabled>
-                      <FormHelperText color='gray.500'>Password</FormHelperText>
-                      <InputGroup>
-                        <Input type='text' value='**********' size='md' variant='flushed' />
-                        <InputRightElement width='5rem'>
-                          <Button
-                            size='sm'
-                            h='1.90rem'
-                            w='full'
-                            onClick={() => history.push('/profile/change-password')}
-                          >
-                            Change
-                          </Button>
-                        </InputRightElement>
-                      </InputGroup>
-                    </FormControl>
-                  </Stack>
-                </Box>
-              </form>
-            </TabPanel>
-            <TabPanel>
-              <UpdateUserContactsForm contacts={me.contacts} />
-            </TabPanel>
-            {me.isStudent && (
-              <TabPanel>
-                <CourseList courses={me.courses} />
-              </TabPanel>
-            )}
-          </TabPanels>
-        </Tabs>
-      </PageContent>
-      <PageFooter textAlign='center'>
-        <ProfileSignOutButton />
-      </PageFooter>
-    </PageWrapper>
+            {/* Security */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Security' />
+              <UserProfile.Settings.EntryContent>
+                <UserProfile.Settings.PasswordInput defaultValue={'**********'} />
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            {/* Language */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Language' />
+              <UserProfile.Settings.EntryContent>
+                <UserProfile.Settings.LanguageSelect />
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            {/* Night Theme */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title title='Night Theme' />
+              <UserProfile.Settings.EntryContent>
+                <UserProfile.Settings.ThemeSwitcher />
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+
+            {/* Save Button */}
+            <UserProfile.Settings.Entry>
+              <UserProfile.Settings.Title />
+              <UserProfile.Settings.EntryContent>
+                <UserProfile.Settings.SaveSettingsButton />
+              </UserProfile.Settings.EntryContent>
+            </UserProfile.Settings.Entry>
+          </UserProfile.Settings>
+        </UserProfile>
+      </Page.Content>
+    </Page>
   );
 };
 
-export default ProfilePage;
+export default observer(ProfilePage);

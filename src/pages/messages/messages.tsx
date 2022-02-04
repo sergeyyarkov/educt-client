@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Heading, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Grid } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
+import { Page } from '@educt/components/PageElements';
 
 import { IPageProps } from '@educt/interfaces';
 
@@ -8,9 +9,9 @@ import { IPageProps } from '@educt/interfaces';
  */
 const MessagesPage: React.FC<IPageProps> = () => {
   return (
-    <Box>
-      <Heading as='h1'>Messages page</Heading>
-    </Box>
+    <Page>
+      <Page.Heading heading='Messages' />
+    </Page>
   );
 };
 

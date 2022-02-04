@@ -1,6 +1,11 @@
 import yup from '@educt/schema';
 
-const UpdateUserContactsSchema = yup.object().shape({
+const SettingsSchema = yup.object().shape({
+  about: yup
+    .string()
+    .max(250, 'Description must be at most 250 characters')
+    .transform(val => (!val ? null : val))
+    .nullable(true),
   phone_number: yup
     .string()
     .isMobileValid(['en-US', 'ru-RU'], { strictMode: true })
@@ -16,11 +21,6 @@ const UpdateUserContactsSchema = yup.object().shape({
     .matches(/(^|[^@\w])@(\w{1,64})\b/, 'Telegram username is not valid')
     .transform(val => (!val ? null : val))
     .nullable(true),
-  vk_id: yup
-    .string()
-    .matches(/^([a-zA-Z0-9_]){1,64}$/, 'VKontakte username is not valid')
-    .transform(val => (!val ? null : val))
-    .nullable(true),
 });
 
-export default UpdateUserContactsSchema;
+export { SettingsSchema };

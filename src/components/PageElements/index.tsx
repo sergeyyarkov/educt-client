@@ -1,17 +1,23 @@
 import React from 'react';
 import { BoxProps, Box, Flex, Heading, Text, Divider } from '@chakra-ui/react';
 
-interface IPageHeadingProps extends BoxProps {
+interface IPageComposition {
+  Heading: React.FC<IPageHeadingProps & BoxProps>;
+  Content: React.FC<BoxProps>;
+  Footer: React.FC<BoxProps>;
+}
+
+const Page: React.FC<BoxProps> & IPageComposition = props => {
+  return <Box {...props}>{props.children}</Box>;
+};
+
+interface IPageHeadingProps {
   headingPrefix?: JSX.Element;
   heading: string;
   description?: string;
 }
 
-export const PageWrapper: React.FC<BoxProps> = props => {
-  return <Box {...props}>{props.children}</Box>;
-};
-
-export const PageHeading: React.FC<IPageHeadingProps> = props => {
+Page.Heading = props => {
   const { headingPrefix, heading, description, ...boxProps } = props;
   return (
     <Box {...boxProps}>
@@ -26,15 +32,17 @@ export const PageHeading: React.FC<IPageHeadingProps> = props => {
   );
 };
 
-export const PageContent: React.FC<BoxProps> = props => (
+Page.Content = props => (
   <Box mt='4' {...props}>
     {props.children}
   </Box>
 );
 
-export const PageFooter: React.FC<BoxProps> = props => (
+Page.Footer = props => (
   <Box mt='4' {...props}>
     <Divider m='20px 0' />
     {props.children}
   </Box>
 );
+
+export { Page };

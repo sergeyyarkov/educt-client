@@ -116,6 +116,8 @@ export interface IUser {
   first_name: string;
   last_name: string;
   fullname: string;
+  about: string | null;
+  last_login: string | null;
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
@@ -143,6 +145,10 @@ export interface IUserContacts {
   twitter_id: string | null;
   telegram_id: string | null;
   vk_id: string | null;
+}
+
+export interface IUserInfo extends IUserContacts {
+  about: string | null;
 }
 
 export interface IUserRole {

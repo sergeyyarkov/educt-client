@@ -29,6 +29,7 @@ import { useCreateUser } from './user/useCreateUser';
 import { useDeleteUser } from './user/useDeleteUser';
 import { useUpdateUser } from './user/useUpdateUser';
 import { useUpdateUserEmail } from './user/useUpdateUserEmail';
+import { useUpdateUserInfo } from './user/useUpdateUserInfo';
 
 /**
  * Category
@@ -59,6 +60,7 @@ export {
   useCreateUser,
   useDeleteUser,
   useUpdateUser,
+  useUpdateUserInfo,
   useUpdateUserEmail,
   useCreateCategory,
   useDeleteCategory,
