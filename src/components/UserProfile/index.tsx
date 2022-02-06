@@ -2,7 +2,17 @@ import React from 'react';
 import { BoxProps, Flex, FlexProps } from '@chakra-ui/react';
 import { Base } from './Base';
 import { Avatar, ChatButton, IAvatarProps, IChatButtonProps } from './Avatar';
-import { About, Details, Heading, IAboutProps, IDetailsProps, IHeadingProps, Info } from './Info';
+import {
+  About,
+  Contacts,
+  Details,
+  Heading,
+  IAboutProps,
+  IContactsProps,
+  IDetailsProps,
+  IHeadingProps,
+  Info,
+} from './Info';
 import { Settings } from './Settings';
 import { ISettingsComposition } from './Settings/Settings';
 
@@ -14,6 +24,7 @@ interface IUserProfileComposition {
   Heading: React.FC<IHeadingProps>;
   Details: React.FC<IDetailsProps>;
   About: React.FC<IAboutProps>;
+  Contacts: React.FC<IContactsProps>;
   Settings: React.FC<BoxProps> & ISettingsComposition;
 }
 
@@ -32,6 +43,7 @@ UserProfile.Info = Info;
 UserProfile.Heading = Heading;
 UserProfile.Details = Details;
 UserProfile.About = About;
+UserProfile.Contacts = Contacts;
 UserProfile.Settings = Settings;
 
 export { UserProfile };

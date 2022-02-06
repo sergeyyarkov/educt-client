@@ -3,6 +3,7 @@ import { Info } from './Info';
 import { Heading } from './Heading';
 import { Details } from './Details';
 import { About } from './About';
+import { Contacts } from './Contacts';
 
 export interface IHeadingProps {
   fullname: string;
@@ -18,4 +19,8 @@ export interface IAboutProps {
   about: IUser['about'];
 }
 
-export { Info, Heading, Details, About };
+export interface IContactsProps {
+  contacts: IUser['contacts'];
+}
+
+export { Info, Heading, Details, About, Contacts };

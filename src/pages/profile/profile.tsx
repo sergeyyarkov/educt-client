@@ -40,6 +40,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
               <UserProfile.Heading fullname={me.fullname} roles={me.roles} />
               <UserProfile.Details registered={me.created_at} lastLogin={me.last_login} />
               <UserProfile.About about={me.about} />
+              <UserProfile.Contacts contacts={me.contacts} />
             </UserProfile.Info>
           </UserProfile.Base>
 
