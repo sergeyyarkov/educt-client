@@ -8,7 +8,6 @@ import {
   CreateUserParamsType,
   FetchUsersParamsType,
   UpdateUserContactsParamsType,
-  UpdateUserInfoParamsType,
   UpdateUserParamsType,
 } from '@educt/types';
 import { IUser, IMe, IPaginationMeta } from '@educt/interfaces';

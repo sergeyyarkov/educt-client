@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import { Router, Switch } from 'react-router-dom';
 import { routes } from './routes.config';
 
 /**
  * Hooks
  */
+import { useContext } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**
@@ -18,6 +19,7 @@ import { SocketContext } from './contexts';
 const App = () => {
   const {
     uiStore: { history },
+    onlineStore,
   } = useRootStore();
   const { socket } = useContext(SocketContext);
 
@@ -33,6 +35,7 @@ const App = () => {
       socket.userId = userId;
     }
   });
+  useSocketEvent('user:online', online => onlineStore.loadOnline(online));
 
   return (
     <Router history={history}>

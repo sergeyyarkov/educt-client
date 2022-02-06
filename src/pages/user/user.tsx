@@ -17,6 +17,7 @@ const UserPage: React.FC<IPageProps> = () => {
   const params = useParams<{ id: string }>();
   const {
     userStore: { me },
+    onlineStore,
   } = useRootStore();
   const { data: user, error, isLoading } = useFetchUser(params.id);
 
@@ -34,7 +35,7 @@ const UserPage: React.FC<IPageProps> = () => {
       <Page.Content maxW={'900px'}>
         <UserProfile>
           <UserProfile.Base>
-            <UserProfile.Avatar name={user.fullname} isOnline>
+            <UserProfile.Avatar name={user.fullname} isOnline={onlineStore.isOnline(user.id)}>
               <UserProfile.ChatButton userid={user.id} />
             </UserProfile.Avatar>
             <UserProfile.Info>

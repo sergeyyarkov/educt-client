@@ -5,7 +5,12 @@ export const useSocket = (url: string) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketClient = io(url, { autoConnect: false, withCredentials: true });
+    const socketClient = io(url, {
+      autoConnect: false,
+      withCredentials: true,
+      transports: ['websocket'],
+      upgrade: false,
+    });
 
     setSocket(socketClient);
 

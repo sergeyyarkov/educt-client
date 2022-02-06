@@ -9,6 +9,7 @@ import UIStore from './UIStore';
 import CategoryStore from './CategoryStore';
 import CourseStore from './CourseStore';
 import PageStore from './PageStore';
+import OnlineStore from './OnlineStore';
 
 export default class RootStore {
   public pageStore: PageStore;
@@ -23,6 +24,8 @@ export default class RootStore {
 
   public userStore: UserStore;
 
+  public onlineStore: OnlineStore;
+
   constructor() {
     /**
      * Stores
@@ -33,6 +36,7 @@ export default class RootStore {
     this.pageStore = new PageStore(this);
     this.uiStore = new UIStore(this);
     this.userStore = new UserStore(this);
+    this.onlineStore = new OnlineStore(this);
 
     makeAutoObservable(this);
   }

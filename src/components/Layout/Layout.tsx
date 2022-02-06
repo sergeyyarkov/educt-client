@@ -1,7 +1,6 @@
-import React, { Suspense, useContext } from 'react';
+import React, { Suspense } from 'react';
 import { observer } from 'mobx-react';
 import { Redirect } from 'react-router';
-import { useErrorHandler } from 'react-error-boundary';
 import { userContainRoles } from '@educt/helpers';
 import { Flex, Box } from '@chakra-ui/react';
 
@@ -20,7 +19,8 @@ import NavDesktop from '@educt/components/Nav/Desktop';
 /**
  * Hooks
  */
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { useErrorHandler } from 'react-error-boundary';
 import { useRootStore } from '@educt/hooks/useRootStore';
 
 /**

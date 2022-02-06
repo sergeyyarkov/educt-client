@@ -25,9 +25,7 @@ import { observer } from 'mobx-react';
 /**
  * Hooks
  */
-import { useEffect, useState } from 'react';
 import { useFetchCourses, useFetchStat } from '@educt/hooks/queries';
-import { useSocketEvent } from '@educt/hooks/useSocketEvent';
 
 /**
  * Main page
@@ -35,23 +33,10 @@ import { useSocketEvent } from '@educt/hooks/useSocketEvent';
 const MainPage: React.FC<IPageProps> = () => {
   const {
     userStore: { me },
+    onlineStore,
   } = useRootStore();
   const { data: courses } = useFetchCourses({ limit: 3 });
   const { data: stat } = useFetchStat();
-  const [online, setOnline] = useState<number>(0);
-
-  /**
-   * Update online state on socket event
-   */
-  useSocketEvent('user:online', online => setOnline(online));
-
-  // useSocketEvent('user:connected', user => console.table(user));
-
-  useEffect(() => {
-    if (stat) {
-      setOnline(stat.online);
-    }
-  }, [stat]);
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 
@@ -63,7 +48,7 @@ const MainPage: React.FC<IPageProps> = () => {
           <Stat>
             <StatLabel>Online</StatLabel>
             <StatContent>
-              <StatNumber>{online}</StatNumber>
+              <StatNumber>{onlineStore.count}</StatNumber>
               <StatIcon icon={MdOutlineGroup} />
             </StatContent>
           </Stat>

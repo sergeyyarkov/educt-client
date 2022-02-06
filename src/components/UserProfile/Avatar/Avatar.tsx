@@ -10,7 +10,7 @@ const Avatar: React.FC<IAvatarProps> = props => {
   return (
     <Flex flexDir={'column'} alignItems={'center'}>
       <ChakraAvatar border={`4px solid ${borderColor}`} borderColor={borderColor} name={name} size='2xl'>
-        {isOnline && <ChakraAvatarBadge boxSize='0.75em' bg={onlineColor} />}
+        {isOnline !== undefined && <ChakraAvatarBadge boxSize='0.75em' bg={onlineColor} />}
       </ChakraAvatar>
       {props.children}
     </Flex>
