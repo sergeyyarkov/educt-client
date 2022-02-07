@@ -28,12 +28,14 @@ import { useRootStore } from '@educt/hooks/useRootStore';
  */
 import { SocketContext } from '@educt/contexts';
 
-type LayoutPropsType = { roles: UserRoleEnum[] | undefined };
+interface ILayoutProps {
+  roles?: UserRoleEnum[] | undefined;
+}
 
 /**
  * Render the current page using layout
  */
-const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
+const Layout: React.FC<ILayoutProps> = ({ children, roles }) => {
   const { userStore } = useRootStore();
   const { socket } = useContext(SocketContext);
   const handleError = useErrorHandler();
@@ -69,7 +71,14 @@ const Layout: React.FC<LayoutPropsType> = ({ children, roles }) => {
 
   return (
     <>
-      <Header />
+      <Header>
+        <Header.Logo />
+        <Flex>
+          <Header.ThemeSwitcher />
+          <Header.Notifications />
+          <Header.Profile />
+        </Flex>
+      </Header>
       <NavDesktop />
       <Flex minH='100vh' justifyContent='center'>
         <Box as='main' flex='1 0' maxW='85rem' ml={{ base: '0', lg: '20rem' }} mt='7rem' mb='1rem' pr='2rem' pl='2rem'>

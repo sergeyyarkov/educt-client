@@ -24,11 +24,13 @@ import UserBadge from '@educt/components/UserBadge';
  */
 import { useLogout } from '@educt/hooks/queries';
 
-const ProfileMenu: React.FC = () => {
-  const { userStore } = useRootStore();
+const Profile: React.FC = observer(() => {
+  const {
+    userStore: { me },
+  } = useRootStore();
   const { logout } = useLogout();
 
-  if (userStore.me === null) {
+  if (me === null) {
     return <Skeleton width='260px' height='40px' borderRadius='md' />;
   }
 
@@ -37,15 +39,15 @@ const ProfileMenu: React.FC = () => {
       <Menu>
         <MenuButton as={Button} pr={6}>
           <Flex alignItems='center'>
-            <Avatar size='sm' name={userStore.me.fullname} marginRight={3} />
+            <Avatar size='sm' name={me.fullname} marginRight={3} />
             <Text as='span' mr={2}>
-              {userStore.me.fullname}
+              {me.fullname}
             </Text>
-            <UserBadge roles={userStore.me.roles} />
+            <UserBadge roles={me.roles} />
           </Flex>
         </MenuButton>
         <MenuList mr='1rem'>
-          <MenuGroup title={userStore.me.fullname}>
+          <MenuGroup title={me.fullname}>
             <MenuDivider />
             <Link to='/profile'>
               <MenuItem>
@@ -62,6 +64,6 @@ const ProfileMenu: React.FC = () => {
       </Menu>
     </Flex>
   );
-};
+});
 
-export default observer(ProfileMenu);
+export { Profile };

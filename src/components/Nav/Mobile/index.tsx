@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Link as ReactRouterLink } from 'react-router-dom';
-import { IconButton, Skeleton } from '@chakra-ui/react';
+import { IconButton, Skeleton, Divider } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Flex, Box, Text, Link } from '@chakra-ui/layout';
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody } from '@chakra-ui/modal';
@@ -36,16 +36,19 @@ const NavMobile: React.FC = () => {
       <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent backgroundColor={colorMode === 'dark' ? 'gray.800' : 'white'}>
-          <DrawerBody>
+          <DrawerBody p='0'>
             <Flex flexDirection='column' height='100%'>
-              <Box mt='2'>
+              <Box px='6' py='2'>
                 <Logo h='10' ml='2' />
               </Box>
-              <Flex flexDir='column' mt='3' w='full'>
+              <Divider />
+              <Flex px='6' flexDir='column' mt='3' w='full'>
                 <NavList links={config.links} onCloseDrawer={onClose} />
               </Flex>
               {me !== null ? (
                 <Box
+                  mx='6'
+                  my='3'
                   minHeight='60px'
                   padding='10px'
                   borderRadius='md'
