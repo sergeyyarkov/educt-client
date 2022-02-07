@@ -8,7 +8,11 @@ interface IPageComposition {
 }
 
 const Page: React.FC<BoxProps> & IPageComposition = props => {
-  return <Box {...props}>{props.children}</Box>;
+  return (
+    <Box maxW='85rem' ml='auto' mr='auto' mt='7rem' mb='2rem' px='2rem' {...props}>
+      {props.children}
+    </Box>
+  );
 };
 
 interface IPageHeadingProps {
@@ -27,16 +31,12 @@ Page.Heading = props => {
       </Flex>
       {description && <Text mt='2'>{description}</Text>}
       {props.children}
-      <Divider mt='5' />
+      <Divider my='5' />
     </Box>
   );
 };
 
-Page.Content = props => (
-  <Box mt='4' {...props}>
-    {props.children}
-  </Box>
-);
+Page.Content = props => <Box {...props}>{props.children}</Box>;
 
 Page.Footer = props => (
   <Box mt='4' {...props}>

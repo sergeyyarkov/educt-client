@@ -81,7 +81,7 @@ const Layout: React.FC<ILayoutProps> = ({ children, roles }) => {
       </Header>
       <NavDesktop />
       <Flex minH='100vh' justifyContent='center'>
-        <Box as='main' flex='1 0' maxW='85rem' ml={{ base: '0', lg: '20rem' }} mt='7rem' mb='1rem' pr='2rem' pl='2rem'>
+        <Box as='main' flex='1 0' ml={{ base: '0', lg: '20rem' }}>
           <Suspense fallback={<LoadingPage />}>
             {(() => {
               /**
@@ -98,12 +98,12 @@ const Layout: React.FC<ILayoutProps> = ({ children, roles }) => {
                 if (!userContainRoles(me.roles, roles)) return <Redirect to='/404' />;
 
                 return children;
-              } else {
-                /**
-                 * Return children if "roles" prop is not defined
-                 */
-                return children;
               }
+
+              /**
+               * Return children if "roles" prop is not defined
+               */
+              return children;
             })()}
           </Suspense>
         </Box>

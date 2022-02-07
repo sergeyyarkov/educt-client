@@ -11,10 +11,7 @@ export const theme = extendTheme({
         width: '5px',
         height: '5px',
       },
-      '::-webkit-scrollbar-track': {
-        backgroundColor: 'gray.100',
-        borderRadius: '100px',
-      },
+
       '::-webkit-scrollbar-thumb': {
         background: 'blue.600',
         borderRadius: '100px',

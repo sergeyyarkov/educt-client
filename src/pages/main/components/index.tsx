@@ -24,7 +24,7 @@ export const CourseCardList: React.FC<SimpleGridProps> = props => (
     mt='4'
     templateColumns={{
       base: '1fr',
-      md: 'repeat(auto-fill, minmax(320px, 1fr))',
+      md: 'repeat(auto-fill, minmax(400px, 1fr))',
     }}
     spacing={'6'}
     {...props}

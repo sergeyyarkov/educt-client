@@ -50,7 +50,7 @@ const CoursePage: React.FC<IPageProps> = () => {
   const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
 
   return (
-    <Page maxW='1200px'>
+    <Page>
       <Helmet>
         <title>{course.title}</title>
       </Helmet>

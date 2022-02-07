@@ -30,7 +30,7 @@ const ProfilePage: React.FC<IPageProps> = () => {
   if (me === null) return <LoadingPage />;
 
   return (
-    <Page maxW={'900px'}>
+    <Page>
       <Page.Heading heading='My account' description='Update your profile information or password here.' />
       <Page.Content>
         <UserProfile mt='14'>
