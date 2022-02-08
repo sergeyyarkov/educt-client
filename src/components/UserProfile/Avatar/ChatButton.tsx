@@ -7,7 +7,7 @@ import type { IChatButtonProps } from '.';
 const ChatButton: React.FC<IChatButtonProps & ButtonProps> = props => {
   const { userid } = props;
   const history = useHistory();
-  const handleChat = () => history.push(`/chat/${userid}`);
+  const handleChat = () => history.push(`/messages?chat_id=${userid}`);
 
   return (
     <Button onClick={handleChat} mt='5' variant={'outline'} size={'sm'} leftIcon={<MdOutlineMessage />} {...props}>
