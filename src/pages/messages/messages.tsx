@@ -2,6 +2,7 @@ import React from 'react';
 import { Page } from '@educt/components/PageElements';
 import { IPageProps } from '@educt/interfaces';
 import { Chat } from '@educt/components/Chat';
+import { observer } from 'mobx-react';
 
 /**
  * Messages page
@@ -22,4 +23,4 @@ const MessagesPage: React.FC<IPageProps> = () => {
   );
 };
 
-export default MessagesPage;
+export default observer(MessagesPage);

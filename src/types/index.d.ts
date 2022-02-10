@@ -62,6 +62,13 @@ export type ConfirmEmailContainerDataType = {
   expired_seconds: number;
 };
 
+export type MessageType = {
+  userName: string;
+  content: string;
+  time: string;
+  isMyMessage: boolean;
+};
+
 /**
  * Change email page context
  */

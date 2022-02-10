@@ -1,39 +1,53 @@
 import React from 'react';
-import { Box, Stack, Text } from '@chakra-ui/react';
+import { observer } from 'mobx-react';
+import { Box, Stack, StackProps, Text } from '@chakra-ui/react';
 import { User } from './User';
 import { useChatContext } from '../../context';
+import { useRootStore } from '@educt/hooks/useRootStore';
+import { Skeleton } from '@chakra-ui/react';
 
-const tempDb = [
-  { id: 'user-1', name: 'Trace Kerluke', lastMessage: 'Hello.', time: '2g' },
-  { id: 'user-2', name: 'Dalton Conn ', lastMessage: 'Hello, how you doing ?', time: '30m' },
-  { id: 'user-3', name: 'Cleo Hane', lastMessage: 'Hi.', time: '1h' },
-];
+const Wrapper: React.FC<StackProps> = ({ children }) => {
+  return (
+    <Stack mt='12' maxH='690px' overflowY={'scroll'} pr={{ base: '0', lg: '3' }}>
+      {children}
+    </Stack>
+  );
+};
 
-const Users: React.FC = () => {
+const Users: React.FC = observer(() => {
+  const { onlineStore } = useRootStore();
   const { search } = useChatContext();
+  const { users } = onlineStore;
 
-  const filtered = !search ? tempDb : tempDb.filter(u => u.name.toLocaleLowerCase().includes(search));
+  if (users === null)
+    return (
+      <Wrapper>
+        <Skeleton h='90px' borderRadius={'lg'} />
+        <Skeleton h='90px' borderRadius={'lg'} />
+      </Wrapper>
+    );
+
+  const filtered = !search ? users : users.filter(u => u.userName.toLocaleLowerCase().includes(search));
   const isEmpty = filtered.length === 0;
 
   return (
-    <Stack mt='12' maxH='690px' overflowY={'scroll'} pr={{ base: '0', lg: '3' }}>
+    <Wrapper>
       {!isEmpty ? (
         filtered.map(u => (
-          <User key={u.id} id={u.id}>
-            <User.Avatar isOnline={false} fullname={u.name} />
-            <User.Info fullname={u.name} lastMessage={u.lastMessage} />
-            <User.Time time={u.time} />
+          <User key={u.userId} id={u.userId}>
+            <User.Avatar isOnline={onlineStore.isOnline(u.userId) || false} fullname={u.userName} />
+            <User.Info fullname={u.userName} lastMessage={''} />
+            <User.Time time={'2h'} />
           </User>
         ))
       ) : (
         <Box textAlign={'center'}>
           <Text userSelect={'none'} color='gray.500'>
-            Cannot find any chat
+            Cannot find any users
           </Text>
         </Box>
       )}
-    </Stack>
+    </Wrapper>
   );
-};
-
+});
 export { Users };
