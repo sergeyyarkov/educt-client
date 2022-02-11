@@ -20,8 +20,6 @@ const Sidebar: React.FC<GridItemProps> & ISidebarComposition = props => {
       {props.children}
     </GridItem>
   );
-
-  return null;
 };
 
 Sidebar.Heading = Heading;

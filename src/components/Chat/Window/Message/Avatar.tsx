@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { WrapItem, Avatar as ChakraAvatar } from '@chakra-ui/react';
 
 export interface IAvatarProps {
   fullname: string;
 }
 
-const Avatar: React.FC<IAvatarProps> = ({ fullname: name }) => {
+const Avatar: React.FC<IAvatarProps> = memo(({ fullname: name }) => {
   return (
     <WrapItem>
       <ChakraAvatar name={name} size={'sm'} />
     </WrapItem>
   );
-};
+});
 
 export { Avatar };
