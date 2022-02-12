@@ -47,11 +47,12 @@ const SettingsContextProvider: React.FC = ({ children }) => {
       runInAction(() => {
         if (me !== null) {
           me.about = about === undefined ? me.about : about;
-          if (me.contacts) {
-            me.contacts.phone_number = phone_number === undefined ? me.contacts.phone_number : phone_number;
-            me.contacts.twitter_id = twitter_id === undefined ? me.contacts.twitter_id : twitter_id;
-            me.contacts.telegram_id = telegram_id === undefined ? me.contacts.telegram_id : telegram_id;
-          }
+          me.contacts = {
+            phone_number: phone_number === undefined ? me.contacts?.phone_number || null : phone_number,
+            twitter_id: twitter_id === undefined ? me.contacts?.twitter_id || null : twitter_id,
+            telegram_id: telegram_id === undefined ? me.contacts?.telegram_id || null : telegram_id,
+            vk_id: null,
+          };
         }
       });
 

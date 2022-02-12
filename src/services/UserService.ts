@@ -163,6 +163,17 @@ class UserService {
     });
     return result.data;
   }
+
+  /**
+   * Get history of chat
+   *
+   * @param chatId Chat id
+   * @returns Array of messages
+   */
+  public async fetchChatHistory(chatId: string): Promise<IApiRespose<{ history: unknown[] }>> {
+    const result = await this.api.get(`v1/me/messages/${chatId}`);
+    return result.data;
+  }
 }
 
 export const UserServiceInstance = new UserService(ApiServiceInstance.api);

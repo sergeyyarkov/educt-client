@@ -48,7 +48,7 @@ const MainPage: React.FC<IPageProps> = () => {
           <Stat>
             <StatLabel>Online</StatLabel>
             <StatContent>
-              <StatNumber>{onlineStore.count}</StatNumber>
+              <StatNumber>{onlineStore.count || 0}</StatNumber>
               <StatIcon icon={MdOutlineGroup} />
             </StatContent>
           </Stat>

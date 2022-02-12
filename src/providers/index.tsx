@@ -1,4 +1,5 @@
 import React, { useState, ReactNode } from 'react';
+import * as constants from '../../constants';
 import {
   ChangeEmailPageContext,
   CoursesPageContext,
@@ -25,7 +26,7 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
  * Socket context provider
  */
 export const SocketContextProvider: React.FC = ({ children }) => {
-  const socket = useSocket('ws://localhost:3333');
+  const socket = useSocket(constants.WS_URL);
 
   return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };

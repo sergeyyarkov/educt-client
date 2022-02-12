@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Box, Flex, Heading, Text } from '@chakra-ui/layout';
 
 /**
  * Types
@@ -10,6 +9,7 @@ import { IPageProps } from '@educt/interfaces';
 /**
  * Components
  */
+import { Page } from '@educt/components/PageElements';
 import LoadingPage from '@educt/components/LoadingPage';
 import UpdateEmailForm from './components/UpdateEmailForm';
 
@@ -32,7 +32,6 @@ import { ChangeEmailPageContext } from '@educt/contexts';
  * Providers
  */
 import { ChangeEmailPageContextProvider } from '@educt/providers';
-import PrevPageButton from '@educt/components/PrevPageButton';
 
 /**
  * Change email page
@@ -48,22 +47,18 @@ const ChangeEmailPage: React.FC<IPageProps> = () => {
     <ChangeEmailPageContextProvider>
       <ChangeEmailPageContext.Consumer>
         {({ isCodeSent, confirmEmailData }) => (
-          <>
+          <Page>
             {!isCodeSent ? (
-              <Box maxW='700px'>
-                <Flex alignItems='center'>
-                  <PrevPageButton prevPage='/profile' />
-                  <Heading as='h1'>Edit email address</Heading>
-                </Flex>
-                <Box mt='3'>
-                  <Text>Type your new email address.</Text>
-                </Box>
-                <UpdateEmailForm currentEmail={me.email} />
-              </Box>
+              <>
+                <Page.Heading heading='Edit email address' description='Type your new email address.' />
+                <Page.Content maxW='650px'>
+                  <UpdateEmailForm currentEmail={me.email} />
+                </Page.Content>
+              </>
             ) : (
               confirmEmailData && <ConfirmEmailContainer data={confirmEmailData} />
             )}
-          </>
+          </Page>
         )}
       </ChangeEmailPageContext.Consumer>
     </ChangeEmailPageContextProvider>

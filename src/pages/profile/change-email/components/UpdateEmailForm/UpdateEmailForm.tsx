@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@chakra-ui/button';
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
@@ -26,6 +25,7 @@ import { ChangeEmailPageContext } from '@educt/contexts';
  * Schema
  */
 import UpdateEmailSchema from './UpdateEmailForm.validator';
+import { SaveButton } from '@educt/components/Buttons';
 
 type UpdateEmailInputType = {
   email: string;
@@ -87,17 +87,7 @@ const UpdateEmailForm: React.FC<UpdateEmailFormPropsType> = ({ currentEmail }) =
             </FormHelperText>
           </FormControl>
         </Stack>
-        <Button
-          colorScheme='blue'
-          mt='4'
-          type='submit'
-          size='md'
-          variant='outline'
-          isLoading={isLoading}
-          loadingText='Sending...'
-        >
-          Send code
-        </Button>
+        <SaveButton mt='4' type='submit' isLoading={isLoading} />
       </form>
     </Box>
   );

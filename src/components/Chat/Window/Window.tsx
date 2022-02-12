@@ -38,6 +38,8 @@ const Window: React.FC = props => {
   const history = useHistory();
   const toast = useToast();
 
+  const isMe = me?.id === selectedUser?.id;
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -54,7 +56,7 @@ const Window: React.FC = props => {
      * Emit event to server and update messages state
      */
     if (chatId) {
-      socket?.emit('message:private', {
+      socket?.emit('chat:message', {
         content: message.content,
         to: chatId,
       });
@@ -74,7 +76,22 @@ const Window: React.FC = props => {
         try {
           setIsLoading(true);
           const { data: user } = await UserServiceInstance.fetchUserById(chatId);
+          const {
+            data: { history },
+          } = await UserServiceInstance.fetchChatHistory(chatId);
+
+          // TODO add type for message
+          const messages = history.map(message => {
+            return {
+              isMyMessage: message.from === me.id,
+              content: message.content,
+              time: new Date(message.time).toLocaleTimeString(),
+              userName: message.from === me.id ? me.fullname : user.fullname,
+            };
+          });
+
           setSelectedUser(user);
+          setMessages(messages);
         } catch (error) {
           if (axios.isAxiosError(error)) {
             if (error.response?.status === 404) {
@@ -91,20 +108,11 @@ const Window: React.FC = props => {
     }
   }, [chatId]);
 
-  // TODO load message history
-  /**
-   * Loading messages history
-   */
-  useEffect(() => {
-    console.log('chat id changed!');
-    setMessages([]);
-  }, [chatId]);
-
   // TODO add types for this event
   /**
    * Event on accept new messages
    */
-  useSocketEvent('message:private', data => {
+  useSocketEvent('chat:message', data => {
     const user = onlineStore.getUser(data.from);
 
     if (user) {
@@ -118,7 +126,7 @@ const Window: React.FC = props => {
           content: data.content,
           userName: user.userName,
           isMyMessage: false,
-          time: new Date().toLocaleTimeString(),
+          time: new Date(data.time).toLocaleTimeString(),
         };
 
         setMessages(prev => [...prev, message]);
@@ -155,7 +163,7 @@ const Window: React.FC = props => {
       <Flex flexDir={'column'}>
         <Box my='3'>
           <Heading as='h2' fontWeight={'semibold'} fontSize='3xl'>
-            {selectedUser.fullname}
+            {isMe && me ? 'Favorites' : selectedUser.fullname}
           </Heading>
         </Box>
         <Divider my='2' />
