@@ -1,6 +1,19 @@
 import React, { ChangeEvent } from 'react';
 import axios from 'axios';
-import { GridItem, GridItemProps, Flex, Box, Icon, Text, Input, Heading, IconButton, Divider } from '@chakra-ui/react';
+import { Link as ReactRouterLink } from 'react-router-dom';
+import {
+  GridItem,
+  GridItemProps,
+  Flex,
+  Box,
+  Icon,
+  Text,
+  Input,
+  Heading,
+  IconButton,
+  Divider,
+  Link,
+} from '@chakra-ui/react';
 import { MdOutlineChat, MdSend } from 'react-icons/md';
 import { MessageList } from './Message';
 import { SocketContext } from '@educt/contexts';
@@ -80,13 +93,12 @@ const Window: React.FC = props => {
             data: { history },
           } = await UserServiceInstance.fetchChatHistory(chatId);
 
-          // TODO add type for message
           const messages = history.map(message => {
             return {
-              isMyMessage: message.from === me.id,
+              isMyMessage: message.from === me?.id,
               content: message.content,
               time: new Date(message.time).toLocaleTimeString(),
-              userName: message.from === me.id ? me.fullname : user.fullname,
+              userName: message.from === me?.id ? me.fullname : user.fullname,
             };
           });
 
@@ -161,11 +173,16 @@ const Window: React.FC = props => {
   return (
     <Wrapper {...props}>
       <Flex flexDir={'column'}>
-        <Box my='3'>
+        <Flex my='3' alignItems={'flex-end'} justifyContent={'space-between'}>
           <Heading as='h2' fontWeight={'semibold'} fontSize='3xl'>
             {isMe && me ? 'Favorites' : selectedUser.fullname}
           </Heading>
-        </Box>
+          {!isMe && (
+            <Link as={ReactRouterLink} to={`/user/${selectedUser.id}`} textDecor='underline'>
+              See profile
+            </Link>
+          )}
+        </Flex>
         <Divider my='2' />
         <MessageList messages={messages} />
         <form onSubmit={e => onSubmit(e)}>

@@ -43,7 +43,7 @@ const AuthPage: React.FC<IPageProps> = ({ title }) => {
       </Helmet>
       <Box maxW='md' mx='auto' mt='20'>
         <Logo mx='auto' h='14' mb={{ base: '10', md: '10' }} />
-        <Card>
+        <Card p='6'>
           <AuthForm />
         </Card>
       </Box>

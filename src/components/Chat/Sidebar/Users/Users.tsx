@@ -5,6 +5,7 @@ import { User } from './User';
 import { useChatContext } from '../../context';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { Skeleton } from '@chakra-ui/react';
+import { useFetchUsers } from '@educt/hooks/queries';
 
 const Wrapper: React.FC<StackProps> = ({ children }) => {
   return (
@@ -15,9 +16,9 @@ const Wrapper: React.FC<StackProps> = ({ children }) => {
 };
 
 const Users: React.FC = observer(() => {
+  const { data: users } = useFetchUsers();
   const { onlineStore } = useRootStore();
   const { search } = useChatContext();
-  const { users } = onlineStore;
 
   if (users === null)
     return (
@@ -27,17 +28,18 @@ const Users: React.FC = observer(() => {
       </Wrapper>
     );
 
-  const filtered = !search ? users : users.filter(u => u.userName.toLocaleLowerCase().includes(search));
+  const filtered = (!search ? users : users.filter(u => u.fullname.toLocaleLowerCase().includes(search))).sort(user =>
+    !onlineStore.isOnline(user.id) ? 1 : -1
+  );
   const isEmpty = filtered.length === 0;
 
   return (
     <Wrapper>
       {!isEmpty ? (
-        filtered.map(u => (
-          <User key={u.userId} id={u.userId}>
-            <User.Avatar isOnline={onlineStore.isOnline(u.userId) || false} fullname={u.userName} />
-            <User.Info fullname={u.userName} lastMessage={''} />
-            <User.Time time={'2h'} />
+        filtered.map(user => (
+          <User key={user.id} id={user.id}>
+            <User.Avatar isOnline={onlineStore.isOnline(user.id) || false} fullname={user.fullname} />
+            <User.Info fullname={user.fullname} lastMessage={''} />
           </User>
         ))
       ) : (

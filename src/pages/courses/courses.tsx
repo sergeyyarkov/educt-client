@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 /**
  * Types
@@ -9,8 +10,9 @@ import { IPageProps } from '@educt/interfaces';
  * Components
  */
 import { Page } from '@educt/components/PageElements';
-import { CreateButton } from '@educt/components/Buttons';
 import { Box } from '@chakra-ui/layout';
+import { CreateButton } from '@educt/components/Buttons';
+import { CoursesTabs } from './components';
 import LoadingPage from '@educt/components/LoadingPage';
 import CourseList from './components/CourseList';
 import CategoryList from './components/CategoryList';
@@ -22,7 +24,6 @@ import CourseItem from './components/CourseList/CourseItem';
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router';
-import { CoursesTabs } from './components';
 
 /**
  * Courses page
@@ -53,4 +54,4 @@ const CoursesPage: React.FC<IPageProps> = () => {
   );
 };
 
-export default CoursesPage;
+export default observer(CoursesPage);

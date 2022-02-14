@@ -8,6 +8,7 @@ import {
   UpdateUserParamsType,
   UpdateUserContactsParamsType,
   UpdateUserInfoParamsType,
+  HistoryMessageType,
 } from '@educt/types';
 
 class UserService {
@@ -170,7 +171,7 @@ class UserService {
    * @param chatId Chat id
    * @returns Array of messages
    */
-  public async fetchChatHistory(chatId: string): Promise<IApiRespose<{ history: unknown[] }>> {
+  public async fetchChatHistory(chatId: string): Promise<IApiRespose<{ history: HistoryMessageType[] }>> {
     const result = await this.api.get(`v1/me/messages/${chatId}`);
     return result.data;
   }

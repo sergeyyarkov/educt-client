@@ -69,6 +69,13 @@ export type MessageType = {
   isMyMessage: boolean;
 };
 
+export type HistoryMessageType = {
+  from: string;
+  to: string;
+  content: string;
+  time: string;
+};
+
 /**
  * Change email page context
  */

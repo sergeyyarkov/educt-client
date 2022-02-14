@@ -25,6 +25,7 @@ import { useDetachStudents } from './course/useDetachStudents';
 /**
  * User
  */
+import { useFetchUsers } from './user/useFetchUsers';
 import { useFetchUser } from './user/useFetchUser';
 import { useCreateUser } from './user/useCreateUser';
 import { useDeleteUser } from './user/useDeleteUser';
@@ -58,6 +59,7 @@ export {
   useCreateLesson,
   useDeleteLesson,
   useUpdateLesson,
+  useFetchUsers,
   useFetchUser,
   useCreateUser,
   useDeleteUser,

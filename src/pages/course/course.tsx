@@ -104,7 +104,7 @@ const CoursePage: React.FC<IPageProps> = () => {
                         <Text fontSize={'sm'} mr='2'>
                           Students:
                         </Text>
-                        <AvatarGroup size='sm' max={2}>
+                        <AvatarGroup size='sm' max={3}>
                           {course.students.map(student => (
                             <Avatar key={student.id} name={student.fullname} />
                           ))}
