@@ -17,7 +17,7 @@ import {
 import { MdOutlineChat, MdSend } from 'react-icons/md';
 import { MessageList } from './Message';
 import { SocketContext } from '@educt/contexts';
-import { MessageType } from '@educt/types';
+import { HistoryMessageType, MessageType } from '@educt/types';
 import { UserServiceInstance } from '@educt/services';
 import { IUser } from '@educt/interfaces';
 import LoadingList from '@educt/components/LoadingList';
@@ -120,11 +120,10 @@ const Window: React.FC = props => {
     }
   }, [chatId]);
 
-  // TODO add types for this event
   /**
    * Event on accept new messages
    */
-  useSocketEvent('chat:message', data => {
+  useSocketEvent<HistoryMessageType>('chat:message', data => {
     const user = onlineStore.getUser(data.from);
 
     if (user) {
@@ -133,6 +132,18 @@ const Window: React.FC = props => {
          * Do not add duplicate of message
          */
         if (data.to === data.from) return;
+
+        /**
+         * Notify user about new message
+         */
+        // toast({
+        //   title: `${user.userName}`,
+        //   description: data.content,
+        //   variant: 'left-accent',
+        //   position: 'bottom-right',
+        //   status: 'info',
+        //   duration: 5000,
+        // });
 
         const message: MessageType = {
           content: data.content,

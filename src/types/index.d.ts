@@ -76,6 +76,13 @@ export type HistoryMessageType = {
   time: string;
 };
 
+export type UserSeesionType = {
+  sessionId: string | undefined;
+  userId: string | undefined;
+};
+
+export type UserOnlineListType = [string, { userId: string; userName: string }][];
+
 /**
  * Change email page context
  */

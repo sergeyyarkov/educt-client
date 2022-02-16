@@ -17,10 +17,13 @@ const Wrapper: React.FC<StackProps> = ({ children }) => {
 
 const Users: React.FC = observer(() => {
   const { data: users } = useFetchUsers();
-  const { onlineStore } = useRootStore();
+  const {
+    userStore: { me },
+    onlineStore,
+  } = useRootStore();
   const { search } = useChatContext();
 
-  if (users === null)
+  if (users === null || me === null)
     return (
       <Wrapper>
         <Skeleton h='90px' borderRadius={'lg'} />
@@ -28,20 +31,31 @@ const Users: React.FC = observer(() => {
       </Wrapper>
     );
 
-  const filtered = (!search ? users : users.filter(u => u.fullname.toLocaleLowerCase().includes(search))).sort(user =>
-    !onlineStore.isOnline(user.id) ? 1 : -1
-  );
+  const filtered = (!search ? users : users.filter(u => u.fullname.toLocaleLowerCase().includes(search)))
+    .concat()
+    .sort(u => (onlineStore.isOnline(u.id) ? -1 : 1));
+
   const isEmpty = filtered.length === 0;
 
   return (
     <Wrapper>
+      {/* Favorites */}
+      <User id={me.id}>
+        <User.Avatar isOnline fullname={me.fullname} />
+        <User.Info fullname={me.fullname} lastMessage={''} />
+      </User>
+
+      {/* User list */}
       {!isEmpty ? (
-        filtered.map(user => (
-          <User key={user.id} id={user.id}>
-            <User.Avatar isOnline={onlineStore.isOnline(user.id) || false} fullname={user.fullname} />
-            <User.Info fullname={user.fullname} lastMessage={''} />
-          </User>
-        ))
+        filtered.map(
+          user =>
+            user.id !== me.id && (
+              <User key={user.id} id={user.id}>
+                <User.Avatar isOnline={onlineStore.isOnline(user.id) || false} fullname={user.fullname} />
+                <User.Info fullname={user.fullname} lastMessage={''} />
+              </User>
+            )
+        )
       ) : (
         <Box textAlign={'center'}>
           <Text userSelect={'none'} color='gray.500'>

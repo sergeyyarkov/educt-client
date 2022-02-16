@@ -15,6 +15,7 @@ import PrivateRoute from '@educt/components/PrivateRoute';
 import PublicRoute from '@educt/components/PublicRoute';
 import { useSocketEvent } from './hooks/useSocketEvent';
 import { SocketContext } from './contexts';
+import { UserOnlineListType, UserSeesionType } from './types';
 
 const App = () => {
   const {
@@ -26,16 +27,16 @@ const App = () => {
   useSocketEvent('connect', () => console.info('[WebSocket]: Connected.'));
   useSocketEvent('disconnect', () => console.info('[WebSocket]: Disconnected.'));
   useSocketEvent('connect_error', err => console.error(err));
-  useSocketEvent('user:session', data => {
+  useSocketEvent<UserSeesionType>('user:session', data => {
     if (socket) {
-      const { sessionId, userId } = data;
-      socket.auth = { sessionId };
-      window.localStorage.setItem('sessionId', sessionId);
-      // TODO fix types
-      socket.userId = userId;
+      const { sessionId } = data;
+      if (sessionId) {
+        socket.auth = { sessionId };
+        window.localStorage.setItem('sessionId', sessionId);
+      }
     }
   });
-  useSocketEvent('user:online', online => onlineStore.loadOnline(online));
+  useSocketEvent<UserOnlineListType>('user:online', online => onlineStore.loadOnline(online));
 
   return (
     <Router history={history}>
