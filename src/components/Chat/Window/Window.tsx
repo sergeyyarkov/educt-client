@@ -98,7 +98,7 @@ const Window: React.FC = props => {
               isMyMessage: message.from === me?.id,
               content: message.content,
               time: new Date(message.time).toLocaleTimeString(),
-              userName: message.from === me?.id ? me.fullname : user.fullname,
+              userName: message.from === me?.id ? me?.fullname : user.fullname,
             };
           });
 
@@ -121,7 +121,7 @@ const Window: React.FC = props => {
   }, [chatId]);
 
   /**
-   * Event on accept new messages
+   * Event on accept new messages (set new message to state)
    */
   useSocketEvent<HistoryMessageType>('chat:message', data => {
     const user = onlineStore.getUser(data.from);
@@ -132,18 +132,6 @@ const Window: React.FC = props => {
          * Do not add duplicate of message
          */
         if (data.to === data.from) return;
-
-        /**
-         * Notify user about new message
-         */
-        // toast({
-        //   title: `${user.userName}`,
-        //   description: data.content,
-        //   variant: 'left-accent',
-        //   position: 'bottom-right',
-        //   status: 'info',
-        //   duration: 5000,
-        // });
 
         const message: MessageType = {
           content: data.content,
@@ -168,7 +156,7 @@ const Window: React.FC = props => {
   /**
    * Unselected user
    */
-  if (!chatId || selectedUser === null) {
+  if (!chatId || !selectedUser) {
     return (
       <Wrapper>
         <Box textAlign={'center'} mt={{ base: '0', lg: '15rem' }}>
