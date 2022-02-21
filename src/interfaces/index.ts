@@ -1,5 +1,12 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { AttachmentFileType, ColorType, LessonProgress, LessonVideoType, LinkType } from '@educt/types';
+import {
+  AttachmentFileType,
+  ColorType,
+  LessonProgress,
+  LessonVideoType,
+  LinkType,
+  NotificationType,
+} from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -135,6 +142,7 @@ export interface IMe extends IUser {
    */
   courses?: UserCourseType[];
   likes: Array<Pick<ICourse, 'id'>>;
+  notifications: Array<NotificationType>;
   isAdmin: boolean;
   isTeacher: boolean;
   isStudent: boolean;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex, Box, BoxProps } from '@chakra-ui/react';
 import { Logo } from './Logo';
 import { Profile } from './Profile';
-import { INotificationsProps, Notifications } from './Notifications';
+import { Notifications } from './Notifications';
 import ColorModeSwitcher from '@educt/components/ColorModeSwitcher';
 import NavMobile from '@educt/components/Nav/Mobile';
 import type { ColorModeSwitcherProps } from '../ColorModeSwitcher/ColorModeSwitcher';
@@ -15,7 +15,7 @@ import { useColorModeValue, useMediaQuery } from '@chakra-ui/react';
 interface IHeaderComposition {
   Logo: React.FC<BoxProps>;
   ThemeSwitcher: React.FC<ColorModeSwitcherProps>;
-  Notifications: React.FC<INotificationsProps>;
+  Notifications: React.FC;
   Profile: React.FC;
 }
 

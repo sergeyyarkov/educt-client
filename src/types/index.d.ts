@@ -76,6 +76,13 @@ export type HistoryMessageType = {
   time: string;
 };
 
+export type NotificationType = {
+  id: string;
+  content: string;
+  time: string;
+  type: 'SYSTEM' | 'MESSAGE';
+};
+
 export type UserSeesionType = {
   sessionId: string | undefined;
   userId: string | undefined;
