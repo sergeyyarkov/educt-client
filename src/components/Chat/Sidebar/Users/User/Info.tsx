@@ -15,8 +15,8 @@ const Info: React.FC<IInfoProps> = ({ fullname, lastMessage }) => {
   const isMe = me?.fullname === fullname;
 
   return (
-    <Box ml='4'>
-      <Text fontWeight={'semibold'}>
+    <Box ml='4' maxW='200px'>
+      <Text fontWeight={'semibold'} textOverflow={'ellipsis'} overflow={'hidden'} whiteSpace='nowrap'>
         {isMe ? 'Favorites' : fullname} <br />
         {lastMessage && (
           <Text as={'span'} fontWeight='normal' fontSize={'sm'} color='gray.500'>
