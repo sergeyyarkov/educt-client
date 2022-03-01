@@ -16,6 +16,7 @@ import {
   Tag,
   Stack,
   ImageProps,
+  Link,
   LinkBox,
   LinkOverlay,
   LinkBoxProps,
@@ -41,7 +42,6 @@ import { useState } from 'react';
 import { useColorModeValue } from '@chakra-ui/react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { CourseServiceInstance } from '@educt/services';
-import { EditButton } from '@educt/components/Buttons';
 
 export const CourseHeader: React.FC<FlexProps> = props => (
   <Flex justifyContent='space-between' flexDir={{ base: 'column', xl: 'row' }} {...props}>
@@ -63,10 +63,10 @@ export const CourseHeading: React.FC<ICourseHeadingProps> = props => {
         {title}
       </Heading>
       <Flex mt='3' alignItems={'center'}>
-        <Text fontSize='sm'>
+        <Link as={ReactRouterLink} to={`/user/${teacher.id}`} fontSize='sm' textDecor={'underline'}>
           {teacher.fullname}
-          &nbsp;&bull;&nbsp;
-        </Text>
+        </Link>
+        &nbsp;&bull;&nbsp;
         <Tag size='sm' variant='solid' bg={category.color?.hex}>
           {category.title}
         </Tag>

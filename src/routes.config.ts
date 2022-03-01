@@ -125,6 +125,7 @@ export const routes: IRouteOption[] = [
     title: 'Users management',
     component: UsersPage,
     isPrivate: true,
+    exact: true,
     roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {
