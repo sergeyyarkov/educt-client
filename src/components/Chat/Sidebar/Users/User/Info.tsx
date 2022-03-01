@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { HistoryMessageType } from '@educt/types';
 
 export interface IInfoProps {
   fullname: string;
-  lastMessage: string;
+  lastMessage?: HistoryMessageType | undefined;
 }
 
 const Info: React.FC<IInfoProps> = ({ fullname, lastMessage }) => {
@@ -17,9 +18,12 @@ const Info: React.FC<IInfoProps> = ({ fullname, lastMessage }) => {
     <Box ml='4'>
       <Text fontWeight={'semibold'}>
         {isMe ? 'Favorites' : fullname} <br />
-        <Text as={'span'} fontWeight='normal' fontSize={'sm'} color='gray.500'>
-          {lastMessage}
-        </Text>
+        {lastMessage && (
+          <Text as={'span'} fontWeight='normal' fontSize={'sm'} color='gray.500'>
+            {lastMessage.from === me?.id && `You: `}
+            {lastMessage.content}
+          </Text>
+        )}
       </Text>
     </Box>
   );

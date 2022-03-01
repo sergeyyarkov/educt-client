@@ -39,9 +39,9 @@ const Heading: React.FC<BoxProps> = props => {
         <Button isActive variant={'ghost'} size='sm'>
           All
         </Button>
-        <Button colorScheme={'blue'} variant='ghost' size='sm'>
+        {/* <Button colorScheme={'blue'} variant='ghost' size='sm'>
           Unread
-        </Button>
+        </Button> */}
       </HStack>
     </Box>
   );

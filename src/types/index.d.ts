@@ -74,6 +74,13 @@ export type HistoryMessageType = {
   to: string;
   content: string;
   time: string;
+  notificationId?: string | undefined;
+};
+
+export type ConversationType = {
+  userId: string;
+  fullname: string;
+  lastMessage: HistoryMessageType;
 };
 
 export type NotificationType = {

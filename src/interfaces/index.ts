@@ -143,9 +143,6 @@ export interface IMe extends IUser {
   courses?: UserCourseType[];
   likes: Array<Pick<ICourse, 'id'>>;
   notifications: Array<NotificationType>;
-  isAdmin: boolean;
-  isTeacher: boolean;
-  isStudent: boolean;
 }
 
 export interface IUserContacts {

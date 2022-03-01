@@ -7,6 +7,7 @@ import * as helpers from '@educt/helpers';
 import {
   CreateUserParamsType,
   FetchUsersParamsType,
+  NotificationType,
   UpdateUserContactsParamsType,
   UpdateUserParamsType,
 } from '@educt/types';
@@ -23,10 +24,12 @@ import { UserServiceInstance } from '@educt/services';
  */
 import RootStore from './RootStore';
 
+type MeMetadata = { isAdmin: boolean; isTeacher: boolean; isStudent: boolean };
+
 export default class UserStore {
   public root: RootStore;
 
-  public me: IMe | null = null;
+  public me: (IMe & MeMetadata) | null = null;
 
   public users: IUser[] | null = null;
 
@@ -60,50 +63,24 @@ export default class UserStore {
   }
 
   public async loadCurrentUserData() {
-    const result = await UserServiceInstance.fetchMe();
-    const {
-      data: {
-        id,
-        first_name,
-        last_name,
-        fullname,
-        about,
-        last_login,
-        email,
-        roles,
-        likes,
-        notifications,
-        contacts,
-        courses,
-        created_at,
-        updated_at,
-      },
-    } = result;
+    try {
+      this.setLoading(true);
+      const result = await UserServiceInstance.fetchMe();
+      const { data } = result;
 
-    runInAction(() => {
-      // TODO Fix this
-      this.me = {
-        id,
-        first_name,
-        last_name,
-        email,
-        roles,
-        fullname,
-        about,
-        last_login,
-        likes,
-        notifications,
-        contacts,
-        courses,
-        isAdmin: helpers.userContainRoles(roles, [UserRoleEnum.ADMIN]),
-        isTeacher: helpers.userContainRoles(roles, [UserRoleEnum.TEACHER]),
-        isStudent: helpers.userContainRoles(roles, [UserRoleEnum.STUDENT]),
-        created_at,
-        updated_at,
-      };
-    });
+      runInAction(() => {
+        this.me = {
+          ...data,
+          isAdmin: helpers.userContainRoles(data.roles, [UserRoleEnum.ADMIN]),
+          isTeacher: helpers.userContainRoles(data.roles, [UserRoleEnum.TEACHER]),
+          isStudent: helpers.userContainRoles(data.roles, [UserRoleEnum.STUDENT]),
+        };
+      });
 
-    return result;
+      return result;
+    } finally {
+      this.setLoading(false);
+    }
   }
 
   public async createUser(data: CreateUserParamsType, paramsContext?: FetchUsersParamsType) {
@@ -216,5 +193,11 @@ export default class UserStore {
     runInAction(() => {
       this.me = null;
     });
+  }
+
+  public addNotification(notification: NotificationType) {
+    if (this.me) {
+      this.me.notifications.unshift(notification);
+    }
   }
 }

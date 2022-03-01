@@ -2,11 +2,10 @@ import { createContext } from 'react';
 import { ChangeEmailPageContextType, CoursesPageContextType, UsersPageContextType } from '@educt/types';
 import RootStore from '../stores/RootStore';
 import { Socket } from 'socket.io-client';
-import { ClientToServerEvents, ServerToClientEvents } from '@educt/interfaces';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
-export const SocketContext = createContext<{ socket: Socket<ServerToClientEvents, ClientToServerEvents> | null }>({
+export const SocketContext = createContext<{ socket: Socket | null }>({
   socket: null,
 });
 

@@ -46,6 +46,11 @@ import { useUpdateCategory } from './category/useUpdateCategory';
  */
 import { useFetchStat } from './stat/useFetchStat';
 
+/**
+ * Chat
+ */
+import { useFetchConversations } from './chat/useFetchConversations';
+
 export {
   useLogin,
   useLogout,
@@ -71,4 +76,5 @@ export {
   useUpdateCategory,
   useFetchCategories,
   useFetchStat,
+  useFetchConversations,
 };

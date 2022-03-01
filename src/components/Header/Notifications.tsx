@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
-import { Menu, MenuButton, MenuList, MenuItem, MenuGroup, IconButton, MenuDivider, Flex, Text } from '@chakra-ui/react';
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuGroup,
+  IconButton,
+  MenuDivider,
+  Flex,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { MdNotifications, MdOutlineMessage } from 'react-icons/md';
 import { observer } from 'mobx-react';
@@ -10,18 +21,61 @@ import { observer } from 'mobx-react';
  */
 import { useHistory } from 'react-router-dom';
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { SocketContext } from '@educt/contexts';
+import { runInAction } from 'mobx';
 
 const Notifications: React.FC = observer(() => {
   const {
-    userStore: { me },
+    userStore: { me, isLoading },
   } = useRootStore();
   const history = useHistory();
+  const { socket } = useContext(SocketContext);
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const [count, setCount] = useState<number>(0);
+
+  /**
+   * Load count of notifications
+   */
+  useEffect(() => {
+    if (me) {
+      setCount(me.notifications.length);
+    }
+  }, [me, me?.notifications.length]);
+
+  /**
+   * Mark notifications as read
+   */
+  useEffect(() => {
+    if (isOpen && count > 0 && me) {
+      const messages = me.notifications.filter(n => n.type === 'MESSAGE');
+      socket?.emit('notification:read', {
+        userId: me.id,
+        ids: messages.map(n => n.id),
+      });
+      setCount(0);
+    }
+  }, [isOpen]);
+
+  /**
+   * Delete notifications with type `message` when on message page
+   */
+  useEffect(() => {
+    if (window.location.pathname.includes('messages') && me) {
+      socket?.emit('notification:read', {
+        userId: me.id,
+        ids: me.notifications.filter(n => n.type === 'MESSAGE').map(n => n.id),
+      });
+
+      setCount(0);
+      runInAction(() => {
+        me.notifications = me.notifications.filter(n => n.type !== 'MESSAGE');
+      });
+    }
+  }, [me]);
 
   if (me === null) {
     return <Skeleton width='50px' height='40px' mr={3} ml={3} borderRadius='md' />;
   }
-
-  const count = me.notifications.length;
 
   /**
    * Filter types of notifications
@@ -29,7 +83,7 @@ const Notifications: React.FC = observer(() => {
   const messages = me.notifications.filter(notification => notification.type === 'MESSAGE');
 
   return (
-    <Menu>
+    <Menu isOpen={isOpen} onClose={onClose} onOpen={onOpen} isLazy>
       <MenuButton
         as={IconButton}
         mx='2'
@@ -37,7 +91,7 @@ const Notifications: React.FC = observer(() => {
         icon={<MdNotifications />}
         _after={{
           content: `"${count && count > 0 && count}"`,
-          display: `${count && count > 0 ? 'block' : 'none'}`,
+          display: `${!isLoading ? (count && count > 0 ? 'block' : 'none') : 'none'}`,
           position: 'absolute',
           top: '5px',
           right: '5px',
@@ -52,6 +106,7 @@ const Notifications: React.FC = observer(() => {
       <MenuList minWidth='300px'>
         <MenuGroup title={count && count > 0 ? `${count} new notifications` : 'Notifications'}>
           <MenuDivider />
+
           {/* MESSAGES */}
           {messages.length !== 0 && (
             <MenuItem onClick={() => history.push('/messages')} py='3' icon={<MdOutlineMessage />}>

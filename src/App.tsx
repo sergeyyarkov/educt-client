@@ -20,6 +20,7 @@ import { useToast } from '@chakra-ui/react';
 
 const App = () => {
   const {
+    userStore,
     uiStore: { history },
     onlineStore,
   } = useRootStore();
@@ -56,6 +57,20 @@ const App = () => {
         status: 'info',
         duration: 5000,
       });
+
+      if (!window.location.pathname.includes('messages')) {
+        /**
+         * Update user store
+         */
+        if (data.notificationId) {
+          userStore.addNotification({
+            id: data.notificationId,
+            content: 'You received a new private message',
+            time: new Date().toISOString(),
+            type: 'MESSAGE',
+          });
+        }
+      }
     }
   });
   useSocketEvent<UserOnlineListType>('user:online', online => onlineStore.loadOnline(online));
