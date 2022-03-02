@@ -1,15 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import RootStore from '@educt/stores/RootStore';
+import apiConfig from '@educt/api.config';
 
-export default class ApiService {
-  public root: RootStore;
-
+class ApiService {
   public api: AxiosInstance;
 
   public config: AxiosRequestConfig | undefined;
 
-  constructor(root: RootStore, config?: AxiosRequestConfig | undefined) {
-    this.root = root;
+  constructor(config?: AxiosRequestConfig | undefined) {
     this.config = config;
     this.api = axios.create(this.config);
     this.setupInterceptors();
@@ -20,17 +17,9 @@ export default class ApiService {
      * Response
      */
     this.api.interceptors.response.use(undefined, error => {
-      if (error.response) {
-        /**
-         * Unauthorized Error 401
-         */
-        if (error.response.status === 401) {
-          // this.root.userStore.me = null;
-          // this.root.authStore.setIsLoggedIn(false);
-          // Cookies.remove('logged_in');
-        }
-      }
       return Promise.reject(error);
     });
   }
 }
+
+export const ApiServiceInstance = new ApiService(apiConfig);

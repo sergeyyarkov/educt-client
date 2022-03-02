@@ -43,14 +43,16 @@ const UserSearch: React.FC = () => {
 
   return (
     <Flex flexBasis='600px'>
-      <Select value={searchingRole} onChange={onSearchRole} w='full' mr='2'>
+      <Select value={searchingRole} onChange={onSearchRole} size='sm' w='full' mr='2'>
         <option value='any'>Any role</option>
         <option value={UserRoleEnum.ADMIN}>Administrator</option>
         <option value={UserRoleEnum.TEACHER}>Teacher</option>
         <option value={UserRoleEnum.STUDENT}>Student</option>
       </Select>
-      <InputGroup maxW='400px' w='full'>
-        <InputLeftElement pointerEvents='none' children={<SearchIcon color='gray.300' />} />
+      <InputGroup maxW='400px' w='full' size='sm'>
+        <InputLeftElement pointerEvents='none'>
+          <SearchIcon color='gray.300' />
+        </InputLeftElement>
         <Input placeholder='Search for a user...' value={search || ''} onChange={onSearch} />
       </InputGroup>
     </Flex>

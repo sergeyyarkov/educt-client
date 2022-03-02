@@ -1,34 +1,33 @@
 import { createContext } from 'react';
 import { ChangeEmailPageContextType, CoursesPageContextType, UsersPageContextType } from '@educt/types';
 import RootStore from '../stores/RootStore';
+import { Socket } from 'socket.io-client';
 
 export const StoreContext = createContext<RootStore | undefined>(undefined);
 
+export const SocketContext = createContext<{ socket: Socket | null }>({
+  socket: null,
+});
+
 export const ChangeEmailPageContext = createContext<ChangeEmailPageContextType>({
   isCodeSent: false,
-  setIsCodeSent: () => {},
+  setIsCodeSent: () => null,
   confirmEmailData: undefined,
-  setConfirmEmailData: () => {},
+  setConfirmEmailData: () => null,
 });
 
 export const UsersPageContext = createContext<UsersPageContextType>({
   searchingRole: undefined,
-  setSearchingRole: () => {},
+  setSearchingRole: () => null,
   searchingPage: 1,
-  setSearchingPage: () => {},
+  setSearchingPage: () => null,
   search: undefined,
-  setSearch: () => {},
-  editingUser: undefined,
-  setEditingUser: () => {},
-  deletingUser: undefined,
-  setDeletingUser: () => {},
+  setSearch: () => null,
 });
 
 export const CoursesPageContext = createContext<CoursesPageContextType>({
   selectedCategory: undefined,
-  setSelectedCategory: () => {},
+  setSelectedCategory: () => null,
   courseStatus: undefined,
-  setCourseStatus: () => {},
-  deletingCourse: undefined,
-  setDeletingCourse: () => {},
+  setCourseStatus: () => null,
 });

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ItemProps, Virtuoso } from 'react-virtuoso';
-import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
 import moment from 'moment';
 import * as helpers from '@educt/helpers';
+import { DragDropContext, Draggable, DraggableProvided, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Flex, Box, Text, IconButton, Icon, Button } from '@chakra-ui/react';
 import { DeleteIcon, DragHandleIcon } from '@chakra-ui/icons';
+import { MdTimer, MdAttachment } from 'react-icons/md';
 
 /**
  * Types
@@ -12,13 +13,29 @@ import { DeleteIcon, DragHandleIcon } from '@chakra-ui/icons';
 import type { ICourse, ILesson } from '@educt/interfaces';
 
 /**
+ * Components
+ */
+import DeleteLessonDialog from '@educt/components/Dialogs/DeleteLessonDialog';
+
+/**
  * Hooks
  */
+import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useColorMode } from '@chakra-ui/react';
-import { MdTimer, MdAttachment } from 'react-icons/md';
-import { useRootStore } from '@educt/hooks/useRootStore';
+import { useDisclosure } from '@chakra-ui/hooks';
 import useDidMountEffect from '@educt/hooks/useDidMountEffect';
+
+/**
+ * Contexts
+ */
+import { useErrorHandler } from 'react-error-boundary';
+
+/**
+ * Services
+ */
+import { LessonServiceInstance } from '@educt/services';
+import { CreateButton } from '@educt/components/Buttons';
 
 type LessonListPropsType = {
   course: Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>;
@@ -30,7 +47,7 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
   const handleCreateLesson = (): void => history.push(`${id}/create-lesson`);
 
   return (
-    <Button onClick={handleCreateLesson} size='sm' colorScheme='blue' variant='outline'>
+    <Button onClick={handleCreateLesson} mt='2' size='sm' colorScheme='blue' variant='outline'>
       Create new lesson
     </Button>
   );
@@ -38,20 +55,27 @@ const CreateLessonButton: React.FC<{ id: string }> = ({ id }) => {
 
 const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
   const history = useHistory();
-  const { lessonService } = useRootStore();
-  const [lessons, setLessons] = useState<ILesson[]>(course.lessons);
+  const { onOpen: onOpenDelDialog, onClose: onCloseDelDialog, isOpen: isOpenDelDialog } = useDisclosure();
+  const [lessons, setLessons] = useState<ICourse['lessons']>(course.lessons);
+  const [deleting, setDeleting] = useState<Pick<ILesson, 'id' | 'title'> | null>(null);
+  const handleError = useErrorHandler();
 
-  const handleCreateLesson = (): void => history.push('/lessons/create');
+  const handleCreateLesson = (): void => history.push(`/courses/edit/${course.id}/create-lesson`);
   const handleEditLesson = (id: string): void => history.push(`/lessons/edit/${id}`);
-  const handleDeleteLesson = (id: string): void => undefined;
+  const handleDeleteLesson = (lesson: ICourse['lessons'][number]): void => {
+    setDeleting({ id: lesson.id, title: lesson.title });
+    onOpenDelDialog();
+  };
+
   const handleChangeOrder = async (ids: string[]) => {
     try {
-      const data = await lessonService.saveOrder(ids);
+      const data = await LessonServiceInstance.saveOrder(ids);
       return data;
     } catch (error) {
-      console.error(error);
+      handleError(error);
     }
   };
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -60,6 +84,8 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     setLessons(helpers.arrayMove(lessons, result.source.index, result.destination.index));
   };
 
+  const onDeleted = (id: string) => setLessons(prev => prev.filter(l => l.id !== id));
+
   const LessonItem = React.useMemo(() => {
     return ({
       provided,
@@ -67,7 +93,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       index,
     }: {
       provided: DraggableProvided;
-      lesson: ILesson;
+      lesson: ICourse['lessons'][number];
       isDragging: boolean;
       index: number;
     }) => {
@@ -114,10 +140,16 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
               <Box>
                 <Flex flexDirection='column' alignItems={{ base: 'center' }} mt={{ base: '4' }}>
                   <Flex flexDirection={{ base: 'column', md: 'row' }}>
-                    <Button size='md' p='0 60px' mr='1'>
+                    <Button onClick={() => handleEditLesson(lesson.id)} size='md' p='0 60px' mr='1'>
                       Edit
                     </Button>
-                    <IconButton aria-label='Delete lesson' variant='ghost' colorScheme='red' icon={<DeleteIcon />} />
+                    <IconButton
+                      onClick={() => handleDeleteLesson(lesson)}
+                      aria-label='Delete lesson'
+                      variant='ghost'
+                      colorScheme='red'
+                      icon={<DeleteIcon />}
+                    />
                   </Flex>
                   <Flex justifyContent='flex-end' mt={{ base: '2' }}>
                     <Text as='span' color='gray.500' mr='3'>
@@ -133,7 +165,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
                         <Icon as={MdAttachment} />
                       </Text>
                       <Text as='small' verticalAlign='middle'>
-                        4 attachments
+                        {lesson.materials_count} attachments
                       </Text>
                     </Text>
                   </Flex>
@@ -165,9 +197,19 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
     <Box style={{ overflow: 'auto' }}>
       {lessons.length !== 0 ? (
         <>
+          {deleting && (
+            <DeleteLessonDialog
+              lesson={deleting}
+              isOpen={isOpenDelDialog}
+              onClose={onCloseDelDialog}
+              onConfirmed={onDeleted}
+            />
+          )}
           <Flex mt='2' mb='3' padding='0 20px' alignItems='center' justifyContent='space-between'>
-            <Text fontWeight='medium'>Total: ({lessons.length})</Text>
-            <Button onClick={handleCreateLesson}>Create new</Button>
+            <Text fontSize='sm' color='gray.500'>
+              {lessons.length} lessons
+            </Text>
+            <CreateButton onClick={handleCreateLesson} />
           </Flex>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable
@@ -210,9 +252,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
       ) : (
         <Box mt='10' textAlign='center'>
           <Text>No lessons have been added to this course yet</Text>
-          <Box p='10px 0'>
-            <CreateLessonButton id={course.id} />
-          </Box>
+          <CreateLessonButton id={course.id} />
         </Box>
       )}
     </Box>

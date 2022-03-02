@@ -35,7 +35,7 @@ export default class UIStore {
   }
 
   public setLocation(location: string): void {
-    console.log(`[history]: location changed to "${location}"`);
     this.location = location;
+    console.info(`[history]: location changed to "${location}"`);
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Flex, Box, Heading, Text } from '@chakra-ui/react';
 
 /**
  * Types
@@ -11,24 +10,23 @@ import { IPageProps } from '@educt/interfaces';
  */
 import PrevPageButton from '@educt/components/PrevPageButton';
 import { CreateCourseForm } from '@educt/components/Forms/CourseForm';
+import { Page } from '@educt/components/PageElements';
 
 /**
  * Create course page
  */
 const CreateCoursePage: React.FC<IPageProps> = () => {
   return (
-    <Box>
-      <Box>
-        <Flex alignItems='center'>
-          <PrevPageButton prevPage='/courses' />
-          <Heading as='h1'>Course creation</Heading>
-        </Flex>
-        <Text mt='3'>Fill in the required fields to create a course</Text>
-      </Box>
-      <Box mt='5'>
+    <Page>
+      <Page.Heading
+        headingPrefix={<PrevPageButton prevPage='/courses' />}
+        heading='Course Creation'
+        description='Fill in the required fields to create a new course'
+      />
+      <Page.Content>
         <CreateCourseForm />
-      </Box>
-    </Box>
+      </Page.Content>
+    </Page>
   );
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Stack } from '@chakra-ui/layout';
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
-import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
+import { SaveButton } from '@educt/components/Buttons';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 /**
@@ -129,17 +129,7 @@ const UpdatePasswordForm: React.FC = () => {
             </FormHelperText>
           </FormControl>
         </Stack>
-        <Button
-          colorScheme='blue'
-          mt='4'
-          type='submit'
-          size='md'
-          variant='outline'
-          isLoading={isLoading}
-          loadingText='Saving...'
-        >
-          Change
-        </Button>
+        <SaveButton mt='4' type='submit' isLoading={isLoading} />
       </form>
     </Box>
   );

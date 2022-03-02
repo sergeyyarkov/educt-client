@@ -19,15 +19,19 @@ import FileSelect from '@educt/components/FileSelect';
 /**
  * Hooks
  */
-import { useToast } from '@chakra-ui/toast';
-import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
+
+/**
+ * Services
+ */
+import { CategoryServiceInstance, UserServiceInstance } from '@educt/services';
 
 export type InputFields = {
   title: string;
   image?: File | undefined;
   category_id: string;
   description: string;
+  education_description: string | null;
   teacher_id: string;
 };
 
@@ -46,30 +50,21 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
     formState: { errors, isDirty },
   } = reactHookForm;
 
-  const {
-    userStore: { userService },
-    categoryStore: { categoryService },
-  } = useRootStore();
   const handleError = useErrorHandler();
-  const toast = useToast();
 
   /**
    *  Load users into select field
    */
   const loadUsersOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const users = await userService.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
+      const users = await UserServiceInstance.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
 
       return users.data.map(user => ({
         label: user.fullname,
         value: user.id,
       }));
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: 'Error' });
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 
@@ -78,22 +73,19 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
    */
   const loadCategoriesOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const categories = await categoryService.fetchAll();
+      const categories = await CategoryServiceInstance.fetchAll();
       return categories.data.map(category => ({
         label: category.title,
         value: category.id,
       }));
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: 'Error' });
-      } else {
-        handleError(error);
-      }
+    } catch (error) {
+      handleError(error);
     }
   };
 
   const watchTitle = watch('title');
   const watchDescription = watch('description');
+  const watchEducationDescription = watch('education_description');
 
   return (
     <form onSubmit={onSubmit}>
@@ -102,14 +94,11 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
           <FormLabel>Name</FormLabel>
           <InputGroup>
             <Input pr='60px' size='md' placeholder='Course name' type='text' {...register('title')} />
-            <InputRightElement
-              mr='2'
-              children={
-                <Text as='small' color={!!errors.title || watchTitle?.length > 90 ? 'red.500' : 'gray.500'}>
-                  {watchTitle?.length || 0}/90
-                </Text>
-              }
-            />
+            <InputRightElement mr='2'>
+              <Text as='small' color={!!errors.title || watchTitle?.length > 90 ? 'red.500' : 'gray.500'}>
+                {watchTitle?.length || 0}/90
+              </Text>
+            </InputRightElement>
           </InputGroup>
           <FormHelperText>e.g Web Development in Javascript</FormHelperText>
           <Text as='small' color='red.500'>
@@ -127,6 +116,26 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
             <Text as='small' color={!!errors.description || watchDescription?.length > 250 ? 'red.500' : 'gray.500'}>
               {watchDescription?.length || 0}/250
             </Text>
+          </Flex>
+        </FormControl>
+
+        <FormControl id='education_description' isInvalid={!!errors.education_description}>
+          <FormLabel>What you&apos;ll learn section</FormLabel>
+          <Textarea resize='none' minH='80px' {...register('education_description')} />
+          <Flex justifyContent='space-between'>
+            <Text as='small' color='red.500'>
+              {errors.education_description?.message}
+            </Text>
+            {watchEducationDescription && (
+              <Text
+                as='small'
+                color={
+                  !!errors.education_description || watchEducationDescription.length > 250 ? 'red.500' : 'gray.500'
+                }
+              >
+                {watchEducationDescription.length || 0}/250
+              </Text>
+            )}
           </Flex>
         </FormControl>
 

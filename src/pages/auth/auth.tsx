@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { observer } from 'mobx-react';
 import { Redirect } from 'react-router-dom';
-import { Flex } from '@chakra-ui/react';
+import { observer } from 'mobx-react';
+import { Box } from '@chakra-ui/react';
 
 /**
  * Types
@@ -12,12 +12,15 @@ import { IPageProps } from '@educt/interfaces';
 /**
  * Components
  */
+import Logo from '@educt/components/Logo';
 import AuthForm from './components/AuthForm';
+import { Card } from '@educt/components/Card';
 
 /**
  * Hooks
  */
 import { useRootStore } from '@educt/hooks/useRootStore';
+import { useColorModeValue } from '@chakra-ui/react';
 
 /**
  * Auth page
@@ -34,14 +37,17 @@ const AuthPage: React.FC<IPageProps> = ({ title }) => {
   }
 
   return (
-    <>
+    <Box bg={useColorModeValue('gray.50', 'inherit')} minH='100vh' py='12' px={{ base: '4', lg: '8' }}>
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <Flex minHeight='100vh' align='center' justifyContent='center' padding='5'>
-        <AuthForm />
-      </Flex>
-    </>
+      <Box maxW='md' mx='auto' mt='20'>
+        <Logo mx='auto' h='14' mb={{ base: '10', md: '10' }} />
+        <Card p='6'>
+          <AuthForm />
+        </Card>
+      </Box>
+    </Box>
   );
 };
 

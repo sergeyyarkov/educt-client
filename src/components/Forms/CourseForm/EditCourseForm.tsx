@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from '@chakra-ui/layout';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler } from 'react-hook-form';
 
 /**
  * Types
  */
 import { InputFields } from './CourseForm';
+import { SubmitHandler } from 'react-hook-form';
 
 /**
  * Components
@@ -16,17 +16,14 @@ import CourseForm from './CourseForm';
 /**
  * Hooks
  */
-import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { useRootStore } from '@educt/hooks/useRootStore';
-import { useErrorHandler } from 'react-error-boundary';
-import { useToast } from '@chakra-ui/toast';
 
 /**
  * Schema
  */
 import CourseFormSchema from './CourseForm.validator';
+import { useUpdateCourse } from '@educt/hooks/queries';
 
 type EditFormCoursePropsType = {
   defaultValues?:
@@ -35,28 +32,25 @@ type EditFormCoursePropsType = {
         image?: File | undefined;
         category_id?: string | undefined;
         description?: string | undefined;
+        education_description?: string | null | undefined;
         teacher_id?: string | undefined;
       }
     | undefined;
 };
 
 const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {
-    courseStore: { courseService },
-  } = useRootStore();
   const form = useForm<InputFields>({
     resolver: yupResolver(CourseFormSchema),
     defaultValues: {
       title: defaultValues?.title || '',
       description: defaultValues?.description || '',
+      education_description: defaultValues?.education_description || '',
       category_id: defaultValues?.category_id || '',
       teacher_id: defaultValues?.teacher_id || '',
       image: undefined,
     },
   });
-  const toast = useToast();
-  const handleError = useErrorHandler();
+  const { updateCourse, isLoading } = useUpdateCourse();
   const { id } = useParams<{ id: string }>();
 
   /**
@@ -64,34 +58,21 @@ const EditFormCourse: React.FC<EditFormCoursePropsType> = ({ defaultValues }) =>
    */
   const onSubmit: SubmitHandler<InputFields> = async data => {
     try {
-      setIsLoading(true);
-      const course = await courseService.update(id, {
-        title: data.title,
-        description: data.description,
-        teacher_id: data.teacher_id,
-        category_id: data.category_id,
-        image: data.image,
-      });
-      toast({ title: `Course updated.`, status: 'info' });
+      const updatedCourse = await updateCourse(id, data);
 
       /**
        * Update fields with new values
        */
       form.reset({
-        title: course.data.title,
-        description: course.data.description,
-        teacher_id: course.data.teacher.id,
-        category_id: course.data.category.id,
+        title: updatedCourse.title,
+        description: updatedCourse.description,
+        education_description: updatedCourse.education_description,
+        teacher_id: updatedCourse.teacher.id,
+        category_id: updatedCourse.category.id,
         image: undefined,
       });
-    } catch (error: any) {
-      if (error.response) {
-        toast({ title: `${error.message}`, status: 'error' });
-      } else {
-        handleError(error);
-      }
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
     }
   };
 

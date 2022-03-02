@@ -12,7 +12,7 @@ import { ConfirmEmailDataType } from '@educt/types';
  * Hooks
  */
 import { useEffect, useState } from 'react';
-import useUpdateUserEmailQuery from '@educt/hooks/useUpdateUserEmailQuery.ts';
+import { useUpdateUserEmail } from '@educt/hooks/queries';
 import useIsMountedRef from '@educt/hooks/useIsMountedRef';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useToast } from '@chakra-ui/toast';
@@ -25,7 +25,7 @@ type ConfirmEmailContainerPropsType = {
 
 const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data }) => {
   const { userStore } = useRootStore();
-  const { sendConfirmationCode, loading } = useUpdateUserEmailQuery();
+  const { sendConfirmationCode, isLoading } = useUpdateUserEmail();
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [code, setCode] = useState<string>('');
   const [expired, setExpired] = useState(data.expired_seconds);
@@ -93,13 +93,12 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
 
   const resendCodeHandler = async () => {
     const result = await sendConfirmationCode(data.newEmail);
-    if (result !== undefined) {
-      /**
-       * Reset timer state
-       */
-      const { expired_seconds } = result.data;
-      setExpired(v => (v = expired_seconds));
-    }
+
+    /**
+     * Reset timer state
+     */
+    const { expired_seconds } = result;
+    setExpired(v => (v = expired_seconds));
   };
 
   return (
@@ -158,7 +157,7 @@ const ConfirmEmailContainer: React.FC<ConfirmEmailContainerPropsType> = ({ data 
                   mt='3'
                   textDecoration='underline'
                   loadingText='Wait a second.'
-                  isLoading={loading}
+                  isLoading={isLoading}
                 >
                   Resend code
                 </Button>

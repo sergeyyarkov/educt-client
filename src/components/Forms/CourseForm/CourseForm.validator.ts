@@ -9,6 +9,7 @@ const CreateCourseSchema = yup.object().shape({
     .string()
     .required('Description field name is required')
     .max(250, 'Description must be at most 250 characters'),
+  education_description: yup.string().max(250, 'This section must be at most 250 characters').nullable(),
   image: yup
     .mixed()
     .test('fileSize', 'File size is too large', (value: File) => {

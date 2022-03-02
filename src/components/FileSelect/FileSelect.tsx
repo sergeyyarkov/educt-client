@@ -60,8 +60,8 @@ const FileSelect: React.FC<FileSelectPropsType> = ({ onChange, file, supportedFo
               </Text>
             </Text>
           ) : (
-            <Text fontWeight='normal' color='gray'>
-              Choose a file...
+            <Text fontWeight='normal' color='gray.500'>
+              Select new file
             </Text>
           )}
           {supportedFormats && (

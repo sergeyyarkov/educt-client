@@ -1,6 +1,6 @@
 import React from 'react';
 import { CourseStatusEnum, UserRoleEnum } from '@educt/enums';
-import { ICategory, ICourse, IUser } from '@educt/interfaces';
+import { ICategory } from '@educt/interfaces';
 import { IconType } from 'react-icons/lib';
 
 export type LinkType = {
@@ -34,10 +34,68 @@ export type ColorType = {
   hex: string;
 };
 
+export type LessonProgress = {
+  progress: {
+    is_watched: boolean;
+  } | null;
+};
+
+export type StatInfoType = {
+  courses_count: string;
+  lessons_count: string;
+  online: number;
+};
+
+export type LessonVideoType = {
+  id: number;
+  client_name: string;
+  ext: string;
+  name: string;
+  size: number;
+  url: string;
+  created_at: '2022-01-02T21:39:08.481+03:00';
+  updated_at: string;
+};
+
 export type ConfirmEmailContainerDataType = {
   newEmail: string;
   expired_seconds: number;
 };
+
+export type MessageType = {
+  userName: string;
+  content: string;
+  time: string;
+  isMyMessage: boolean;
+};
+
+export type HistoryMessageType = {
+  from: string;
+  to: string;
+  content: string;
+  time: string;
+  notificationId?: string | undefined;
+};
+
+export type ConversationType = {
+  userId: string;
+  fullname: string;
+  lastMessage: HistoryMessageType;
+};
+
+export type NotificationType = {
+  id: string;
+  content: string;
+  time: string;
+  type: 'SYSTEM' | 'MESSAGE';
+};
+
+export type UserSeesionType = {
+  sessionId: string | undefined;
+  userId: string | undefined;
+};
+
+export type UserOnlineListType = [string, { userId: string; userName: string }][];
 
 /**
  * Change email page context
@@ -72,22 +130,10 @@ export type UsersPageContextType = {
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
 
   /**
-   * Set editing user state when press on edit button
-   */
-  editingUser: IUser | undefined;
-  setEditingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
-
-  /**
    * Search users by page
    */
   searchingPage: number;
   setSearchingPage: React.Dispatch<React.SetStateAction<number>>;
-
-  /**
-   * Set deleting user state when press on delete button
-   */
-  deletingUser: IUser | undefined;
-  setDeletingUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 };
 
 export type CoursesPageContextType = {
@@ -102,23 +148,11 @@ export type CoursesPageContextType = {
    */
   courseStatus: CourseStatusEnum | undefined;
   setCourseStatus: React.Dispatch<React.SetStateAction<CourseStatusEnum | undefined>>;
-
-  /**
-   * Set deleting course state when press on delete button
-   */
-  deletingCourse: Pick<ICourse, 'id' | 'title'> | undefined;
-  setDeletingCourse: React.Dispatch<React.SetStateAction<Pick<ICourse, 'id' | 'title'> | undefined>>;
 };
 export type FetchCoursesParams = {
-  /**
-   * Get courses by status
-   */
   status?: CourseStatusEnum;
-
-  /**
-   * Get courses with category by id
-   */
   category_id?: string;
+  limit?: number;
 };
 export type FetchUsersParamsType = {
   page?: number;
@@ -136,9 +170,21 @@ export type CreateUserParamsType = {
 };
 export type UpdateUserParamsType = { first_name?: string; last_name?: string; email?: string };
 
+export type UpdateUserContactsParamsType = {
+  phone_number?: string | null | undefined;
+  twitter_id?: string | null | undefined;
+  telegram_id?: string | null | undefined;
+  vk_id?: string | null | undefined;
+};
+
+export type UpdateUserInfoParamsType = {
+  about?: string | null | undefined;
+} & UpdateUserContactsParamsType;
+
 export type CreateCourseParamsType = {
   title: string;
   description: string;
+  education_description: string | null;
   teacher_id: string;
   category_id: string;
   image?: File | undefined;
@@ -148,8 +194,37 @@ export type CreateCourseParamsType = {
 export type UpdateCourseParamsType = {
   title?: string | undefined;
   description?: string | undefined;
+  education_description?: string | null | undefined;
   teacher_id?: string | undefined;
   category_id?: string | undefined;
   image?: File | undefined;
   status?: CourseStatusEnum | undefined;
+};
+
+export type CreateLessonParamsType = {
+  title: string;
+  description: string;
+  duration: string;
+  course_id: string;
+  video: File;
+  materials?: File[] | undefined;
+};
+
+export type UpdateLessonParamsType = {
+  title?: string | undefined;
+  description?: string | undefined;
+  duration?: string | undefined;
+  course_id?: string | undefined;
+  video?: File | undefined;
+  materials?: File[] | undefined | null;
+};
+
+export type CreateCategoryParamsType = {
+  title: string;
+  description?: string | undefined;
+};
+
+export type UpdateCategoryParamsType = {
+  title?: string | undefined;
+  description?: string | null | undefined;
 };

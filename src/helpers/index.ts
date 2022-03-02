@@ -1,5 +1,5 @@
 import { UserRoleEnum } from '@educt/enums';
-import { IUserRole } from '@educt/interfaces';
+import { ICourse, IUserRole, UserCourseType } from '@educt/interfaces';
 
 export function userHasRoles(userRoles: IUserRole[], roles: UserRoleEnum[]): boolean {
   for (let i = 0; i < roles.length; i += 1) {
@@ -31,6 +31,7 @@ export function userContainRoles(userRoles: IUserRole[], roles: UserRoleEnum[]):
  * @returns Clean object that don't have null values
  */
 export function removeEmptyValues(obj: object) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== null));
 }
 
@@ -46,7 +47,21 @@ export function transformToFormData(data: object): FormData {
   /**
    * Append value to form-data format
    */
-  Object.entries(data).forEach(([key, value]) => value && formData.append(key, value));
+  Object.entries(data).forEach(([key, value]) => {
+    if (value !== undefined) {
+      if (Array.isArray(value)) {
+        value.forEach((v, i) => formData.append(`${key}[${i}]`, v));
+        return;
+      }
+
+      if (value === null) {
+        formData.append(key, '');
+        return;
+      }
+
+      formData.append(key, value);
+    }
+  });
 
   return formData;
 }
@@ -70,6 +85,11 @@ export function transformBytes(bytes: number, decimals = 2): string {
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
 
+export function transformBlobToFile(blob: Blob, fileName: string) {
+  const file = new File([blob], fileName, { type: blob.type });
+  return file;
+}
+
 /**
  *
  * @param array Array
@@ -83,4 +103,13 @@ export function arrayMove<T>(array: T[], from: number, to: number) {
 
   result.splice(to, 0, removed);
   return result;
+}
+
+export function getDirtyFields<T>(dirtyFields: { [key: string]: boolean | undefined }, data: T) {
+  return Object.fromEntries(Object.keys(dirtyFields).map(k => [k, data[k as keyof T]]));
+}
+
+export function userHasCourse(findingCourse: ICourse, userCourses?: Array<UserCourseType> | undefined) {
+  if (!userCourses) return true;
+  return userCourses.some(course => course.id === findingCourse.id);
 }

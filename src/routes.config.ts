@@ -8,12 +8,15 @@ import AuthPage from '@educt/pages/auth/auth';
 import NotFoundPage from '@educt/pages/404/404';
 import CreateCoursePage from '@educt/pages/courses/create/create';
 import CreateLessonPage from '@educt/pages/courses/create-lesson/create-lesson';
+import EditLessonPage from './pages/lessons/edit-lesson/edit-lesson';
+import CategoriesPage from './pages/categories/categories';
+import CoursePage from '@educt/pages/course/course';
 import EditCoursePage from '@educt/pages/courses/edit/edit';
 import ChangePasswordPage from '@educt/pages/profile/change-password/change-password';
 import ChangeEmailPage from '@educt/pages/profile/change-email/change-email';
+import UserPage from './pages/user/user';
 import { UserRoleEnum } from './enums';
 const CoursesPage = lazy(() => import('@educt/pages/courses/courses'));
-const LessonsPage = lazy(() => import('@educt/pages/lessons/lessons'));
 const LessonPage = lazy(() => import('@educt/pages/lesson/lesson'));
 const MainPage = lazy(() => import('@educt/pages/main/main'));
 const MessagesPage = lazy(() => import('@educt/pages/messages/messages'));
@@ -33,11 +36,26 @@ export const routes: IRouteOption[] = [
     isPrivate: true,
   },
   {
+    path: '/course/:id',
+    title: 'Course',
+    component: CoursePage,
+    isPrivate: true,
+    exact: true,
+  },
+  {
     path: '/courses',
     title: 'Courses',
     component: CoursesPage,
     exact: true,
     isPrivate: true,
+  },
+  {
+    path: '/categories',
+    title: 'Categories',
+    component: CategoriesPage,
+    exact: true,
+    isPrivate: true,
+    roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {
     path: '/courses/create',
@@ -63,9 +81,9 @@ export const routes: IRouteOption[] = [
     roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
   },
   {
-    path: '/lessons',
-    title: 'Lessons',
-    component: LessonsPage,
+    path: '/lessons/edit/:id',
+    title: 'Edit Lesson',
+    component: EditLessonPage,
     isPrivate: true,
     exact: true,
     roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
@@ -107,7 +125,15 @@ export const routes: IRouteOption[] = [
     title: 'Users management',
     component: UsersPage,
     isPrivate: true,
+    exact: true,
     roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+  },
+  {
+    path: '/user/:id',
+    title: 'User',
+    component: UserPage,
+    isPrivate: true,
+    exact: true,
   },
   {
     path: '/auth',

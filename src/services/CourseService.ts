@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
+import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
-import { IApiRespose, ICourse } from '@educt/interfaces';
-import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
+import { IApiRespose, ICourse, ILesson, IUser } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
+import { CreateCourseParamsType, FetchCoursesParams, UpdateCourseParamsType } from '@educt/types';
 
-export class CourseService {
+class CourseService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -23,6 +24,7 @@ export class CourseService {
       params: {
         status: params?.status,
         category_id: params?.category_id,
+        limit: params?.limit,
       },
     });
     return result.data;
@@ -34,10 +36,19 @@ export class CourseService {
    * @param id Course id
    * @returns Course
    */
-  public async fetchById(
-    id: string
-  ): Promise<IApiRespose<Omit<ICourse, 'students_count' | 'likes_count' | 'lessons_count'>>> {
+  public async fetchById(id: string): Promise<IApiRespose<ICourse>> {
     const result = await this.api.get(`/v1/courses/${id}`);
+    return result.data;
+  }
+
+  /**
+   * Fetch lessons by course id
+   *
+   * @param id Course id
+   * @returns Array of lessons
+   */
+  public async fetchLessonsById(id: string): Promise<IApiRespose<Array<ILesson>>> {
+    const result = await this.api.get(`/v1/courses/${id}/lessons`);
     return result.data;
   }
 
@@ -48,7 +59,7 @@ export class CourseService {
    * @param status Course status
    * @returns Empty data
    */
-  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<{}>> {
+  public async setStatus(id: string, status: CourseStatusEnum): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.post(`/v1/courses/${id}/set-status`, {
       status,
     });
@@ -56,6 +67,29 @@ export class CourseService {
   }
 
   /**
+   * Set course like
+   *
+   * @param id Course id
+   * @returns Empty data
+   */
+  public async setLike(id: string): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.put(`/v1/courses/${id}/likes`);
+    return result.data;
+  }
+
+  /**
+   * Unset course like
+   *
+   * @param id Course id
+   * @returns Empty data
+   */
+  public async unsetLike(id: string): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.delete(`/v1/courses/${id}/likes`);
+    return result.data;
+  }
+
+  /**
+   * Create new course
    *
    * @param data Data for creating course
    * @returns
@@ -72,6 +106,13 @@ export class CourseService {
     return result.data;
   }
 
+  /**
+   * Update course
+   *
+   * @param id Course id
+   * @param data Data to update
+   * @returns Updated course
+   */
   public async update(
     id: string,
     data: UpdateCourseParamsType
@@ -95,4 +136,34 @@ export class CourseService {
     const result = await this.api.delete(`/v1/courses/${id}`);
     return result.data;
   }
+
+  /**
+   * Attach students to course by id
+   *
+   * @param courseId Course id
+   * @param ids List ids of students
+   * @returns Empty data
+   */
+  public async attachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.post(
+      `/v1/courses/${courseId}/attach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
+    return result.data;
+  }
+
+  public async detachStudentsList(courseId: string, ids: Array<string>): Promise<IApiRespose<Record<string, never>>> {
+    const result = await this.api.patch(
+      `/v1/courses/${courseId}/detach-student-list`,
+      helpers.transformToFormData({ students: ids })
+    );
+    return result.data;
+  }
+
+  public async fetchStudentsById(courseId: string): Promise<IApiRespose<Array<IUser>>> {
+    const result = await this.api.get(`/v1/courses/${courseId}/students`);
+    return result.data;
+  }
 }
+
+export const CourseServiceInstance = new CourseService(ApiServiceInstance.api);

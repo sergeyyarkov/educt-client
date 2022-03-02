@@ -1,10 +1,4 @@
-import apiConfig from '@educt/api.config';
 import { makeAutoObservable } from 'mobx';
-
-/**
- * Services
- */
-import ApiService from '@educt/services/ApiService';
 
 /**
  * Stores
@@ -14,9 +8,12 @@ import UserStore from './UserStore';
 import UIStore from './UIStore';
 import CategoryStore from './CategoryStore';
 import CourseStore from './CourseStore';
-import LessonService from '@educt/services/LessonService';
+import PageStore from './PageStore';
+import OnlineStore from './OnlineStore';
 
 export default class RootStore {
+  public pageStore: PageStore;
+
   public courseStore: CourseStore;
 
   public categoryStore: CategoryStore;
@@ -27,26 +24,19 @@ export default class RootStore {
 
   public userStore: UserStore;
 
-  public apiService: ApiService;
-
-  public lessonService: LessonService;
+  public onlineStore: OnlineStore;
 
   constructor() {
     /**
-     * Api service
-     */
-    this.apiService = new ApiService(this, apiConfig);
-
-    this.lessonService = new LessonService(this.apiService.api);
-
-    /**
      * Stores
      */
-    this.courseStore = new CourseStore(this, this.apiService.api);
-    this.categoryStore = new CategoryStore(this, this.apiService.api);
+    this.authStore = new AuthStore(this);
+    this.categoryStore = new CategoryStore(this);
+    this.courseStore = new CourseStore(this);
+    this.pageStore = new PageStore(this);
     this.uiStore = new UIStore(this);
-    this.authStore = new AuthStore(this, this.apiService.api);
-    this.userStore = new UserStore(this, this.apiService.api);
+    this.userStore = new UserStore(this);
+    this.onlineStore = new OnlineStore(this);
 
     makeAutoObservable(this);
   }

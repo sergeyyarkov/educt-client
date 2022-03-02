@@ -13,14 +13,9 @@ import { CategoryItemPropsType } from './CategoryItem';
 import CategoryListLoading from './CategoryListLoading';
 
 /**
- * Contexts
- */
-import { CoursesPageContext } from '@educt/contexts';
-
-/**
  * Hooks
  */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRootStore } from '@educt/hooks/useRootStore';
 import { useErrorHandler } from 'react-error-boundary';
 
@@ -29,8 +24,10 @@ type CategoryListPropsType = {
 };
 
 const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
-  const { categoryStore } = useRootStore();
-  const { selectedCategory, setSelectedCategory } = useContext(CoursesPageContext);
+  const {
+    categoryStore,
+    pageStore: { coursesStore },
+  } = useRootStore();
   const handleError = useErrorHandler();
   const { categories, isLoading } = categoryStore;
 
@@ -40,6 +37,8 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
   useEffect(() => {
     categoryStore.loadCategories().catch(error => handleError(error));
   }, [categoryStore, handleError]);
+
+  useEffect(() => coursesStore.setSelectedCategory(null), []);
 
   /**
    * Loading
@@ -51,11 +50,11 @@ const CategoryList: React.FC<CategoryListPropsType> = ({ render: Item }) => {
       <Flex sx={{ columnGap: '7px', rowGap: '5px' }} flexWrap='wrap'>
         <Tag
           borderRadius='full'
-          variant={selectedCategory === undefined ? 'solid' : 'outline'}
+          variant={coursesStore.selectedCategory === null ? 'solid' : 'outline'}
           cursor='pointer'
           transition='all .1s'
           _hover={{ opacity: '.8' }}
-          onClick={() => setSelectedCategory(undefined)}
+          onClick={() => coursesStore.setSelectedCategory(null)}
         >
           <TagLabel>All categories</TagLabel>
         </Tag>

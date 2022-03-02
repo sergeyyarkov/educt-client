@@ -1,9 +1,17 @@
 import { AxiosInstance } from 'axios';
-import { IApiRespose, IMe, IUser, IUserContacts } from '@educt/interfaces';
+import { ApiServiceInstance } from '.';
 import * as helpers from '@educt/helpers';
-import { CreateUserParamsType, FetchUsersParamsType, UpdateUserParamsType } from '@educt/types';
+import { IApiRespose, IMe, IUser, IUserContacts, IUserInfo } from '@educt/interfaces';
+import {
+  CreateUserParamsType,
+  FetchUsersParamsType,
+  UpdateUserParamsType,
+  UpdateUserContactsParamsType,
+  UpdateUserInfoParamsType,
+  HistoryMessageType,
+} from '@educt/types';
 
-export default class UserService {
+class UserService {
   public api: AxiosInstance;
 
   constructor(api: AxiosInstance) {
@@ -27,7 +35,7 @@ export default class UserService {
    * @returns Array of users
    */
   public async fetchAll(params?: FetchUsersParamsType): Promise<IApiRespose<IUser[]>> {
-    const { page = 1, limit = 6, role, search } = params || {};
+    const { page, limit, role, search } = params || {};
     const result = await this.api.get('/v1/users', {
       params: {
         page,
@@ -36,6 +44,17 @@ export default class UserService {
         search: search || undefined,
       },
     });
+    return result.data;
+  }
+
+  /**
+   * Fetch user by id
+   *
+   * @param id User id
+   * @returns Users
+   */
+  public async fetchUserById(id: string): Promise<IApiRespose<IUser>> {
+    const result = await this.api.get(`/v1/users/${id}`);
     return result.data;
   }
 
@@ -86,8 +105,19 @@ export default class UserService {
    * @param data New values for contacts
    * @returns Updated contacts
    */
-  public async updateContacts(data: IUserContacts): Promise<IApiRespose<IUserContacts>> {
-    const result = await this.api.put('v1/me/contacts', helpers.removeEmptyValues(data));
+  public async updateContacts(data: UpdateUserContactsParamsType): Promise<IApiRespose<IUserContacts>> {
+    const result = await this.api.patch('v1/me/contacts', data);
+    return result.data;
+  }
+
+  /**
+   * Update user info
+   *
+   * @param data Fields to update
+   * @returns Updated fields
+   */
+  public async updateInfo(data: UpdateUserInfoParamsType): Promise<IApiRespose<Partial<IUserInfo>>> {
+    const result = await this.api.patch('v1/me/info', data);
     return result.data;
   }
 
@@ -98,7 +128,7 @@ export default class UserService {
    * @param newPassword New password
    * @returns Empty object
    */
-  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<{}>> {
+  public async updatePassword(oldPassword: string, newPassword: string): Promise<IApiRespose<Record<string, never>>> {
     const result = await this.api.patch('v1/me/password', {
       oldPassword,
       newPassword,
@@ -134,4 +164,17 @@ export default class UserService {
     });
     return result.data;
   }
+
+  /**
+   * Get history of chat
+   *
+   * @param chatId Chat id
+   * @returns Array of messages
+   */
+  public async fetchChatHistory(chatId: string): Promise<IApiRespose<{ history: HistoryMessageType[] }>> {
+    const result = await this.api.get(`v1/me/messages/${chatId}`);
+    return result.data;
+  }
 }
+
+export const UserServiceInstance = new UserService(ApiServiceInstance.api);

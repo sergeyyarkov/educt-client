@@ -1,5 +1,12 @@
 import type { RouteComponentProps } from 'react-router-dom';
-import { AttachmentFileType, ColorType, LinkType } from '@educt/types';
+import {
+  AttachmentFileType,
+  ColorType,
+  LessonProgress,
+  LessonVideoType,
+  LinkType,
+  NotificationType,
+} from '@educt/types';
 import { CourseStatusEnum, UserRoleEnum } from '../enums';
 
 export interface IAppConfig {
@@ -7,11 +14,13 @@ export interface IAppConfig {
     appName: string;
     appDescription: string;
     appVersion: string;
+    appGithubLink: string;
   };
   links: LinkType[];
 }
 
 export interface IToken {
+  userId: string;
   token: string;
   type: string;
   expires_at: string;
@@ -22,11 +31,12 @@ export interface ICourse {
   image: AttachmentFileType | null;
   title: string;
   description: string;
+  education_description: string | null;
   status: CourseStatusEnum;
-  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>;
+  teacher: Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email' | 'created_at' | 'updated_at'>;
   category: ICategory;
-  lessons: ILesson[];
-  students: Array<Pick<IUser, 'id' | 'first_name' | 'fullname' | 'last_name' | 'email'>>;
+  lessons: Omit<ILesson, 'materials' | 'content' | 'progress'>[];
+  students: IUser[];
   color: ColorType | null;
   students_count: string;
   likes_count: string;
@@ -42,8 +52,30 @@ export interface ILesson {
   description: string;
   duration: string;
   color?: ColorType | undefined | null;
+  materials_count?: string | undefined;
+  materials: Array<ILessonMaterial>;
+  progress: LessonProgress;
+  content: ILessonContent;
+  video?: LessonVideoType | undefined | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ILessonMaterial {
+  id: number;
+  lesson_id: string;
+  name: string;
+  client_name: string;
+  size: number;
+  ext: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ILessonContent {
+  id: number;
+  lesson_id: string;
+  body: string;
 }
 
 export interface ICategory {
@@ -51,6 +83,8 @@ export interface ICategory {
   title: string;
   description: string;
   color?: ColorType | undefined | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
@@ -89,9 +123,13 @@ export interface IUser {
   first_name: string;
   last_name: string;
   fullname: string;
+  about: string | null;
+  last_login: string | null;
   email: string;
   roles: IUserRole[];
   contacts: IUserContacts | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
@@ -103,9 +141,8 @@ export interface IMe extends IUser {
    * does not have the STUDENT role
    */
   courses?: UserCourseType[];
-  isAdmin: boolean;
-  isTeacher: boolean;
-  isStudent: boolean;
+  likes: Array<Pick<ICourse, 'id'>>;
+  notifications: Array<NotificationType>;
 }
 
 export interface IUserContacts {
@@ -113,6 +150,10 @@ export interface IUserContacts {
   twitter_id: string | null;
   telegram_id: string | null;
   vk_id: string | null;
+}
+
+export interface IUserInfo extends IUserContacts {
+  about: string | null;
 }
 
 export interface IUserRole {

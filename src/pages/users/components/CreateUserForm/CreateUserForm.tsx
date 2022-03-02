@@ -31,13 +31,15 @@ import { SubmitHandler } from 'react-hook-form';
 /**
  * Hooks
  */
-import { useContext, useState } from 'react';
-import useIsMountedRef from '@educt/hooks/useIsMountedRef';
+import { useContext } from 'react';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useForm } from 'react-hook-form';
 import { useRootStore } from '@educt/hooks/useRootStore';
-import { useErrorHandler } from 'react-error-boundary';
-import { useToast } from '@chakra-ui/react';
+
+/**
+ * Hooks
+ */
+import { useCreateUser } from '@educt/hooks/queries';
 
 /**
  * Contexts
@@ -48,8 +50,7 @@ import { UsersPageContext } from '@educt/contexts';
  * Schema
  */
 import CreateUserSchema from './CreateUserForm.validator';
-
-type CreateUserFormPropsType = {};
+import { CreateButton } from '@educt/components/Buttons';
 
 type CreateUserInputType = {
   first_name: string;
@@ -60,9 +61,10 @@ type CreateUserInputType = {
   password: string;
 };
 
-const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
+const CreateUserModal: React.FC = () => {
   const { userStore } = useRootStore();
   const { searchingRole, search } = useContext(UsersPageContext);
+  const { createUser, isLoading } = useCreateUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
@@ -72,10 +74,6 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
   } = useForm<CreateUserInputType>({
     resolver: yupResolver(CreateUserSchema),
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const isMountedRef = useIsMountedRef();
-  const toast = useToast();
-  const handleError = useErrorHandler();
 
   const { me } = userStore;
 
@@ -86,14 +84,12 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
    */
   const onSubmit: SubmitHandler<CreateUserInputType> = async data => {
     try {
-      setLoading(true);
-      await userStore.createUser(data, {
+      await createUser(data, {
         page: userStore.pagination?.current_page,
         limit: userStore.pagination?.per_page,
         role: searchingRole,
         search,
       });
-      toast({ title: 'User created.', status: 'info' });
 
       /**
        * Clear form state
@@ -105,27 +101,13 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
        */
       onClose();
     } catch (error: any) {
-      if (error.response) {
-        if (error.response.status === 422) {
-          toast({ title: `${error.response.data.errors[0].message}`, status: 'error' });
-        } else {
-          toast({ title: `${error.message}`, status: 'error' });
-        }
-      } else {
-        handleError(error);
-      }
-    } finally {
-      if (isMountedRef.current) {
-        setLoading(false);
-      }
+      console.error(error);
     }
   };
 
   return (
     <>
-      <Button onClick={onOpen} variant='outline' colorScheme='blue' leftIcon={<AddIcon />}>
-        Create new
-      </Button>
+      <CreateButton onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -194,7 +176,7 @@ const CreateUserModal: React.FC<CreateUserFormPropsType> = () => {
                 variant='outline'
                 mr={3}
                 colorScheme='blue'
-                isLoading={loading}
+                isLoading={isLoading}
                 loadingText='Creating...'
                 leftIcon={<AddIcon />}
               >

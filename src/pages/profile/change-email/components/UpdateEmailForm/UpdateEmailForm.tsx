@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@chakra-ui/button';
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
 import { Box, Stack } from '@chakra-ui/layout';
@@ -15,7 +14,7 @@ import type { SubmitHandler } from 'react-hook-form';
  */
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useUpdateUserEmailQuery from '@educt/hooks/useUpdateUserEmailQuery.ts';
+import { useUpdateUserEmail } from '@educt/hooks/queries';
 
 /**
  * Contexts
@@ -26,6 +25,7 @@ import { ChangeEmailPageContext } from '@educt/contexts';
  * Schema
  */
 import UpdateEmailSchema from './UpdateEmailForm.validator';
+import { SaveButton } from '@educt/components/Buttons';
 
 type UpdateEmailInputType = {
   email: string;
@@ -41,7 +41,7 @@ type UpdateEmailFormPropsType = {
 const UpdateEmailForm: React.FC<UpdateEmailFormPropsType> = ({ currentEmail }) => {
   const [newEmail, setNewEmail] = useState<string | null>(null);
   const { setIsCodeSent, setConfirmEmailData } = useContext(ChangeEmailPageContext);
-  const { sendConfirmationCode, loading, result } = useUpdateUserEmailQuery();
+  const { sendConfirmationCode, isLoading, data } = useUpdateUserEmail();
   const {
     handleSubmit,
     register,
@@ -54,11 +54,11 @@ const UpdateEmailForm: React.FC<UpdateEmailFormPropsType> = ({ currentEmail }) =
    * Change page view in confirmation code has been sent
    */
   useEffect(() => {
-    if (newEmail !== null && result !== null) {
+    if (newEmail !== null && data !== null) {
       setIsCodeSent(true);
-      setConfirmEmailData({ newEmail, expired_seconds: result.data.expired_seconds });
+      setConfirmEmailData({ newEmail, expired_seconds: data.expired_seconds });
     }
-  }, [result]);
+  }, [data]);
 
   /**
    * Submit form handler
@@ -87,17 +87,7 @@ const UpdateEmailForm: React.FC<UpdateEmailFormPropsType> = ({ currentEmail }) =
             </FormHelperText>
           </FormControl>
         </Stack>
-        <Button
-          colorScheme='blue'
-          mt='4'
-          type='submit'
-          size='md'
-          variant='outline'
-          isLoading={loading}
-          loadingText='Sending...'
-        >
-          Send code
-        </Button>
+        <SaveButton mt='4' type='submit' isLoading={isLoading} />
       </form>
     </Box>
   );

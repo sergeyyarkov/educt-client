@@ -1,5 +1,12 @@
 import { UserRoleEnum } from '@educt/enums';
-import { MdAccountCircle, MdCollectionsBookmark, MdGroup, MdHome, MdMessage, MdList } from 'react-icons/md';
+import {
+  MdOutlineHome,
+  MdOutlineMessage,
+  MdOutlineCollectionsBookmark,
+  MdOutlineGroup,
+  MdOutlineAccountCircle,
+  MdOutlineCategory,
+} from 'react-icons/md';
 import { IAppConfig } from './interfaces';
 import packageJson from '../package.json';
 
@@ -11,28 +18,29 @@ const config: IAppConfig = {
     appName: 'Educt',
     appDescription: 'Learning management system',
     appVersion: packageJson.version,
+    appGithubLink: 'https://github.com/sergeyyarkov/educt-client',
   },
   /**
    * Links that are rendered in the navigation
    */
   links: [
-    { location: '/', title: 'Main', public: true, icon: MdHome },
-    { location: '/courses', title: 'Courses', public: true, icon: MdCollectionsBookmark },
+    { location: '/', title: 'Main', public: true, icon: MdOutlineHome },
+    { location: '/courses', title: 'Courses', public: true, icon: MdOutlineCollectionsBookmark },
     {
-      location: '/lessons',
-      title: 'Lessons',
+      location: '/categories',
+      title: 'Categories',
       public: false,
-      icon: MdList,
       roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
+      icon: MdOutlineCategory,
     },
-    { location: '/messages', title: 'Messages', public: true, icon: MdMessage },
-    { location: '/profile', title: 'Profile', public: true, icon: MdAccountCircle },
+    { location: '/messages', title: 'Messages', public: true, icon: MdOutlineMessage },
+    { location: '/profile', title: 'Profile', public: true, icon: MdOutlineAccountCircle },
     {
       location: '/users',
       title: 'Users',
       public: false,
       roles: [UserRoleEnum.ADMIN, UserRoleEnum.TEACHER],
-      icon: MdGroup,
+      icon: MdOutlineGroup,
     },
   ],
 };

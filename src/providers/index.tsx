@@ -1,9 +1,17 @@
 import React, { useState, ReactNode } from 'react';
-import { ChangeEmailPageContext, CoursesPageContext, StoreContext, UsersPageContext } from '@educt/contexts';
+import * as constants from '../../constants';
+import {
+  ChangeEmailPageContext,
+  CoursesPageContext,
+  SocketContext,
+  StoreContext,
+  UsersPageContext,
+} from '@educt/contexts';
 import { ConfirmEmailDataType, SearchingRoleStateType } from '@educt/types';
 import RootStore from '@educt/stores/RootStore';
-import { ICategory, ICourse, IUser } from '@educt/interfaces';
+import { ICategory } from '@educt/interfaces';
 import { CourseStatusEnum } from '@educt/enums';
+import { useSocket } from '@educt/hooks/useSocket';
 
 /**
  * Root store context provider
@@ -12,6 +20,15 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
   const store = new RootStore();
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+};
+
+/**
+ * Socket context provider
+ */
+export const SocketContextProvider: React.FC = ({ children }) => {
+  const socket = useSocket(constants.WS_URL);
+
+  return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
 
 /**
@@ -35,8 +52,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
   const [searchingRole, setSearchingRole] = useState<SearchingRoleStateType>(undefined);
   const [searchingPage, setSearchingPage] = useState<number>(1);
   const [search, setSearch] = useState<string | undefined>(undefined);
-  const [editingUser, setEditingUser] = useState<IUser | undefined>(undefined);
-  const [deletingUser, setDeletingUser] = useState<IUser | undefined>(undefined);
 
   return (
     <UsersPageContext.Provider
@@ -47,10 +62,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
         setSearchingPage,
         search,
         setSearch,
-        editingUser,
-        setEditingUser,
-        deletingUser,
-        setDeletingUser,
       }}
     >
       {children}
@@ -64,7 +75,6 @@ export const UsersPageContextProvider: React.FC = ({ children }) => {
 export const CoursesPageContextProvider: React.FC = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | undefined>(undefined);
   const [courseStatus, setCourseStatus] = useState<CourseStatusEnum | undefined>(undefined);
-  const [deletingCourse, setDeletingCourse] = useState<Pick<ICourse, 'id' | 'title'> | undefined>(undefined);
 
   const context = React.useMemo(
     () => ({
@@ -72,10 +82,8 @@ export const CoursesPageContextProvider: React.FC = ({ children }) => {
       setCourseStatus,
       selectedCategory,
       setSelectedCategory,
-      deletingCourse,
-      setDeletingCourse,
     }),
-    [courseStatus, setCourseStatus, selectedCategory, setSelectedCategory, deletingCourse, setDeletingCourse]
+    [courseStatus, setCourseStatus, selectedCategory, setSelectedCategory]
   );
 
   return <CoursesPageContext.Provider value={context}>{children}</CoursesPageContext.Provider>;

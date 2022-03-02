@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { makeAutoObservable, runInAction } from 'mobx';
 
 /**
@@ -6,30 +5,27 @@ import { makeAutoObservable, runInAction } from 'mobx';
  */
 import { FetchCoursesParams } from '@educt/types';
 import { ICourse } from '@educt/interfaces';
+import { CourseStatusEnum } from '@educt/enums';
 
 /**
  * Services
  */
-import { CourseService } from '@educt/services/CourseService';
+import { CourseServiceInstance } from '@educt/services';
 
 /**
  * Stores
  */
 import RootStore from './RootStore';
-import { CourseStatusEnum } from '@educt/enums';
 
 export default class CourseStore {
   public root: RootStore;
 
-  public courseService: CourseService;
-
   public courses: Omit<ICourse, 'teacher' | 'students' | 'lessons'>[] | null = null;
 
-  public isLoading: boolean = false;
+  public isLoading = false;
 
-  constructor(root: RootStore, api: AxiosInstance) {
+  constructor(root: RootStore) {
     this.root = root;
-    this.courseService = new CourseService(api);
     makeAutoObservable(this);
   }
 
@@ -40,7 +36,7 @@ export default class CourseStore {
   public async loadCourses(params?: FetchCoursesParams) {
     try {
       this.setLoading(true);
-      const result = await this.courseService.fetchAll(params);
+      const result = await CourseServiceInstance.fetchAll(params);
 
       /**
        * Load courses in store
@@ -50,30 +46,24 @@ export default class CourseStore {
       });
 
       return result;
-    } catch (error: any) {
-      throw error;
     } finally {
       this.setLoading(false);
     }
   }
 
   public async deleteCourse(id: string) {
-    try {
-      const result = await this.courseService.delete(id);
+    const result = await CourseServiceInstance.delete(id);
 
-      /**
-       * Remove deleted course form store
-       */
-      runInAction(() => {
-        if (this.courses !== null) {
-          this.courses = this.courses.filter(course => course.id !== id);
-        }
-      });
+    /**
+     * Remove deleted course form store
+     */
+    runInAction(() => {
+      if (this.courses !== null) {
+        this.courses = this.courses.filter(course => course.id !== id);
+      }
+    });
 
-      return result;
-    } catch (error: any) {
-      throw error;
-    }
+    return result;
   }
 
   public async setCourseStatus(id: string, status: CourseStatusEnum) {
@@ -97,9 +87,9 @@ export default class CourseStore {
       /**
        * Make request on update course status
        */
-      const result = await this.courseService.setStatus(id, status);
+      const result = await CourseServiceInstance.setStatus(id, status);
       return result;
-    } catch (error: any) {
+    } catch (error) {
       /**
        * Resume status if there was an error on request
        */
