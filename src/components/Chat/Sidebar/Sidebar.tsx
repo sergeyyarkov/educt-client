@@ -10,13 +10,7 @@ export interface ISidebarComposition {
 
 const Sidebar: React.FC<GridItemProps> & ISidebarComposition = props => {
   return (
-    <GridItem
-      pt='7rem'
-      borderRightWidth={{ base: '0', lg: '1px' }}
-      width={{ base: 'full', lg: '400px' }}
-      px={{ base: '0', lg: '3' }}
-      {...props}
-    >
+    <GridItem pt='7rem' borderRightWidth={{ base: '0', lg: '1px' }} px={{ base: '0', lg: '3' }} {...props}>
       {props.children}
     </GridItem>
   );

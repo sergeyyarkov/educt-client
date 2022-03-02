@@ -14,7 +14,7 @@ const Text: React.FC<ITextProps> = ({ content, time }) => {
 
   return (
     <Box mx={'4'} maxW={'450px'} bg={bgColor} borderRadius='3xl' px='6' py='3'>
-      <ChakraText fontSize={'15px'}>
+      <ChakraText fontSize={'15px'} wordBreak='break-all'>
         {content}
         <Box
           as='time'

@@ -7,7 +7,7 @@ export interface IAvatarProps {
 
 const Avatar: React.FC<IAvatarProps> = memo(({ fullname: name }) => {
   return (
-    <WrapItem>
+    <WrapItem alignSelf={'flex-start'}>
       <ChakraAvatar name={name} size={'sm'} />
     </WrapItem>
   );

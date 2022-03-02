@@ -32,7 +32,7 @@ import { useRootStore } from '@educt/hooks/useRootStore';
 import { useHistory } from 'react-router-dom';
 
 const Wrapper: React.FC<GridItemProps> = props => (
-  <GridItem pt={'7rem'} pb='5' px='12' {...props}>
+  <GridItem pt={'7rem'} pb='5' px={{ base: '4', lg: '12' }} {...props}>
     {props.children}
   </GridItem>
 );
@@ -192,7 +192,6 @@ const Window: React.FC = props => {
               resize={'block'}
               type='text'
               placeholder='Write a message...'
-              maxW='900px'
               variant={'outline'}
               rounded='xl'
               mr='2'

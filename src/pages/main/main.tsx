@@ -40,6 +40,8 @@ const MainPage: React.FC<IPageProps> = () => {
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
 
+  const unreadMessages = me.notifications.filter(n => n.type === 'MESSAGE');
+
   return (
     <Page>
       <Page.Heading heading={`👋 Hello ${me.first_name},`} description="This what we've got today for you." />
@@ -58,7 +60,7 @@ const MainPage: React.FC<IPageProps> = () => {
             <StatContent>
               <StatNumber>
                 <Link as={ReactRouterLink} to='/messages'>
-                  0
+                  {unreadMessages.length}
                 </Link>
               </StatNumber>
               <StatIcon icon={MdOutlineMessage} />

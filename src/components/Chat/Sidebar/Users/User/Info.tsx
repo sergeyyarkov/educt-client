@@ -16,12 +16,12 @@ const Info: React.FC<IInfoProps> = ({ fullname, lastMessage }) => {
 
   return (
     <Box ml='4' maxW='200px'>
-      <Text fontWeight={'semibold'} textOverflow={'ellipsis'} overflow={'hidden'} whiteSpace='nowrap'>
+      <Text fontWeight={'semibold'}>
         {isMe ? 'Favorites' : fullname} <br />
         {lastMessage && (
-          <Text as={'span'} fontWeight='normal' fontSize={'sm'} color='gray.500'>
+          <Text as={'span'} fontWeight='normal' fontSize={'sm'} color='gray.500' wordBreak={'break-all'}>
             {lastMessage.from === me?.id && `You: `}
-            {lastMessage.content}
+            {lastMessage.content.length >= 20 ? lastMessage.content.slice(0, 20 - 1) + '...' : lastMessage.content}
           </Text>
         )}
       </Text>
