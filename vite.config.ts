@@ -20,6 +20,7 @@ export default defineConfig({
   publicDir: 'public',
   plugins: [react()],
   server: {
+    port: 5000,
     proxy: {
       '/api': {
         target: constants.BACKEND_URL,
