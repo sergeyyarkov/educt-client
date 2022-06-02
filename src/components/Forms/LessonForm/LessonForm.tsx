@@ -13,6 +13,7 @@ import {
   Flex,
   Divider,
 } from '@chakra-ui/react';
+import * as constants from '@educt/constants';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import VideoUploader from '@educt/components/VideoUploader';
 import FilesUploader from '@educt/components/FilesUploader';
@@ -80,7 +81,11 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
             control={control}
             name='video'
             render={({ field: { onChange, value: file } }) => (
-              <VideoUploader onChange={file => onChange(file)} file={file} preloadedVideoUrl={preloadedVideo?.url} />
+              <VideoUploader
+                onChange={file => onChange(file)}
+                file={file}
+                preloadedVideoUrl={constants.BACKEND_URL + preloadedVideo?.url}
+              />
             )}
           />
           <Text as='small' color='red.500'>

@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import * as constants from '../../constants';
+import * as constants from '@educt/constants';
 import {
   ChangeEmailPageContext,
   CoursesPageContext,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import * as helpres from '@educt/helpers';
+import * as constants from '@educt/constants';
 import { Redirect } from 'react-router-dom';
 import { Flex, Box, Text, Heading, Button, Grid, GridItem, Divider, AvatarGroup, Avatar } from '@chakra-ui/react';
 import { MdPlayCircleOutline } from 'react-icons/md';
@@ -83,7 +84,10 @@ const CoursePage: React.FC<IPageProps> = () => {
                   </Button>
                 </Box>
               </Flex>
-              <CourseBackgroundImage bg={course.color?.hex} src={course.image?.url} />
+              <CourseBackgroundImage
+                bg={course.color?.hex}
+                src={course.image ? `${constants.BACKEND_URL + course.image.url}` : undefined}
+              />
             </Box>
             <Box mt='4'>
               <Tabs>

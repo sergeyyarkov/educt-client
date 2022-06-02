@@ -7,6 +7,7 @@ import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { MdMoreHoriz, MdGroup, MdThumbUp, MdVideoLibrary } from 'react-icons/md';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import * as constants from '@educt/constants';
 
 /**
  * Types
@@ -128,7 +129,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
               w='100%'
               borderTopLeftRadius='lg'
               borderTopRightRadius='lg'
-              src={course.image.url}
+              src={course.image ? `${constants.BACKEND_URL + course.image.url}` : undefined}
             />
           )}
         </Box>

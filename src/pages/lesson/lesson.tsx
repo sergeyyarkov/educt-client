@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import * as constants from '@educt/constants';
 import * as helpres from '@educt/helpers';
 import { Link as ReactRouterLink, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -153,7 +154,7 @@ const LessonPage: React.FC<IPageProps> = () => {
           <GridItem>
             <Box>
               {lesson.video ? (
-                <ReactPlayer width={'100%'} height={'100%'} controls url={lesson.video?.url} />
+                <ReactPlayer width={'100%'} height={'100%'} controls url={constants.BACKEND_URL + lesson.video.url} />
               ) : (
                 <Flex h='500px' justifyContent={'center'} alignItems={'center'}>
                   <Text color='gray.500' userSelect={'none'}>
