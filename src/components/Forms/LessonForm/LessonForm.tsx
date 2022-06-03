@@ -84,7 +84,7 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
               <VideoUploader
                 onChange={file => onChange(file)}
                 file={file}
-                preloadedVideoUrl={constants.BACKEND_URL + preloadedVideo?.url}
+                preloadedVideoUrl={preloadedVideo && constants.BACKEND_URL + preloadedVideo.url}
               />
             )}
           />

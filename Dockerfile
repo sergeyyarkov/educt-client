@@ -6,6 +6,11 @@ WORKDIR /home/app
 COPY package*.json ./
 RUN npm install
 COPY . .
+# Get build arguments and set env variables
+ARG API_URL
+ARG WS_URL
+ENV VITE_API_URL=${API_URL}
+ENV VITE_WS_URL=${WS_URL}
 RUN npm run build
 
 FROM ${NGINX_IMAGE} as production
