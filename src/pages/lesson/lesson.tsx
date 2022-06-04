@@ -152,11 +152,17 @@ const LessonPage: React.FC<IPageProps> = () => {
       <Page.Content>
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
-            <Box>
+            <Box overflowY='hidden'>
               {lesson.video ? (
-                <ReactPlayer width={'100%'} height={'100%'} controls url={constants.BACKEND_URL + lesson.video.url} />
+                <ReactPlayer
+                  style={{ backgroundColor: '#000' }}
+                  width={'100%'}
+                  height={'547px'}
+                  controls
+                  url={constants.BACKEND_URL + lesson.video.url}
+                />
               ) : (
-                <Flex h='500px' justifyContent={'center'} alignItems={'center'}>
+                <Flex h='547px' justifyContent={'center'} alignItems={'center'}>
                   <Text color='gray.500' userSelect={'none'}>
                     Video has not been uploaded yet.
                   </Text>
@@ -192,7 +198,7 @@ const LessonPage: React.FC<IPageProps> = () => {
           </GridItem>
           <GridItem minWidth={'250px'}>
             <Box>
-              <Stack maxH={'500px'} overflowY={'scroll'} spacing={'0'}>
+              <Stack maxH={'547px'} minH={'547px'} overflowY={'scroll'} spacing={'0'}>
                 {lessons.map((lesson, i) => (
                   <LinkBox
                     ref={lesson.id === id ? currentLessonRef : undefined}
