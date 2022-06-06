@@ -46,7 +46,7 @@ const CoursePage: React.FC<IPageProps> = () => {
   const isEmptyLessons = course.lessons.length === 0;
   const isEmptyStudents = course.students.length === 0;
 
-  const handleWatchCourse = () => history.push(`/lesson/${course.lessons[0].id}`);
+  const handleWatchCourse = () => course.lessons[0] && history.push(`/lesson/${course.lessons[0].id}`);
 
   const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
 
@@ -74,7 +74,7 @@ const CoursePage: React.FC<IPageProps> = () => {
                 <Box>
                   {(me.isAdmin || me.isTeacher) && <EditButton onClick={handleEditCourse} mr='2' />}
                   <Button
-                    isDisabled={!isCourseAvailable}
+                    isDisabled={!isCourseAvailable || course.lessons[0] === undefined}
                     onClick={handleWatchCourse}
                     leftIcon={<MdPlayCircleOutline />}
                     size='sm'
@@ -133,7 +133,7 @@ const CoursePage: React.FC<IPageProps> = () => {
               <Text fontSize={'2xl'} fontWeight={'medium'}>
                 What you&apos;ll learn.
               </Text>
-              <Text fontSize={'sm'} mt='2'>
+              <Text fontSize={'sm'} mt='2' textAlign={'justify'}>
                 {course.education_description}
               </Text>
             </Box>
