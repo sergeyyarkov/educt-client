@@ -19,6 +19,7 @@ import VideoUploader from '@educt/components/VideoUploader';
 import FilesUploader from '@educt/components/FilesUploader';
 import { FileSupportedFormatsEnum, VideoSupportedFormatsEnum } from '@educt/enums';
 import type { AttachmentFileType, LessonVideoType } from '@educt/types';
+import { DESCRIPTION_MAX_LENGTH } from './LessonForm.validator';
 
 export type InputFields = {
   title: string;
@@ -48,8 +49,11 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
   const {
     control,
     register,
+    watch,
     formState: { errors, isDirty },
   } = reactHookForm;
+
+  const watchDescription = watch('description');
 
   return (
     <form onSubmit={onSubmit}>
@@ -71,6 +75,12 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
           <Flex justifyContent='space-between'>
             <Text as='small' color='red.500'>
               {errors.description?.message}
+            </Text>
+            <Text
+              as='small'
+              color={!!errors.description || watchDescription?.length > DESCRIPTION_MAX_LENGTH ? 'red.500' : 'gray.500'}
+            >
+              {watchDescription?.length || 0}/{DESCRIPTION_MAX_LENGTH}
             </Text>
           </Flex>
         </FormControl>

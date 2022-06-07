@@ -1,8 +1,9 @@
 import * as helpers from '@educt/helpers';
 import yup from '@educt/schema';
 
-const VIDEO_FILE_SIZE = 5000 * 1024 * 1024;
-const MATERIAL_FILE_SIZE = 100000 * 1024;
+export const VIDEO_FILE_SIZE = 5000 * 1024 * 1024;
+export const MATERIAL_FILE_SIZE = 100000 * 1024;
+export const DESCRIPTION_MAX_LENGTH = 250;
 
 const CreateLessonFormSchema = yup
   .object({
@@ -10,7 +11,7 @@ const CreateLessonFormSchema = yup
     description: yup
       .string()
       .required('Description field name is required')
-      .max(250, 'Description must be at most 250 characters'),
+      .max(DESCRIPTION_MAX_LENGTH, 'Description must be at most 250 characters'),
     duration: yup.string().required('Duration field name is required'),
     video: yup
       .mixed<File>()
