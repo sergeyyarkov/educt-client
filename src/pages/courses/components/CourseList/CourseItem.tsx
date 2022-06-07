@@ -103,8 +103,9 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
       <Link
         to={`/course/${course.id}`}
         as={ReactRouterLink}
-        display='block'
-        h='full'
+        display='flex'
+        flexDir={'column'}
+        h='100%'
         textDecoration='none'
         _visited={{ textDecoration: 'none' }}
         _hover={{ textDecoration: 'none' }}
@@ -133,7 +134,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
             />
           )}
         </Box>
-        <Box p='0 10px' mt='10px' pb='20px'>
+        <Flex flexDir={'column'} p='0 10px' mt='10px' pb='20px' h='100%'>
           <Flex justifyContent='space-between'>
             <Badge colorScheme='blue'>{course.category.title}</Badge>
             {(me.isAdmin || me.isTeacher) && <CourseStatusBadge status={course.status} />}
@@ -141,8 +142,10 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
           <Heading as='h2' fontSize='xl' mt='5px'>
             {course.title}
           </Heading>
-          <Text mt='2'>{course.description}</Text>
-          <Flex mt='20px' flexWrap='wrap'>
+          <Text mt='2' mb='4'>
+            {course.description}
+          </Text>
+          <Flex mt='auto' flexWrap='wrap'>
             <Flex alignItems='center' mr='1'>
               <Icon as={MdVideoLibrary} mr='2' />
               <Text mr='4'>{course.lessons_count} lessons</Text>
@@ -156,7 +159,7 @@ const CourseItem: React.FC<CourseItemPropsType> = ({ course, onDelete, onSetStat
               <Text>{course.likes_count} likes</Text>
             </Flex>
           </Flex>
-        </Box>
+        </Flex>
       </Link>
     </Box>
   );
