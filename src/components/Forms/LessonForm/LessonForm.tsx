@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormControl,
   FormHelperText,
@@ -13,17 +13,20 @@ import {
   Flex,
   Divider,
 } from '@chakra-ui/react';
+import * as constants from '@educt/constants';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import VideoUploader from '@educt/components/VideoUploader';
 import FilesUploader from '@educt/components/FilesUploader';
 import { FileSupportedFormatsEnum, VideoSupportedFormatsEnum } from '@educt/enums';
 import type { AttachmentFileType, LessonVideoType } from '@educt/types';
+import { DESCRIPTION_MAX_LENGTH } from './LessonForm.validator';
 
 export type InputFields = {
   title: string;
   description: string;
   duration: string;
   video: File;
+  linked_video_url?: string | undefined;
   materials?: FileList | undefined;
 };
 
@@ -47,8 +50,20 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
   const {
     control,
     register,
+    watch,
     formState: { errors, isDirty },
+    unregister,
   } = reactHookForm;
+
+  const [isLinkedVideoUrl, setIsLinkedVideoUrl] = useState<boolean>(false);
+
+  const watchDescription = watch('description');
+
+  useEffect(() => {
+    if (!isLinkedVideoUrl) {
+      unregister('linked_video_url');
+    }
+  }, [isLinkedVideoUrl]);
 
   return (
     <form onSubmit={onSubmit}>
@@ -71,28 +86,52 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
             <Text as='small' color='red.500'>
               {errors.description?.message}
             </Text>
+            <Text
+              as='small'
+              color={!!errors.description || watchDescription?.length > DESCRIPTION_MAX_LENGTH ? 'red.500' : 'gray.500'}
+            >
+              {watchDescription?.length || 0}/{DESCRIPTION_MAX_LENGTH}
+            </Text>
           </Flex>
         </FormControl>
 
-        <FormControl isRequired id='video'>
-          <FormLabel>Video</FormLabel>
-          <Controller
-            control={control}
-            name='video'
-            render={({ field: { onChange, value: file } }) => (
-              <VideoUploader onChange={file => onChange(file)} file={file} preloadedVideoUrl={preloadedVideo?.url} />
-            )}
-          />
-          <Text as='small' color='red.500'>
-            {errors.video?.message}
-          </Text>
-          <FormHelperText>
-            Supported formats:{' '}
-            {Object.keys(VideoSupportedFormatsEnum)
-              .map(ext => `${ext.toLowerCase()}`)
-              .join(', ')}
-          </FormHelperText>
-        </FormControl>
+        {isLinkedVideoUrl ? (
+          <FormControl id='linked_video_url'>
+            <FormLabel>Video URL</FormLabel>
+            <Input placeholder='Link to video source. (YouTube, Vimeo, .mp4)' {...register('linked_video_url')} />
+            <Text as='small' color='red.500'>
+              {errors.linked_video_url?.message}
+            </Text>
+            <FormHelperText textDecoration={'underline'} cursor='pointer' onClick={() => setIsLinkedVideoUrl(false)}>
+              choose from files
+            </FormHelperText>
+          </FormControl>
+        ) : (
+          <FormControl id='video'>
+            <FormLabel>Video</FormLabel>
+            <Controller
+              control={control}
+              name='video'
+              render={({ field: { onChange, value: file } }) => (
+                <VideoUploader
+                  onChange={file => onChange(file)}
+                  file={file}
+                  setIsLinkedVideoUrl={setIsLinkedVideoUrl}
+                  preloadedVideoUrl={preloadedVideo && constants.BACKEND_URL + preloadedVideo.url}
+                />
+              )}
+            />
+            <Text as='small' color='red.500'>
+              {errors.video?.message}
+            </Text>
+            <FormHelperText>
+              Supported formats:{' '}
+              {Object.keys(VideoSupportedFormatsEnum)
+                .map(ext => `${ext.toLowerCase()}`)
+                .join(', ')}
+            </FormHelperText>
+          </FormControl>
+        )}
 
         <FormControl isRequired id='duration'>
           <FormLabel>Video duration</FormLabel>

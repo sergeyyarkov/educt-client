@@ -69,6 +69,7 @@ const LessonList: React.FC<LessonListPropsType> = ({ course }) => {
 
   const handleChangeOrder = async (ids: string[]) => {
     try {
+      if (ids.length <= 0) return;
       const data = await LessonServiceInstance.saveOrder(ids);
       return data;
     } catch (error) {

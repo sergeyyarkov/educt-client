@@ -18,6 +18,19 @@ import { SocketContext } from './contexts';
 import { HistoryMessageType, UserOnlineListType, UserSeesionType } from './types';
 import { useToast } from '@chakra-ui/react';
 
+/**
+ * Virtuoso's resize observer can this error,
+ * which is caught by DnD and aborts dragging.
+ */
+window.addEventListener('error', e => {
+  if (
+    e.message === 'ResizeObserver loop completed with undelivered notifications.' ||
+    e.message === 'ResizeObserver loop limit exceeded'
+  ) {
+    e.stopImmediatePropagation();
+  }
+});
+
 const App = () => {
   const {
     userStore,

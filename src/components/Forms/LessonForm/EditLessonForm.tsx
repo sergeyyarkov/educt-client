@@ -27,6 +27,7 @@ const EditLessonForm: React.FC<EditLessonFormPropsType> = ({ lesson }) => {
       title: lesson.title,
       description: lesson.description,
       duration: lesson.duration,
+      linked_video_url: lesson.linked_video_url || undefined,
       video: undefined,
       materials: undefined,
     },
@@ -41,6 +42,7 @@ const EditLessonForm: React.FC<EditLessonFormPropsType> = ({ lesson }) => {
       description: data.description,
       video: data.video,
       duration: data.duration,
+      linked_video_url: data.linked_video_url,
       materials: data.materials?.length !== 0 ? Array.from(data.materials || []) : null,
     });
 

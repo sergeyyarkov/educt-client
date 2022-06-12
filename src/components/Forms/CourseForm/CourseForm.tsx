@@ -25,6 +25,7 @@ import { useErrorHandler } from 'react-error-boundary';
  * Services
  */
 import { CategoryServiceInstance, UserServiceInstance } from '@educt/services';
+import { DESCRIPTION_MAX_LENGTH, EDUCATION_DESCRIPTION_MAX_LENGTH } from './CourseForm.validator';
 
 export type InputFields = {
   title: string;
@@ -57,9 +58,10 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
    */
   const loadUsersOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const users = await UserServiceInstance.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
+      const teachers = await UserServiceInstance.fetchAll({ role: UserRoleEnum.TEACHER });
+      const admins = await UserServiceInstance.fetchAll({ role: UserRoleEnum.ADMIN });
 
-      return users.data.map(user => ({
+      return teachers.data.concat(admins.data).map(user => ({
         label: user.fullname,
         value: user.id,
       }));
@@ -113,8 +115,11 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
             <Text as='small' color='red.500'>
               {errors.description?.message}
             </Text>
-            <Text as='small' color={!!errors.description || watchDescription?.length > 250 ? 'red.500' : 'gray.500'}>
-              {watchDescription?.length || 0}/250
+            <Text
+              as='small'
+              color={!!errors.description || watchDescription?.length > DESCRIPTION_MAX_LENGTH ? 'red.500' : 'gray.500'}
+            >
+              {watchDescription?.length || 0}/{DESCRIPTION_MAX_LENGTH}
             </Text>
           </Flex>
         </FormControl>
@@ -130,10 +135,12 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
               <Text
                 as='small'
                 color={
-                  !!errors.education_description || watchEducationDescription.length > 250 ? 'red.500' : 'gray.500'
+                  !!errors.education_description || watchEducationDescription.length > EDUCATION_DESCRIPTION_MAX_LENGTH
+                    ? 'red.500'
+                    : 'gray.500'
                 }
               >
-                {watchEducationDescription.length || 0}/250
+                {watchEducationDescription.length || 0}/{EDUCATION_DESCRIPTION_MAX_LENGTH}
               </Text>
             )}
           </Flex>

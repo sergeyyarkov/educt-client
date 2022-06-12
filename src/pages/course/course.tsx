@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import * as helpres from '@educt/helpers';
+import * as constants from '@educt/constants';
 import { Redirect } from 'react-router-dom';
 import { Flex, Box, Text, Heading, Button, Grid, GridItem, Divider, AvatarGroup, Avatar } from '@chakra-ui/react';
 import { MdPlayCircleOutline } from 'react-icons/md';
@@ -45,7 +46,7 @@ const CoursePage: React.FC<IPageProps> = () => {
   const isEmptyLessons = course.lessons.length === 0;
   const isEmptyStudents = course.students.length === 0;
 
-  const handleWatchCourse = () => history.push(`/lesson/${course.lessons[0].id}`);
+  const handleWatchCourse = () => course.lessons[0] && history.push(`/lesson/${course.lessons[0].id}`);
 
   const handleEditCourse = () => history.push(`/courses/edit/${course.id}`);
 
@@ -73,7 +74,7 @@ const CoursePage: React.FC<IPageProps> = () => {
                 <Box>
                   {(me.isAdmin || me.isTeacher) && <EditButton onClick={handleEditCourse} mr='2' />}
                   <Button
-                    isDisabled={!isCourseAvailable}
+                    isDisabled={!isCourseAvailable || course.lessons[0] === undefined}
                     onClick={handleWatchCourse}
                     leftIcon={<MdPlayCircleOutline />}
                     size='sm'
@@ -83,7 +84,10 @@ const CoursePage: React.FC<IPageProps> = () => {
                   </Button>
                 </Box>
               </Flex>
-              <CourseBackgroundImage bg={course.color?.hex} src={course.image?.url} />
+              <CourseBackgroundImage
+                bg={course.color?.hex}
+                src={course.image ? `${constants.BACKEND_URL + course.image.url}` : undefined}
+              />
             </Box>
             <Box mt='4'>
               <Tabs>
@@ -129,7 +133,7 @@ const CoursePage: React.FC<IPageProps> = () => {
               <Text fontSize={'2xl'} fontWeight={'medium'}>
                 What you&apos;ll learn.
               </Text>
-              <Text fontSize={'sm'} mt='2'>
+              <Text fontSize={'sm'} mt='2' textAlign={'justify'}>
                 {course.education_description}
               </Text>
             </Box>

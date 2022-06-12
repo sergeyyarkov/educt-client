@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import * as constants from './constants';
 import path from 'path';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -20,20 +19,7 @@ export default defineConfig({
   publicDir: 'public',
   plugins: [react()],
   server: {
-    proxy: {
-      '/api': {
-        target: constants.BACKEND_URL,
-        changeOrigin: true,
-      },
-      '/uploads': {
-        target: constants.BACKEND_URL,
-        changeOrigin: true,
-      },
-      '/video': {
-        target: constants.BACKEND_URL,
-        changeOrigin: true,
-      },
-    },
+    port: 5000,
   },
   resolve: {
     alias: [{ find: '@educt', replacement: path.resolve(__dirname, 'src') }],

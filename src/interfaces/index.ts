@@ -57,6 +57,7 @@ export interface ILesson {
   progress: LessonProgress;
   content: ILessonContent;
   video?: LessonVideoType | undefined | null;
+  linked_video_url?: string | null;
   created_at: string;
   updated_at: string;
 }

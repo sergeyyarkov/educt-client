@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import * as constants from '@educt/constants';
 import * as helpres from '@educt/helpers';
 import { Link as ReactRouterLink, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -83,7 +84,7 @@ const LessonPage: React.FC<IPageProps> = () => {
     if (lesson !== null) {
       (async () => {
         await fetchCourseLessons(lesson.course_id);
-        lesson.video && (await fetchLessonProgress(lesson.id));
+        (lesson.video || lesson.linked_video_url) && (await fetchLessonProgress(lesson.id));
       })();
     }
   }, [lesson]);
@@ -137,6 +138,8 @@ const LessonPage: React.FC<IPageProps> = () => {
 
   if (me === null) return <LoadingPage />;
 
+  const videoURL = lesson.video ? constants.BACKEND_URL + lesson.video.url : lesson.linked_video_url;
+
   return (
     <Page>
       <Helmet>
@@ -151,11 +154,17 @@ const LessonPage: React.FC<IPageProps> = () => {
       <Page.Content>
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
-            <Box>
-              {lesson.video ? (
-                <ReactPlayer width={'100%'} height={'100%'} controls url={lesson.video?.url} />
+            <Box overflowY='hidden'>
+              {lesson.video || lesson.linked_video_url ? (
+                <ReactPlayer
+                  style={{ backgroundColor: '#000' }}
+                  width={'100%'}
+                  height={'547px'}
+                  controls
+                  url={videoURL || ''}
+                />
               ) : (
-                <Flex h='500px' justifyContent={'center'} alignItems={'center'}>
+                <Flex h='547px' justifyContent={'center'} alignItems={'center'}>
                   <Text color='gray.500' userSelect={'none'}>
                     Video has not been uploaded yet.
                   </Text>
@@ -191,7 +200,7 @@ const LessonPage: React.FC<IPageProps> = () => {
           </GridItem>
           <GridItem minWidth={'250px'}>
             <Box>
-              <Stack maxH={'500px'} overflowY={'scroll'} spacing={'0'}>
+              <Stack maxH={'547px'} minH={'547px'} overflowY={'scroll'} spacing={'0'}>
                 {lessons.map((lesson, i) => (
                   <LinkBox
                     ref={lesson.id === id ? currentLessonRef : undefined}

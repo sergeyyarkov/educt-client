@@ -207,6 +207,7 @@ export type CreateLessonParamsType = {
   duration: string;
   course_id: string;
   video: File;
+  linked_video_url?: string | undefined;
   materials?: File[] | undefined;
 };
 
@@ -216,6 +217,7 @@ export type UpdateLessonParamsType = {
   duration?: string | undefined;
   course_id?: string | undefined;
   video?: File | undefined;
+  linked_video_url?: string | undefined;
   materials?: File[] | undefined | null;
 };
 
