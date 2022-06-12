@@ -84,7 +84,7 @@ const LessonPage: React.FC<IPageProps> = () => {
     if (lesson !== null) {
       (async () => {
         await fetchCourseLessons(lesson.course_id);
-        lesson.video && (await fetchLessonProgress(lesson.id));
+        (lesson.video || lesson.linked_video_url) && (await fetchLessonProgress(lesson.id));
       })();
     }
   }, [lesson]);
