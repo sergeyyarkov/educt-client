@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Flex, Box, Icon, Text, Button, Input, AspectRatio, useColorModeValue } from '@chakra-ui/react';
-import { MdUpload } from 'react-icons/md';
+import { MdLink, MdUpload } from 'react-icons/md';
 import { VideoSupportedFormatsEnum } from '@educt/enums';
 import { LessonVideoType } from '@educt/types';
 
@@ -8,9 +8,15 @@ type VideoUploaderPropsType = {
   onChange: (file: File) => void;
   file?: File | LessonVideoType | undefined;
   preloadedVideoUrl?: string | undefined;
+  setIsLinkedVideoUrl?: Dispatch<SetStateAction<boolean>>;
 };
 
-const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file, preloadedVideoUrl }) => {
+const VideoUploader: React.FC<VideoUploaderPropsType> = ({
+  onChange,
+  file,
+  preloadedVideoUrl,
+  setIsLinkedVideoUrl,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoObjectUrl, setVideoObjectUrl] = useState<string | undefined>(undefined);
@@ -42,8 +48,20 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file, prelo
   };
 
   const ChangeVideoButton = () => (
-    <Button onClick={onSelectFileHandler} leftIcon={<MdUpload />} variant={'outline'} size='sm' mt='2' float='right'>
+    <Button mr='1' onClick={onSelectFileHandler} leftIcon={<MdUpload />} variant={'outline'} size='sm' mt='2'>
       Change video
+    </Button>
+  );
+
+  const ChangeUrlVideoButton = () => (
+    <Button
+      onClick={() => setIsLinkedVideoUrl && setIsLinkedVideoUrl(true)}
+      leftIcon={<MdLink />}
+      variant={'outline'}
+      size='sm'
+      mt='2'
+    >
+      From URL
     </Button>
   );
 
@@ -91,9 +109,14 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file, prelo
               </Text>
             </Text>
           </Box>
-          <Button onClick={onSelectFileHandler} mt='6'>
-            Select file
-          </Button>
+          <Flex mt='4'>
+            <Button size='sm' onClick={onSelectFileHandler} mr='2'>
+              Select file
+            </Button>
+            <Button size='sm' onClick={() => setIsLinkedVideoUrl && setIsLinkedVideoUrl(true)}>
+              From URL
+            </Button>
+          </Flex>
         </Flex>
       ) : (
         <Box>
@@ -102,7 +125,10 @@ const VideoUploader: React.FC<VideoUploaderPropsType> = ({ onChange, file, prelo
               <source src={preloadedVideoUrl} />
             </video>
           </AspectRatio>
-          <ChangeVideoButton />
+          <Flex justifyContent={'flex-end'}>
+            <ChangeVideoButton />
+            <ChangeUrlVideoButton />
+          </Flex>
         </Box>
       )}
       <Input

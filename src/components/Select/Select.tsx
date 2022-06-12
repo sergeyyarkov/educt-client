@@ -41,7 +41,7 @@ const Select: React.FC<ISelectPropsType> = props => {
         >
           {options?.find(option => option.value === value)?.label || props?.placeholder || 'Select Option'}
         </MenuButton>
-        <MenuList>
+        <MenuList maxH='175px' m='0' p='0' overflowY={'scroll'}>
           {options && options.length !== 0 ? (
             options.map(option => (
               <MenuItem
@@ -49,6 +49,9 @@ const Select: React.FC<ISelectPropsType> = props => {
                 onClick={() => {
                   props.onChange(option.value);
                 }}
+                pb='0'
+                pt='0'
+                minH='35px'
               >
                 {option.label}
               </MenuItem>

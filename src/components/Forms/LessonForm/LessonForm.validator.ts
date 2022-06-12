@@ -18,7 +18,8 @@ const CreateLessonFormSchema = yup
       .test('fileSize', `File size is too large, maximum size is ${helpers.transformBytes(VIDEO_FILE_SIZE)}`, value =>
         !value ? true : value.size <= VIDEO_FILE_SIZE
       )
-      .required('Video field name is required'),
+      .optional(),
+    linked_video_url: yup.string().matches(new RegExp('^(http|https|ftp)://'), 'URL is incorrect'),
     materials: yup
       .mixed<File[]>()
       .test(

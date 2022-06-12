@@ -27,6 +27,7 @@ const CreateLessonForm: React.FC = () => {
       description: data.description,
       duration: data.duration,
       video: data.video,
+      linked_video_url: data.linked_video_url,
       materials: Array.from(data.materials || []),
       course_id,
     });

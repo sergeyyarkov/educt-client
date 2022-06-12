@@ -138,6 +138,8 @@ const LessonPage: React.FC<IPageProps> = () => {
 
   if (me === null) return <LoadingPage />;
 
+  const videoURL = lesson.video ? constants.BACKEND_URL + lesson.video.url : lesson.linked_video_url;
+
   return (
     <Page>
       <Helmet>
@@ -153,13 +155,13 @@ const LessonPage: React.FC<IPageProps> = () => {
         <Grid templateColumns={{ base: '1fr', xl: '3fr 1fr' }}>
           <GridItem>
             <Box overflowY='hidden'>
-              {lesson.video ? (
+              {lesson.video || lesson.linked_video_url ? (
                 <ReactPlayer
                   style={{ backgroundColor: '#000' }}
                   width={'100%'}
                   height={'547px'}
                   controls
-                  url={constants.BACKEND_URL + lesson.video.url}
+                  url={videoURL || ''}
                 />
               ) : (
                 <Flex h='547px' justifyContent={'center'} alignItems={'center'}>

@@ -58,9 +58,10 @@ const CourseForm: React.FC<CourseFormPropsType> = ({ onSubmit, buttonLabel, isLo
    */
   const loadUsersOptions = async (): Promise<OptionType[] | undefined> => {
     try {
-      const users = await UserServiceInstance.fetchAll({ limit: 12, role: UserRoleEnum.TEACHER });
+      const teachers = await UserServiceInstance.fetchAll({ role: UserRoleEnum.TEACHER });
+      const admins = await UserServiceInstance.fetchAll({ role: UserRoleEnum.ADMIN });
 
-      return users.data.map(user => ({
+      return teachers.data.concat(admins.data).map(user => ({
         label: user.fullname,
         value: user.id,
       }));

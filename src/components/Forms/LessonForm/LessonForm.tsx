@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FormControl,
   FormHelperText,
@@ -26,6 +26,7 @@ export type InputFields = {
   description: string;
   duration: string;
   video: File;
+  linked_video_url?: string | undefined;
   materials?: FileList | undefined;
 };
 
@@ -52,6 +53,8 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
     watch,
     formState: { errors, isDirty },
   } = reactHookForm;
+
+  const [isLinkedVideoUrl, setIsLinkedVideoUrl] = useState<boolean>(false);
 
   const watchDescription = watch('description');
 
@@ -85,29 +88,43 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
           </Flex>
         </FormControl>
 
-        <FormControl isRequired id='video'>
-          <FormLabel>Video</FormLabel>
-          <Controller
-            control={control}
-            name='video'
-            render={({ field: { onChange, value: file } }) => (
-              <VideoUploader
-                onChange={file => onChange(file)}
-                file={file}
-                preloadedVideoUrl={preloadedVideo && constants.BACKEND_URL + preloadedVideo.url}
-              />
-            )}
-          />
-          <Text as='small' color='red.500'>
-            {errors.video?.message}
-          </Text>
-          <FormHelperText>
-            Supported formats:{' '}
-            {Object.keys(VideoSupportedFormatsEnum)
-              .map(ext => `${ext.toLowerCase()}`)
-              .join(', ')}
-          </FormHelperText>
-        </FormControl>
+        {isLinkedVideoUrl ? (
+          <FormControl id='linked_video_url'>
+            <FormLabel>Video URL</FormLabel>
+            <Input placeholder='Link to video source. (YouTube, Vimeo, .mp4)' {...register('linked_video_url')} />
+            <Text as='small' color='red.500'>
+              {errors.linked_video_url?.message}
+            </Text>
+            <FormHelperText textDecoration={'underline'} cursor='pointer' onClick={() => setIsLinkedVideoUrl(false)}>
+              choose from files
+            </FormHelperText>
+          </FormControl>
+        ) : (
+          <FormControl id='video'>
+            <FormLabel>Video</FormLabel>
+            <Controller
+              control={control}
+              name='video'
+              render={({ field: { onChange, value: file } }) => (
+                <VideoUploader
+                  onChange={file => onChange(file)}
+                  file={file}
+                  setIsLinkedVideoUrl={setIsLinkedVideoUrl}
+                  preloadedVideoUrl={preloadedVideo && constants.BACKEND_URL + preloadedVideo.url}
+                />
+              )}
+            />
+            <Text as='small' color='red.500'>
+              {errors.video?.message}
+            </Text>
+            <FormHelperText>
+              Supported formats:{' '}
+              {Object.keys(VideoSupportedFormatsEnum)
+                .map(ext => `${ext.toLowerCase()}`)
+                .join(', ')}
+            </FormHelperText>
+          </FormControl>
+        )}
 
         <FormControl isRequired id='duration'>
           <FormLabel>Video duration</FormLabel>
