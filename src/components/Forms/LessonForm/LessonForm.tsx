@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormControl,
   FormHelperText,
@@ -52,11 +52,18 @@ const LessonForm: React.FC<LessonFormPropsType> = ({
     register,
     watch,
     formState: { errors, isDirty },
+    unregister,
   } = reactHookForm;
 
   const [isLinkedVideoUrl, setIsLinkedVideoUrl] = useState<boolean>(false);
 
   const watchDescription = watch('description');
+
+  useEffect(() => {
+    if (!isLinkedVideoUrl) {
+      unregister('linked_video_url');
+    }
+  }, [isLinkedVideoUrl]);
 
   return (
     <form onSubmit={onSubmit}>
