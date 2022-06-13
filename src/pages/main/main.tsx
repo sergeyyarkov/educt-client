@@ -26,6 +26,7 @@ import { observer } from 'mobx-react';
  * Hooks
  */
 import { useFetchCourses, useFetchStat } from '@educt/hooks/queries';
+import { CourseStatusEnum } from '@educt/enums';
 
 /**
  * Main page
@@ -35,7 +36,7 @@ const MainPage: React.FC<IPageProps> = () => {
     userStore: { me },
     onlineStore,
   } = useRootStore();
-  const { data: courses } = useFetchCourses({ limit: 3 });
+  const { data: courses } = useFetchCourses({ limit: 3, status: CourseStatusEnum.PUBLISHED });
   const { data: stat } = useFetchStat();
 
   if (me === null || courses === null || stat === null) return <LoadingPage />;
